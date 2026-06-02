@@ -23,14 +23,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const locale of locales) {
     for (const page of staticPages) {
+      const pageUrl = locale === 'en' ? `${siteUrl}${page}` : `${siteUrl}/${locale}${page}`;
+
       staticUrls.push({
-        url: `${siteUrl}/${locale}${page}`,
+        url: pageUrl,
         lastModified: new Date(),
         changeFrequency: page === '' ? 'daily' : 'weekly',
         priority: page === '' ? 1.0 : 0.8,
         alternates: {
           languages: Object.fromEntries(
-            locales.map((loc) => [loc, `${siteUrl}/${loc}${page}`])
+            locales.map((loc) => [
+              loc,
+              loc === 'en' ? `${siteUrl}${page}` : `${siteUrl}/${loc}${page}`
+            ])
           ),
         },
       });
@@ -45,14 +50,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     for (const locale of locales) {
       for (const article of newsArticles) {
+        const articleUrl = locale === 'en'
+          ? `${siteUrl}/news/${article.slug}`
+          : `${siteUrl}/${locale}/news/${article.slug}`;
+
         newsUrls.push({
-          url: `${siteUrl}/${locale}/news/${article.slug}`,
+          url: articleUrl,
           lastModified: new Date(article.publishedAt),
           changeFrequency: 'monthly',
           priority: 0.7,
           alternates: {
             languages: Object.fromEntries(
-              locales.map((loc) => [`${loc}`, `${siteUrl}/${loc}/news/${article.slug}`])
+              locales.map((loc) => [
+                loc,
+                loc === 'en'
+                  ? `${siteUrl}/news/${article.slug}`
+                  : `${siteUrl}/${loc}/news/${article.slug}`
+              ])
             ),
           },
         });

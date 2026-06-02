@@ -23,6 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     yo: 'Yoruba',
   };
 
+  const canonicalUrl = locale === 'en' ? siteUrl : `${siteUrl}/${locale}`;
+
   return generateSEOMetadata({
     title: 'Combating Hidden Hunger Through Food Fortification',
     description: 'The National Fortification Alliance (NFA) is a multi-sectoral coordination platform driving Nigeria\'s food fortification programme to eliminate micronutrient deficiencies and improve public health outcomes through strengthened collaboration, regulatory support, and quality assurance systems.',
@@ -42,11 +44,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       'nutrition policy Nigeria',
       'public health intervention',
     ],
-    canonical: `${siteUrl}/${locale}`,
+    canonical: canonicalUrl,
     locale,
     alternateLocales: locales.map((loc) => ({
       locale: loc,
-      url: `${siteUrl}/${loc}`,
+      url: loc === 'en' ? siteUrl : `${siteUrl}/${loc}`,
     })),
     ogType: 'website',
   });

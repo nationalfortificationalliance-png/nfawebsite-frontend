@@ -23,6 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const description = seo?.metaDescription || article.excerpt || article.title;
     const ogImage = seo?.shareImage?.url ? getStrapiMediaUrl(seo.shareImage.url) : getStrapiMediaUrl(article.image?.url);
 
+    const canonicalUrl = locale === 'en'
+        ? `${siteUrl}/news/${slug}`
+        : `${siteUrl}/${locale}/news/${slug}`;
+
     return generateSEOMetadata({
         title,
         description,
@@ -33,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             'nutrition Nigeria',
             ...(article.tags ? article.tags.split(',').map((t: string) => t.trim()) : []),
         ],
-        canonical: `${siteUrl}/${locale}/news/${slug}`,
+        canonical: canonicalUrl,
         ogImage,
         ogType: 'article',
         publishedTime: article.publishedAt,
@@ -41,7 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         locale,
         alternateLocales: locales.map((loc) => ({
             locale: loc,
-            url: `${siteUrl}/${loc}/news/${slug}`,
+            url: loc === 'en'
+                ? `${siteUrl}/news/${slug}`
+                : `${siteUrl}/${loc}/news/${slug}`,
         })),
     });
 }
@@ -72,7 +78,9 @@ export default async function NewsDetailPage({ params }: Props) {
 
     // Generate structured data
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nfawebsite-frontend.vercel.app';
-    const articleUrl = `${siteUrl}/${locale}/news/${slug}`;
+    const homeUrl = locale === 'en' ? siteUrl : `${siteUrl}/${locale}`;
+    const newsUrl = locale === 'en' ? `${siteUrl}/news` : `${siteUrl}/${locale}/news`;
+    const articleUrl = locale === 'en' ? `${siteUrl}/news/${slug}` : `${siteUrl}/${locale}/news/${slug}`;
 
     const articleSchema = generateArticleSchema({
         title,
@@ -84,8 +92,8 @@ export default async function NewsDetailPage({ params }: Props) {
     });
 
     const breadcrumbSchema = generateBreadcrumbSchema([
-        { name: 'Home', url: `${siteUrl}/${locale}` },
-        { name: 'News & Events', url: `${siteUrl}/${locale}/news` },
+        { name: 'Home', url: homeUrl },
+        { name: 'News & Events', url: newsUrl },
         { name: title, url: articleUrl },
     ]);
 
