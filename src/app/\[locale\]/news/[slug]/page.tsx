@@ -4,31 +4,46 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Icon, { IconName } from '@/components/Icon';
 import { getNewsBySlug, getAllNews, getStrapiMediaUrl } from '@/lib/api';
+import { getLocale } from 'next-intl/server';
+import { generateSEOMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/components/SEO';
+import { locales } from '@/i18n';
 
 interface Props {
-    params: Promise<{ slug: string }>;
+    params: Promise<{ slug: string; locale: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { slug } = await params;
+    const { slug, locale } = await params;
     const article = await getNewsBySlug(slug);
     if (!article) return { title: 'Article Not Found' };
-    
-    // Check for SEO component from Strapi
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nfawebsite-frontend.vercel.app';
     const seo = (article as any).seo;
     const title = seo?.metaTitle || article.title;
     const description = seo?.metaDescription || article.excerpt || article.title;
-    const ogImage = seo?.shareImage?.url ? getStrapiMediaUrl(seo.shareImage.url) : null;
+    const ogImage = seo?.shareImage?.url ? getStrapiMediaUrl(seo.shareImage.url) : getStrapiMediaUrl(article.image?.url);
 
-    return {
+    return generateSEOMetadata({
         title,
         description,
-        openGraph: {
-            title,
-            description,
-            images: ogImage ? [ogImage] : [],
-        }
-    };
+        keywords: [
+            article.category,
+            'NFA news',
+            'food fortification updates',
+            'nutrition Nigeria',
+            ...(article.tags ? article.tags.split(',').map((t: string) => t.trim()) : []),
+        ],
+        canonical: `${siteUrl}/${locale}/news/${slug}`,
+        ogImage,
+        ogType: 'article',
+        publishedTime: article.publishedAt,
+        modifiedTime: article.publishedAt,
+        locale,
+        alternateLocales: locales.map((loc) => ({
+            locale: loc,
+            url: `${siteUrl}/${loc}/news/${slug}`,
+        })),
+    });
 }
 
 export async function generateStaticParams() {
@@ -43,7 +58,7 @@ const CATEGORY_ICONS: Record<string, IconName> = {
 };
 
 export default async function NewsDetailPage({ params }: Props) {
-    const { slug } = await params;
+    const { slug, locale } = await params;
     const article = await getNewsBySlug(slug);
     if (!article) notFound();
 
@@ -55,8 +70,37 @@ export default async function NewsDetailPage({ params }: Props) {
         day: 'numeric', month: 'long', year: 'numeric',
     });
 
+    // Generate structured data
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nfawebsite-frontend.vercel.app';
+    const articleUrl = `${siteUrl}/${locale}/news/${slug}`;
+
+    const articleSchema = generateArticleSchema({
+        title,
+        description: excerpt || title,
+        publishedDate: publishedAt,
+        modifiedDate: publishedAt,
+        imageUrl: imageUrl,
+        url: articleUrl,
+    });
+
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: 'Home', url: `${siteUrl}/${locale}` },
+        { name: 'News & Events', url: `${siteUrl}/${locale}/news` },
+        { name: title, url: articleUrl },
+    ]);
+
     return (
         <>
+            {/* Structured Data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+
             <style>{`
         .article-hero {
           background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-primary) 100%);

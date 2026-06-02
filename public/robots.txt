@@ -1,0 +1,31 @@
+# robots.txt for National Fortification Alliance Nigeria
+# https://nfawebsite-frontend.vercel.app
+
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://nfawebsite-frontend.vercel.app/sitemap.xml
+Sitemap: https://nfawebsite-frontend.vercel.app/sitemap-en.xml
+Sitemap: https://nfawebsite-frontend.vercel.app/sitemap-ha.xml
+Sitemap: https://nfawebsite-frontend.vercel.app/sitemap-ig.xml
+Sitemap: https://nfawebsite-frontend.vercel.app/sitemap-yo.xml
+
+# Crawl-delay for specific bots (optional)
+User-agent: Googlebot
+Crawl-delay: 0
+
+User-agent: Bingbot
+Crawl-delay: 0
+
+# Block bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
