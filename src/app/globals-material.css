@@ -1,0 +1,462 @@
+/**
+ * Material Design 3 Global Styles for NFA Website
+ * Following Material Design Guidelines
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@300;400;500;700&display=swap');
+@import '../styles/material-tokens.css';
+
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  color: var(--md-sys-color-on-background);
+  background-color: var(--md-sys-color-background);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+/* Display */
+.md-display-large {
+  font-size: var(--md-sys-typescale-display-large-size);
+  line-height: var(--md-sys-typescale-display-large-line-height);
+  font-weight: var(--md-sys-typescale-display-large-weight);
+}
+
+.md-display-medium {
+  font-size: var(--md-sys-typescale-display-medium-size);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  font-weight: var(--md-sys-typescale-display-medium-weight);
+}
+
+.md-display-small {
+  font-size: var(--md-sys-typescale-display-small-size);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+}
+
+/* Headline */
+.md-headline-large,
+h1 {
+  font-size: var(--md-sys-typescale-headline-large-size);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+  font-weight: var(--md-sys-typescale-headline-large-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-headline-medium,
+h2 {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-headline-small,
+h3 {
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Title */
+.md-title-large,
+h4 {
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-title-medium,
+h5 {
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-title-small,
+h6 {
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Body */
+.md-body-large {
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+}
+
+.md-body-medium,
+p {
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.md-body-small {
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+}
+
+/* Label */
+.md-label-large {
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  letter-spacing: 0.1px;
+}
+
+.md-label-medium {
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  letter-spacing: 0.5px;
+}
+
+.md-label-small {
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  letter-spacing: 0.5px;
+}
+
+/* ===== ELEVATION ===== */
+.md-elevation-0 {
+  box-shadow: var(--md-sys-shadow-level0);
+}
+
+.md-elevation-1 {
+  box-shadow: var(--md-sys-shadow-level1);
+}
+
+.md-elevation-2 {
+  box-shadow: var(--md-sys-shadow-level2);
+}
+
+.md-elevation-3 {
+  box-shadow: var(--md-sys-shadow-level3);
+}
+
+.md-elevation-4 {
+  box-shadow: var(--md-sys-shadow-level4);
+}
+
+.md-elevation-5 {
+  box-shadow: var(--md-sys-shadow-level5);
+}
+
+/* ===== SURFACES ===== */
+.md-surface {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-surface-variant {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.md-surface-container-lowest {
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+.md-surface-container-low {
+  background-color: var(--md-sys-color-surface-container-low);
+}
+
+.md-surface-container {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.md-surface-container-high {
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+.md-surface-container-highest {
+  background-color: var(--md-sys-color-surface-container-highest);
+}
+
+/* ===== CARDS ===== */
+.md-card {
+  background-color: var(--md-sys-color-surface);
+  border-radius: var(--md-sys-shape-corner-medium);
+  box-shadow: var(--md-sys-shadow-level1);
+  overflow: hidden;
+  transition: box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.md-card:hover {
+  box-shadow: var(--md-sys-shadow-level2);
+}
+
+.md-card-elevated {
+  box-shadow: var(--md-sys-shadow-level2);
+}
+
+.md-card-elevated:hover {
+  box-shadow: var(--md-sys-shadow-level3);
+}
+
+.md-card-filled {
+  background-color: var(--md-sys-color-surface-container-highest);
+  box-shadow: none;
+}
+
+.md-card-outlined {
+  background-color: var(--md-sys-color-surface);
+  box-shadow: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* ===== BUTTONS ===== */
+.md-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--md-sys-spacing-2);
+  padding: var(--md-sys-spacing-2) var(--md-sys-spacing-6);
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: 0.1px;
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  position: relative;
+  overflow: hidden;
+  text-transform: none;
+  min-height: 40px;
+  user-select: none;
+}
+
+.md-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.md-button:hover::before {
+  opacity: var(--md-sys-state-hover-opacity);
+}
+
+.md-button:focus::before {
+  opacity: var(--md-sys-state-focus-opacity);
+}
+
+.md-button:active::before {
+  opacity: var(--md-sys-state-pressed-opacity);
+}
+
+/* Filled Button */
+.md-button-filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: var(--md-sys-shadow-level0);
+}
+
+.md-button-filled:hover {
+  box-shadow: var(--md-sys-shadow-level1);
+}
+
+/* Outlined Button */
+.md-button-outlined {
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+/* Text Button */
+.md-button-text {
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+}
+
+/* Tonal Button */
+.md-button-tonal {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* ===== FAB (Floating Action Button) ===== */
+.md-fab {
+  position: fixed;
+  bottom: var(--md-sys-spacing-4);
+  right: var(--md-sys-spacing-4);
+  width: 56px;
+  height: 56px;
+  border-radius: var(--md-sys-shape-corner-large);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--md-sys-shadow-level3);
+  transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.md-fab:hover {
+  box-shadow: var(--md-sys-shadow-level4);
+}
+
+/* ===== CHIPS ===== */
+.md-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-2);
+  padding: var(--md-sys-spacing-1) var(--md-sys-spacing-4);
+  border-radius: var(--md-sys-shape-corner-small);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  transition: all var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  cursor: default;
+  user-select: none;
+}
+
+.md-chip-filled {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border: none;
+}
+
+/* ===== DIVIDERS ===== */
+.md-divider {
+  height: 1px;
+  background-color: var(--md-sys-color-outline-variant);
+  border: none;
+  margin: var(--md-sys-spacing-4) 0;
+}
+
+/* ===== CONTAINER & LAYOUT ===== */
+.container {
+  width: 100%;
+  max-width: var(--md-sys-container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--md-sys-grid-margin);
+  padding-right: var(--md-sys-grid-margin);
+}
+
+/* ===== GRID ===== */
+.md-grid {
+  display: grid;
+  gap: var(--md-sys-grid-gutter);
+}
+
+.md-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.md-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.md-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* ===== UTILITIES ===== */
+.md-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.md-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.md-ripple:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* ===== LEGACY COMPATIBILITY ===== */
+:root {
+  --color-primary: var(--md-sys-color-primary);
+  --color-on-primary: var(--md-sys-color-on-primary);
+  --color-secondary: var(--md-sys-color-secondary);
+  --color-navy: var(--md-sys-color-tertiary);
+  --color-gray-100: var(--md-sys-color-surface-container-low);
+  --color-gray-300: var(--md-sys-color-outline-variant);
+  --color-gray-600: var(--md-sys-color-on-surface-variant);
+  --color-gray-800: var(--md-sys-color-on-surface);
+  --shadow-sm: var(--md-sys-shadow-level1);
+  --shadow-md: var(--md-sys-shadow-level2);
+  --shadow-lg: var(--md-sys-shadow-level3);
+  --shadow-xl: var(--md-sys-shadow-level4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  :root {
+    --md-sys-grid-margin: var(--md-sys-spacing-4);
+    --md-sys-grid-gutter: var(--md-sys-spacing-4);
+  }
+}
+
+@media (min-width: 601px) and (max-width: 904px) {
+  :root {
+    --md-sys-grid-margin: var(--md-sys-spacing-6);
+  }
+}
+
+@media (min-width: 905px) {
+  :root {
+    --md-sys-grid-margin: var(--md-sys-spacing-6);
+  }
+}
