@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Ilé",
+    "about": "Nípa Wa",
+    "partners": "Àwọn Alábàápín",
+    "news": "Ìròyìn & Ìṣẹ̀lẹ̀",
+    "guidelines": "Ìtọ́sọ́nà",
+    "initiatives": "Àwọn Ètò",
+    "contact": "Kàn Sí Wa"
+  },
+  "common": {
+    "learnMore": "Kọ́ Síi",
+    "readMore": "Kà Síi",
+    "viewAll": "Wo Gbogbo",
+    "back": "Padà",
+    "next": "Tókàn",
+    "previous": "Tẹ́lẹ̀",
+    "search": "Wá",
+    "loading": "Ń ṣe ìṣiṣẹ́...",
+    "noResults": "Ko si èsì kan"
+  },
+  "footer": {
+    "about": "Nípa NFA",
+    "quickLinks": "Àwọn Ọ̀nà Yára",
+    "contact": "Kàn Sí Wa",
+    "followUs": "Tẹ̀lé Wa",
+    "copyright": "© {year} National Fortification Alliance. Gbogbo ẹ̀tọ́ ti wa ní ìpamọ́."
+  }
+}

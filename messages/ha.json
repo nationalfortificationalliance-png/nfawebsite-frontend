@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Gida",
+    "about": "Game da mu",
+    "partners": "Abokan Hulɗa",
+    "news": "Labarai & Abubuwan da suka faru",
+    "guidelines": "Jagororin",
+    "initiatives": "Shiri",
+    "contact": "Tuntuɓe mu"
+  },
+  "common": {
+    "learnMore": "Koyi Ƙari",
+    "readMore": "Karanta Ƙari",
+    "viewAll": "Duba Duka",
+    "back": "Komawa",
+    "next": "Na gaba",
+    "previous": "Na baya",
+    "search": "Bincika",
+    "loading": "Ana lodawa...",
+    "noResults": "Ba a sami sakamako ba"
+  },
+  "footer": {
+    "about": "Game da NFA",
+    "quickLinks": "Hanyoyin sauri",
+    "contact": "Tuntuɓe mu",
+    "followUs": "Bi mu",
+    "copyright": "© {year} National Fortification Alliance. Duk haƙƙin mallaka."
+  }
+}

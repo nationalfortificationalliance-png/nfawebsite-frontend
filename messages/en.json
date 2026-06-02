@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "partners": "Partners",
+    "news": "News & Events",
+    "guidelines": "Guidelines",
+    "initiatives": "Initiatives",
+    "contact": "Contact"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "loading": "Loading...",
+    "noResults": "No results found"
+  },
+  "footer": {
+    "about": "About NFA",
+    "quickLinks": "Quick Links",
+    "contact": "Contact Us",
+    "followUs": "Follow Us",
+    "copyright": "© {year} National Fortification Alliance. All rights reserved."
+  },
+  "home": {
+    "hero": {
+      "title": "Combating Hidden Hunger in Nigeria",
+      "subtitle": "Through Food Fortification"
+    },
+    "latestNews": "Latest News & Events",
+    "ourPartners": "Our Partners",
+    "statistics": "Key Statistics"
+  },
+  "about": {
+    "title": "About Us",
+    "mission": "Our Mission",
+    "vision": "Our Vision",
+    "objectives": "Our Objectives",
+    "background": "Background"
+  },
+  "news": {
+    "title": "News & Events",
+    "categories": {
+      "all": "All",
+      "news": "News",
+      "event": "Events",
+      "announcement": "Announcements",
+      "report": "Reports"
+    }
+  },
+  "partners": {
+    "title": "Our Partners",
+    "government": "Government Partners",
+    "development": "Development Partners",
+    "professional": "Professional Bodies"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message",
+    "success": "Message sent successfully!",
+    "error": "Failed to send message. Please try again."
+  }
+}

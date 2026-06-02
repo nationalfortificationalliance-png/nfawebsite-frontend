@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Ụlọ",
+    "about": "Gbasara anyị",
+    "partners": "Ndị mmekọ",
+    "news": "Akụkọ & Ihe Omume",
+    "guidelines": "Ntuziaka",
+    "initiatives": "Atụmatụ",
+    "contact": "Kpọtụrụ anyị"
+  },
+  "common": {
+    "learnMore": "Mụtakwuo",
+    "readMore": "Gụkwuo",
+    "viewAll": "Lee ihe niile",
+    "back": "Laghachi azụ",
+    "next": "Ọzọ",
+    "previous": "Gara aga",
+    "search": "Chọọ",
+    "loading": "Na-ebugo...",
+    "noResults": "Achọtaghị ihe ọ bụla"
+  },
+  "footer": {
+    "about": "Gbasara NFA",
+    "quickLinks": "Njikọ ngwa ngwa",
+    "contact": "Kpọtụrụ anyị",
+    "followUs": "Soro anyị",
+    "copyright": "© {year} National Fortification Alliance. Ikike niile echekwabara."
+  }
+}

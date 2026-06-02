@@ -2,8 +2,14 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 async function fetchAPI<T>(
     path: string,
-    params: Record<string, string> = {}
+    params: Record<string, string> = {},
+    locale?: string
 ): Promise<T | null> {
+    // Add locale to params if provided
+    if (locale) {
+        params['locale'] = locale;
+    }
+
     const queryString = new URLSearchParams(params).toString();
     const url = `${STRAPI_URL}/api${path}${queryString ? `?${queryString}` : ''}`;
     try {
@@ -121,13 +127,13 @@ export interface GlobalSetting {
 }
 
 // API functions
-export async function getCarousels(): Promise<Carousel[]> {
+export async function getCarousels(locale?: string): Promise<Carousel[]> {
     const res = await fetchAPI<{ data: Carousel[] }>('/carousels', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
         'populate': 'image',
         'pagination[pageSize]': '10',
-    });
+    }, locale);
     return res?.data || [];
 }
 
