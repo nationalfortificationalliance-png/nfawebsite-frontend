@@ -121,13 +121,21 @@ export default function Header({ siteName }: { siteName: string }) {
         }
         .nav-item:hover .dropdown-arrow { transform: rotate(180deg); }
         .dropdown {
-          position: absolute; top: 100%; left: 0; margin-top: 0.5rem;
+          position: absolute; top: calc(100% + 0.25rem); left: 0;
           background: #fff; border: 1px solid var(--border);
           border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
           min-width: 200px; opacity: 0; visibility: hidden;
-          transform: translateY(-10px);
+          transform: translateY(-8px);
           transition: all 0.2s var(--ease-out);
           z-index: 100;
+        }
+        .dropdown::before {
+          content: '';
+          position: absolute;
+          top: -0.5rem;
+          left: 0;
+          right: 0;
+          height: 0.5rem;
         }
         .nav-item:hover .dropdown {
           opacity: 1; visibility: visible; transform: translateY(0);
