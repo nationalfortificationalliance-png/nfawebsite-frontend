@@ -31,7 +31,9 @@ export default function Header({ siteName }: { siteName: string }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => {
+    setMenuOpen((prev) => prev ? false : prev);
+  }, [pathname]);
 
   const isHome = pathname === '/';
 
