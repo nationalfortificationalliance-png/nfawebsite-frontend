@@ -40,27 +40,17 @@ export default function NewsCard({ article }: NewsCardProps) {
   return (
     <>
       <style>{`
-        /* ── NewsCard ALIGNED TO MATERIAL DESIGN ── */
+        /* ── NewsCard - Consistent with app card system ── */
         .news-card {
-          background: var(--md-sys-color-surface);
-          border-radius: var(--md-sys-shape-corner-extra-large);
-          border: 1px solid var(--md-sys-color-outline-variant);
-          overflow: hidden;
-          display: flex; flex-direction: column;
-          box-shadow: var(--md-sys-shadow-level1);
-          transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized);
-        }
-        .news-card:hover {
-          box-shadow: var(--md-sys-shadow-level4);
-          transform: translateY(-8px);
-          border-color: var(--md-sys-color-outline);
+          display: flex;
+          flex-direction: column;
         }
         .news-card-img {
           aspect-ratio: 16/10; position: relative; overflow: hidden;
           background: var(--md-sys-color-surface-variant);
         }
-        .news-card-img img { transition: transform var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized); }
-        .news-card:hover .news-card-img img { transform: scale(1.08) rotate(1deg); }
+        .news-card-img img { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .news-card:hover .news-card-img img { transform: scale(1.05); }
         .news-card-img-overlay {
           position: absolute; inset: 0;
           background: linear-gradient(to top, rgba(0,0,0,.3) 0%, transparent 60%);
@@ -130,7 +120,7 @@ export default function NewsCard({ article }: NewsCardProps) {
         .news-card:hover .news-card-link { gap: var(--md-sys-spacing-3); }
       `}</style>
 
-      <Link href={newsUrl} className="news-card">
+      <Link href={newsUrl} className="card news-card">
         <div className="news-card-img">
           <Image
             src={imgSrc}

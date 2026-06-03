@@ -37,12 +37,11 @@ export default function DocumentCard({ doc }: DocumentCardProps) {
         : null;
 
     return (
-        <div className="card doc-card">
+        <div className="card card-padded doc-card">
             <style>{`
         .doc-card {
           display: flex;
           flex-direction: column;
-          padding: 1.75rem;
           gap: 1rem;
         }
         .doc-card-header {

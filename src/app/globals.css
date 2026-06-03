@@ -267,18 +267,32 @@ p {
   transform: translateY(-1px);
 }
 
-/* ─── Card ────────────────────────────────────────────────────── */
+/* ─── Card System (Consistent across app) ───────────────────── */
 .card {
   background: var(--bg-white);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
 .card:hover {
   box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  border-color: var(--wfp-blue);
+}
+
+/* Card with padding (for content cards) */
+.card-padded {
+  padding: 1.75rem;
+}
+
+/* Card without hover effect (for static cards) */
+.card-static:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border);
 }
 
 /* ─── Badge ───────────────────────────────────────────────────── */
