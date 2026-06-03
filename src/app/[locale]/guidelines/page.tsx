@@ -15,10 +15,13 @@ export default async function GuidelinesPage() {
     return (
         <>
             <style>{`
-        /* Hero */
-        .gl-hero { background: var(--wfp-navy); padding: 4.5rem 0 3.5rem; }
-        .gl-hero h1 { color: #fff; max-width: 640px; }
-        .gl-hero p { color: rgba(255,255,255,.72); font-size: 1.05rem; margin-top: 0.75rem; max-width: 520px; }
+        /* Standard Hero - No Image */
+        .gl-hero { background: var(--wfp-navy); padding: 5rem 0 4rem; }
+        .gl-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
+        .gl-hero p { color: rgba(255,255,255,0.85); max-width: 720px; font-size: 1.1rem; line-height: 1.6; }
+        .gl-hero .breadcrumb { margin-bottom: 2rem; }
+        .gl-hero .breadcrumb a, .gl-hero .breadcrumb span { color: rgba(255,255,255,0.7); }
+        .gl-hero .breadcrumb a:hover { color: #fff; }
 
         /* Search bar */
         .search-bar { background: #fff; padding: 0 0 0; border-bottom: 1px solid var(--border); position: sticky; top: 100px; z-index: 100; }

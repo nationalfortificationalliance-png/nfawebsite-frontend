@@ -19,6 +19,7 @@ const NAV_LINKS = [
   { label: 'Initiatives', href: '/initiatives' },
   { label: 'News & Events', href: '/news' },
   { label: 'Partners', href: '/partners' },
+  { label: 'FAQ', href: '/faq' },
 ];
 
 export default function Header({ siteName }: { siteName: string }) {
@@ -45,23 +46,6 @@ export default function Header({ siteName }: { siteName: string }) {
   return (
     <>
       <style>{`
-        /* ── Announcement bar ── */
-        .announce-bar {
-          background: var(--wfp-blue);
-          color: rgba(255,255,255,.9);
-          font-size: 0.78rem;
-          font-weight: 500;
-          padding: 0.5rem 0;
-          letter-spacing: 0.01em;
-        }
-        .announce-inner {
-          display: flex; justify-content: space-between; align-items: center;
-          gap: 1rem;
-        }
-        .announce-links { display: flex; gap: 1.5rem; }
-        .announce-links a { color: rgba(255,255,255,.8); transition: color .15s; }
-        .announce-links a:hover { color: #fff; }
-
         /* ── Main header ── */
         .site-header {
           position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -207,26 +191,12 @@ export default function Header({ siteName }: { siteName: string }) {
           .nav-links { display: none; }
           .header-cta .btn { display: none; }
           .hamburger { display: flex; }
-          .announce-links { display: none; }
         }
       `}</style>
 
-      {/* Announcement bar */}
-      <div className="announce-bar" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1001 }}>
-        <div className="container">
-          <div className="announce-inner">
-            <span>WFP Nigeria · National Fortification Project (NFP)</span>
-            <div className="announce-links">
-              <a href="https://www.wfp.org" target="_blank" rel="noopener noreferrer">WFP Global</a>
-              <a href="https://www.nafdac.gov.ng" target="_blank" rel="noopener noreferrer">NAFDAC</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <header
         className={`site-header header-opaque ${scrolled ? 'header-scrolled' : ''}`}
-        style={{ top: '32px' }}
+        style={{ top: 0 }}
       >
         <div className="header-wrap">
           <div className="header-bar">

@@ -78,20 +78,31 @@ export default async function FAQPage() {
     return (
         <>
             <style>{`
+                /* Standard Hero - No Image */
                 .faq-hero {
                     background: var(--wfp-navy);
                     padding: 5rem 0 4rem;
-                    text-align: center;
-                    color: #fff;
                 }
                 .faq-hero h1 {
                     color: #fff;
+                    max-width: 720px;
                     margin-bottom: 1rem;
                 }
                 .faq-hero p {
-                    color: rgba(255,255,255,0.8);
-                    max-width: 600px;
-                    margin: 0 auto;
+                    color: rgba(255,255,255,0.85);
+                    max-width: 720px;
+                    font-size: 1.1rem;
+                    line-height: 1.6;
+                }
+                .faq-hero .breadcrumb {
+                    margin-bottom: 2rem;
+                }
+                .faq-hero .breadcrumb a,
+                .faq-hero .breadcrumb span {
+                    color: rgba(255,255,255,0.7);
+                }
+                .faq-hero .breadcrumb a:hover {
+                    color: #fff;
                 }
                 .faq-category {
                     margin-bottom: 4rem;
@@ -156,9 +167,9 @@ export default async function FAQPage() {
             {/* Hero */}
             <div className="faq-hero">
                 <div className="container">
-                    <div className="breadcrumb" style={{ justifyContent: 'center', marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,0.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
                         <span>FAQ</span>
                     </div>
                     <h1>Frequently Asked Questions</h1>

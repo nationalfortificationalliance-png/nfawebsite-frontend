@@ -24,12 +24,12 @@ export default async function NewsPage() {
     return (
         <>
             <style>{`
-        /* Hero (Guidelines Style) */
-        .news-hero { background: var(--wfp-navy); padding: 4.5rem 0 3.5rem; }
-        .news-hero h1 { color: #fff; max-width: 640px; margin-bottom: 0.5rem; }
-        .news-hero p { color: rgba(255,255,255,.72); max-width: 520px; }
-        .news-hero .breadcrumb { justify-content: flex-start; margin-bottom: 1.5rem; }
-        .news-hero .breadcrumb a, .news-hero .breadcrumb span { color: rgba(255,255,255,.6); }
+        /* Standard Hero - No Image */
+        .news-hero { background: var(--wfp-navy); padding: 5rem 0 4rem; }
+        .news-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
+        .news-hero p { color: rgba(255,255,255,0.85); max-width: 720px; font-size: 1.1rem; line-height: 1.6; }
+        .news-hero .breadcrumb { justify-content: flex-start; margin-bottom: 2rem; }
+        .news-hero .breadcrumb a, .news-hero .breadcrumb span { color: rgba(255,255,255,0.7); }
         .news-hero .breadcrumb a:hover { color: #fff; }
 
         /* Modern Filter Bar */

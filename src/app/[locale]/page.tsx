@@ -137,8 +137,8 @@ export default async function HomePage() {
         .about-content-panel p { margin-bottom: var(--md-sys-spacing-5); color: rgba(255,255,255,0.9); }
         .about-content-panel .line { background: var(--wfp-gold); width: 60px; height: 4px; border-radius: var(--md-sys-shape-corner-extra-small); margin-bottom: var(--md-sys-spacing-8); }
 
-        /* ── Quote ── ALIGNED TO MATERIAL DESIGN */
-        .quote-section { background: var(--md-sys-color-secondary); padding: var(--md-sys-spacing-20) 0; }
+        /* ── Quote ── Mature dark green section */
+        .quote-section { background: var(--wfp-navy); padding: var(--md-sys-spacing-20) 0; }
         .quote-wrap { max-width: 800px; margin: 0 auto; text-align: center; }
         .quote-mark { font-size: var(--md-sys-typescale-display-large-size); line-height: 0.5; color: rgba(255,255,255,.2); font-family: Georgia, serif; display: block; margin-bottom: var(--md-sys-spacing-6); }
         .quote-text { font-size: clamp(var(--md-sys-typescale-title-large-size), 2.5vw, var(--md-sys-typescale-headline-small-size)); color: var(--md-sys-color-on-secondary); font-weight: 400; line-height: 1.65; margin-bottom: var(--md-sys-spacing-8); font-style: italic; }

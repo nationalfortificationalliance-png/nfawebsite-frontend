@@ -39,18 +39,23 @@ button {
 
 /* ─── Brand Tokens ───────────────────────────────────────────── */
 :root {
-  --wfp-blue: #009a44;
-  /* Re-mapped to NFA Green */
-  --wfp-blue-dark: #00732f;
-  --wfp-blue-light: #e6f5eb;
-  --wfp-green: #84cc16;
-  /* Lime accent */
-  --wfp-green-dark: #65a30d;
-  --wfp-gold: #f59e0b;
-  /* Amber */
+  /* === MATURE COLOR PALETTE === */
+  /* Primary Brand Color - Nigeria Green */
+  --wfp-green: #008751;
+  --wfp-green-dark: #006639;
+  --wfp-green-light: #e8f5f0;
+
+  /* Dark Sections - Deep Green */
   --wfp-navy: #064e3b;
-  /* Emerald 900 for dark headers */
-  --wfp-red: #e32d1c;
+
+  /* Accent - Gold */
+  --wfp-gold: #f59e0b;
+  --wfp-gold-light: #fef3c7;
+
+  /* Legacy aliases for compatibility */
+  --wfp-blue: #008751;
+  --wfp-blue-dark: #006639;
+  --wfp-blue-light: #e8f5f0;
 
   --text-primary: #0f172a;
   /* Deeper slate */
