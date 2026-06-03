@@ -42,68 +42,58 @@ export default function DocumentCard({ doc }: DocumentCardProps) {
         .doc-card {
           display: flex;
           flex-direction: column;
-          padding: 0;
-          overflow: hidden;
-        }
-        .doc-card-header {
-          padding: 1.25rem;
-          background: linear-gradient(135deg,#f8f9fa,#fff);
-          border-bottom: 1px solid var(--color-gray-100);
-          display: flex;
-          align-items: flex-start;
+          padding: 1.75rem;
           gap: 1rem;
         }
+        .doc-card-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 0.75rem;
+        }
         .doc-icon {
-          font-size: 2rem;
+          font-size: 1.5rem;
           flex-shrink: 0;
           line-height: 1;
+          opacity: 0.7;
         }
-        .doc-card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+        .doc-card-body { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
         .doc-card h4 {
-          color: var(--color-navy);
+          color: var(--text-primary);
           line-height: 1.4;
-          margin-bottom: 0.5rem;
+          font-size: 1.1rem;
         }
         .doc-card p {
-          color: var(--color-gray-600);
-          line-height: 1.65;
-          flex: 1;
-          margin-bottom: 1rem;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          line-height: 1.6;
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
         .doc-card-footer {
-          border-top: 1px solid var(--color-gray-100);
-          padding: 0.85rem 1.25rem;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 0.5rem;
+          gap: 0.75rem;
+          margin-top: 0.5rem;
         }
-        .doc-date { font-size: 0.78rem; color: var(--color-gray-400); }
+        .doc-date { font-size: 0.8rem; color: var(--text-muted); }
         .doc-no-file {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.35rem;
-          color: var(--color-gray-400);
           font-size: 0.8rem;
+          color: var(--text-muted);
+          font-weight: 500;
         }
       `}</style>
 
             <div className="doc-card-header">
-                <span className="doc-icon" style={{ color: 'var(--wfp-blue)', display: 'flex' }}><Icon name={CATEGORY_ICONS[category] || 'file'} size={32} /></span>
-                <div>
-                    <span className={`badge ${CATEGORY_COLORS[category] || 'badge-report'}`} style={{ marginBottom: '0.4rem' }}>
-                        {category}
-                    </span>
-                    {is_featured && (
-                        <span className="badge" style={{ marginLeft: '0.4rem', background: '#fff3e0', color: '#e65100', display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                            <Icon name="sparkles" size={12} /> Featured
-                        </span>
-                    )}
-                </div>
+                <span className={`badge ${CATEGORY_COLORS[category] || 'badge-report'}`}>
+                    {category}
+                </span>
+                <span className="doc-icon" style={{ color: 'var(--wfp-blue)', display: 'flex' }}>
+                    <Icon name={CATEGORY_ICONS[category] || 'file'} size={24} />
+                </span>
             </div>
 
             <div className="doc-card-body">
@@ -112,7 +102,7 @@ export default function DocumentCard({ doc }: DocumentCardProps) {
             </div>
 
             <div className="doc-card-footer">
-                {formattedDate && <span className="doc-date" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Icon name="calendar" size={14} /> {formattedDate}</span>}
+                {formattedDate && <span className="doc-date">{formattedDate}</span>}
                 {hasFile ? (
                     <a
                         href={fileUrl}
@@ -121,10 +111,10 @@ export default function DocumentCard({ doc }: DocumentCardProps) {
                         className="btn btn-primary btn-sm"
                         download
                     >
-                        <Icon name="file" size={14} /> Download
+                        Download
                     </a>
                 ) : (
-                    <span className="doc-no-file"><Icon name="clock" size={14} /> Coming Soon</span>
+                    <span className="doc-no-file">Coming Soon</span>
                 )}
             </div>
         </div>

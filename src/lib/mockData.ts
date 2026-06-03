@@ -13,6 +13,11 @@ export const MOCK_NEWS: any[] = [
         is_featured: true,
         publishedAt: '2024-03-15T10:00:00Z',
         image: { id: 0, documentId: '', url: '' },
+        gallery: [
+            { id: 1001, documentId: 'g1', url: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800', alternativeText: 'Guidelines launch event' },
+            { id: 1002, documentId: 'g2', url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800', alternativeText: 'Stakeholders reviewing documents' },
+            { id: 1003, documentId: 'g3', url: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800', alternativeText: 'Laboratory testing' },
+        ],
     },
     {
         id: 102,
@@ -26,6 +31,10 @@ export const MOCK_NEWS: any[] = [
         is_featured: false,
         publishedAt: '2024-02-28T10:00:00Z',
         image: { id: 0, documentId: '', url: '' },
+        gallery: [
+            { id: 1004, documentId: 'g4', url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800', alternativeText: 'Audit team in facility' },
+            { id: 1005, documentId: 'g5', url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800', alternativeText: 'Data analysis' },
+        ],
     },
     {
         id: 103,
@@ -39,5 +48,11 @@ export const MOCK_NEWS: any[] = [
         is_featured: false,
         publishedAt: '2024-04-01T10:00:00Z',
         image: { id: 0, documentId: '', url: '' },
+        gallery: [
+            { id: 1006, documentId: 'g6', url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800', alternativeText: 'Workshop presentation' },
+            { id: 1007, documentId: 'g7', url: 'https://images.unsplash.com/photo-1560439513-74b037a25d84?w=800', alternativeText: 'Participants during breakout session' },
+            { id: 1008, documentId: 'g8', url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800', alternativeText: 'Digital platform demonstration' },
+            { id: 1009, documentId: 'g9', url: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800', alternativeText: 'Group discussion' },
+        ],
     }
 ];

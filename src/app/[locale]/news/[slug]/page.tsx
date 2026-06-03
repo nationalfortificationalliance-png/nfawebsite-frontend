@@ -75,9 +75,10 @@ export default async function NewsDetailPage({ params }: Props) {
     const article = await getNewsBySlug(slug);
     if (!article) notFound();
 
-    const { title, excerpt, body, date, image, category, publishedAt } = article;
+    const { title, excerpt, body, date, image, gallery, category, publishedAt } = article;
     const imageUrl = getStrapiMediaUrl(image?.url);
     const hasImage = !!image?.url;
+    const hasGallery = gallery && gallery.length > 0;
 
     const formattedDate = new Date(date).toLocaleDateString('en-GB', {
         day: 'numeric', month: 'long', year: 'numeric',
@@ -166,6 +167,35 @@ export default async function NewsDetailPage({ params }: Props) {
           color: white; padding: 0.3rem 0.9rem;
           border-radius: 100px; font-size: 0.8rem; font-weight: 600;
         }
+        .article-gallery {
+          margin-top: 3rem;
+          padding-top: 2.5rem;
+          border-top: 1px solid var(--border-light);
+        }
+        .article-gallery h3 {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: var(--text-primary);
+          margin-bottom: 1.5rem;
+        }
+        .gallery-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 1.25rem;
+        }
+        .gallery-item {
+          position: relative;
+          height: 240px;
+          border-radius: var(--radius-md);
+          overflow: hidden;
+          background: var(--bg-off);
+          transition: transform 0.3s var(--ease-out);
+          cursor: pointer;
+        }
+        .gallery-item:hover {
+          transform: scale(1.02);
+          box-shadow: var(--shadow-lg);
+        }
       `}</style>
 
             {/* Hero */}
@@ -208,6 +238,28 @@ export default async function NewsDetailPage({ params }: Props) {
                         className="article-richtext"
                         dangerouslySetInnerHTML={{ __html: body }}
                     />
+
+                    {/* Gallery Section */}
+                    {hasGallery && (
+                        <div className="article-gallery">
+                            <h3>Photo Gallery</h3>
+                            <div className="gallery-grid">
+                                {gallery!.map((img) => {
+                                    const galleryImageUrl = getStrapiMediaUrl(img.url);
+                                    return (
+                                        <div key={img.id} className="gallery-item">
+                                            <Image
+                                                src={galleryImageUrl}
+                                                alt={img.alternativeText || title}
+                                                fill
+                                                style={{ objectFit: 'cover' }}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

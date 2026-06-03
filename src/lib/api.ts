@@ -62,6 +62,7 @@ export interface NewsEvent {
     body: string;
     date: string;
     image: StrapiImage;
+    gallery?: StrapiImage[];
     category: 'news' | 'event' | 'announcement' | 'report';
     is_featured: boolean;
     tags?: string;
@@ -141,7 +142,7 @@ export async function getCarousels(locale?: string): Promise<Carousel[]> {
 export async function getAllNews(page = 1, pageSize = 12): Promise<{ data: NewsEvent[]; total: number }> {
     const res = await fetchAPI<{ data: NewsEvent[]; meta: { pagination: { total: number } } }>('/news-events', {
         'sort': 'date:desc',
-        'populate': 'image',
+        'populate': 'image,gallery',
         'pagination[page]': String(page),
         'pagination[pageSize]': String(pageSize),
     });
@@ -152,7 +153,7 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
     const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
         'filters[is_featured][$eq]': 'true',
         'sort': 'date:desc',
-        'populate': 'image',
+        'populate': 'image,gallery',
         'pagination[pageSize]': '3',
     });
     return res?.data || [];
@@ -161,7 +162,7 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
 export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
     const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
         'filters[slug][$eq]': slug,
-        'populate': 'image',
+        'populate': 'image,gallery',
     });
     return res?.data?.[0] || null;
 }
