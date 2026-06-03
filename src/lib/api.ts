@@ -64,6 +64,7 @@ export interface NewsEvent {
     image: StrapiImage;
     category: 'news' | 'event' | 'announcement' | 'report';
     is_featured: boolean;
+    tags?: string;
     publishedAt: string;
 }
 
