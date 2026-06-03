@@ -17,7 +17,7 @@ export default function NewsletterForm() {
             if (!res.ok) throw new Error('Failed to subscribe');
             setStatus('success');
             setEmail('');
-        } catch (err) {
+        } catch {
             setStatus('error');
         }
     };

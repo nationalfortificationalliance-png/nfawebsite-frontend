@@ -31,8 +31,12 @@ export default function Header({ siteName }: { siteName: string }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Close mobile menu when route changes
   useEffect(() => {
-    setMenuOpen((prev) => prev ? false : prev);
+    if (menuOpen) {
+      setMenuOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const isHome = pathname === '/';

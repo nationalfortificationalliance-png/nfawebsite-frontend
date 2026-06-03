@@ -1,6 +1,6 @@
 import type { NewsEvent } from './api';
 
-export const MOCK_NEWS: any[] = [
+export const MOCK_NEWS: NewsEvent[] = [
     {
         id: 101,
         documentId: 'mock-1',
