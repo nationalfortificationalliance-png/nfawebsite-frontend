@@ -164,9 +164,16 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
         'filters[is_featured][$eq]': 'true',
         'sort': 'date:desc',
         'populate': 'image,gallery',
-        'pagination[pageSize]': '3',
+        'pagination[pageSize]': '6',
     });
-    return res?.data || [];
+
+    // Use mock data as fallback if no data from Strapi
+    if (!res?.data || res.data.length === 0) {
+        const { MOCK_NEWS } = await import('./mockData');
+        return MOCK_NEWS.filter(n => n.is_featured).slice(0, 6);
+    }
+
+    return res.data;
 }
 
 export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {

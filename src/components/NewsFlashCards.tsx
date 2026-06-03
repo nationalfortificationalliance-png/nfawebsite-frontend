@@ -38,8 +38,8 @@ export default function NewsFlashCards({
   if (news.length === 0) return null;
 
   const currentNews = news[current];
-  const imageUrl = currentNews.featured_image?.url
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nfawebsite-backend-production.up.railway.app'}${currentNews.featured_image.url}`
+  const imageUrl = currentNews.image?.url
+    ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nfawebsite-backend-production.up.railway.app'}${currentNews.image.url}`
     : '/hero-1.png';
 
   return (
@@ -357,18 +357,16 @@ export default function NewsFlashCards({
           <div className="flashcard-meta">
             <div className="flashcard-meta-item">
               <Icon name="calendar" size={16} />
-              {new Date(currentNews.published_date || currentNews.createdAt).toLocaleDateString('en-US', {
+              {new Date(currentNews.date || currentNews.publishedAt).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric'
               })}
             </div>
-            {currentNews.reading_time && (
-              <div className="flashcard-meta-item">
-                <Icon name="clock" size={16} />
-                {currentNews.reading_time} min read
-              </div>
-            )}
+            <div className="flashcard-meta-item">
+              <Icon name="clock" size={16} />
+              {Math.ceil((currentNews.body?.length || 0) / 1000)} min read
+            </div>
           </div>
 
           <div className="flashcard-action">
@@ -408,8 +406,8 @@ export default function NewsFlashCards({
       {news.length > 1 && (
         <div className="flashcard-thumbs">
           {news.map((item, index) => {
-            const thumbUrl = item.featured_image?.url
-              ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nfawebsite-backend-production.up.railway.app'}${item.featured_image.url}`
+            const thumbUrl = item.image?.url
+              ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nfawebsite-backend-production.up.railway.app'}${item.image.url}`
               : '/hero-1.png';
 
             return (
