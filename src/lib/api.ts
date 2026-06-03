@@ -134,7 +134,7 @@ export async function getCarousels(locale?: string): Promise<Carousel[]> {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
         'populate': 'image',
-        'pagination[pageSize]': '10',
+        'pagination[pageSize]': '5',
     }, locale);
     return res?.data || [];
 }
