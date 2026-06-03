@@ -157,34 +157,31 @@ export default function GovernancePage() {
     return (
         <main className="governance-page">
             <style>{`
+                /* Standard Hero - No Image */
                 .gov-hero {
-                    position: relative;
-                    background: linear-gradient(135deg, var(--wfp-navy) 0%, var(--wfp-blue) 100%);
+                    background: var(--wfp-navy);
+                    padding: 5rem 0 4rem;
+                }
+                .gov-hero h1 {
                     color: #fff;
-                    padding: 8rem 0 6rem;
-                    text-align: center;
-                    overflow: hidden;
+                    max-width: 720px;
+                    margin-bottom: 1rem;
                 }
-                .gov-hero::before {
-                    content: "";
-                    position: absolute;
-                    inset: 0;
-                    background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%);
-                    pointer-events: none;
+                .gov-hero p {
+                    color: rgba(255,255,255,0.85);
+                    max-width: 720px;
+                    font-size: 1.1rem;
+                    line-height: 1.6;
                 }
-                .hero-title {
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    margin-bottom: 1.5rem;
-                    letter-spacing: -0.02em;
-                    text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                .gov-hero .breadcrumb {
+                    margin-bottom: 2rem;
                 }
-                .hero-subtitle {
-                    font-size: 1.25rem;
-                    color: rgba(255,255,255,0.8);
-                    max-width: 800px;
-                    margin: 0 auto;
-                    line-height: 1.7;
+                .gov-hero .breadcrumb a,
+                .gov-hero .breadcrumb span {
+                    color: rgba(255,255,255,0.7);
+                }
+                .gov-hero .breadcrumb a:hover {
+                    color: #fff;
                 }
 
                 .roles-grid {
@@ -374,28 +371,17 @@ export default function GovernancePage() {
 
             <div className="gov-hero">
                 <div className="container">
-                    <div className="breadcrumb" style={{ justifyContent: 'center', marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,0.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-                        <Link href="/about" style={{ color: 'rgba(255,255,255,0.6)' }}>About</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-                        <span style={{ color: '#fff' }}>Governance & Compliance</span>
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <Link href="/about">About</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Governance & Compliance</span>
                     </div>
-                    <h1 className="hero-title">Governance & Compliance</h1>
-                    <p className="hero-subtitle">
+                    <h1>Governance & Compliance</h1>
+                    <p>
                         The NFA operates through a collaborative governance framework involving regulators, policymakers, industry representatives, development partners, academia, and civil society.
                     </p>
-                    <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.25rem', borderRadius: '4px', fontSize: '0.9rem' }}>
-                            <span style={{ color: 'var(--wfp-gold)', fontWeight: 700 }}>Chair:</span> Industry Representative
-                        </div>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.25rem', borderRadius: '4px', fontSize: '0.9rem' }}>
-                            <span style={{ color: 'var(--wfp-gold)', fontWeight: 700 }}>Vice Chair:</span> SON
-                        </div>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.25rem', borderRadius: '4px', fontSize: '0.9rem' }}>
-                            <span style={{ color: 'var(--wfp-gold)', fontWeight: 700 }}>Secretariat:</span> NAFDAC
-                        </div>
-                    </div>
                 </div>
             </div>
 

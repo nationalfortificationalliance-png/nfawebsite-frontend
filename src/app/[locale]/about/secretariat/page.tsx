@@ -47,48 +47,31 @@ export default async function SecretariatPage() {
     return (
         <main className="secretariat-page">
             <style>{`
+                /* Standard Hero - No Image */
                 .secretariat-hero {
-                    position: relative;
                     background: var(--wfp-navy);
+                    padding: 5rem 0 4rem;
+                }
+                .secretariat-hero h1 {
                     color: #fff;
-                    padding: 6rem 0 4rem;
-                    text-align: center;
-                    overflow: hidden;
-                }
-                .secretariat-hero::before {
-                    content: '';
-                    position: absolute;
-                    top: -50%;
-                    left: -10%;
-                    width: 120%;
-                    height: 200%;
-                    background: radial-gradient(circle at 20% 30%, rgba(0, 123, 181, 0.15) 0%, transparent 50%);
-                    pointer-events: none;
-                }
-                .hero-tag {
-                    display: inline-block;
-                    background: var(--wfp-blue);
-                    color: #fff;
-                    font-size: 0.75rem;
-                    font-weight: 800;
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                    padding: 0.4rem 1rem;
-                    border-radius: 100px;
-                    margin-bottom: 1.5rem;
-                }
-                .hero-title {
-                    font-size: 2.8rem;
-                    font-weight: 900;
+                    max-width: 720px;
                     margin-bottom: 1rem;
-                    letter-spacing: -0.02em;
                 }
-                .hero-subtitle {
-                    font-size: 1.15rem;
-                    color: rgba(255,255,255,0.7);
-                    max-width: 700px;
-                    margin: 0 auto;
+                .secretariat-hero p {
+                    color: rgba(255,255,255,0.85);
+                    max-width: 720px;
+                    font-size: 1.1rem;
                     line-height: 1.6;
+                }
+                .secretariat-hero .breadcrumb {
+                    margin-bottom: 2rem;
+                }
+                .secretariat-hero .breadcrumb a,
+                .secretariat-hero .breadcrumb span {
+                    color: rgba(255,255,255,0.7);
+                }
+                .secretariat-hero .breadcrumb a:hover {
+                    color: #fff;
                 }
 
                 .members-grid {
@@ -178,17 +161,16 @@ export default async function SecretariatPage() {
 
             <div className="secretariat-hero">
                 <div className="container">
-                    <div className="breadcrumb" style={{ justifyContent: 'center', marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,0.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-                        <Link href="/about" style={{ color: 'rgba(255,255,255,0.6)' }}>About</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-                        <span style={{ color: '#fff' }}>Secretariat</span>
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <Link href="/about">About</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Secretariat</span>
                     </div>
-                    <span className="hero-tag">The Driving Force</span>
-                    <h1 className="hero-title">NFA Secretariat</h1>
-                    <p className="hero-subtitle">
-                        A dedicated multidisciplinary team coordinating the National Fortification Project, 
+                    <h1>NFA Secretariat</h1>
+                    <p>
+                        A dedicated multidisciplinary team coordinating the National Fortification Project,
                         bridging the gap between policy, industry, and impact across all 36 states of Nigeria.
                     </p>
                 </div>
