@@ -65,14 +65,14 @@ export default async function HomePage() {
         .program-desc { font-size: var(--md-sys-typescale-body-small-size); color: var(--md-sys-color-on-surface-variant); line-height: 1.65; }
 
         /* ── How it works ── ALIGNED TO MATERIAL DESIGN */
-        .how-section { background: var(--md-sys-color-tertiary); padding: var(--md-sys-spacing-24) 0; position: relative; overflow: hidden; }
-        .how-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(0, 154, 68, 0.1), transparent 50%); pointer-events: none; }
+        .how-section { background: var(--md-sys-color-surface-container); padding: var(--md-sys-spacing-24) 0; position: relative; overflow: hidden; }
+        .how-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(0, 154, 68, 0.05), transparent 50%); pointer-events: none; }
         .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--md-sys-spacing-8); margin-top: var(--md-sys-spacing-16); position: relative; z-index: 2; }
-        .how-step { padding: var(--md-sys-spacing-10); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--md-sys-shape-corner-extra-large); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard); box-shadow: var(--md-sys-shadow-level1); }
-        .how-step:hover { transform: translateY(-8px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); box-shadow: var(--md-sys-shadow-level2); }
-        .how-num { font-size: var(--md-sys-typescale-display-medium-size); font-weight: 900; color: rgba(255,255,255,.08); line-height: 1; margin-bottom: var(--md-sys-spacing-6); letter-spacing: -0.04em; background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .how-title { font-size: var(--md-sys-typescale-title-medium-size); font-weight: 700; color: var(--md-sys-color-on-tertiary); margin-bottom: var(--md-sys-spacing-3); }
-        .how-desc { font-size: var(--md-sys-typescale-body-medium-size); color: rgba(255,255,255,.7); line-height: 1.7; }
+        .how-step { padding: var(--md-sys-spacing-10); background: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-extra-large); transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard); box-shadow: var(--md-sys-shadow-level1); }
+        .how-step:hover { transform: translateY(-8px); background: var(--md-sys-color-surface-container-low); border-color: var(--md-sys-color-outline); box-shadow: var(--md-sys-shadow-level3); }
+        .how-num { font-size: var(--md-sys-typescale-display-medium-size); font-weight: 900; color: var(--md-sys-color-secondary); opacity: 0.15; line-height: 1; margin-bottom: var(--md-sys-spacing-6); letter-spacing: -0.04em; }
+        .how-title { font-size: var(--md-sys-typescale-title-medium-size); font-weight: 700; color: var(--md-sys-color-on-surface); margin-bottom: var(--md-sys-spacing-3); }
+        .how-desc { font-size: var(--md-sys-typescale-body-medium-size); color: var(--md-sys-color-on-surface-variant); line-height: 1.7; }
 
         /* ── About Split ── ALIGNED TO MATERIAL DESIGN */
         .about-split { padding: var(--md-sys-spacing-24) 0; background: var(--md-sys-color-surface-container); position: relative; }
@@ -127,11 +127,11 @@ export default async function HomePage() {
         .partner-logo-hm:hover { filter: grayscale(0%) opacity(1); transform: scale(1.15); }
 
         /* ── CTA ── ALIGNED TO MATERIAL DESIGN */
-        .cta-full { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--md-sys-color-tertiary) 0%, var(--md-sys-color-secondary) 100%); padding: var(--md-sys-spacing-24) 0; }
-        .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(255,255,255,.04); top: -200px; right: -150px; }
+        .cta-full { position: relative; overflow: hidden; background: var(--md-sys-color-secondary-container); padding: var(--md-sys-spacing-24) 0; }
+        .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(0, 135, 81, 0.08); top: -200px; right: -150px; }
         .cta-full-inner { max-width: 600px; }
-        .cta-full h2 { color: var(--md-sys-color-on-tertiary); margin-bottom: var(--md-sys-spacing-4); }
-        .cta-full p { color: rgba(255,255,255,.75); font-size: var(--md-sys-typescale-body-large-size); line-height: 1.75; margin-bottom: var(--md-sys-spacing-8); }
+        .cta-full h2 { color: var(--md-sys-color-on-secondary-container); margin-bottom: var(--md-sys-spacing-4); }
+        .cta-full p { color: var(--md-sys-color-on-secondary-container); opacity: 0.8; font-size: var(--md-sys-typescale-body-large-size); line-height: 1.75; margin-bottom: var(--md-sys-spacing-8); }
         .cta-full-actions { display: flex; gap: var(--md-sys-spacing-4); flex-wrap: wrap; }
 
         /* ── RESPONSIVE (Material Design Breakpoints) ── */
@@ -219,8 +219,8 @@ export default async function HomePage() {
       {/* ── Recent Achievements ── */}
       <div className="how-section">
         <div className="container">
-          <p className="section-eyebrow fade-up" style={{ color: 'var(--wfp-gold)' }}>Progress</p>
-          <h2 className="fade-up stagger-1" style={{ color: '#fff', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Recent Achievements<br />(2024–2025)</h2>
+          <p className="section-eyebrow fade-up">Progress</p>
+          <h2 className="fade-up stagger-1" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Recent Achievements<br />(2024–2025)</h2>
           <div className="how-grid fade-up stagger-2">
             {ACHIEVEMENTS.map((s) => (
               <div key={s.num} className="how-step glass-panel-dark">
