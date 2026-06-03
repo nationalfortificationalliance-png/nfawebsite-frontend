@@ -6,11 +6,17 @@ import { usePathname } from 'next/navigation';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Governance', href: '/about/governance' },
+  {
+    label: 'About',
+    href: '/about',
+    dropdown: [
+      { label: 'Overview', href: '/about' },
+      { label: 'Governance', href: '/about/governance' },
+      { label: 'Secretariat', href: '/about/secretariat' },
+    ]
+  },
   { label: 'Initiatives', href: '/initiatives' },
   { label: 'News & Events', href: '/news' },
-  { label: 'Guidelines', href: '/guidelines' },
   { label: 'Partners', href: '/partners' },
 ];
 
@@ -97,13 +103,51 @@ export default function Header({ siteName }: { siteName: string }) {
 
         /* Nav links */
         .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+        .nav-item { position: relative; }
         .nav-link {
           font-size: 0.9rem; font-weight: 500; padding: 0.45rem 0.85rem;
           border-radius: var(--radius-sm); transition: background .15s, color .15s;
           color: var(--nav-color, var(--text-primary)); white-space: nowrap;
+          display: flex; align-items: center; gap: 0.35rem;
         }
         .nav-link:hover { background: rgba(0,0,0,.05); }
         .nav-link.active { color: var(--wfp-blue); font-weight: 700; }
+
+        /* Dropdown */
+        .dropdown-arrow {
+          font-size: 0.7rem;
+          transition: transform 0.2s;
+          opacity: 0.6;
+        }
+        .nav-item:hover .dropdown-arrow { transform: rotate(180deg); }
+        .dropdown {
+          position: absolute; top: 100%; left: 0; margin-top: 0.5rem;
+          background: #fff; border: 1px solid var(--border);
+          border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+          min-width: 200px; opacity: 0; visibility: hidden;
+          transform: translateY(-10px);
+          transition: all 0.2s var(--ease-out);
+          z-index: 100;
+        }
+        .nav-item:hover .dropdown {
+          opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .dropdown a {
+          display: block; padding: 0.75rem 1.25rem;
+          font-size: 0.9rem; font-weight: 500;
+          color: var(--text-primary);
+          transition: background 0.15s, color 0.15s;
+          border-bottom: 1px solid var(--border-light);
+        }
+        .dropdown a:last-child { border-bottom: none; }
+        .dropdown a:hover {
+          background: var(--wfp-blue-light);
+          color: var(--wfp-blue);
+        }
+        .dropdown a.active {
+          color: var(--wfp-blue);
+          font-weight: 600;
+        }
 
         /* Light nav removal: Now always uses the standard opaque layout for legibility */
         .header-cta { flex-shrink: 0; }
@@ -136,6 +180,12 @@ export default function Header({ siteName }: { siteName: string }) {
           margin: 0 0.5rem;
         }
         .mobile-menu a:hover, .mobile-menu a.active { color: var(--wfp-blue); background: var(--wfp-blue-light); }
+        .mobile-submenu { padding-left: 1rem; }
+        .mobile-submenu a {
+          font-size: 0.9rem;
+          padding: 0.6rem 1.5rem;
+          color: var(--text-secondary);
+        }
         .mobile-cta { padding: 0.75rem 1.5rem; margin-top: 0.5rem; }
 
         @media (max-width: 800px) {
@@ -178,14 +228,29 @@ export default function Header({ siteName }: { siteName: string }) {
 
             {/* Desktop nav */}
             <nav className="nav-links">
-              {NAV_LINKS.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={`nav-link ${pathname === l.href ? 'active' : ''}`}
-                >
-                  {l.label}
-                </Link>
+              {NAV_LINKS.map((item) => (
+                <div key={item.href} className="nav-item">
+                  <Link
+                    href={item.href}
+                    className={`nav-link ${pathname === item.href ? 'active' : ''}`}
+                  >
+                    {item.label}
+                    {'dropdown' in item && <span className="dropdown-arrow">▼</span>}
+                  </Link>
+                  {'dropdown' in item && item.dropdown && (
+                    <div className="dropdown">
+                      {item.dropdown.map((subItem) => (
+                        <Link
+                          key={subItem.href}
+                          href={subItem.href}
+                          className={pathname === subItem.href ? 'active' : ''}
+                        >
+                          {subItem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </nav>
 
@@ -210,10 +275,25 @@ export default function Header({ siteName }: { siteName: string }) {
         {/* Mobile menu */}
         {menuOpen && (
           <div className="mobile-menu">
-            {NAV_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className={pathname === l.href ? 'active' : ''}>
-                {l.label}
-              </Link>
+            {NAV_LINKS.map((item) => (
+              <div key={item.href}>
+                <Link href={item.href} className={pathname === item.href ? 'active' : ''}>
+                  {item.label}
+                </Link>
+                {'dropdown' in item && item.dropdown && (
+                  <div className="mobile-submenu">
+                    {item.dropdown.map((subItem) => (
+                      <Link
+                        key={subItem.href}
+                        href={subItem.href}
+                        className={pathname === subItem.href ? 'active' : ''}
+                      >
+                        {subItem.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             <div className="mobile-cta">
               <Link href="/contact" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>

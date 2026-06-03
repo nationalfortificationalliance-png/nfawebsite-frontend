@@ -212,6 +212,7 @@ export default async function SecretariatPage() {
                                         alt={m.name}
                                         fill
                                         style={{ objectFit: 'cover' }}
+                                        unoptimized={useFallback}
                                     />
                                 </div>
                                 <div className="member-info">
