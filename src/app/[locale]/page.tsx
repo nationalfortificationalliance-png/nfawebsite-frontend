@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
+import NewsFlashCards from '@/components/NewsFlashCards';
 import { getCarousels, getFeaturedNews } from '@/lib/api';
 import {
   AnimatedStats,
@@ -220,6 +221,30 @@ export default async function HomePage() {
       {/* ── Hero ── */}
       <HeroCarousel slides={carousels} />
 
+      {/* ── News Flash Cards ── */}
+      {featuredNews.length > 0 && (
+        <section className="section" style={{ background: 'var(--bg-off)', paddingTop: '4rem', paddingBottom: '4rem' }}>
+          <div className="container">
+            <AnimatedSectionWrapper animation="fade-up" delay={0}>
+              <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                <p className="section-eyebrow" style={{ justifyContent: 'center' }}>
+                  <span style={{ marginLeft: '2.5rem' }}>Latest Updates</span>
+                </p>
+                <h2 className="section-title" style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)' }}>
+                  Breaking News & Highlights
+                </h2>
+                <p className="section-lead" style={{ margin: '1rem auto 0', textAlign: 'center' }}>
+                  Stay informed with the latest developments in Nigeria&apos;s food fortification program
+                </p>
+              </div>
+            </AnimatedSectionWrapper>
+            <AnimatedSectionWrapper animation="fade-up-scale" delay={200}>
+              <NewsFlashCards news={featuredNews.slice(0, 5)} autoRotate={true} interval={6000} />
+            </AnimatedSectionWrapper>
+          </div>
+        </section>
+      )}
+
       {/* ── Stats ── */}
       <div className="stats-strip px-4 sm:px-0 py-8">
         <div className="container">
@@ -330,15 +355,15 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* ── Latest News ── */}
-      {featuredNews.length > 0 && (
+      {/* ── More News Grid ── */}
+      {featuredNews.length > 3 && (
         <section className="section news-section">
           <div className="container">
             <AnimatedSectionWrapper animation="fade-up" delay={0}>
               <div className="news-header">
                 <div>
-                  <p className="section-eyebrow">Latest Updates</p>
-                  <h2 className="section-title" style={{ marginBottom: 0 }}>News & Events</h2>
+                  <p className="section-eyebrow">More Updates</p>
+                  <h2 className="section-title" style={{ marginBottom: 0 }}>Recent News & Events</h2>
                 </div>
                 <Link href="/news" className="btn btn-outline btn-sm">View All →</Link>
               </div>
