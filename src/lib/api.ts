@@ -128,6 +128,16 @@ export interface GlobalSetting {
     footer_text?: string;
 }
 
+export interface FAQ {
+    id: number;
+    documentId: string;
+    question: string;
+    answer: string;
+    category?: string;
+    order: number;
+    is_active: boolean;
+}
+
 // API functions
 export async function getCarousels(locale?: string): Promise<Carousel[]> {
     const res = await fetchAPI<{ data: Carousel[] }>('/carousels', {
@@ -209,4 +219,17 @@ export async function getAboutPage(): Promise<AboutPage | null> {
 export async function getGlobalSettings(): Promise<GlobalSetting | null> {
     const res = await fetchAPI<{ data: GlobalSetting }>('/global-setting', {});
     return res?.data || null;
+}
+
+export async function getFAQs(category?: string): Promise<FAQ[]> {
+    const params: Record<string, string> = {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:asc',
+        'pagination[pageSize]': '50',
+    };
+    if (category) {
+        params['filters[category][$eq]'] = category;
+    }
+    const res = await fetchAPI<{ data: FAQ[] }>('/faqs', params);
+    return res?.data || [];
 }
