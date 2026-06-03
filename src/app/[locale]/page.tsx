@@ -67,15 +67,66 @@ export default async function HomePage() {
         .program-title { font-size: var(--md-sys-typescale-body-large-size); font-weight: 700; margin-bottom: var(--md-sys-spacing-2); color: #fff; }
         .program-desc { font-size: var(--md-sys-typescale-body-small-size); color: rgba(255,255,255,0.8); line-height: 1.65; }
 
-        /* ── How it works ── ALIGNED TO MATERIAL DESIGN */
+        /* ── Recent Achievements - Modern Cards ── */
         .how-section { background: var(--md-sys-color-surface-container); padding: var(--md-sys-spacing-24) 0; position: relative; overflow: hidden; }
-        .how-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(0, 154, 68, 0.05), transparent 50%); pointer-events: none; }
-        .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--md-sys-spacing-8); margin-top: var(--md-sys-spacing-16); position: relative; z-index: 2; }
-        .how-step { padding: var(--md-sys-spacing-10); background: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-extra-large); transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard); box-shadow: var(--md-sys-shadow-level1); }
-        .how-step:hover { transform: translateY(-8px); background: var(--md-sys-color-surface-container-low); border-color: var(--md-sys-color-outline); box-shadow: var(--md-sys-shadow-level3); }
-        .how-num { font-size: var(--md-sys-typescale-display-medium-size); font-weight: 900; color: var(--md-sys-color-secondary); opacity: 0.15; line-height: 1; margin-bottom: var(--md-sys-spacing-6); letter-spacing: -0.04em; }
-        .how-title { font-size: var(--md-sys-typescale-title-medium-size); font-weight: 700; color: var(--md-sys-color-on-surface); margin-bottom: var(--md-sys-spacing-3); }
-        .how-desc { font-size: var(--md-sys-typescale-body-medium-size); color: var(--md-sys-color-on-surface-variant); line-height: 1.7; }
+        .how-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(0, 154, 68, 0.08), transparent 60%); pointer-events: none; }
+        .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.75rem; margin-top: var(--md-sys-spacing-16); position: relative; z-index: 2; }
+        .how-step {
+          padding: 2.5rem 2rem;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.8);
+          border-radius: 24px;
+          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.02),
+            0 8px 24px rgba(0, 0, 0, 0.04);
+          position: relative;
+          overflow: hidden;
+        }
+        .how-step::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, var(--wfp-blue), var(--wfp-gold));
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .how-step:hover {
+          transform: translateY(-12px) scale(1.02);
+          border-color: rgba(0, 135, 81, 0.3);
+          box-shadow:
+            0 4px 12px rgba(0, 0, 0, 0.04),
+            0 20px 48px rgba(0, 154, 68, 0.12);
+        }
+        .how-step:hover::before { opacity: 1; }
+        .how-num {
+          font-size: 4rem;
+          font-weight: 900;
+          background: linear-gradient(135deg, var(--wfp-blue), var(--wfp-gold));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          opacity: 0.15;
+          line-height: 1;
+          margin-bottom: 1.5rem;
+          letter-spacing: -0.04em;
+        }
+        .how-title {
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: var(--md-sys-color-on-surface);
+          margin-bottom: 0.75rem;
+        }
+        .how-desc {
+          font-size: 0.95rem;
+          color: var(--md-sys-color-on-surface-variant);
+          line-height: 1.7;
+        }
 
         /* ── About Split ── Dark green section */
         .about-split { padding: var(--md-sys-spacing-24) 0; background: var(--wfp-navy); position: relative; }
