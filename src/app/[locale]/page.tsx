@@ -122,8 +122,8 @@ export default async function HomePage() {
 
         /* ── Partners ── ALIGNED TO MATERIAL DESIGN */
         .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: var(--md-sys-spacing-32) 0 var(--md-sys-spacing-28) 0; background: var(--md-sys-color-surface); overflow: hidden; }
-        .partner-logo-hm { filter: grayscale(10%) opacity(0.85); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-standard); display: flex; align-items: center; justify-content: center; padding: 0 var(--md-sys-spacing-28); position: relative; flex-shrink: 0; }
-        .partner-logo-hm img { object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 100%; }
+        .partner-logo-hm { filter: grayscale(10%) opacity(0.85); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-standard); display: flex; align-items: center; justify-content: center; padding: 0 var(--md-sys-spacing-28); position: relative; flex-shrink: 0; height: 80px; }
+        .partner-logo-hm img { object-fit: contain; width: auto; height: 60px; max-width: 180px; }
         .partner-logo-hm:hover { filter: grayscale(0%) opacity(1); transform: scale(1.15); }
 
         /* ── CTA ── ALIGNED TO MATERIAL DESIGN */

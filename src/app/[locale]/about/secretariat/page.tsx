@@ -35,8 +35,9 @@ export default async function SecretariatPage() {
     // Fetch members specifically from the Secretariat category
     const secretariatMembers = await getTeamMembers('Secretariat');
 
-    const displayMembers = secretariatMembers.length > 0 ? secretariatMembers : [];
-    const useFallback = displayMembers.length === 0;
+    // Always use fallback data until Strapi is properly configured
+    const displayMembers = FALLBACK_SECRETARIAT;
+    const useFallback = true;
 
     return (
         <main className="secretariat-page">
