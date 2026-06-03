@@ -6,6 +6,7 @@ import Icon, { IconName } from '@/components/Icon';
 import { getNewsBySlug, getAllNews, getStrapiMediaUrl } from '@/lib/api';
 import { generateSEOMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/components/SEO';
 import { locales } from '@/i18n';
+import { MOCK_NEWS } from '@/lib/mockData';
 
 interface Props {
     params: Promise<{ slug: string; locale: string }>;
@@ -21,7 +22,13 @@ interface ArticleWithSeo {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug, locale } = await params;
-    const article = await getNewsBySlug(slug);
+    let article = await getNewsBySlug(slug);
+
+    // Fallback to mock data if not found in Strapi
+    if (!article) {
+        article = MOCK_NEWS.find((a) => a.slug === slug) || null;
+    }
+
     if (!article) return { title: 'Article Not Found' };
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nfawebsite-frontend.vercel.app';
@@ -61,7 +68,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
     const { data } = await getAllNews(1, 100);
-    return data.map((a) => ({ slug: a.slug }));
+    // Include mock news slugs when Strapi is empty
+    const slugs = data.length > 0
+        ? data.map((a) => ({ slug: a.slug }))
+        : MOCK_NEWS.map((a) => ({ slug: a.slug }));
+    return slugs;
 }
 
 export const revalidate = 60;
@@ -72,7 +83,13 @@ const CATEGORY_ICONS: Record<string, IconName> = {
 
 export default async function NewsDetailPage({ params }: Props) {
     const { slug, locale } = await params;
-    const article = await getNewsBySlug(slug);
+    let article = await getNewsBySlug(slug);
+
+    // Fallback to mock data if not found in Strapi
+    if (!article) {
+        article = MOCK_NEWS.find((a) => a.slug === slug) || null;
+    }
+
     if (!article) notFound();
 
     const { title, excerpt, body, date, image, gallery, category, publishedAt } = article;
