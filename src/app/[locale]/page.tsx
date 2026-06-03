@@ -127,11 +127,11 @@ export default async function HomePage() {
         .partner-logo-hm:hover { filter: grayscale(0%) opacity(1); transform: scale(1.15); }
 
         /* ── CTA ── ALIGNED TO MATERIAL DESIGN */
-        .cta-full { position: relative; overflow: hidden; background: var(--md-sys-color-secondary-container); padding: var(--md-sys-spacing-24) 0; }
-        .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(0, 135, 81, 0.08); top: -200px; right: -150px; }
+        .cta-full { position: relative; overflow: hidden; background: var(--md-sys-color-surface-container); padding: var(--md-sys-spacing-24) 0; border-top: 1px solid var(--md-sys-color-outline-variant); }
+        .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(0, 135, 81, 0.02); top: -200px; right: -150px; }
         .cta-full-inner { max-width: 600px; }
-        .cta-full h2 { color: var(--md-sys-color-on-secondary-container); margin-bottom: var(--md-sys-spacing-4); }
-        .cta-full p { color: var(--md-sys-color-on-secondary-container); opacity: 0.8; font-size: var(--md-sys-typescale-body-large-size); line-height: 1.75; margin-bottom: var(--md-sys-spacing-8); }
+        .cta-full h2 { color: var(--md-sys-color-on-surface); margin-bottom: var(--md-sys-spacing-4); }
+        .cta-full p { color: var(--md-sys-color-on-surface-variant); font-size: var(--md-sys-typescale-body-large-size); line-height: 1.75; margin-bottom: var(--md-sys-spacing-8); }
         .cta-full-actions { display: flex; gap: var(--md-sys-spacing-4); flex-wrap: wrap; }
 
         /* ── RESPONSIVE (Material Design Breakpoints) ── */
