@@ -8,9 +8,6 @@ export const metadata: Metadata = {
     description: 'Access NFA regulatory guidelines, technical standards, and training resources for food fortification in Nigeria.',
 };
 export const revalidate = 60;
-    { icon: 'graduation-cap', title: 'Staff Training Curriculum', desc: 'Fortification training modules for plant operators, quality managers, and NAFDAC inspectors.', type: 'Training' },
-    { icon: 'scroll-text', title: 'National Policy on Food Fortification', desc: 'The Federal Government of Nigeria\'s policy framework and multi-sectoral action plan for fortification.', type: 'Policy' },
-];
 
 export default async function GuidelinesPage() {
     const docs = await getGuidelines();

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
-import { getCarousels, getFeaturedNews, getPartners } from '@/lib/api';
+import { getCarousels, getFeaturedNews } from '@/lib/api';
 
 export const metadata: Metadata = {
   title: 'National Fortification Alliance – Nourishing Nigeria',
@@ -40,8 +40,8 @@ const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string
 ];
 
 export default async function HomePage() {
-  const [carousels, featuredNews, partners] = await Promise.all([
-    getCarousels(), getFeaturedNews(), getPartners(),
+  const [carousels, featuredNews] = await Promise.all([
+    getCarousels(), getFeaturedNews(),
   ]);
 
   return (
@@ -191,7 +191,7 @@ export default async function HomePage() {
                 <h3 style={{ margin: 0, fontSize: '1.75rem' }}>Vision</h3>
               </div>
               <p style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '1.05rem', lineHeight: '1.8' }}>
-                A Nigeria free from the burden of "hidden hunger" and micronutrient deficiencies, achieved through sustainable public-private partnerships.
+                A Nigeria free from the burden of &quot;hidden hunger&quot; and micronutrient deficiencies, achieved through sustainable public-private partnerships.
               </p>
             </div>
           </div>
@@ -203,7 +203,7 @@ export default async function HomePage() {
         <div className="container">
           <p className="section-eyebrow">Strategy</p>
           <h2 className="section-title">Core Functions of the NFA</h2>
-          <p className="section-lead">Leading Nigeria's fight against hidden hunger through targeted multisectoral alignment.</p>
+          <p className="section-lead">Leading Nigeria&apos;s fight against hidden hunger through targeted multisectoral alignment.</p>
           <div className="programs-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '3rem' }}>
             {CORE_FUNCTIONS.map((p) => (
               <div key={p.title} className="program-cell" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -222,7 +222,7 @@ export default async function HomePage() {
           <p className="section-eyebrow fade-up" style={{ color: 'var(--wfp-gold)' }}>Progress</p>
           <h2 className="fade-up stagger-1" style={{ color: '#fff', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Recent Achievements<br />(2024–2025)</h2>
           <div className="how-grid fade-up stagger-2">
-            {ACHIEVEMENTS.map((s, i) => (
+            {ACHIEVEMENTS.map((s) => (
               <div key={s.num} className="how-step glass-panel-dark">
                 <div className="how-num">{s.num}</div>
                 <div className="how-title">{s.title}</div>
@@ -246,7 +246,7 @@ export default async function HomePage() {
             <p className="section-eyebrow">About the NFP</p>
             <div className="line" />
             <h2 className="text-gradient hover:scale-[1.01] transition-transform duration-500 ease-out origin-left">Built on partnership.<br />Driven by evidence.</h2>
-            <p className="text-lg">The National Fortification Project (NFP) was established in response to Nigeria's growing burden of micronutrient deficiency. Supported by the World Food Programme and enforced by NAFDAC, it unites government, UN agencies, and the private sector under one national framework.</p>
+            <p className="text-lg">The National Fortification Project (NFP) was established in response to Nigeria&apos;s growing burden of micronutrient deficiency. Supported by the World Food Programme and enforced by NAFDAC, it unites government, UN agencies, and the private sector under one national framework.</p>
             <p className="text-lg">Food fortification is among the most cost-effective public health interventions proven to reduce child stunting, anaemia, and preventable blindness — and Nigeria is building a model the continent can follow.</p>
             <div style={{ marginTop: '2rem' }}>
               <Link href="/about" className="btn btn-green btn-lg">Read Our Full Story →</Link>
@@ -259,9 +259,9 @@ export default async function HomePage() {
       <div className="quote-section">
         <div className="container">
           <div className="quote-wrap">
-            <span className="quote-mark">"</span>
+            <span className="quote-mark">&quot;</span>
             <p className="quote-text">
-              Fortification is not charity — it is a cost-effective investment in Nigeria's human capital. Every naira spent on fortification returns exponential value in child development, workforce productivity, and national health savings.
+              Fortification is not charity — it is a cost-effective investment in Nigeria&apos;s human capital. Every naira spent on fortification returns exponential value in child development, workforce productivity, and national health savings.
             </p>
             <div className="quote-author">
               <span>WFP Nigeria Country Director</span>
@@ -312,7 +312,7 @@ export default async function HomePage() {
         <div className="container">
           <p className="section-eyebrow">The Economic Case</p>
           <h2 className="section-title">Why Fortification Matters</h2>
-          <p className="section-lead">Strategic investment in human capital through nutrition directly impacts Nigeria's macroeconomic growth.</p>
+          <p className="section-lead">Strategic investment in human capital through nutrition directly impacts Nigeria&apos;s macroeconomic growth.</p>
           <div className="involved-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
             {ECONOMIC_CASE.map((c) => (
               <div key={c.title} className="involved-card">
