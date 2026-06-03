@@ -145,21 +145,21 @@ p {
 .section-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--wfp-blue);
-  margin-bottom: 1rem;
+  color: var(--wfp-gold);
+  margin-bottom: 1.25rem;
 }
 
 .section-eyebrow::before {
   content: '';
   display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--wfp-blue);
+  width: 32px;
+  height: 3px;
+  background: var(--wfp-gold);
   border-radius: 2px;
 }
 
@@ -169,10 +169,11 @@ p {
 }
 
 .section-lead {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  max-width: 560px;
-  line-height: 1.75;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.7;
+  font-weight: 500;
 }
 
 /* ─── Modern Buttons ──────────────────────────────────────────── */
