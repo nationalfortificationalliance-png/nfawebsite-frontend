@@ -4,6 +4,13 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import { getCarousels, getFeaturedNews } from '@/lib/api';
+import {
+  AnimatedStats,
+  AnimatedCoreFunctions,
+  AnimatedAchievements,
+  AnimatedSectionWrapper,
+  AnimatedNewsGrid
+} from '@/components/HomePageClient';
 
 export const metadata: Metadata = {
   title: 'National Fortification Alliance – Nourishing Nigeria',
@@ -216,17 +223,7 @@ export default async function HomePage() {
       {/* ── Stats ── */}
       <div className="stats-strip px-4 sm:px-0 py-8">
         <div className="container">
-          <div className="stats-grid">
-            {STATS.map((s, i) => (
-              <div key={s.label} className="stat-item fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="stat-icon" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--wfp-gold)' }}>
-                  <Icon name={s.icon} size={40} />
-                </div>
-                <div className="stat-number text-gradient">{s.number}</div>
-                <div className="stat-label">{s.label}</div>
-              </div>
-            ))}
-          </div>
+          <AnimatedStats stats={STATS} />
         </div>
       </div>
 
@@ -234,7 +231,8 @@ export default async function HomePage() {
       <section className="section bg-off relative">
         <div className="container relative z-10">
           <div className="grid-2">
-            <div className="card glass-panel fade-up" style={{ padding: '3.5rem 3rem' }}>
+            <AnimatedSectionWrapper animation="fade-up-scale" delay={0}>
+              <div className="card glass-panel" style={{ padding: '3.5rem 3rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem', color: 'var(--wfp-blue)' }}>
                 <Icon name="globe" size={32} />
                 <h3 style={{ margin: 0, fontSize: '1.75rem' }}>Mission</h3>
@@ -243,7 +241,9 @@ export default async function HomePage() {
                 To coordinate a multi-sectoral approach that ensures every Nigerian has access to essential micronutrients through the mandatory fortification of staple foods.
               </p>
             </div>
-            <div className="card glass-panel fade-up stagger-1" style={{ padding: '3.5rem 3rem' }}>
+            </AnimatedSectionWrapper>
+            <AnimatedSectionWrapper animation="fade-up-scale" delay={150}>
+              <div className="card glass-panel" style={{ padding: '3.5rem 3rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem', color: 'var(--wfp-gold)' }}>
                 <Icon name="sun" size={32} />
                 <h3 style={{ margin: 0, fontSize: '1.75rem' }}>Vision</h3>
@@ -252,6 +252,7 @@ export default async function HomePage() {
                 A Nigeria free from the burden of &quot;hidden hunger&quot; and micronutrient deficiencies, achieved through sustainable public-private partnerships.
               </p>
             </div>
+            </AnimatedSectionWrapper>
           </div>
         </div>
       </section>
@@ -259,17 +260,13 @@ export default async function HomePage() {
       {/* ── Core Functions (Replacing What We Fortify) ── */}
       <section className="section programs-section">
         <div className="container">
-          <p className="section-eyebrow">Strategy</p>
-          <h2 className="section-title">Core Functions of the NFA</h2>
-          <p className="section-lead">Leading Nigeria&apos;s fight against hidden hunger through targeted multisectoral alignment.</p>
-          <div className="programs-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '3rem' }}>
-            {CORE_FUNCTIONS.map((p) => (
-              <div key={p.title} className="program-cell" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div className="program-icon"><Icon name={p.icon} size={32} /></div>
-                <h3 className="program-title">{p.title}</h3>
-                <p className="program-desc">{p.desc}</p>
-              </div>
-            ))}
+          <AnimatedSectionWrapper animation="fade-up" delay={0}>
+            <p className="section-eyebrow">Strategy</p>
+            <h2 className="section-title">Core Functions of the NFA</h2>
+            <p className="section-lead">Leading Nigeria&apos;s fight against hidden hunger through targeted multisectoral alignment.</p>
+          </AnimatedSectionWrapper>
+          <div style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '3rem' }}>
+            <AnimatedCoreFunctions functions={CORE_FUNCTIONS} />
           </div>
         </div>
       </section>
@@ -277,21 +274,21 @@ export default async function HomePage() {
       {/* ── Recent Achievements ── */}
       <div className="how-section">
         <div className="container">
-          <p className="section-eyebrow fade-up">Progress</p>
-          <h2 className="fade-up stagger-1" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: '1.4' }}>
-            Recent Achievements
-            <br />
-            <span style={{ fontSize: '0.7em', opacity: 0.7, marginTop: '0.5rem', display: 'inline-block' }}>(2024–2025)</span>
-          </h2>
-          <div className="how-grid fade-up stagger-2">
-            {ACHIEVEMENTS.map((s) => (
-              <div key={s.num} className="how-step glass-panel-dark">
-                <div className="how-num">{s.num}</div>
-                <div className="how-title">{s.title}</div>
-                <div className="how-desc">{s.desc}</div>
-              </div>
-            ))}
-          </div>
+          <AnimatedSectionWrapper animation="fade-up" delay={0}>
+            <p className="section-eyebrow">Progress</p>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: '1.4' }}>
+              Recent Achievements
+              <br />
+              <span style={{ fontSize: '0.7em', opacity: 0.7, marginTop: '0.5rem', display: 'inline-block' }}>(2024–2025)</span>
+            </h2>
+          </AnimatedSectionWrapper>
+          <AnimatedAchievements
+            achievements={ACHIEVEMENTS.map(a => ({
+              num: a.num,
+              title: a.title,
+              detail: a.desc
+            }))}
+          />
         </div>
       </div>
 
@@ -337,16 +334,22 @@ export default async function HomePage() {
       {featuredNews.length > 0 && (
         <section className="section news-section">
           <div className="container">
-            <div className="news-header">
-              <div>
-                <p className="section-eyebrow">Latest Updates</p>
-                <h2 className="section-title" style={{ marginBottom: 0 }}>News & Events</h2>
+            <AnimatedSectionWrapper animation="fade-up" delay={0}>
+              <div className="news-header">
+                <div>
+                  <p className="section-eyebrow">Latest Updates</p>
+                  <h2 className="section-title" style={{ marginBottom: 0 }}>News & Events</h2>
+                </div>
+                <Link href="/news" className="btn btn-outline btn-sm">View All →</Link>
               </div>
-              <Link href="/news" className="btn btn-outline btn-sm">View All →</Link>
-            </div>
-            <div className="grid-3">
-              {featuredNews.map((a) => <NewsCard key={a.id} article={a} />)}
-            </div>
+            </AnimatedSectionWrapper>
+            <AnimatedNewsGrid>
+              {featuredNews.map((a, i) => (
+                <div key={a.id} className="scroll-reveal reveal-fade-up-scale">
+                  <NewsCard article={a} />
+                </div>
+              ))}
+            </AnimatedNewsGrid>
           </div>
         </section>
       )}
