@@ -368,8 +368,8 @@ export default async function HomePage() {
             <h2>Ready to be part of Nourishing Nigeria?</h2>
             <p>Whether you are a food processor seeking NAFDAC certification, a development partner, or a researcher — NFA has resources and pathways for you.</p>
             <div className="cta-full-actions">
-              <Link href="/guidelines" className="btn btn-white btn-lg">📄 View Guidelines</Link>
-              <Link href="/contact" className="btn btn-outline-white btn-lg">Contact NFA →</Link>
+              <Link href="/contact" className="btn btn-primary btn-lg">Contact NFA →</Link>
+              <Link href="/guidelines" className="btn btn-outline btn-lg">📄 View Guidelines</Link>
             </div>
           </div>
         </div>
