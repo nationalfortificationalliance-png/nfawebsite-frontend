@@ -156,6 +156,7 @@ p {
 
 .section-title {
   margin-bottom: 1rem;
+  color: var(--text-primary) !important;
 }
 
 .section-lead {
