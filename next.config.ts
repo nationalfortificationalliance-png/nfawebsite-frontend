@@ -4,6 +4,11 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const nextConfig: NextConfig = {
+  experimental: {
+    turbo: {
+      root: '/Users/mac/Documents/apps/wfp-nfp-website/wfp-nfp-frontend',
+    },
+  },
   images: {
     remotePatterns: [
       {

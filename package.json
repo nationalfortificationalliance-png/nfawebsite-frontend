@@ -10,7 +10,7 @@
     "copy-images": "node -e \"const fs=require('fs'),path=require('path');const brain='/Users/mac/.gemini/antigravity/brain/db4e3bf1-3da1-4b7e-8380-fd15200ba028';const pub=path.join(__dirname,'public');const files=fs.readdirSync(brain);const map={'hero-1.png':'hero_nigeria_fortification','hero-2.png':'hero_children_nutrition','hero-3.png':'about_hero_wfp','about-hero.png':'partner_meeting'};for(const[dest,prefix]of Object.entries(map)){const src=files.find(f=>f.startsWith(prefix)&&f.endsWith('.png'));if(src){fs.copyFileSync(path.join(brain,src),path.join(pub,dest));console.log('Copied',dest);}}\""
   },
   "dependencies": {
-    "next": "16.1.6",
+    "next": "^15.5.19",
     "next-intl": "^4.13.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"

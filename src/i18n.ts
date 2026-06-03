@@ -12,14 +12,24 @@ export const localeNames: Record<Locale, string> = {
   yo: 'Yorùbá',
 };
 
-export default getRequestConfig(async ({ locale }) => {
+export default getRequestConfig(async ({ requestLocale }) => {
+  // Wait for the locale to resolve
+  let locale = await requestLocale;
+
+  console.log('[i18n] Requested locale:', locale);
+
   // Validate that the incoming `locale` parameter is valid
   if (!locale || !locales.includes(locale as Locale)) {
-    notFound();
+    console.log('[i18n] Invalid locale, using default');
+    locale = 'en';
   }
+
+  console.log('[i18n] Loading messages for locale:', locale);
+  const messages = (await import(`../messages/${locale}.json`)).default;
+  console.log('[i18n] Messages loaded successfully');
 
   return {
     locale: locale,
-    messages: (await import(`../messages/${locale}.json`)).default,
+    messages,
   };
 });
