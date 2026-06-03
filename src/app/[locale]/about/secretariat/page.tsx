@@ -11,23 +11,28 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 // Local fallback data with the generated images
-const FALLBACK_SECRETARIAT = [
-    
+const FALLBACK_SECRETARIAT: TeamMember[] = [
     {
-        id: 'f1',
+        id: 1,
+        documentId: 'fallback-1',
         name: 'Mr. Abubakar Tanimu Umar',
         role: 'Programme Officer',
         organization: 'NFA Secretariat',
-        image: '/team-1.png',
-        bio: 'Mr. Umar coordinates field activities and stakeholder engagement for the National Fortification Project.'
+        category: 'Secretariat',
+        image: { id: 0, documentId: '', url: '/team-1.png' },
+        bio: 'Mr. Umar coordinates field activities and stakeholder engagement for the National Fortification Project.',
+        order: 1
     },
     {
-        id: 'f2',
+        id: 2,
+        documentId: 'fallback-2',
         name: 'Mrs. Joy Haanya',
         role: 'Programme Officer',
         organization: 'NFA Secretariat',
-        image: '/team-2.png',
-        bio: 'Mrs. Haanya supports programme implementation and administrative coordination within the NFA Secretariat.'
+        category: 'Secretariat',
+        image: { id: 0, documentId: '', url: '/team-2.png' },
+        bio: 'Mrs. Haanya supports programme implementation and administrative coordination within the NFA Secretariat.',
+        order: 2
     }
 ];
 
@@ -202,9 +207,7 @@ export default async function SecretariatPage() {
 
                     <div className="members-grid">
                         {(useFallback ? FALLBACK_SECRETARIAT : displayMembers).map((m) => {
-                            const imageUrl = useFallback
-                                ? (m as typeof FALLBACK_SECRETARIAT[0]).image
-                                : getStrapiMediaUrl((m as TeamMember).image?.url);
+                            const imageUrl = getStrapiMediaUrl(m.image?.url);
                             return (
                             <div key={m.id} className="member-card">
                                 <div className="member-image-wrap">
