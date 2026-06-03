@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
@@ -269,7 +270,8 @@ export default function Header({ siteName }: { siteName: string }) {
             </nav>
 
             {/* CTA */}
-            <div className="header-cta">
+            <div className="header-cta" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <LanguageSwitcher />
               <Link href="/contact" className="btn btn-primary btn-sm">Contact Us</Link>
             </div>
 
@@ -309,7 +311,10 @@ export default function Header({ siteName }: { siteName: string }) {
                 )}
               </div>
             ))}
-            <div className="mobile-cta">
+            <div className="mobile-cta" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ padding: '0 1.5rem' }}>
+                <LanguageSwitcher />
+              </div>
               <Link href="/contact" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
                 Contact Us
               </Link>
