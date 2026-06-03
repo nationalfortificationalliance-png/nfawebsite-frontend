@@ -1,0 +1,378 @@
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import HeroCarousel from '@/components/HeroCarousel';
+import NewsCard from '@/components/NewsCard';
+import { getCarousels, getFeaturedNews, getPartners } from '@/lib/api';
+
+export const metadata: Metadata = {
+  title: 'National Fortification Alliance – Nourishing Nigeria',
+  description: 'NFA coordinates food fortification in Nigeria to eliminate micronutrient malnutrition.',
+};
+export const revalidate = 60;
+
+import Icon, { IconName } from '@/components/Icon';
+
+const STATS: { number: string; label: string; icon: IconName }[] = [
+  { number: '12M+', label: 'Consumers Reached', icon: 'users' },
+  { number: '200+', label: 'Certified Processors', icon: 'factory' },
+  { number: '36', label: 'States Covered', icon: 'map-pin' },
+  { number: '$1.5B', label: 'Annual Lost GDP', icon: 'bar-chart' },
+];
+
+const CORE_FUNCTIONS: { icon: IconName; title: string; desc: string }[] = [
+  { icon: 'handshake', title: 'Coordination', desc: 'Serving as the primary forum for government, industry, and partners to align on nutrition goals.' },
+  { icon: 'scale', title: 'Regulatory Advocacy', desc: 'Pushing for enforcement of mandatory fortification for wheat flour, oil, sugar, and salt.' },
+  { icon: 'microscope', title: 'Capacity Building', desc: 'Strengthening national laboratory capacity for accurate and harmonised micronutrient testing.' },
+  { icon: 'search', title: 'Monitoring', desc: 'Overseeing adoption of digital tools like DFQT+ to track fortification compliance in real-time.' },
+];
+
+const ACHIEVEMENTS: { num: string; title: string; desc: string }[] = [
+  { num: '01', title: 'Digital Transformation', desc: 'Launched the DFQT+ pilot for edible oils in April 2024 replacing manual reporting with real-time data.' },
+  { num: '02', title: 'Recognition Excellence', desc: 'Held the 4th Micronutrient Fortification Index Awards honoring high-performing processors.' },
+  { num: '03', title: 'Policy Advancement', desc: 'Initiated the expansion of mandatory fortification to rice and bouillon cubes for rural reach.' },
+  { num: '04', title: 'Lab Audit', desc: 'Commissioned IPAN to conduct a full audit of all eight approved micronutrient laboratories.' },
+];
+
+const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string; cta: string }[] = [
+  { icon: 'bar-chart', title: 'Productivity', desc: 'Malnutrition costs Nigeria approximately $1.5 billion annually in lost GDP due to poor health and cognitive development.', link: '/about', cta: 'Read the Report →' },
+  { icon: 'gem', title: 'Efficiency', desc: 'Fortification is one of the most cost-effective health interventions, with an estimated cost of only $0.01–$0.25 per person per year.', link: '/about', cta: 'Learn About Impact →' },
+];
+
+export default async function HomePage() {
+  const [carousels, featuredNews, partners] = await Promise.all([
+    getCarousels(), getFeaturedNews(), getPartners(),
+  ]);
+
+  return (
+    <>
+      <style>{`
+        /* ── Stats ── */
+        .stats-strip { background: #fff; border-bottom: 1px solid var(--border); }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+        .stat-item { padding: 2rem 1.5rem; text-align: center; border-right: 1px solid var(--border); }
+        .stat-item:last-child { border-right: none; }
+        .stat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .stat-number { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; color: var(--wfp-blue); letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.35rem; }
+        .stat-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 600; }
+
+        /* ── Programs ── */
+        .programs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; margin-top: 3rem; }
+        .program-cell { background: #fff; padding: 2rem 1.75rem; transition: background .2s; }
+        .program-cell:hover { background: #f7fbff; }
+        .program-icon { font-size: 1.75rem; margin-bottom: 0.9rem; line-height: 1; }
+        .program-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-primary); }
+        .program-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+
+        /* ── How it works ── */
+        .how-section { background: var(--wfp-navy); padding: 6rem 0; position: relative; overflow: hidden; }
+        .how-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(0, 154, 68, 0.1), transparent 50%); pointer-events: none; }
+        .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 4rem; position: relative; z-index: 2; }
+        .how-step { padding: 2.5rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-xl); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: transform 0.3s; }
+        .how-step:hover { transform: translateY(-8px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
+        .how-num { font-size: 3.5rem; font-weight: 900; color: rgba(255,255,255,.08); line-height: 1; margin-bottom: 1.5rem; letter-spacing: -0.04em; background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .how-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.85rem; }
+        .how-desc { font-size: 0.95rem; color: rgba(255,255,255,.7); line-height: 1.7; }
+
+        /* ── About Split ── */
+        .about-split { padding: 6rem 0; background: var(--bg-off); position: relative; }
+        .about-split-inner { display: grid; grid-template-columns: 5fr 6fr; gap: 4rem; align-items: center; max-width: var(--container); margin: 0 auto; padding: 0 1.5rem; }
+        .about-image-panel { position: relative; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-xl); aspect-ratio: 4/5; transform: translateY(-2rem); }
+        .about-content-panel { background: transparent; color: var(--text-primary); padding: 0; display: flex; flex-direction: column; justify-content: center; }
+        .about-content-panel h2 { color: var(--text-primary); margin-bottom: 1.25rem; }
+        .about-content-panel p { margin-bottom: 1.25rem; }
+        .about-content-panel .line { background: var(--wfp-blue); width: 60px; height: 4px; border-radius: 2px; margin-bottom: 2rem; }
+
+        /* ── Quote ── */
+        .quote-section { background: var(--wfp-blue); padding: 5rem 0; }
+        .quote-wrap { max-width: 800px; margin: 0 auto; text-align: center; }
+        .quote-mark { font-size: 5rem; line-height: 0.5; color: rgba(255,255,255,.2); font-family: Georgia, serif; display: block; margin-bottom: 1.5rem; }
+        .quote-text { font-size: clamp(1.2rem, 2.5vw, 1.6rem); color: #fff; font-weight: 400; line-height: 1.65; margin-bottom: 2rem; font-style: italic; }
+        .quote-author { font-size: 0.85rem; color: rgba(255,255,255,.7); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+        .quote-author span { display: block; color: var(--wfp-gold); margin-bottom: 0.25rem; font-size: 1rem; font-weight: 700; text-transform: none; letter-spacing: 0; font-style: normal; }
+
+        /* ── Challenge ── */
+        .challenge-section { background: var(--bg-off); }
+        .challenge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .challenge-stat-row { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+        .challenge-stat { display: flex; align-items: center; gap: 1.25rem; }
+        .challenge-stat-num { font-size: 2rem; font-weight: 900; color: var(--wfp-red, #e32d1c); letter-spacing: -0.04em; flex-shrink: 0; min-width: 80px; }
+        .challenge-stat-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.55; }
+        .challenge-img { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4/3; position: relative; box-shadow: var(--shadow-xl); }
+
+        /* ── News ── */
+        .news-section { background: var(--bg-off); }
+        .news-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+
+        /* ── Get Involved ── */
+        .involved-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3.5rem; }
+        .involved-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 2.75rem; display: flex; flex-direction: column; gap: 1rem; transition: all .4s var(--ease-spring); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; }
+        .involved-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--wfp-blue); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease-spring); }
+        .involved-card:hover { box-shadow: var(--shadow-xl); transform: translateY(-8px); border-color: var(--border); }
+        .involved-card:hover::before { transform: scaleX(1); }
+        .involved-icon { font-size: 2.5rem; transition: transform 0.4s var(--ease-spring); }
+        .involved-card:hover .involved-icon { transform: scale(1.1) rotate(5deg); }
+        .involved-card h3 { font-size: 1.25rem; font-weight: 800; }
+        .involved-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; flex: 1; }
+
+        /* ── Guidelines preview ── */
+        .resources-strip { border-top: 1px solid var(--border); padding: 3rem 0; background: #fff; }
+        .resource-tag { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.5rem 1rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); transition: all .2s; }
+        .resource-tag:hover { border-color: var(--wfp-blue); color: var(--wfp-blue); background: var(--wfp-blue-light); }
+
+        /* ── Partners ── */
+        .partners-strip { border-top: 1px solid var(--border); padding: 8rem 0 7rem 0; background: var(--bg-white); overflow: hidden; }
+        .partner-logo-hm { filter: grayscale(10%) opacity(0.85); transition: all 0.4s; display: flex; align-items: center; justify-content: center; padding: 0 7rem; position: relative; flex-shrink: 0; }
+        .partner-logo-hm img { object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 100%; }
+        .partner-logo-hm:hover { filter: grayscale(0%) opacity(1); transform: scale(1.15); }
+
+        /* ── CTA ── */
+        .cta-full { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--wfp-navy) 0%, var(--wfp-blue) 100%); padding: 6rem 0; }
+        .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(255,255,255,.04); top: -200px; right: -150px; }
+        .cta-full-inner { max-width: 600px; }
+        .cta-full h2 { color: #fff; margin-bottom: 1rem; }
+        .cta-full p { color: rgba(255,255,255,.75); font-size: 1.05rem; line-height: 1.75; margin-bottom: 2rem; }
+        .cta-full-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        @media (max-width: 900px) {
+          .stats-grid { grid-template-columns: repeat(2, 1fr); }
+          .programs-grid { grid-template-columns: repeat(2, 1fr); }
+          .how-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+          .how-step { padding: 2rem; border-radius: var(--radius-lg); }
+          .about-split-inner { grid-template-columns: 1fr; gap: 3rem; }
+          .about-image-panel { transform: none; aspect-ratio: 16/9; }
+          .challenge-grid { grid-template-columns: 1fr; }
+          .involved-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 600px) {
+          .stats-grid { grid-template-columns: 1fr 1fr; }
+          .programs-grid { grid-template-columns: 1fr; }
+          .how-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
+
+      {/* ── Hero ── */}
+      <HeroCarousel slides={carousels} />
+
+      {/* ── Stats ── */}
+      <div className="stats-strip px-4 sm:px-0 py-8">
+        <div className="container">
+          <div className="stats-grid">
+            {STATS.map((s, i) => (
+              <div key={s.label} className="stat-item fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="stat-icon" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--wfp-gold)' }}>
+                  <Icon name={s.icon} size={40} />
+                </div>
+                <div className="stat-number text-gradient">{s.number}</div>
+                <div className="stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Mission & Vision ── */}
+      <section className="section bg-off relative">
+        <div className="container relative z-10">
+          <div className="grid-2">
+            <div className="card glass-panel fade-up" style={{ padding: '3.5rem 3rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem', color: 'var(--wfp-blue)' }}>
+                <Icon name="globe" size={32} />
+                <h3 style={{ margin: 0, fontSize: '1.75rem' }}>Mission</h3>
+              </div>
+              <p style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '1.05rem', lineHeight: '1.8' }}>
+                To coordinate a multi-sectoral approach that ensures every Nigerian has access to essential micronutrients through the mandatory fortification of staple foods.
+              </p>
+            </div>
+            <div className="card glass-panel fade-up stagger-1" style={{ padding: '3.5rem 3rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem', color: 'var(--wfp-gold)' }}>
+                <Icon name="sun" size={32} />
+                <h3 style={{ margin: 0, fontSize: '1.75rem' }}>Vision</h3>
+              </div>
+              <p style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '1.05rem', lineHeight: '1.8' }}>
+                A Nigeria free from the burden of "hidden hunger" and micronutrient deficiencies, achieved through sustainable public-private partnerships.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Core Functions (Replacing What We Fortify) ── */}
+      <section className="section">
+        <div className="container">
+          <p className="section-eyebrow">Strategy</p>
+          <h2 className="section-title">Core Functions of the NFA</h2>
+          <p className="section-lead">Leading Nigeria's fight against hidden hunger through targeted multisectoral alignment.</p>
+          <div className="programs-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '3rem' }}>
+            {CORE_FUNCTIONS.map((p) => (
+              <div key={p.title} className="program-cell" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className="program-icon" style={{ color: 'var(--wfp-blue)' }}><Icon name={p.icon} size={32} /></div>
+                <h3 className="program-title">{p.title}</h3>
+                <p className="program-desc" style={{ color: 'var(--text-muted)' }}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Recent Achievements ── */}
+      <div className="how-section">
+        <div className="container">
+          <p className="section-eyebrow fade-up" style={{ color: 'var(--wfp-gold)' }}>Progress</p>
+          <h2 className="fade-up stagger-1" style={{ color: '#fff', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Recent Achievements<br />(2024–2025)</h2>
+          <div className="how-grid fade-up stagger-2">
+            {ACHIEVEMENTS.map((s, i) => (
+              <div key={s.num} className="how-step glass-panel-dark">
+                <div className="how-num">{s.num}</div>
+                <div className="how-title">{s.title}</div>
+                <div className="how-desc">{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── About Split ── */}
+      <div className="about-split overflow-hidden">
+        <div className="about-split-inner relative">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-green-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+
+          <div className="about-image-panel fade-up">
+            <Image src="/about-hero.png" alt="NFA partnership meeting" fill style={{ objectFit: 'cover' }} />
+          </div>
+          <div className="about-content-panel fade-up stagger-1 relative z-10">
+            <p className="section-eyebrow">About the NFP</p>
+            <div className="line" />
+            <h2 className="text-gradient hover:scale-[1.01] transition-transform duration-500 ease-out origin-left">Built on partnership.<br />Driven by evidence.</h2>
+            <p className="text-lg">The National Fortification Project (NFP) was established in response to Nigeria's growing burden of micronutrient deficiency. Supported by the World Food Programme and enforced by NAFDAC, it unites government, UN agencies, and the private sector under one national framework.</p>
+            <p className="text-lg">Food fortification is among the most cost-effective public health interventions proven to reduce child stunting, anaemia, and preventable blindness — and Nigeria is building a model the continent can follow.</p>
+            <div style={{ marginTop: '2rem' }}>
+              <Link href="/about" className="btn btn-green btn-lg">Read Our Full Story →</Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Quote ── */}
+      <div className="quote-section">
+        <div className="container">
+          <div className="quote-wrap">
+            <span className="quote-mark">"</span>
+            <p className="quote-text">
+              Fortification is not charity — it is a cost-effective investment in Nigeria's human capital. Every naira spent on fortification returns exponential value in child development, workforce productivity, and national health savings.
+            </p>
+            <div className="quote-author">
+              <span>WFP Nigeria Country Director</span>
+              World Food Programme Nigeria
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Latest News ── */}
+      {featuredNews.length > 0 && (
+        <section className="section news-section">
+          <div className="container">
+            <div className="news-header">
+              <div>
+                <p className="section-eyebrow">Latest Updates</p>
+                <h2 className="section-title" style={{ marginBottom: 0 }}>News & Events</h2>
+              </div>
+              <Link href="/news" className="btn btn-outline btn-sm">View All →</Link>
+            </div>
+            <div className="grid-3">
+              {featuredNews.map((a) => <NewsCard key={a.id} article={a} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Resources Quick Links ── */}
+      <div className="resources-strip">
+        <div className="container">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', flexShrink: 0 }}>Key Resources</span>
+            {[
+              { label: '📋 Regulatory Guidelines', href: '/guidelines' },
+              { label: '🔬 Technical Standards', href: '/guidelines' },
+              { label: '⚙️ Processor Handbook', href: '/guidelines' },
+              { label: '🎓 Training Materials', href: '/guidelines' },
+              { label: '📊 Annual Coverage Report', href: '/guidelines' },
+            ].map((r) => (
+              <Link key={r.label} href={r.href} className="resource-tag">{r.label}</Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Economic Case ── */}
+      <section className="section bg-off">
+        <div className="container">
+          <p className="section-eyebrow">The Economic Case</p>
+          <h2 className="section-title">Why Fortification Matters</h2>
+          <p className="section-lead">Strategic investment in human capital through nutrition directly impacts Nigeria's macroeconomic growth.</p>
+          <div className="involved-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
+            {ECONOMIC_CASE.map((c) => (
+              <div key={c.title} className="involved-card">
+                <div className="involved-icon" style={{ color: 'var(--wfp-blue)' }}><Icon name={c.icon} size={40} /></div>
+                <h3>{c.title}</h3>
+                <p>{c.desc}</p>
+                <Link href={c.link} className="btn btn-outline btn-sm" style={{ alignSelf: 'flex-start' }}>{c.cta}</Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* ── Partners strip ── */}
+      <div className="partners-strip fade-up stagger-1">
+        <div className="container" style={{ maxWidth: '1600px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4rem' }}>
+            <span style={{ fontSize: '0.95rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--text-muted)' }}>Supported by</span>
+
+            <div className="marquee-container">
+              <div className="marquee-content" style={{ animationDuration: '45s' }}>
+                {[
+                  { name: 'WFP Nigeria', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
+                  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
+                  { name: 'UNICEF Nigeria', src: '/UNICEF_Logo.png', width: 310, height: 130 },
+                  { name: 'Federal Ministry of Health', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
+                  { name: 'Gates Foundation', src: '/gates foundation logo.svg', width: 380, height: 150 },
+                  // Duplicate for seamless infinite scroll
+                  { name: 'WFP Nigeria', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
+                  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
+                  { name: 'UNICEF Nigeria', src: '/UNICEF_Logo.png', width: 310, height: 130 },
+                  { name: 'Federal Ministry of Health', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
+                  { name: 'Gates Foundation', src: '/gates foundation logo.svg', width: 380, height: 150 },
+                ].map((p, i) => (
+                  <Link key={i} href="/partners" className="partner-logo-hm" style={{ width: p.width, height: p.height }}>
+                    <Image src={p.src} alt={p.name} width={p.width} height={p.height} />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* ── CTA Banner ── */}
+      <div className="cta-full">
+        <div className="container">
+          <div className="cta-full-inner">
+            <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>Work With Us</p>
+            <h2>Ready to be part of Nourishing Nigeria?</h2>
+            <p>Whether you are a food processor seeking NAFDAC certification, a development partner, or a researcher — NFA has resources and pathways for you.</p>
+            <div className="cta-full-actions">
+              <Link href="/guidelines" className="btn btn-white btn-lg">📄 View Guidelines</Link>
+              <Link href="/contact" className="btn btn-outline-white btn-lg">Contact NFA →</Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
