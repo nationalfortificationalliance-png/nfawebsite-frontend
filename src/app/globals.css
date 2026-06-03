@@ -11,14 +11,14 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 18px; /* Increased base font size from default 16px */
+  font-size: 16.5px; /* Slightly increased from default 16px */
 }
 
 body {
   font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
   color: #1a1a2e;
   background: #fff;
-  line-height: 1.7; /* Increased line height for better readability */
+  line-height: 1.65; /* Comfortable line height */
 }
 
 img {
@@ -90,35 +90,35 @@ h5,
 h6 {
   font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
 h1 {
-  font-size: clamp(2.75rem, 6vw, 4.5rem); /* Increased from 2.25-3.5rem */
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
   font-weight: 800;
 }
 
 h2 {
-  font-size: clamp(2.25rem, 4vw, 3.25rem); /* Increased from 1.75-2.5rem */
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
   font-weight: 700;
 }
 
 h3 {
-  font-size: clamp(1.5rem, 2.5vw, 2rem); /* Increased from 1.2-1.5rem */
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
   font-weight: 600;
 }
 
 h4 {
-  font-size: 1.35rem; /* Increased from 1.1rem */
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
 p {
-  line-height: 1.8; /* Increased from 1.75 */
+  line-height: 1.75;
   color: var(--text-secondary);
-  font-size: 1.05rem; /* Slightly larger paragraphs */
+  font-size: 1rem;
 }
 
 /* ─── Layout ─────────────────────────────────────────────────── */
