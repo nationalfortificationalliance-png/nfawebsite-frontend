@@ -205,8 +205,8 @@
   --md-sys-grid-gutter: var(--md-sys-spacing-6);
 }
 
-/* Dark Theme Support */
-@media (prefers-color-scheme: dark) {
+/* Dark Theme Disabled - User requested light backgrounds only */
+/* @media (prefers-color-scheme: dark) {
   :root {
     --md-sys-color-primary: #FFB4AA;
     --md-sys-color-on-primary: #690003;
@@ -214,6 +214,5 @@
     --md-sys-color-on-surface: #F0DEDC;
     --md-sys-color-background: #1A1111;
     --md-sys-color-on-background: #F0DEDC;
-    /* Add more dark theme colors as needed */
   }
-}
+} */
