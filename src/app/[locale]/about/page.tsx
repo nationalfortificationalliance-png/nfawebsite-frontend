@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon, { IconName } from '@/components/Icon';
-import { getAboutPage, getTeamMembers, getStrapiMediaUrl } from '@/lib/api';
+import { getAboutPage, getStrapiMediaUrl } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'About the National Fortification Project',
@@ -41,7 +41,6 @@ const LEADERSHIP = [
 
 export default async function AboutPage() {
     const about = await getAboutPage();
-    const team = await getTeamMembers();
 
     return (
         <>
@@ -325,30 +324,6 @@ export default async function AboutPage() {
                     </div>
                 </div>
             </section>
-
-            {/* ── Team Members ── */}
-            {team.length > 0 && (
-                <section className="section">
-                    <div className="container">
-                        <p className="section-eyebrow">Our Team</p>
-                        <h2 className="section-title">Leadership & Focal Points</h2>
-                        <div className="governance-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))' }}>
-                            {team.map((m) => (
-                                <div key={m.id} className="governance-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
-                                    {m.image && (
-                                        <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', margin: '0 auto 1.25rem', position: 'relative' }}>
-                                            <Image src={getStrapiMediaUrl(m.image.url)} alt={m.name} fill style={{ objectFit: 'cover' }} />
-                                        </div>
-                                    )}
-                                    <h4 style={{ marginBottom: '0.25rem' }}>{m.name}</h4>
-                                    <div className="governance-role" style={{ color: 'var(--wfp-blue)', fontWeight: 700 }}>{m.role}</div>
-                                    {m.bio && <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.75rem', lineHeight: 1.5 }}>{m.bio}</p>}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
 
             {/* ── CTA ── */}
             <div style={{ background: 'var(--wfp-navy)', padding: '4rem 0' }}>
