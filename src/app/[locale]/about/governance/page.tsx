@@ -218,6 +218,10 @@ export default function GovernancePage() {
                     align-items: center;
                     gap: 0.75rem;
                 }
+                .role-list {
+                    list-style: none;
+                    padding-left: 0;
+                }
                 .role-list li {
                     position: relative;
                     padding-left: 1.75rem;
