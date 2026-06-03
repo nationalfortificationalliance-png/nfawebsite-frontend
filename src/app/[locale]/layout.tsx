@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { locales, type Locale } from '@/i18n';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 import { getGlobalSettings } from "@/lib/api";
 import { generateSEOMetadata, generateOrganizationSchema, generateWebSiteSchema, generateGovernmentOrganizationSchema } from '@/components/SEO';
 
@@ -103,6 +104,7 @@ export default async function LocaleLayout({
         <meta name="theme-color" content="#ED1C24" />
       </head>
       <body>
+        <PageTransition />
         <NextIntlClientProvider messages={messages}>
           <Header siteName={settings?.site_name || "National Fortification Alliance"} />
           <main>{children}</main>
