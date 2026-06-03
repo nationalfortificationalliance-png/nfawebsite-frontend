@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
-import NewsFlashCards from '@/components/NewsFlashCards';
+import NewsCarousel from '@/components/NewsCarousel';
 import { getCarousels, getFeaturedNews } from '@/lib/api';
 import {
   AnimatedStats,
@@ -221,7 +221,7 @@ export default async function HomePage() {
       {/* ── Hero ── */}
       <HeroCarousel slides={carousels} />
 
-      {/* ── News Flash Cards ── */}
+      {/* ── News Carousel ── */}
       {featuredNews.length > 0 && (
         <section className="section" style={{ background: 'var(--bg-off)', paddingTop: '4rem', paddingBottom: '4rem' }}>
           <div className="container">
@@ -238,8 +238,8 @@ export default async function HomePage() {
                 </p>
               </div>
             </AnimatedSectionWrapper>
-            <AnimatedSectionWrapper animation="fade-up-scale" delay={200}>
-              <NewsFlashCards news={featuredNews.slice(0, 5)} autoRotate={true} interval={6000} />
+            <AnimatedSectionWrapper animation="fade-up" delay={200}>
+              <NewsCarousel news={featuredNews} autoScroll={true} scrollInterval={4000} />
             </AnimatedSectionWrapper>
           </div>
         </section>
