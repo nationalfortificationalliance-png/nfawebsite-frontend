@@ -27,11 +27,18 @@ export default function NewsCarousel({
   };
 
   const next = () => {
-    setCurrentIndex((prev) => (prev + 1) % news.length);
+    setCurrentIndex((prev) => {
+      // Don't go beyond the last set of visible cards
+      const maxIndex = Math.max(0, news.length - itemsToShow.desktop);
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
   };
 
   const prev = () => {
-    setCurrentIndex((prev) => (prev - 1 + news.length) % news.length);
+    setCurrentIndex((prev) => {
+      const maxIndex = Math.max(0, news.length - itemsToShow.desktop);
+      return prev <= 0 ? maxIndex : prev - 1;
+    });
   };
 
   const goTo = (index: number) => {
@@ -54,13 +61,13 @@ export default function NewsCarousel({
         .news-carousel-wrapper {
           position: relative;
           width: 100%;
-          overflow: hidden;
           padding: 2rem 0;
         }
 
         .news-carousel-container {
           position: relative;
-          overflow: visible;
+          overflow: hidden;
+          padding: 0 3rem;
         }
 
         .news-carousel-track {
@@ -338,7 +345,7 @@ export default function NewsCarousel({
           ref={containerRef}
           className="news-carousel-track"
           style={{
-            transform: `translateX(-${currentIndex * (100 / itemsToShow.desktop + 2)}%)`
+            transform: `translateX(-${currentIndex * (100 / itemsToShow.desktop)}%)`
           }}
         >
           {news.map((item) => {
