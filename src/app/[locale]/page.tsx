@@ -278,7 +278,11 @@ export default async function HomePage() {
       <div className="how-section">
         <div className="container">
           <p className="section-eyebrow fade-up">Progress</p>
-          <h2 className="fade-up stagger-1" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Recent Achievements<br />(2024–2025)</h2>
+          <h2 className="fade-up stagger-1" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: '1.4' }}>
+            Recent Achievements
+            <br />
+            <span style={{ fontSize: '0.7em', opacity: 0.7, marginTop: '0.5rem', display: 'inline-block' }}>(2024–2025)</span>
+          </h2>
           <div className="how-grid fade-up stagger-2">
             {ACHIEVEMENTS.map((s) => (
               <div key={s.num} className="how-step glass-panel-dark">
