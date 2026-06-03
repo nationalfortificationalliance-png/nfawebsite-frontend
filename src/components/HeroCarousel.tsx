@@ -6,15 +6,17 @@ import type { Carousel } from '@/lib/api';
 import { getStrapiMediaUrl } from '@/lib/api';
 
 // Each image is matched to its slide's narrative:
-// Slide 1 — "Fortifying Nigeria, One Meal at a Time"  → hero-1.png  (Nigerian market woman with maize)
-// Slide 2 — "Certified, Safe, Fortified for Life"     → factory.png (woman in lab coat on assembly line)
-// Slide 3 — "A Healthier Future for Nigeria's Children" → hero-2.png (schoolchildren eating)
-// Slide 4 — "Reaching Every Community"               → hero-3.png (WFP field workers outreach)
+// Slide 1 — "Combating Hidden Hunger in Nigeria"      → hero-1.png  (Nigerian market/food fortification)
+// Slide 2 — "Strengthening National Food Systems"     → factory.png (food processing facility)
+// Slide 3 — "Partnerships Driving Nutrition Impact"   → hero-3.png (WFP partnerships)
+// Slide 4 — "Advancing Regulatory Compliance"         → hero-2.png (laboratory/quality control)
+// Slide 5 — "Innovation and Research"                 → hero-1.png (research/innovation)
 const HERO_IMAGES = [
-  { src: '/hero-1.png', credit: 'WFP Nigeria — food market' },
-  { src: '/factory.png', credit: 'WFP Nigeria — certified food processing' },
-  { src: '/hero-2.png', credit: 'WFP Nigeria — school nutrition' },
-  { src: '/hero-3.png', credit: 'WFP Nigeria — community outreach' },
+  { src: '/hero-1.png', credit: 'WFP Nigeria — food fortification' },
+  { src: '/factory.png', credit: 'WFP Nigeria — food processing' },
+  { src: '/hero-3.png', credit: 'WFP Nigeria — partnerships' },
+  { src: '/hero-2.png', credit: 'WFP Nigeria — quality assurance' },
+  { src: '/hero-1.png', credit: 'WFP Nigeria — innovation' },
 ];
 
 interface HeroCarouselProps {
@@ -28,34 +30,47 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
     {
       id: 1,
       documentId: 'fallback-1',
-      title: 'Fortifying Nigeria,\nOne Meal at a Time',
-      subtitle: 'From local markets to family tables — NFA ensures every Nigerian has access to nutritious, vitamin-enriched staple foods.',
-      link_url: '/about', link_text: 'Discover Our Mission',
+      title: 'Combating Hidden Hunger in Nigeria\nThrough Food Fortification',
+      subtitle: 'The National Fortification Alliance (NFA) is driving coordinated national efforts to improve nutrition outcomes through the production, regulation, monitoring, and promotion of adequately fortified foods across Nigeria.',
+      link_url: '/about',
+      link_text: 'Learn More',
       order: 1, is_active: true, image: { id: 0, documentId: '', url: '' },
     },
     {
       id: 2,
       documentId: 'fallback-2',
-      title: 'Certified, Safe,\nFortified for Life',
-      subtitle: 'NAFDAC-certified processors produce fortified foods meeting the highest international quality and safety standards.',
-      link_url: '/guidelines', link_text: 'View Certification Guides',
+      title: 'Strengthening National Food Systems\nfor Better Nutrition',
+      subtitle: 'The NFA works with government agencies, industries, development partners, academia, and civil society to improve compliance, quality assurance, and accessibility of fortified foods nationwide.',
+      link_url: '/initiatives',
+      link_text: 'Our Work',
       order: 2, is_active: true, image: { id: 0, documentId: '', url: '' },
     },
     {
       id: 3,
       documentId: 'fallback-3',
-      title: "A Healthier Future for\nNigeria's Children",
-      subtitle: 'School feeding and fortification programs have improved nutrition outcomes for over 12 million children across 36 states.',
-      link_url: '/news', link_text: 'Read Our Latest News',
+      title: 'Partnerships Driving\nSustainable Nutrition Impact',
+      subtitle: 'Through strategic collaboration, innovation, and evidence-based interventions, the NFA supports Nigeria\'s efforts to reduce micronutrient deficiencies and improve public health outcomes.',
+      link_url: '/partners',
+      link_text: 'Partners',
       order: 3, is_active: true, image: { id: 0, documentId: '', url: '' },
     },
     {
       id: 4,
       documentId: 'fallback-4',
-      title: 'Reaching Every\nCommunity',
-      subtitle: 'WFP and government partners bring nutrition education and fortified foods to even the most remote communities in Nigeria.',
-      link_url: '/partners', link_text: 'Meet Our Partners',
+      title: 'Advancing Regulatory Compliance\nand Food Quality',
+      subtitle: 'The Alliance supports coordinated monitoring, standards enforcement, laboratory strengthening, and digital compliance systems for fortified foods in Nigeria.',
+      link_url: '/guidelines',
+      link_text: 'Regulatory Framework',
       order: 4, is_active: true, image: { id: 0, documentId: '', url: '' },
+    },
+    {
+      id: 5,
+      documentId: 'fallback-5',
+      title: 'Innovation and Research\nfor Nutrition Improvement',
+      subtitle: 'The NFA supports emerging initiatives including bouillon fortification, rice fortification, digital traceability systems, laboratory strengthening, and micronutrient innovation projects.',
+      link_url: '/initiatives',
+      link_text: 'Projects & Initiatives',
+      order: 5, is_active: true, image: { id: 0, documentId: '', url: '' },
     },
   ] as Carousel[];
 
