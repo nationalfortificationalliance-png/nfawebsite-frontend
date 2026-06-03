@@ -18,11 +18,11 @@
   --md-sys-color-secondary-container: #9EF6C8;
   --md-sys-color-on-secondary-container: #002114;
 
-  /* Tertiary - Deep Blue */
-  --md-sys-color-tertiary: #003366;
+  /* Tertiary - WFP Dark Green/Navy */
+  --md-sys-color-tertiary: #064e3b;
   --md-sys-color-on-tertiary: #FFFFFF;
-  --md-sys-color-tertiary-container: #C7E7FF;
-  --md-sys-color-on-tertiary-container: #001E30;
+  --md-sys-color-tertiary-container: #C7F0E3;
+  --md-sys-color-on-tertiary-container: #001F14;
 
   /* Error */
   --md-sys-color-error: #BA1A1A;

@@ -161,7 +161,7 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
 export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
     const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
         'filters[slug][$eq]': slug,
-        'populate': 'image,seo.shareImage',
+        'populate': 'image',
     });
     return res?.data?.[0] || null;
 }

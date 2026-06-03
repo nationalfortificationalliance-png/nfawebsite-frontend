@@ -60,7 +60,7 @@ export default async function HomePage() {
         .programs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--md-sys-color-outline-variant); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-medium); overflow: hidden; margin-top: var(--md-sys-spacing-12); }
         .program-cell { background: var(--md-sys-color-surface); padding: var(--md-sys-spacing-8) var(--md-sys-spacing-7); transition: background var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard); }
         .program-cell:hover { background: var(--md-sys-color-surface-container-low); }
-        .program-icon { font-size: var(--md-sys-typescale-headline-small-size); margin-bottom: var(--md-sys-spacing-3); line-height: 1; }
+        .program-icon { font-size: var(--md-sys-typescale-headline-small-size); margin-bottom: var(--md-sys-spacing-3); line-height: 1; color: var(--md-sys-color-secondary); }
         .program-title { font-size: var(--md-sys-typescale-body-large-size); font-weight: 700; margin-bottom: var(--md-sys-spacing-2); color: var(--md-sys-color-on-surface); }
         .program-desc { font-size: var(--md-sys-typescale-body-small-size); color: var(--md-sys-color-on-surface-variant); line-height: 1.65; }
 
@@ -110,7 +110,7 @@ export default async function HomePage() {
         .involved-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--md-sys-color-secondary); transform: scaleX(0); transform-origin: left; transition: transform var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized); }
         .involved-card:hover { box-shadow: var(--md-sys-shadow-level4); transform: translateY(-8px); border-color: var(--md-sys-color-outline); }
         .involved-card:hover::before { transform: scaleX(1); }
-        .involved-icon { font-size: var(--md-sys-typescale-display-small-size); transition: transform var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized); }
+        .involved-icon { font-size: var(--md-sys-typescale-display-small-size); color: var(--md-sys-color-secondary); transition: transform var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized); }
         .involved-card:hover .involved-icon { transform: scale(1.1) rotate(5deg); }
         .involved-card h3 { font-size: var(--md-sys-typescale-title-large-size); font-weight: 800; }
         .involved-card p { font-size: var(--md-sys-typescale-body-medium-size); color: var(--md-sys-color-on-surface-variant); line-height: 1.75; flex: 1; }
@@ -207,9 +207,9 @@ export default async function HomePage() {
           <div className="programs-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginTop: '3rem' }}>
             {CORE_FUNCTIONS.map((p) => (
               <div key={p.title} className="program-cell" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div className="program-icon" style={{ color: 'var(--wfp-blue)' }}><Icon name={p.icon} size={32} /></div>
+                <div className="program-icon"><Icon name={p.icon} size={32} /></div>
                 <h3 className="program-title">{p.title}</h3>
-                <p className="program-desc" style={{ color: 'var(--text-muted)' }}>{p.desc}</p>
+                <p className="program-desc">{p.desc}</p>
               </div>
             ))}
           </div>
@@ -316,7 +316,7 @@ export default async function HomePage() {
           <div className="involved-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
             {ECONOMIC_CASE.map((c) => (
               <div key={c.title} className="involved-card">
-                <div className="involved-icon" style={{ color: 'var(--wfp-blue)' }}><Icon name={c.icon} size={40} /></div>
+                <div className="involved-icon"><Icon name={c.icon} size={40} /></div>
                 <h3>{c.title}</h3>
                 <p>{c.desc}</p>
                 <Link href={c.link} className="btn btn-outline btn-sm" style={{ alignSelf: 'flex-start' }}>{c.cta}</Link>
