@@ -56,11 +56,60 @@ export default async function PartnersPage() {
     return (
         <>
             <style>{`
-        .partners-hero { position: relative; height: 340px; overflow: hidden; }
-        .partners-hero-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(0,28,60,.82) 0%, rgba(0,80,140,.5) 70%, transparent 100%); }
-        .partners-hero-content { position: absolute; inset: 0; display: flex; align-items: flex-end; padding-bottom: 3rem; }
-        .partners-hero h1 { color: #fff; }
-        .partners-hero p { color: rgba(255,255,255,.75); font-size: 1rem; margin-top: 0.5rem; max-width: 520px; }
+        /* Image Hero - matches homepage carousel style */
+        .partners-hero {
+          position: relative;
+          height: 75vh;
+          min-height: 600px;
+          max-height: 900px;
+          overflow: hidden;
+        }
+        .partners-hero-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.9) 0%,
+            rgba(0, 0, 0, 0.5) 40%,
+            rgba(0, 0, 0, 0.1) 100%
+          );
+        }
+        .partners-hero-content {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4rem 5%;
+          text-align: center;
+        }
+        .partners-hero h1 {
+          color: #fff;
+          max-width: 800px;
+          margin-bottom: 1.5rem;
+          font-size: clamp(2.5rem, 5vw, 4rem);
+          text-shadow: 0 12px 48px rgba(0,0,0,0.5);
+        }
+        .partners-hero p {
+          color: rgba(255,255,255,0.85);
+          max-width: 720px;
+          font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+          line-height: 1.6;
+          text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        .partners-hero .breadcrumb {
+          position: absolute;
+          top: 2rem;
+          left: 5%;
+          margin-bottom: 0;
+        }
+        .partners-hero .breadcrumb a,
+        .partners-hero .breadcrumb span {
+          color: rgba(255,255,255,0.7);
+        }
+        .partners-hero .breadcrumb a:hover {
+          color: #fff;
+        }
 
         /* Quick stats */
         .partner-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #fff; }
@@ -93,6 +142,16 @@ export default async function PartnersPage() {
         .become-item-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 0.1rem; }
 
         @media (max-width: 900px) {
+          .partners-hero {
+            height: 60vh;
+            min-height: 500px;
+          }
+          .partners-hero h1 {
+            font-size: 2rem;
+          }
+          .partners-hero p {
+            font-size: 1rem;
+          }
           .partner-stats { grid-template-columns: repeat(2, 1fr); }
           .become-grid { grid-template-columns: 1fr; }
         }
@@ -105,11 +164,13 @@ export default async function PartnersPage() {
             <div className="partners-hero">
                 <Image src="/about-hero.png" alt="Partnership meeting" fill style={{ objectFit: 'cover' }} priority />
                 <div className="partners-hero-overlay" />
+                <div className="breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span className="breadcrumb-sep">›</span>
+                    <span>Partners</span>
+                </div>
                 <div className="partners-hero-content">
-                    <div className="container">
-                        <div className="breadcrumb">
-                            <Link href="/">Home</Link><span className="breadcrumb-sep">›</span><span>Partners</span>
-                        </div>
+                    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
                         <h1>Our Partners</h1>
                         <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
                     </div>

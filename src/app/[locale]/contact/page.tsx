@@ -12,11 +12,32 @@ export default function ContactPage() {
     return (
         <>
             <style>{`
-        /* GAIN / WFP inspired hero - big bold typography on a solid background */
-        .contact-hero { background: var(--wfp-navy); color: #fff; padding: 5rem 0 4rem; position: relative; overflow: hidden; }
-        .contact-hero::after { content: ''; position: absolute; right: -5%; top: -20%; width: 40%; height: 140%; background: var(--wfp-blue); opacity: 0.15; transform: rotate(-15deg); border-radius: 40px; pointer-events: none; }
-        .contact-hero h1 { font-weight: 900; letter-spacing: -0.04em; margin-bottom: 1rem; max-width: 700px; line-height: 1.1; }
-        .contact-hero p { color: rgba(255,255,255,.8); max-width: 580px; line-height: 1.6; }
+        /* Standard Hero - No Image */
+        .contact-hero {
+          background: var(--wfp-navy);
+          padding: 5rem 0 4rem;
+        }
+        .contact-hero h1 {
+          color: #fff;
+          max-width: 720px;
+          margin-bottom: 1rem;
+        }
+        .contact-hero p {
+          color: rgba(255,255,255,0.85);
+          max-width: 720px;
+          font-size: 1.1rem;
+          line-height: 1.6;
+        }
+        .contact-hero .breadcrumb {
+          margin-bottom: 2rem;
+        }
+        .contact-hero .breadcrumb a,
+        .contact-hero .breadcrumb span {
+          color: rgba(255,255,255,0.7);
+        }
+        .contact-hero .breadcrumb a:hover {
+          color: #fff;
+        }
 
         /* Two column layout */
         .contact-layout { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; padding: 4rem 0; align-items: start; }
@@ -67,10 +88,10 @@ export default function ContactPage() {
             {/* Hero */}
             <div className="contact-hero">
                 <div className="container">
-                    <div className="breadcrumb" style={{ marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,.3)' }}>›</span>
-                        <span style={{ color: '#fff' }}>Contact</span>
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Contact</span>
                     </div>
                     <h1>Get in touch</h1>
                     <p>Whether you&apos;re looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.</p>

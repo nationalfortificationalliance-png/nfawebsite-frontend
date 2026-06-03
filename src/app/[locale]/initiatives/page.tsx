@@ -25,24 +25,31 @@ export default function InitiativesPage() {
     return (
         <main className="initiatives-page">
             <style>{`
+                /* Standard Hero - No Image */
                 .initiatives-hero {
-                    position: relative;
                     background: var(--wfp-navy);
-                    color: #fff;
-                    padding: 6rem 0 4rem;
-                    text-align: center;
+                    padding: 5rem 0 4rem;
                 }
-                .hero-title {
-                    font-size: 2.8rem;
-                    font-weight: 900;
+                .initiatives-hero h1 {
+                    color: #fff;
+                    max-width: 720px;
                     margin-bottom: 1rem;
                 }
-                .hero-subtitle {
-                    font-size: 1.15rem;
-                    color: rgba(255,255,255,0.7);
-                    max-width: 700px;
-                    margin: 0 auto;
+                .initiatives-hero p {
+                    color: rgba(255,255,255,0.85);
+                    max-width: 720px;
+                    font-size: 1.1rem;
                     line-height: 1.6;
+                }
+                .initiatives-hero .breadcrumb {
+                    margin-bottom: 2rem;
+                }
+                .initiatives-hero .breadcrumb a,
+                .initiatives-hero .breadcrumb span {
+                    color: rgba(255,255,255,0.7);
+                }
+                .initiatives-hero .breadcrumb a:hover {
+                    color: #fff;
                 }
 
                 .projects-grid {
@@ -138,13 +145,13 @@ export default function InitiativesPage() {
 
             <div className="initiatives-hero">
                 <div className="container">
-                    <div className="breadcrumb" style={{ justifyContent: 'center', marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,0.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-                        <span style={{ color: '#fff' }}>Initiatives</span>
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Initiatives</span>
                     </div>
-                    <h1 className="hero-title">NFA Projects & Initiatives</h1>
-                    <p className="hero-subtitle">
+                    <h1>NFA Projects & Initiatives</h1>
+                    <p>
                         Driving national impact through targeted programs, technological innovation, and strategic priority areas designed to eliminate hidden hunger.
                     </p>
                 </div>
