@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { locales } from '@/i18n';
+import { locales, type Locale } from '@/i18n';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getGlobalSettings } from "@/lib/api";
@@ -15,13 +15,6 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nfawebsite-frontend.vercel.app';
-
-  const localeNames = {
-    en: 'English',
-    ha: 'Hausa',
-    ig: 'Igbo',
-    yo: 'Yoruba',
-  };
 
   const canonicalUrl = locale === 'en' ? siteUrl : `${siteUrl}/${locale}`;
 
@@ -64,7 +57,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
 
   // Validate locale
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale as Locale)) {
     notFound();
   }
 

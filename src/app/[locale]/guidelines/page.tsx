@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import Icon, { IconName } from '@/components/Icon';
 import { getGuidelines } from '@/lib/api';
 import GuidelinesClient from '@/components/GuidelinesClient';
 
@@ -10,14 +8,6 @@ export const metadata: Metadata = {
     description: 'Access NFA regulatory guidelines, technical standards, and training resources for food fortification in Nigeria.',
 };
 export const revalidate = 60;
-
-const CATEGORIES = ['All', 'Regulatory', 'Technical', 'Operational', 'Training', 'Policy'];
-
-const QUICK_GUIDES: { icon: IconName; title: string; desc: string; type: string }[] = [
-    { icon: 'clipboard', title: 'NAFDAC Fortification Regulation', desc: 'The legal mandate for food fortification in Nigeria — applicable to all registered processors.', type: 'Regulatory' },
-    { icon: 'microscope', title: 'Technical Standards for Vitamin Premixes', desc: 'WHO-aligned vitamin and mineral premix specifications for wheat flour, maize flour, oil, and sugar.', type: 'Technical' },
-    { icon: 'settings', title: 'Food Processor Certification Handbook', desc: 'Step-by-step certification process, equipment requirements, and audit checklist for processors.', type: 'Operational' },
-    { icon: 'bar-chart', title: 'Quality Assurance & Testing Protocols', desc: 'In-line and end-product QA methods, acceptable ranges, and corrective action procedures.', type: 'Technical' },
     { icon: 'graduation-cap', title: 'Staff Training Curriculum', desc: 'Fortification training modules for plant operators, quality managers, and NAFDAC inspectors.', type: 'Training' },
     { icon: 'scroll-text', title: 'National Policy on Food Fortification', desc: 'The Federal Government of Nigeria\'s policy framework and multi-sectoral action plan for fortification.', type: 'Policy' },
 ];
@@ -79,7 +69,7 @@ export default async function GuidelinesPage() {
             <div style={{ background: 'var(--wfp-navy)', padding: '3.5rem 0' }}>
                 <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '2rem' }}>
                     <div>
-                        <h3 style={{ color: '#fff', marginBottom: '0.4rem' }}>Can't find what you need?</h3>
+                        <h3 style={{ color: '#fff', marginBottom: '0.4rem' }}>Can&apos;t find what you need?</h3>
                         <p style={{ color: 'rgba(255,255,255,.65)', margin: 0 }}>Contact the NFA Secretariat to request a specific document, translation, or technical guidance.</p>
                     </div>
                     <Link href="/contact" className="btn btn-white">Request a Document →</Link>

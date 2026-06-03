@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getTeamMembers, getStrapiMediaUrl } from '@/lib/api';
+import { getTeamMembers, getStrapiMediaUrl, type TeamMember } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'NFA Secretariat | National Fortification Alliance Nigeria',
@@ -195,12 +195,12 @@ export default async function SecretariatPage() {
                             <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                               <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span><strong>Note to Administrator:</strong> To manage this team, update the "Team Member" collection in Strapi and set the category to "Secretariat". Showing demonstration data below.</span>
+                            <span><strong>Note to Administrator:</strong> To manage this team, update the &quot;Team Member&quot; collection in Strapi and set the category to &quot;Secretariat&quot;. Showing demonstration data below.</span>
                         </div>
                     )}
 
                     <div className="members-grid">
-                        {(useFallback ? FALLBACK_SECRETARIAT : displayMembers).map((m: any) => (
+                        {(useFallback ? FALLBACK_SECRETARIAT : displayMembers).map((m: TeamMember) => (
                             <div key={m.id} className="member-card">
                                 <div className="member-image-wrap">
                                     <Image 

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import Icon from '@/components/Icon';
 import ContactForm from '@/components/ContactForm';
@@ -74,7 +73,7 @@ export default function ContactPage() {
                         <span style={{ color: '#fff' }}>Contact</span>
                     </div>
                     <h1>Get in touch</h1>
-                    <p>Whether you're looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.</p>
+                    <p>Whether you&apos;re looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.</p>
                 </div>
             </div>
 
@@ -148,11 +147,11 @@ export default function ContactPage() {
                     <div className="faq-grid">
                         <div className="faq-item">
                             <div className="faq-q">How do I start the NAFDAC certification process?</div>
-                            <div className="faq-a">We recommend downloading the "Food Processor Certification Handbook" from our Guidelines page. It contains the application forms, compliance checklists, and contact details for the NAFDAC Food Safety Directorate.</div>
+                            <div className="faq-a">We recommend downloading the &quot;Food Processor Certification Handbook&quot; from our Guidelines page. It contains the application forms, compliance checklists, and contact details for the NAFDAC Food Safety Directorate.</div>
                         </div>
                         <div className="faq-item">
                             <div className="faq-q">Where can I source approved vitamin premixes?</div>
-                            <div className="faq-a">The NFA partners with GAIN and trusted international suppliers to ensure high-quality premixes. Reach out via the contact form and select "Premix Supply" for an updated list of accredited vendors.</div>
+                            <div className="faq-a">The NFA partners with GAIN and trusted international suppliers to ensure high-quality premixes. Reach out via the contact form and select &quot;Premix Supply&quot; for an updated list of accredited vendors.</div>
                         </div>
                         <div className="faq-item">
                             <div className="faq-q">Is fortification mandatory in Nigeria?</div>
@@ -160,7 +159,7 @@ export default function ContactPage() {
                         </div>
                         <div className="faq-item">
                             <div className="faq-q">How can NGOs collaborate with the NFA?</div>
-                            <div className="faq-a">The NFA frequently collaborates with NGOs on consumer demand creation and grassroots nutrition awareness. Select "Partnership Inquiry" on the form to discuss alignment with current campaigns.</div>
+                            <div className="faq-a">The NFA frequently collaborates with NGOs on consumer demand creation and grassroots nutrition awareness. Select &quot;Partnership Inquiry&quot; on the form to discuss alignment with current campaigns.</div>
                         </div>
                     </div>
                 </div>

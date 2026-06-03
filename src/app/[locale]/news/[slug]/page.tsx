@@ -4,12 +4,19 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Icon, { IconName } from '@/components/Icon';
 import { getNewsBySlug, getAllNews, getStrapiMediaUrl } from '@/lib/api';
-import { getLocale } from 'next-intl/server';
 import { generateSEOMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/components/SEO';
 import { locales } from '@/i18n';
 
 interface Props {
     params: Promise<{ slug: string; locale: string }>;
+}
+
+interface ArticleWithSeo {
+    seo?: {
+        metaTitle?: string;
+        metaDescription?: string;
+        shareImage?: { url?: string };
+    };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -18,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!article) return { title: 'Article Not Found' };
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nfawebsite-frontend.vercel.app';
-    const seo = (article as any).seo;
+    const seo = (article as ArticleWithSeo).seo;
     const title = seo?.metaTitle || article.title;
     const description = seo?.metaDescription || article.excerpt || article.title;
     const ogImage = seo?.shareImage?.url ? getStrapiMediaUrl(seo.shareImage.url) : getStrapiMediaUrl(article.image?.url);

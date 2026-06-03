@@ -166,7 +166,7 @@ export default async function AboutPage() {
             <div className="challenge-panel">
                 <div className="container">
                     <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>The Scale of the Problem</p>
-                    <h2 style={{ color: '#fff' }}>Nigeria's Hidden Hunger Crisis</h2>
+                    <h2 style={{ color: '#fff' }}>Nigeria&apos;s Hidden Hunger Crisis</h2>
                     <div className="challenge-row" style={{ marginTop: '2.5rem' }}>
                         <div className="challenge-item">
                             <div className="challenge-big">37%</div>
@@ -199,7 +199,7 @@ export default async function AboutPage() {
                         <div className="stats-card">
                             <div className="stats-val">2002</div>
                             <div className="stats-title">Programme Initiation</div>
-                            <div className="stats-meta">The year Nigeria's mandatory food fortification programme was officially launched.</div>
+                            <div className="stats-meta">The year Nigeria&apos;s mandatory food fortification programme was officially launched.</div>
                             <div className="stats-divider" />
                             <div className="stats-sub">
                                 <span className="stats-sub-label">NFA Established</span>

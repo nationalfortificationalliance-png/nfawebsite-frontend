@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Icon from '@/components/Icon';
 import NewsCard from '@/components/NewsCard';
-import { getAllNews } from '@/lib/api';
+import { getAllNews, type NewsEvent } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 
 export const metadata: Metadata = {
@@ -121,7 +121,7 @@ export default async function NewsPage() {
                     )}
 
                     <div className="grid-3">
-                        {news.map((article: any) => (
+                        {news.map((article: NewsEvent) => (
                             <NewsCard key={article.id} article={article} />
                         ))}
                     </div>

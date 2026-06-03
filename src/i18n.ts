@@ -14,10 +14,12 @@ export const localeNames: Record<Locale, string> = {
 
 export default getRequestConfig(async ({ locale }) => {
   // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as Locale)) notFound();
+  if (!locale || !locales.includes(locale as Locale)) {
+    notFound();
+  }
 
   return {
-    locale,
+    locale: locale,
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });
