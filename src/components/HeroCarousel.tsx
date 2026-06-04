@@ -30,7 +30,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
     {
       id: 1,
       documentId: 'fallback-1',
-      title: 'Combating Hidden Hunger in Nigeria\nThrough Food Fortification',
+      title: 'Combating Hidden Hunger in Nigeria Through Food Fortification',
       subtitle: 'The National Fortification Alliance (NFA) is driving coordinated national efforts to improve nutrition outcomes through the production, regulation, monitoring, and promotion of adequately fortified foods across Nigeria.',
       link_url: '/about',
       link_text: 'Learn More',
@@ -39,7 +39,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
     {
       id: 2,
       documentId: 'fallback-2',
-      title: 'Strengthening National Food Systems\nfor Better Nutrition',
+      title: 'Strengthening National Food Systems for Better Nutrition',
       subtitle: 'The NFA works with government agencies, industries, development partners, academia, and civil society to improve compliance, quality assurance, and accessibility of fortified foods nationwide.',
       link_url: '/initiatives',
       link_text: 'Our Work',
@@ -48,7 +48,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
     {
       id: 3,
       documentId: 'fallback-3',
-      title: 'Partnerships Driving\nSustainable Nutrition Impact',
+      title: 'Partnerships Driving Sustainable Nutrition Impact',
       subtitle: 'Through strategic collaboration, innovation, and evidence-based interventions, the NFA supports Nigeria\'s efforts to reduce micronutrient deficiencies and improve public health outcomes.',
       link_url: '/partners',
       link_text: 'Partners',
@@ -57,7 +57,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
     {
       id: 4,
       documentId: 'fallback-4',
-      title: 'Advancing Regulatory Compliance\nand Food Quality',
+      title: 'Advancing Regulatory Compliance and Food Quality',
       subtitle: 'The Alliance supports coordinated monitoring, standards enforcement, laboratory strengthening, and digital compliance systems for fortified foods in Nigeria.',
       link_url: '/guidelines',
       link_text: 'Regulatory Framework',
@@ -66,7 +66,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
     {
       id: 5,
       documentId: 'fallback-5',
-      title: 'Innovation and Research\nfor Nutrition Improvement',
+      title: 'Innovation and Research for Nutrition Improvement',
       subtitle: 'The NFA supports emerging initiatives including bouillon fortification, rice fortification, digital traceability systems, laboratory strengthening, and micronutrient innovation projects.',
       link_url: '/initiatives',
       link_text: 'Projects & Initiatives',
@@ -76,7 +76,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
 
   const count = displaySlides.length;
   const next = useCallback(() => setCurrent((c) => (c + 1) % count), [count]);
-  const prev = () => setCurrent((c) => (c - 1 + count) % count);
+  const prev = useCallback(() => setCurrent((c) => (c - 1 + count) % count), [count]);
 
   useEffect(() => {
     const t = setInterval(next, 6000);
@@ -84,138 +84,265 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
   }, [next]);
 
   return (
-    <section style={{ position: 'relative', height: '88vh', minHeight: '750px', maxHeight: '1200px', overflow: 'hidden' }}>
+    <section className="hero-carousel" aria-label="Featured fortification highlights">
       <style>{`
-        .hero-slide {
-          position: absolute; inset: 0;
-          opacity: 0; transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 5%;
+        .hero-carousel {
+          position: relative;
+          width: 100%;
+          min-height: 500px;
+          height: 65vh;
+          max-height: 700px;
           overflow: hidden;
+          background: var(--wfp-navy);
         }
-        .hero-slide.active { opacity: 1; z-index: 2; }
-        
-        .hero-slide img {
+        .hero-carousel-slide {
           position: absolute;
           inset: 0;
-          width: 100%; height: 100%; object-fit: cover;
-          transform: scale(1.15) translateY(-2%);
-          transform-origin: center center;
-          transition: transform 10s cubic-bezier(0.16, 1, 0.3, 1);
-          z-index: 0;
-        }
-        .hero-slide.active img { transform: scale(1) translateY(0); }
-        
-        .hero-image-overlay {
-          position: absolute; inset: 0;
-          background: linear-gradient(
-            to top, 
-            rgba(0, 0, 0, 0.9) 0%, 
-            rgba(0, 0, 0, 0.5) 40%, 
-            rgba(0, 0, 0, 0.1) 100%
-          );
-          z-index: 1;
-        }
-
-        /* Content Panel - Completely sheer, no box */
-        .hero-content-panel {
-          position: relative;
-          z-index: 2;
-          max-width: 900px;
-          text-align: center;
-          padding: 4rem 2rem; /* Added vertical padding for better spacing */
-          margin-top: 5rem; /* Increased margin to push away from header */
-        }
-
-        /* Text Animations inside the block */
-        .hero-eyebrow, .hero-title, .hero-subtitle, .hero-actions {
           opacity: 0;
-          transform: translateY(30px);
-          transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .hero-slide.active .hero-eyebrow { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
-        .hero-slide.active .hero-title   { opacity: 1; transform: translateY(0); transition-delay: 0.4s; }
-        .hero-slide.active .hero-subtitle{ opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
-        .hero-slide.active .hero-actions { opacity: 1; transform: translateY(0); transition-delay: 0.6s; }
-        
-        .hero-eyebrow {
-          display: inline-flex; align-items: center; gap: 0.75rem; justify-content: center;
-          font-size: 0.85rem; font-weight: 800; letter-spacing: 0.2em;
-          text-transform: uppercase; color: var(--wfp-gold);
-          margin-bottom: 1.5rem;
-        }
-        .hero-eyebrow-dot {
-          width: 6px; height: 6px; border-radius: 50%;
-          background: var(--wfp-gold); flex-shrink: 0;
-          box-shadow: 0 0 12px var(--wfp-gold);
-        }
-        .hero-title {
-          font-size: clamp(2.5rem, 5vw, 4.5rem);
-          font-weight: 900; color: #ffffff; line-height: 1.05;
-          letter-spacing: -0.03em; white-space: pre-line;
-          margin-bottom: 1.5rem;
-          text-shadow: 0 12px 48px rgba(0,0,0,0.5);
-        }
-        .hero-subtitle {
-          font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-          color: rgba(255, 255, 255, 0.85); line-height: 1.6;
-          max-width: 720px;
-          margin: 0 auto 3rem auto;
-          text-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-        .hero-actions {
-          display: flex; gap: 1.25rem; flex-wrap: wrap; justify-content: center;
-        }
-
-        /* Premium Controls */
-        .hero-controls {
-          position: absolute; bottom: 0; left: 0; width: 100%;
-          display: flex; align-items: center; justify-content: space-between;
-          padding: 3rem 6%;
-          z-index: 10;
+          z-index: 0;
+          transition: opacity 1000ms ease;
           pointer-events: none;
         }
-        .hero-controls > * { pointer-events: auto; }
-        
-        .hero-dots { display: flex; gap: 0.75rem; align-items: center; }
-        .hero-dot {
-          width: 12px; height: 12px; border-radius: 50%;
-          background: transparent; border: 2px solid rgba(255,255,255,0.4); padding: 0;
-          cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .hero-carousel-slide.active {
+          opacity: 1;
+          z-index: 1;
+          pointer-events: auto;
         }
-        .hero-dot.active { background: #fff; border-color: #fff; transform: scale(1.2); box-shadow: 0 0 16px rgba(255,255,255,0.6); }
-        
-        .hero-arrows { display: flex; gap: 1rem; }
-        .hero-arrow {
-          width: 64px; height: 64px; border-radius: 50%;
-          border: 1px solid rgba(255,255,255,0.15);
-          background: rgba(255,255,255,0.05); /* Extremely sheer */
-          backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-          color: #fff; font-size: 1.5rem; display: flex;
-          align-items: center; justify-content: center;
-          cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .hero-carousel-image {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          max-width: none;
+          object-fit: cover;
+          transform: scale(1.08);
+          transition: transform 8000ms ease;
         }
-        .hero-arrow:hover { 
-          background: rgba(255,255,255,1); 
-          color: var(--wfp-navy); 
-          transform: scale(1.05);
-          box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        .hero-carousel-slide.active .hero-carousel-image {
+          transform: scale(1);
         }
-
-        /* Progress line */
-        .hero-progress {
-          position: absolute; bottom: 0; left: 0; height: 3px;
+        .hero-carousel-overlay {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(90deg, rgba(0,0,0,0.64) 0%, rgba(0,0,0,0.42) 46%, rgba(0,0,0,0.24) 100%),
+            linear-gradient(0deg, rgba(6,78,59,0.5) 0%, rgba(6,78,59,0) 48%);
+          z-index: 1;
+        }
+        .hero-carousel-glow {
+          position: absolute;
+          border-radius: 999px;
+          filter: blur(52px);
+          opacity: 0.45;
+          z-index: 1;
+          pointer-events: none;
+        }
+        .hero-carousel-glow.green {
+          top: 5rem;
+          right: 7%;
+          width: 9rem;
+          height: 9rem;
+          background: rgba(0, 135, 81, 0.45);
+          animation: heroPulse 8s ease-in-out infinite;
+        }
+        .hero-carousel-glow.gold {
+          bottom: 7rem;
+          left: 8%;
+          width: 11rem;
+          height: 11rem;
+          background: rgba(245, 158, 11, 0.34);
+          animation: heroPulse 10s ease-in-out 1.5s infinite;
+        }
+        .hero-carousel-content {
+          position: relative;
+          z-index: 2;
+          min-height: 500px;
+          height: 65vh;
+          max-height: 700px;
+          display: flex;
+          align-items: center;
+          padding: 4rem clamp(1.5rem, 6vw, 5rem) 4rem;
+        }
+        .hero-carousel-copy {
+          max-width: 860px;
+          color: #fff;
+        }
+        .hero-carousel-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 1.25rem;
+          color: var(--wfp-gold);
+          font-size: 0.82rem;
+          font-weight: 800;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+        .hero-carousel-eyebrow::before {
+          content: '';
+          width: 8px;
+          height: 8px;
+          border-radius: 999px;
+          background: var(--wfp-gold);
+          box-shadow: 0 0 18px rgba(245,158,11,0.8);
+        }
+        .hero-carousel-title {
+          color: #fff;
+          font-size: clamp(1.75rem, 3.5vw, 3rem);
+          line-height: 1.15;
+          letter-spacing: 0;
+          font-weight: 800;
+          max-width: 900px;
+          margin: 0 0 1rem;
+          text-shadow: 0 18px 50px rgba(0,0,0,0.45);
+        }
+        .hero-carousel-subtitle {
+          max-width: 650px;
+          color: rgba(255,255,255,0.9);
+          font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+          line-height: 1.6;
+          margin: 0 0 1.75rem;
+          text-shadow: 0 8px 24px rgba(0,0,0,0.34);
+        }
+        .hero-carousel-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+        .hero-carousel-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 150px;
+          min-height: 50px;
+          padding: 0.85rem 1.5rem;
+          border-radius: 8px;
+          font-size: 0.92rem;
+          font-weight: 800;
+          letter-spacing: 0.02em;
+          line-height: 1;
+          transition: transform 250ms ease, background 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+        }
+        .hero-carousel-button.primary {
+          color: var(--wfp-navy);
+          background: var(--wfp-gold);
+          box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+        }
+        .hero-carousel-button.secondary {
+          color: #fff;
+          border: 2px solid rgba(255,255,255,0.82);
+          background: rgba(255,255,255,0.12);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+        }
+        .hero-carousel-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 20px 48px rgba(0,0,0,0.28);
+        }
+        .hero-carousel-dots {
+          position: absolute;
+          right: clamp(1.25rem, 5vw, 4rem);
+          bottom: 2rem;
+          z-index: 3;
+          display: flex;
+          align-items: center;
+          gap: 0.55rem;
+        }
+        .hero-carousel-dot {
+          width: 12px;
+          height: 12px;
+          border: 0;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.46);
+          padding: 0;
+          transition: width 250ms ease, background 250ms ease;
+        }
+        .hero-carousel-dot.active {
+          width: 34px;
+          background: #fff;
+        }
+        .hero-carousel-arrows {
+          position: absolute;
+          left: clamp(1.25rem, 5vw, 4rem);
+          bottom: 1.45rem;
+          z-index: 3;
+          display: flex;
+          gap: 0.75rem;
+        }
+        .hero-carousel-arrow {
+          width: 48px;
+          height: 48px;
+          border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.45);
+          background: rgba(255,255,255,0.12);
+          color: #fff;
+          font-size: 1.25rem;
+          line-height: 1;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          transition: background 250ms ease, color 250ms ease, transform 250ms ease;
+        }
+        .hero-carousel-arrow:hover {
+          background: #fff;
+          color: var(--wfp-navy);
+          transform: translateY(-2px);
+        }
+        .hero-carousel-progress {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          z-index: 3;
+          height: 3px;
           background: linear-gradient(90deg, var(--wfp-gold), var(--wfp-green));
-          animation: heroProgress 6s linear infinite;
+          animation: heroProgress 6000ms linear infinite;
         }
-        @keyframes heroProgress { from { width: 0; } to { width: 100%; } }
-
+        @keyframes heroProgress {
+          from { width: 0; }
+          to { width: 100%; }
+        }
+        @keyframes heroPulse {
+          0%, 100% { transform: scale(0.92); opacity: 0.35; }
+          50% { transform: scale(1.12); opacity: 0.55; }
+        }
         @media (max-width: 900px) {
-          .hero-content-panel { padding: 0 1rem; margin-top: 2rem; }
-          .hero-controls { padding: 2rem; flex-direction: column-reverse; gap: 2rem; justify-content: center; }
-          .hero-arrows { display: none; } /* Hide arrows on mobile for clean UI */
+          .hero-carousel {
+            min-height: 620px;
+            height: 82vh;
+          }
+          .hero-carousel-content {
+            min-height: 620px;
+            height: 82vh;
+            padding-top: 6rem;
+            padding-bottom: 6.5rem;
+          }
+          .hero-carousel-subtitle {
+            margin-bottom: 2rem;
+          }
+          .hero-carousel-arrows {
+            display: none;
+          }
+          .hero-carousel-dots {
+            left: 1.5rem;
+            right: auto;
+            bottom: 1.75rem;
+          }
+        }
+        @media (max-width: 560px) {
+          .hero-carousel {
+            min-height: 560px;
+            height: 78vh;
+          }
+          .hero-carousel-content {
+            min-height: 560px;
+            height: 78vh;
+            padding: 5.5rem 1.25rem 5.75rem;
+          }
+          .hero-carousel-title {
+            font-size: clamp(1.75rem, 8.2vw, 2.4rem);
+          }
+          .hero-carousel-button {
+            width: 100%;
+          }
         }
       `}</style>
 
@@ -227,35 +354,45 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
         const heroImg = HERO_IMAGES[i % HERO_IMAGES.length];
 
         return (
-          <div key={slide.id} className={`hero-slide ${i === current ? 'active' : ''}`}>
+          <div
+            key={slide.id}
+            className={`hero-carousel-slide ${i === current ? 'active' : ''}`}
+            aria-hidden={i !== current}
+          >
             {/* Background Image */}
             <Image
               src={hasStrapi ? strapiImg : heroImg.src}
+              className="hero-carousel-image"
               alt={slideData.title}
               fill
               priority={i === 0}
-              quality={90}
               sizes="100vw"
-              style={{ objectFit: 'cover' }}
             />
-            <div className="hero-image-overlay" />
 
-            <div className="hero-content-panel">
-              <div className="hero-text-content">
-                <p className="hero-eyebrow">
-                  <span className="hero-eyebrow-dot" />
-                  National Fortification Project
-                </p>
-                <h1 className="hero-title">{slideData.title}</h1>
-                {slideData.subtitle && <p className="hero-subtitle">{slideData.subtitle}</p>}
-                <div className="hero-actions">
+            <div className="hero-carousel-overlay" />
+            <div className="hero-carousel-glow green" />
+            <div className="hero-carousel-glow gold" />
+
+            {/* Content */}
+            <div className="hero-carousel-content">
+              <div className="hero-carousel-copy">
+                <p className="hero-carousel-eyebrow">National Fortification Project</p>
+                <h1 className="hero-carousel-title">{slideData.title}</h1>
+                {slideData.subtitle && <p className="hero-carousel-subtitle">{slideData.subtitle}</p>}
+                <div className="hero-carousel-actions">
                   {slideData.link_url && (
-                    <Link href={slideData.link_url} className="btn btn-green btn-lg" style={{ minWidth: '180px' }}>
-                      {slideData.link_text || 'Learn More'}
+                    <Link
+                      href={slideData.link_url}
+                      className="hero-carousel-button primary"
+                    >
+                      {slideData.link_text?.toUpperCase() || 'LEARN MORE'}
                     </Link>
                   )}
-                  <Link href="/guidelines" className="btn btn-outline-white btn-lg" style={{ minWidth: '180px', background: 'rgba(255,255,255,0.08)' }}>
-                    📄 Technical Guidelines
+                  <Link
+                    href="/guidelines"
+                    className="hero-carousel-button secondary"
+                  >
+                    GUIDELINES
                   </Link>
                 </div>
               </div>
@@ -264,23 +401,24 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
         );
       })}
 
-      <div className="hero-controls">
-        <div className="hero-dots">
-          {displaySlides.map((_, i) => (
-            <button
-              key={`dot-${i}`}
-              className={`hero-dot ${i === current ? 'active' : ''}`}
-              onClick={() => setCurrent(i)}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
-        <div className="hero-arrows">
-          <button className="hero-arrow" onClick={prev} aria-label="Previous slide">←</button>
-          <button className="hero-arrow" onClick={next} aria-label="Next slide">→</button>
-        </div>
-        <div className="hero-progress" key={`progress-${current}`} />
+      <div className="hero-carousel-arrows">
+        <button className="hero-carousel-arrow" type="button" onClick={prev} aria-label="Previous slide">‹</button>
+        <button className="hero-carousel-arrow" type="button" onClick={next} aria-label="Next slide">›</button>
       </div>
+
+      {/* Carousel Navigation Dots */}
+      <div className="hero-carousel-dots">
+        {displaySlides.map((_, i) => (
+          <button
+            key={`dot-${i}`}
+            type="button"
+            onClick={() => setCurrent(i)}
+            className={`hero-carousel-dot ${i === current ? 'active' : ''}`}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+      <div className="hero-carousel-progress" key={`progress-${current}`} />
     </section>
   );
 }

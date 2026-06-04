@@ -1,8 +1,8 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { NewsEvent } from '@/lib/api';
+import { getStrapiMediaUrl, NewsEvent } from '@/lib/api';
 import Icon from './Icon';
 
 interface NewsCarouselProps {
@@ -20,26 +20,20 @@ export default function NewsCarousel({
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const itemsToShow = {
-    desktop: 3,
-    tablet: 2,
-    mobile: 1
-  };
+  const desktopItemsToShow = 2;
+  const maxIndex = Math.max(0, news.length - desktopItemsToShow);
 
-  const next = () => {
+  const next = useCallback(() => {
     setCurrentIndex((prev) => {
-      // Don't go beyond the last set of visible cards
-      const maxIndex = Math.max(0, news.length - itemsToShow.desktop);
       return prev >= maxIndex ? 0 : prev + 1;
     });
-  };
+  }, [maxIndex]);
 
-  const prev = () => {
+  const prev = useCallback(() => {
     setCurrentIndex((prev) => {
-      const maxIndex = Math.max(0, news.length - itemsToShow.desktop);
       return prev <= 0 ? maxIndex : prev - 1;
     });
-  };
+  }, [maxIndex]);
 
   const goTo = (index: number) => {
     setCurrentIndex(index);
@@ -51,7 +45,7 @@ export default function NewsCarousel({
 
     const timer = setInterval(next, scrollInterval);
     return () => clearInterval(timer);
-  }, [autoScroll, scrollInterval, isHovered, news.length, currentIndex]);
+  }, [autoScroll, scrollInterval, isHovered, news.length, next]);
 
   if (news.length === 0) return null;
 
@@ -71,14 +65,16 @@ export default function NewsCarousel({
         }
 
         .news-carousel-track {
+          --news-card-gap: 2rem;
+          --news-carousel-step: calc(50% + (var(--news-card-gap) / 2));
           display: flex;
           transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-          gap: 2rem;
+          gap: var(--news-card-gap);
           padding: 0 1rem;
         }
 
         .news-carousel-card {
-          flex: 0 0 calc(33.333% - 1.35rem);
+          flex: 0 0 calc(50% - (var(--news-card-gap) / 2));
           min-width: 0;
           background: #fff;
           border-radius: 20px;
@@ -117,7 +113,7 @@ export default function NewsCarousel({
         .news-card-image-wrapper {
           position: relative;
           width: 100%;
-          height: 200px;
+          height: 260px;
           background: var(--wfp-navy);
           overflow: hidden;
         }
@@ -139,6 +135,18 @@ export default function NewsCarousel({
 
         .news-carousel-card:hover .news-card-image-wrapper img {
           transform: scale(1.08);
+        }
+
+        .news-card-image-empty {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: rgba(255,255,255,0.28);
+          background:
+            linear-gradient(135deg, rgba(0,135,81,0.3), rgba(6,78,59,0.95)),
+            var(--wfp-navy);
         }
 
         .news-card-badge {
@@ -279,10 +287,6 @@ export default function NewsCarousel({
 
         /* Responsive */
         @media (max-width: 1024px) {
-          .news-carousel-card {
-            flex: 0 0 calc(50% - 1rem);
-          }
-
           .carousel-nav.left {
             left: 0;
           }
@@ -293,12 +297,22 @@ export default function NewsCarousel({
         }
 
         @media (max-width: 640px) {
-          .news-carousel-card {
-            flex: 0 0 calc(100% - 2rem);
+          .news-carousel-container {
+            padding: 0 1rem;
           }
 
           .news-carousel-track {
-            gap: 1rem;
+            --news-card-gap: 1rem;
+            --news-carousel-step: calc(100% + var(--news-card-gap));
+            padding: 0;
+          }
+
+          .news-carousel-card {
+            flex: 0 0 100%;
+          }
+
+          .news-card-image-wrapper {
+            height: 220px;
           }
 
           .carousel-nav {
@@ -317,11 +331,12 @@ export default function NewsCarousel({
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Navigation Buttons */}
-        {news.length > 3 && (
+        {news.length > desktopItemsToShow && (
           <>
             <div className="carousel-nav left">
               <button
                 className="carousel-nav-btn"
+                type="button"
                 onClick={prev}
                 aria-label="Previous"
               >
@@ -331,6 +346,7 @@ export default function NewsCarousel({
             <div className="carousel-nav right">
               <button
                 className="carousel-nav-btn"
+                type="button"
                 onClick={next}
                 aria-label="Next"
               >
@@ -345,13 +361,12 @@ export default function NewsCarousel({
           ref={containerRef}
           className="news-carousel-track"
           style={{
-            transform: `translateX(-${currentIndex * (100 / itemsToShow.desktop)}%)`
-          }}
+            '--news-current-index': currentIndex,
+            transform: `translateX(calc(-1 * var(--news-current-index) * var(--news-carousel-step)))`,
+          } as CSSProperties}
         >
           {news.map((item) => {
-            const imageUrl = item.image?.url
-              ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nfawebsite-backend-production.up.railway.app'}${item.image.url}`
-              : '/hero-1.png';
+            const imageUrl = item.image?.url ? getStrapiMediaUrl(item.image.url) : null;
 
             return (
               <Link
@@ -360,12 +375,19 @@ export default function NewsCarousel({
                 className="news-carousel-card"
               >
                 <div className="news-card-image-wrapper">
-                  <Image
-                    src={imageUrl}
-                    alt={item.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
+                  {imageUrl ? (
+                    <Image
+                      src={imageUrl}
+                      alt={item.image?.alternativeText || item.title}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                  ) : (
+                    <div className="news-card-image-empty" aria-hidden="true">
+                      <Icon name="newspaper" size={44} />
+                    </div>
+                  )}
                   <div className="news-card-badge">
                     {item.category}
                   </div>
@@ -400,10 +422,11 @@ export default function NewsCarousel({
         {/* Dots Navigation */}
         {news.length > 1 && (
           <div className="carousel-dots">
-            {news.slice(0, Math.min(news.length, 6)).map((_, index) => (
+            {Array.from({ length: maxIndex + 1 }).map((_, index) => (
               <button
                 key={index}
                 className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
+                type="button"
                 onClick={() => goTo(index)}
                 aria-label={`Go to slide ${index + 1}`}
               />

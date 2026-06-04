@@ -4,47 +4,50 @@ import AnimatedSection, { AnimatedGrid } from './AnimatedSection';
 import NumberCounter from './NumberCounter';
 import Icon, { IconName } from './Icon';
 
-// Stats section with animated counters
+// Stats section with animated counters - Original clean grid style
 export function AnimatedStats({ stats }: { stats: { number: string; label: string; icon: IconName }[] }) {
   return (
-    <AnimatedSection animation="fade-up" delay={0}>
-      <div className="stats-grid">
-        {stats.map((s, i) => {
-          // Extract number from string like "12M+" or "200+" or "36"
+    <div className="stats-grid" style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
+      {stats.map((s, i) => {
+        // Check if it's a range like "60-70%" or a single value
+        const isRange = s.number.includes('-');
+
+        let numValue = 0;
+        let suffix = '';
+        let prefix = '';
+
+        if (!isRange) {
+          // Extract number from string like "12M+", "200+", "36%", "$1.5B"
           const match = s.number.match(/(\d+\.?\d*)/);
-          const numValue = match ? parseFloat(match[1]) : 0;
-          const hasPlus = s.number.includes('+');
-          const hasM = s.number.includes('M');
-          const hasB = s.number.includes('B');
-          const hasDollar = s.number.includes('$');
+          numValue = match ? parseFloat(match[1]) : 0;
 
-          let suffix = '';
-          if (hasPlus) suffix = '+';
-          if (hasM) suffix = 'M+';
-          if (hasB) suffix = 'B';
+          if (s.number.includes('+')) suffix = '+';
+          if (s.number.includes('M')) suffix = 'M' + (s.number.includes('+') ? '+' : '');
+          if (s.number.includes('B')) suffix = 'B';
+          if (s.number.includes('%')) suffix = '%';
+          if (s.number.includes('$')) prefix = '$';
+        }
 
-          let prefix = '';
-          if (hasDollar) prefix = '$';
-
-          return (
-            <div key={s.label} className="stat-item scroll-reveal reveal-fade-up-scale">
-              <div className="stat-icon" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--wfp-gold)' }}>
-                <Icon name={s.icon} size={40} />
-              </div>
-              <div className="stat-number text-gradient">
-                {prefix}
-                <NumberCounter
-                  end={numValue}
-                  suffix={suffix}
-                  duration={2000}
-                />
-              </div>
-              <div className="stat-label">{s.label}</div>
+        return (
+          <div key={s.label} className="stat-item">
+            <div className="stat-icon" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--wfp-gold)' }}>
+              <Icon name={s.icon} size={40} />
             </div>
-          );
-        })}
-      </div>
-    </AnimatedSection>
+            <div className="stat-number text-gradient">
+              {isRange ? (
+                s.number
+              ) : (
+                <>
+                  {prefix}
+                  <NumberCounter end={numValue} suffix={suffix} duration={2000} />
+                </>
+              )}
+            </div>
+            <div className="stat-label">{s.label}</div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
@@ -111,5 +114,92 @@ export function AnimatedNewsGrid({ children }: { children: ReactNode }) {
     <AnimatedGrid className="grid-3" staggerDelay={120}>
       {children}
     </AnimatedGrid>
+  );
+}
+
+// Challenge Stats - Asedo Modern Style with Hover Effects
+export function AnimatedChallengeStats({ stats }: { stats: { number: string; label: string; icon: IconName }[] }) {
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: '2rem'
+    }}>
+      {stats.map((s, i) => {
+        const colors = ['var(--wfp-green)', 'var(--wfp-gold)', 'var(--wfp-blue)', 'var(--wfp-navy)'];
+        const color = colors[i % colors.length];
+
+        return (
+          <div
+            key={s.label}
+            className="challenge-stat-card"
+            style={{
+              padding: '2.5rem 2rem',
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '24px',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04)',
+              transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              position: 'relative',
+              overflow: 'hidden',
+              border: '1px solid rgba(255, 255, 255, 0.8)',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.12)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04)';
+            }}
+          >
+            {/* Top border accent */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: `linear-gradient(90deg, ${color}, var(--wfp-gold))`
+            }}></div>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '1.5rem',
+              color: color
+            }}>
+              <Icon name={s.icon} size={48} />
+            </div>
+            <div style={{
+              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+              fontWeight: '900',
+              background: `linear-gradient(135deg, ${color}, var(--wfp-gold))`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '-0.04em',
+              lineHeight: '1',
+              marginBottom: '1rem',
+              textAlign: 'center'
+            }}>
+              {s.number}
+            </div>
+            <div style={{
+              fontSize: '0.95rem',
+              textTransform: 'none',
+              letterSpacing: '0',
+              color: 'var(--text-primary)',
+              fontWeight: '600',
+              lineHeight: '1.5',
+              textAlign: 'center'
+            }}>
+              {s.label}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }

@@ -92,6 +92,27 @@ export interface Partner {
     partner_type: string;
 }
 
+export interface Quote {
+    id: number;
+    documentId: string;
+    text: string;
+    author_name: string;
+    author_title: string;
+    author_organization?: string;
+    author_image?: StrapiImage;
+    is_active: boolean;
+}
+
+export interface Stat {
+    id: number;
+    documentId: string;
+    number: string;
+    label: string;
+    icon: string;
+    order: number;
+    is_active: boolean;
+}
+
 export interface TeamMember {
     id: number;
     documentId: string;
@@ -160,20 +181,24 @@ export async function getAllNews(page = 1, pageSize = 12): Promise<{ data: NewsE
 }
 
 export async function getFeaturedNews(): Promise<NewsEvent[]> {
-    const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
+    const featured = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
         'filters[is_featured][$eq]': 'true',
         'sort': 'date:desc',
         'populate': 'image,gallery',
         'pagination[pageSize]': '6',
     });
 
-    // Use mock data as fallback if no data from Strapi
-    if (!res?.data || res.data.length === 0) {
-        const { MOCK_NEWS } = await import('./mockData');
-        return MOCK_NEWS.filter(n => n.is_featured).slice(0, 6);
+    if (featured?.data?.length) {
+        return featured.data;
     }
 
-    return res.data;
+    const latest = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
+        'sort': 'date:desc',
+        'populate': 'image,gallery',
+        'pagination[pageSize]': '6',
+    });
+
+    return latest?.data || [];
 }
 
 export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
@@ -238,5 +263,23 @@ export async function getFAQs(category?: string): Promise<FAQ[]> {
         params['filters[category][$eq]'] = category;
     }
     const res = await fetchAPI<{ data: FAQ[] }>('/faqs', params);
+    return res?.data || [];
+}
+
+export async function getFeaturedQuote(): Promise<Quote | null> {
+    const res = await fetchAPI<{ data: Quote[] }>('/quotes', {
+        'filters[is_active][$eq]': 'true',
+        'populate': 'author_image',
+        'pagination[pageSize]': '1',
+    });
+    return res?.data?.[0] || null;
+}
+
+export async function getStats(): Promise<Stat[]> {
+    const res = await fetchAPI<{ data: Stat[] }>('/stats', {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:asc',
+        'pagination[pageSize]': '10',
+    });
     return res?.data || [];
 }
