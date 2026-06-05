@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Icon from '@/components/Icon';
 import ContactForm from '@/components/ContactForm';
 
@@ -12,9 +13,29 @@ export default function ContactPage() {
     return (
         <>
             <style>{`
-        /* Standard Hero - No Image */
+        /* Hero with Image */
         .contact-hero {
-          background: var(--wfp-navy);
+          position: relative;
+          min-height: 420px;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+        .contact-hero-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .contact-hero-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          z-index: 1;
+        }
+        .contact-hero-content {
+          position: relative;
+          z-index: 2;
           padding: 5rem 0 4rem;
         }
         .contact-hero h1 {
@@ -23,17 +44,17 @@ export default function ContactPage() {
           margin-bottom: 1rem;
         }
         .contact-hero p {
-          color: rgba(255,255,255,0.85);
+          color: rgba(255,255,255,0.95);
           max-width: 720px;
-          font-size: 1.1rem;
-          line-height: 1.6;
+          font-size: 1.15rem;
+          line-height: 1.7;
         }
         .contact-hero .breadcrumb {
           margin-bottom: 2rem;
         }
         .contact-hero .breadcrumb a,
         .contact-hero .breadcrumb span {
-          color: rgba(255,255,255,0.7);
+          color: rgba(255,255,255,0.8);
         }
         .contact-hero .breadcrumb a:hover {
           color: #fff;
@@ -87,7 +108,16 @@ export default function ContactPage() {
 
             {/* Hero */}
             <div className="contact-hero">
-                <div className="container">
+                <div className="contact-hero-bg">
+                    <Image
+                        src="/about-hero.png"
+                        alt="Contact NFA"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container contact-hero-content">
                     <div className="breadcrumb">
                         <Link href="/">Home</Link>
                         <span className="breadcrumb-sep">›</span>

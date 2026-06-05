@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getFAQs } from '@/lib/api';
 import Icon from '@/components/Icon';
 
@@ -78,9 +79,29 @@ export default async function FAQPage() {
     return (
         <>
             <style>{`
-                /* Standard Hero - No Image */
+                /* Hero with Image */
                 .faq-hero {
-                    background: var(--wfp-navy);
+                    position: relative;
+                    min-height: 420px;
+                    display: flex;
+                    align-items: center;
+                    overflow: hidden;
+                }
+                .faq-hero-bg {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                }
+                .faq-hero-bg::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+                    z-index: 1;
+                }
+                .faq-hero-content {
+                    position: relative;
+                    z-index: 2;
                     padding: 5rem 0 4rem;
                 }
                 .faq-hero h1 {
@@ -89,10 +110,10 @@ export default async function FAQPage() {
                     margin-bottom: 1rem;
                 }
                 .faq-hero p {
-                    color: rgba(255,255,255,0.85);
+                    color: rgba(255,255,255,0.95);
                     max-width: 720px;
-                    font-size: 1.1rem;
-                    line-height: 1.6;
+                    font-size: 1.15rem;
+                    line-height: 1.7;
                 }
                 .faq-hero .breadcrumb {
                     margin-bottom: 2rem;
@@ -166,7 +187,16 @@ export default async function FAQPage() {
 
             {/* Hero */}
             <div className="faq-hero">
-                <div className="container">
+                <div className="faq-hero-bg">
+                    <Image
+                        src="/hero-3.png"
+                        alt="FAQ"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container faq-hero-content">
                     <div className="breadcrumb">
                         <Link href="/">Home</Link>
                         <span className="breadcrumb-sep">›</span>

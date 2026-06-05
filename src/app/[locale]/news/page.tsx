@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Icon from '@/components/Icon';
 import NewsCard from '@/components/NewsCard';
 import { getAllNews, type NewsEvent } from '@/lib/api';
@@ -24,12 +25,35 @@ export default async function NewsPage() {
     return (
         <>
             <style>{`
-        /* Standard Hero - No Image */
-        .news-hero { background: var(--wfp-navy); padding: 5rem 0 4rem; }
+        /* Hero with Image */
+        .news-hero {
+          position: relative;
+          min-height: 420px;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+        .news-hero-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .news-hero-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          z-index: 1;
+        }
+        .news-hero-content {
+          position: relative;
+          z-index: 2;
+          padding: 5rem 0 4rem;
+        }
         .news-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
-        .news-hero p { color: rgba(255,255,255,0.85); max-width: 720px; font-size: 1.1rem; line-height: 1.6; }
+        .news-hero p { color: rgba(255,255,255,0.95); max-width: 720px; font-size: 1.15rem; line-height: 1.7; }
         .news-hero .breadcrumb { justify-content: flex-start; margin-bottom: 2rem; }
-        .news-hero .breadcrumb a, .news-hero .breadcrumb span { color: rgba(255,255,255,0.7); }
+        .news-hero .breadcrumb a, .news-hero .breadcrumb span { color: rgba(255,255,255,0.8); }
         .news-hero .breadcrumb a:hover { color: #fff; }
 
         /* Modern Filter Bar */
@@ -80,9 +104,18 @@ export default async function NewsPage() {
         }
       `}</style>
 
-            {/* Guidelines-style Hero */}
+            {/* Hero with Background */}
             <div className="news-hero">
-                <div className="container">
+                <div className="news-hero-bg">
+                    <Image
+                        src="/hero-2.png"
+                        alt="News and Events"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container news-hero-content">
                     <div className="breadcrumb">
                         <Link href="/">Home</Link>
                         <span className="breadcrumb-sep">›</span>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl } from '@/lib/api';
+import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, type Partner } from '@/lib/api';
 import {
   AnimatedStats,
   AnimatedCoreFunctions,
@@ -22,10 +22,10 @@ export const revalidate = 60;
 import Icon, { IconName } from '@/components/Icon';
 
 const STATS: { number: string; label: string; icon: IconName }[] = [
-  { number: '37%', label: 'Child Stunting Rate', icon: 'alert-circle' },
-  { number: '30%', label: 'Vitamin A Deficiency in Children', icon: 'heart' },
+  { number: '37%', label: 'Child Stunting Rate', icon: 'shield' },
+  { number: '30%', label: 'Vitamin A Deficiency in Children', icon: 'heart-handshake' },
   { number: '60-70%', label: 'Anaemia in Women of Reproductive Age', icon: 'activity' },
-  { number: '95%', label: 'Calcium Inadequacy in Non-Pregnant Women', icon: 'trending-down' },
+  { number: '95%', label: 'Calcium Inadequacy in Non-Pregnant Women', icon: 'trending-up' },
 ];
 
 const CORE_FUNCTIONS: { icon: IconName; title: string; desc: string }[] = [
@@ -46,6 +46,63 @@ const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string
   { icon: 'bar-chart', title: 'Productivity', desc: 'Malnutrition costs Nigeria approximately $1.5 billion annually in lost GDP due to poor health and cognitive development.', link: '/about', cta: 'Read the Report →' },
   { icon: 'gem', title: 'Efficiency', desc: 'Fortification is one of the most cost-effective health interventions, with an estimated cost of only $0.01–$0.25 per person per year.', link: '/about', cta: 'Learn About Impact →' },
 ];
+
+const PARTNER_LOGOS = [
+  { name: 'WFP Nigeria', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
+  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
+  { name: 'UNICEF Nigeria', src: '/UNICEF_Logo.png', width: 310, height: 130 },
+  { name: 'Federal Ministry of Health', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
+  { name: 'Standards Organisation of Nigeria (SON)', src: '/son_png.png', width: 260, height: 120 },
+  { name: 'GAIN', src: '/GAIN_logo_RVB.webp', width: 300, height: 140 },
+  { name: 'FCCPC', src: '/fccpc_logo.png', width: 260, height: 120 },
+];
+
+const HOMEPAGE_FALLBACK_LOGOS = [
+  { src: '/son_png.png', width: 260, height: 120 },
+  { src: '/UNICEF_Logo.png', width: 310, height: 130 },
+  { src: '/NAFDAC_emblem.png', width: 220, height: 180 },
+  { src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
+  { src: '/GAIN_logo_RVB.webp', width: 300, height: 140 },
+  { src: '/fccpc_logo.png', width: 260, height: 120 },
+];
+
+const LOCAL_PARTNER_LOGO_MAP = new Map(PARTNER_LOGOS.map((partner) => [partner.name.toLowerCase(), partner]));
+
+function resolvePartnerLogo(partner: Partner) {
+  const logoUrl = partner.logo?.url?.trim();
+  if (logoUrl) {
+    if (logoUrl.startsWith('http')) {
+      return { src: logoUrl, width: partner.logo.width || 220, height: partner.logo.height || 120 };
+    }
+    if (logoUrl.startsWith('/uploads')) {
+      return { src: getStrapiMediaUrl(logoUrl), width: partner.logo.width || 220, height: partner.logo.height || 120 };
+    }
+    return { src: logoUrl, width: partner.logo.width || 220, height: partner.logo.height || 120 };
+  }
+
+  const fallback = LOCAL_PARTNER_LOGO_MAP.get(partner.name.toLowerCase());
+  if (fallback) {
+    return { src: fallback.src, width: fallback.width, height: fallback.height };
+  }
+
+  return { src: '/wfp-logo-standard-blue-en.svg', width: 280, height: 120 };
+}
+
+const HOMEPAGE_FALLBACK_PARTNERS: Partner[] = HOMEPAGE_FALLBACK_LOGOS.map((logo, index) => ({
+  id: index + 1,
+  documentId: `homepage-fallback-partner-${index + 1}`,
+  name: `Homepage Fallback ${index + 1}`,
+  logo: {
+    id: 0,
+    documentId: '',
+    url: logo.src,
+    width: logo.width,
+    height: logo.height,
+  },
+  order: index,
+  is_active: true,
+  partner_type: 'partner',
+}));
 
 // Fallback mock news data - using actual local images
 const MOCK_NEWS = [
@@ -103,12 +160,30 @@ const MOCK_NEWS = [
 ] as any[];
 
 export default async function HomePage() {
-  const [carousels, featuredNews, quoteData, statsData] = await Promise.all([
-    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(),
+  const [carousels, featuredNews, quoteData, statsData, partnersData] = await Promise.all([
+    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(),
   ]);
 
   // Use mock data if no news from backend
   const displayNews = featuredNews.length > 0 ? featuredNews : MOCK_NEWS;
+
+  // Only include partners from API that actually have logos
+  const partnersWithLogos = partnersData.filter((partner) => {
+    const logoUrl = partner.logo?.url?.trim();
+    return logoUrl && logoUrl.length > 0;
+  });
+
+  const existingPartnerLogoUrls = new Set(
+    partnersWithLogos.map((partner) => resolvePartnerLogo(partner).src.toLowerCase())
+  );
+
+  const partnerFallbacks = HOMEPAGE_FALLBACK_PARTNERS.filter((fallback) =>
+    !existingPartnerLogoUrls.has(fallback.logo.url.toLowerCase())
+  );
+
+  const marqueePartners = partnersWithLogos.length > 0
+    ? [...partnersWithLogos, ...partnerFallbacks]
+    : HOMEPAGE_FALLBACK_PARTNERS;
 
   // Fallback quote data
   const quote = quoteData || {
@@ -136,37 +211,12 @@ export default async function HomePage() {
         .stat-number { font-size: clamp(var(--md-sys-typescale-headline-large-size), 4vw, var(--md-sys-typescale-display-small-size)); font-weight: 800; color: var(--md-sys-color-secondary); letter-spacing: -0.04em; line-height: 1; margin-bottom: var(--md-sys-spacing-1); }
         .stat-label { font-size: var(--md-sys-typescale-label-small-size); text-transform: uppercase; letter-spacing: 0.08em; color: var(--md-sys-color-on-surface-variant); font-weight: 600; }
 
-        /* ── Compact News Strip - Marquee ── */
-        .news-marquee-container {
-          overflow: hidden;
-          position: relative;
-          width: 100%;
-        }
-        .news-marquee-content {
-          display: flex;
-          gap: 3rem;
-          animation: marquee-scroll 40s linear infinite;
-          will-change: transform;
-        }
-        .news-marquee-content:hover {
-          animation-play-state: paused;
-        }
-        @keyframes marquee-scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .compact-news-item {
-          display: flex;
-          gap: 1rem;
-          text-decoration: none;
-          color: inherit;
-          transition: opacity 0.2s;
-          flex-shrink: 0;
-          min-width: 350px;
-        }
-        .compact-news-item:hover {
-          opacity: 0.7;
-        }
+        /* ── Latest News Carousel ── */
+        .news-carousel-section { background: #fff; padding: var(--md-sys-spacing-24) 0; }
+        .news-carousel-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: var(--md-sys-spacing-12); flex-wrap: wrap; }
+        .news-carousel-heading .section-eyebrow { margin-bottom: 0.25rem; }
+        .news-carousel-heading p { max-width: 30rem; color: var(--text-secondary); margin: 0; }
+        .news-carousel-block { width: 100%; }
 
         /* ── Programs ── Dark green section */
         .programs-section { background: var(--wfp-navy); padding: var(--md-sys-spacing-24) 0; }
@@ -290,12 +340,19 @@ export default async function HomePage() {
         .resource-tag:hover { border-color: var(--md-sys-color-secondary); color: var(--md-sys-color-secondary); background: var(--md-sys-color-secondary-container); }
 
         /* ── Partners ── White background */
-        .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: var(--md-sys-spacing-32) 0 var(--md-sys-spacing-28) 0; background: #fff; overflow: hidden; }
+        .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: 8rem 0 8rem 0; background: #fff; overflow: hidden; }
         .partners-strip .section-eyebrow { color: var(--text-muted); }
         .partners-strip .section-title { color: var(--text-primary); margin-bottom: var(--md-sys-spacing-12); }
-        .partner-logo-hm { filter: grayscale(10%) opacity(0.85); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-standard); display: flex; align-items: center; justify-content: center; padding: 0 var(--md-sys-spacing-28); position: relative; flex-shrink: 0; height: 80px; }
-        .partner-logo-hm img { object-fit: contain; width: auto; height: 60px; max-width: 180px; }
-        .partner-logo-hm:hover { filter: grayscale(0%) opacity(1); transform: scale(1.15); }
+        .partner-marquee { width: 100%; overflow: hidden; }
+        .partner-grid { display: flex; align-items: center; gap: 2.5rem; margin-top: var(--md-sys-spacing-10); min-width: max-content; animation: marquee 80s linear infinite; }
+        .partner-grid:hover { animation-play-state: paused; }
+        .partner-card { flex: 0 0 auto; min-width: 170px; max-width: 260px; padding: 1rem 1.4rem; border-radius: 24px; border: 1px solid rgba(15,23,42,0.07); background: rgba(255,255,255,0.96); box-shadow: 0 12px 30px rgba(15,23,42,0.08); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .partner-card:hover { transform: translateY(-4px); box-shadow: 0 20px 46px rgba(15,23,42,0.12); }
+        .partner-card img { max-width: 220px; max-height: 72px; object-fit: contain; display: block; filter: grayscale(0.05); opacity: 0.95; }
+        .partner-logo-hm { filter: grayscale(10%) opacity(0.85); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-standard); display: flex; align-items: center; justify-content: center; padding: var(--md-sys-spacing-4) var(--md-sys-spacing-14); position: relative; flex-shrink: 0; min-height: 110px; }
+        .partner-logo-hm img { object-fit: contain; width: auto; height: 100%; max-width: 220px; max-height: 90px; }
+        .partner-logo-hm:hover { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* ── CTA ── Dark green section */
         .cta-full { position: relative; overflow: hidden; background: var(--wfp-navy); padding: var(--md-sys-spacing-24) 0; border-top: 1px solid rgba(255,255,255,0.1); }
@@ -317,6 +374,7 @@ export default async function HomePage() {
           .about-image-panel { transform: none; aspect-ratio: 16/9; }
           .challenge-grid { grid-template-columns: 1fr; }
           .involved-grid { grid-template-columns: 1fr; }
+          .partner-grid { animation: none; flex-wrap: wrap; justify-content: center; }
         }
         @media (max-width: 600px) {
           .stats-grid { grid-template-columns: 1fr 1fr; }
@@ -328,30 +386,18 @@ export default async function HomePage() {
       {/* ── Hero ── */}
       <HeroCarousel slides={carousels} />
 
-      {/* ── Compact News Strip - Marquee ── */}
-      <section style={{ background: '#fff', padding: '1.5rem 0', borderBottom: '1px solid #e5e7eb' }}>
-        <div style={{ maxWidth: 'var(--container)', margin: '0 auto', paddingLeft: 'clamp(1.5rem, 6vw, 5rem)', paddingRight: 'clamp(1.5rem, 6vw, 5rem)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--wfp-gold)', flexShrink: 0 }}>Latest News</span>
-            <div style={{ flex: 1, height: '1px', background: 'var(--border)' }}></div>
+      {/* ── Latest News Carousel ── */}
+      <section className="news-carousel-section">
+        <div className="container">
+          <div className="news-carousel-heading">
+            <div>
+              <p className="section-eyebrow">Latest News</p>
+              <h2 className="section-title">Stay updated with NFA headlines</h2>
+            </div>
+            <p>Explore featured stories and announcements shaping food fortification progress across Nigeria.</p>
           </div>
-        </div>
-        <div className="news-marquee-container">
-          <div className="news-marquee-content">
-            {/* Render news twice for seamless infinite scroll */}
-            {[...displayNews, ...displayNews].map((news, idx) => (
-              <Link key={`${news.id}-${idx}`} href={`/news/${news.slug}`} className="compact-news-item">
-                <div style={{ width: '60px', height: '60px', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', background: 'var(--bg-off)' }}>
-                  {news.image?.url && (
-                    <img src={news.image.url.startsWith('http') ? news.image.url : `http://localhost:3000/${news.image.url}`} alt={news.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  )}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--wfp-gold)', fontWeight: 600, marginBottom: '0.25rem' }}>{news.category}</p>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600, lineHeight: '1.4', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{news.title}</h4>
-                </div>
-              </Link>
-            ))}
+          <div className="news-carousel-block">
+            <NewsCarousel news={displayNews} />
           </div>
         </div>
       </section>
@@ -403,7 +449,7 @@ export default async function HomePage() {
               </div>
             </div>
             {quote.author_image?.url && (
-              <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--wfp-gold)', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
+              <div style={{ flexShrink: 0, minWidth: '240px', width: '240px', height: '240px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--wfp-gold)', boxShadow: '0 10px 32px rgba(0,0,0,0.18)' }}>
                 <img
                   src={getStrapiMediaUrl(quote.author_image.url)}
                   alt={quote.author_name}
@@ -493,25 +539,22 @@ export default async function HomePage() {
               <h2 className="section-title">Our Partners</h2>
             </div>
 
-            <div className="marquee-container">
-              <div className="marquee-content" style={{ animationDuration: '45s' }}>
-                {[
-                  { name: 'WFP Nigeria', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
-                  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
-                  { name: 'UNICEF Nigeria', src: '/UNICEF_Logo.png', width: 310, height: 130 },
-                  { name: 'Federal Ministry of Health', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
-                  { name: 'Gates Foundation', src: '/gates foundation logo.svg', width: 380, height: 150 },
-                  // Duplicate for seamless infinite scroll
-                  { name: 'WFP Nigeria', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
-                  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
-                  { name: 'UNICEF Nigeria', src: '/UNICEF_Logo.png', width: 310, height: 130 },
-                  { name: 'Federal Ministry of Health', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
-                  { name: 'Gates Foundation', src: '/gates foundation logo.svg', width: 380, height: 150 },
-                ].map((p, i) => (
-                  <Link key={i} href="/partners" className="partner-logo-hm" style={{ width: p.width, height: p.height }}>
-                    <Image src={p.src} alt={p.name} width={p.width} height={p.height} />
-                  </Link>
-                ))}
+            <div className="partner-marquee">
+              <div className="partner-grid" aria-label="Partner logos marquee">
+                {[...marqueePartners, ...marqueePartners].map((partner, i) => {
+                  const resolvedLogo = resolvePartnerLogo(partner);
+                  return (
+                    <Link key={`${partner.name}-${i}`} href="/partners" className="partner-card" aria-label={`Partner logo: ${partner.name}`}>
+                      <Image
+                        src={resolvedLogo.src}
+                        alt={partner.name}
+                        width={resolvedLogo.width}
+                        height={resolvedLogo.height}
+                        style={{ maxWidth: '100%', height: 'auto' }}
+                      />
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 

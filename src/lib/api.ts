@@ -283,3 +283,20 @@ export async function getStats(): Promise<Stat[]> {
     });
     return res?.data || [];
 }
+
+export interface PageSetting {
+    id: number;
+    documentId: string;
+    page_key: string;
+    hero_image?: StrapiImage;
+    hero_title?: string;
+    hero_description?: string;
+}
+
+export async function getPageSetting(pageKey: string): Promise<PageSetting | null> {
+    const res = await fetchAPI<{ data: PageSetting[] }>('/page-settings', {
+        'filters[page_key][$eq]': pageKey,
+        'populate': 'hero_image',
+    });
+    return res?.data?.[0] || null;
+}

@@ -56,52 +56,44 @@ export default async function PartnersPage() {
     return (
         <>
             <style>{`
-        /* Image Hero - matches homepage carousel style */
+        /* Hero with Image - consistent with other pages */
         .partners-hero {
           position: relative;
-          height: 75vh;
-          min-height: 600px;
-          max-height: 900px;
-          overflow: hidden;
-        }
-        .partners-hero-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.9) 0%,
-            rgba(0, 0, 0, 0.5) 40%,
-            rgba(0, 0, 0, 0.1) 100%
-          );
-        }
-        .partners-hero-content {
-          position: absolute;
-          inset: 0;
+          min-height: 420px;
           display: flex;
           align-items: center;
-          justify-content: center;
-          padding: 4rem 5%;
-          text-align: center;
+          overflow: hidden;
+        }
+        .partners-hero-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .partners-hero-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          z-index: 1;
+        }
+        .partners-hero-content {
+          position: relative;
+          z-index: 2;
+          padding: 5rem 0 4rem;
         }
         .partners-hero h1 {
           color: #fff;
-          max-width: 800px;
-          margin-bottom: 1.5rem;
-          font-size: clamp(2.5rem, 5vw, 4rem);
-          text-shadow: 0 12px 48px rgba(0,0,0,0.5);
+          max-width: 720px;
+          margin-bottom: 1rem;
         }
         .partners-hero p {
-          color: rgba(255,255,255,0.85);
+          color: rgba(255,255,255,0.95);
           max-width: 720px;
-          font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-          line-height: 1.6;
-          text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+          font-size: 1.15rem;
+          line-height: 1.7;
         }
         .partners-hero .breadcrumb {
-          position: absolute;
-          top: 2rem;
-          left: 5%;
-          margin-bottom: 0;
+          margin-bottom: 2rem;
         }
         .partners-hero .breadcrumb a,
         .partners-hero .breadcrumb span {
@@ -162,18 +154,17 @@ export default async function PartnersPage() {
 
             {/* ── Hero ── */}
             <div className="partners-hero">
-                <Image src="/about-hero.png" alt="Partnership meeting" fill style={{ objectFit: 'cover' }} priority />
-                <div className="partners-hero-overlay" />
-                <div className="breadcrumb">
-                    <Link href="/">Home</Link>
-                    <span className="breadcrumb-sep">›</span>
-                    <span>Partners</span>
+                <div className="partners-hero-bg">
+                    <Image src="/about-hero.png" alt="Partnership meeting" fill style={{ objectFit: 'cover' }} priority />
                 </div>
-                <div className="partners-hero-content">
-                    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                        <h1>Our Partners</h1>
-                        <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
+                <div className="container partners-hero-content">
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Partners</span>
                     </div>
+                    <h1>Our Partners</h1>
+                    <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
                 </div>
             </div>
 

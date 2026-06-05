@@ -24,10 +24,17 @@ const NAV_LINKS = [
 
 const HOME_LOCALES = new Set(['en', 'ha', 'ig', 'yo']);
 
+function isActivePath(pathname: string, href: string) {
+  if (href === '/') {
+    return pathname === '/' || pathname === '';
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Header({ siteName }: { siteName: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname() || '/';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -49,7 +56,7 @@ export default function Header({ siteName }: { siteName: string }) {
   return (
     <>
       <style>{`
-        /* ── Modern Navigation - Asedo Inspired ── */
+        /* ── Modern Navigation — Clean, approachable, responsive ── */
         .site-header {
           position: sticky;
           top: 0;
@@ -57,6 +64,17 @@ export default function Header({ siteName }: { siteName: string }) {
           right: 0;
           z-index: 1000;
           width: 100%;
+          transition: box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .site-header.scrolled .header-glass {
+          background: rgba(255, 255, 255, 0.94);
+          border-bottom-color: rgba(148, 163, 184, 0.18);
+          box-shadow: var(--shadow-sm);
+        }
+
+        .site-header.scrolled .header-bar {
+          min-height: 84px;
         }
 
         .header-wrap {
@@ -64,26 +82,21 @@ export default function Header({ siteName }: { siteName: string }) {
           width: 100%;
         }
 
-        /* Enhanced Glassmorphism */
         .header-glass {
           position: absolute;
           inset: 0;
-          background: rgba(255, 255, 255, 0.8);
-          backdrop-filter: blur(64px);
-          -webkit-backdrop-filter: blur(64px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+          background: rgba(255, 255, 255, 0.78);
+          backdrop-filter: blur(36px);
+          -webkit-backdrop-filter: blur(36px);
+          border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+          box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
+          transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Gradient Shimmer Overlay */
         .header-gradient {
           position: absolute;
           inset: 0;
-          background: linear-gradient(90deg,
-            rgba(255,255,255,0.6) 0%,
-            rgba(255,255,255,0.2) 50%,
-            rgba(255,255,255,0.6) 100%
-          );
+          background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 60%);
           pointer-events: none;
         }
 
@@ -92,65 +105,57 @@ export default function Header({ siteName }: { siteName: string }) {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0.25rem clamp(1rem, 6vw, 5rem);
-          max-width: 100%;
+          padding: 0.9rem clamp(1rem, 6vw, 4rem);
           margin: 0 auto;
-          height: 96px;
-          gap: 3rem;
+          max-width: var(--container);
+          min-height: 96px;
+          gap: 1.5rem;
         }
 
         @media (max-width: 1024px) {
           .header-bar {
-            height: 80px;
-            gap: 2rem;
+            min-height: 88px;
+            gap: 1rem;
           }
         }
 
         @media (max-width: 800px) {
           .header-bar {
-            height: 72px;
-            padding: 0.5rem 1rem;
-            gap: 1rem;
+            min-height: 72px;
+            padding: 0.85rem 1rem;
           }
         }
 
-        /* Logo - Larger & Bolder */
         .logo {
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          gap: 1rem;
+          gap: 0.85rem;
           flex-shrink: 0;
+          margin-right: auto;
         }
-        .logo-emblem {
-          width: 56px;
-          height: 56px;
-          border-radius: 12px;
-          background: transparent;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
+
         .logo-text {
-          line-height: 1.2;
+          display: flex;
+          flex-direction: column;
+          line-height: 1.05;
         }
+
+        .logo-emblem {
+          width: 52px;
+          height: 52px;
+          border-radius: 1rem;
+          background: rgba(0, 135, 81, 0.1);
+          display: grid;
+          place-items: center;
+          overflow: hidden;
+        }
+
         .logo-name {
           display: block;
-          font-size: 1.125rem;
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          color: #0A1E3F;
-          transition: color 0.3s;
-        }
-        .logo-sub {
-          display: block;
-          font-size: 0.7rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--wfp-green);
-          transition: color 0.3s;
-          margin-top: 0.125rem;
+          font-size: 1.05rem;
+          font-weight: 800;
+          letter-spacing: -0.04em;
+          color: var(--text-primary);
         }
 
         @media (max-width: 800px) {
@@ -158,19 +163,16 @@ export default function Header({ siteName }: { siteName: string }) {
             width: 44px;
             height: 44px;
           }
+
           .logo-name {
             font-size: 0.95rem;
           }
-          .logo-sub {
-            font-size: 0.6rem;
-          }
         }
 
-        /* Modern Nav Links */
         .nav-links {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.35rem;
         }
 
         .nav-item {
@@ -178,150 +180,189 @@ export default function Header({ siteName }: { siteName: string }) {
         }
 
         .nav-link {
-          display: flex;
-          flex-direction: column;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 0.625rem 1.25rem;
-          height: 47px;
-          position: relative;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          border-radius: 0.75rem;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #000206;
+          padding: 0.72rem 1rem;
+          border-radius: 999px;
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: var(--text-secondary);
+          transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
           white-space: nowrap;
-          gap: 0.25rem;
+          position: relative;
         }
 
         .nav-link:hover {
-          background: rgba(255, 255, 255, 0.6);
-          color: var(--wfp-green);
           transform: translateY(-1px);
+          color: var(--wfp-green-dark);
+          background: rgba(0, 135, 81, 0.08);
         }
 
-        /* Gradient Underline Indicator */
         .nav-link::after {
           content: '';
           position: absolute;
-          bottom: 0;
+          bottom: 14%;
           left: 50%;
           transform: translateX(-50%);
           width: 0;
-          height: 2px;
+          height: 3px;
+          border-radius: 999px;
           background: linear-gradient(90deg, var(--wfp-green), var(--wfp-gold));
-          border-radius: 9999px;
-          transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: width 0.25s ease;
         }
 
-        .nav-link:hover::after {
-          width: 2rem;
+        .nav-link:hover::after,
+        .nav-link.active::after {
+          width: 2.2rem;
         }
 
         .nav-link.active {
-          color: var(--wfp-green);
-          font-weight: 600;
+          color: var(--wfp-green-dark);
+          font-weight: 700;
+          background: rgba(0, 135, 81, 0.12);
+          box-shadow: 0 12px 20px rgba(0, 0, 0, 0.06);
         }
 
-        .nav-link.active::after {
-          width: 2rem;
-        }
-
-        /* Dropdown */
         .dropdown-arrow {
-          font-size: 0.7rem;
-          transition: transform 0.2s;
-          opacity: 0.6;
+          margin-left: 0.35rem;
+          font-size: 0.72rem;
+          opacity: 0.75;
+          transition: transform 0.25s ease;
         }
-        .nav-item:hover .dropdown-arrow { transform: rotate(180deg); }
+
+        .nav-item:hover .dropdown-arrow {
+          transform: rotate(180deg);
+        }
+
         .dropdown {
-          position: absolute; top: calc(100% + 0.25rem); left: 0;
-          background: #fff; border: 1px solid var(--border);
-          border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
-          min-width: 200px; opacity: 0; visibility: hidden;
-          transform: translateY(-8px);
-          transition: all 0.2s var(--ease-out);
-          z-index: 100;
-        }
-        .dropdown::before {
-          content: '';
           position: absolute;
-          top: -0.5rem;
+          top: calc(100% + 0.5rem);
           left: 0;
-          right: 0;
-          height: 0.5rem;
+          min-width: 210px;
+          background: #ffffff;
+          border: 1px solid var(--border-light);
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-lg);
+          padding: 0.5rem 0;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-12px);
+          transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+          z-index: 50;
         }
+
         .nav-item:hover .dropdown {
-          opacity: 1; visibility: visible; transform: translateY(0);
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
         }
+
         .dropdown a {
-          display: block; padding: 0.75rem 1.25rem;
-          font-size: 0.9rem; font-weight: 500;
+          display: block;
+          padding: 0.85rem 1.25rem;
+          font-size: 0.93rem;
+          font-weight: 500;
           color: var(--text-primary);
-          transition: background 0.15s, color 0.15s;
+          transition: background 0.2s ease, color 0.2s ease;
           border-bottom: 1px solid var(--border-light);
         }
-        .dropdown a:last-child { border-bottom: none; }
+
+        .dropdown a:last-child {
+          border-bottom: none;
+        }
+
         .dropdown a:hover {
           background: var(--wfp-blue-light);
-          color: var(--wfp-blue);
+          color: var(--wfp-green-dark);
         }
+
         .dropdown a.active {
-          color: var(--wfp-blue);
-          font-weight: 600;
+          color: var(--wfp-green-dark);
+          font-weight: 700;
         }
 
-        /* Light nav removal: Now always uses the standard opaque layout for legibility */
-        .header-cta { flex-shrink: 0; }
+        .header-cta {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex-shrink: 0;
+        }
 
-        /* Contact CTA */
-        .header-cta { flex-shrink: 0; }
+        .btn-cta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.85rem 1.5rem;
+          border-radius: 999px;
+          background: linear-gradient(90deg, var(--wfp-gold), #d09900);
+          color: var(--wfp-navy);
+          font-weight: 700;
+          font-size: 0.92rem;
+          letter-spacing: 0.01em;
+          box-shadow: 0 12px 28px rgba(245, 158, 11, 0.18);
+          transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
 
-        /* Hamburger - Asedo Style */
+        .btn-cta:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 16px 32px rgba(245, 158, 11, 0.22);
+          background: linear-gradient(90deg, #f59e0b, #d07e00);
+        }
+
         .hamburger {
           display: none;
           width: 48px;
           height: 48px;
-          border: none;
-          background: rgba(255, 255, 255, 0.5);
-          backdrop-filter: blur(8px);
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          border-radius: 0.5rem;
+          border: 1px solid rgba(15, 23, 42, 0.08);
+          background: rgba(255, 255, 255, 0.86);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 1rem;
           align-items: center;
           justify-content: center;
-          flex-direction: column;
-          gap: 5px;
-          padding: 0;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          gap: 6px;
+          padding: 0.75rem;
+          transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
         }
 
         .hamburger:hover {
-          background: rgba(255, 255, 255, 0.7);
+          background: rgba(255, 255, 255, 0.98);
+          transform: translateY(-1px);
         }
 
         .hamburger span {
           display: block;
-          width: 20px;
+          width: 22px;
           height: 2px;
-          border-radius: 2px;
-          background: #0A1E3F;
-          transition: all 0.3s ease;
+          border-radius: 999px;
+          background: var(--text-primary);
+          transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
-        /* Mobile menu - Asedo Style */
+        .hamburger.active span:nth-child(1) {
+          transform: translateY(6px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+          opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+          transform: translateY(-6px) rotate(-45deg);
+        }
+
         .mobile-menu {
           position: absolute;
-          top: 100%;
+          top: calc(100% + 0.75rem);
           left: 1rem;
           right: 1rem;
-          background: rgba(255, 255, 255, 0.95);
+          background: rgba(255, 255, 255, 0.96);
           backdrop-filter: blur(24px);
           -webkit-backdrop-filter: blur(24px);
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          border-radius: 1rem;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-          margin-top: 1rem;
+          border: 1px solid rgba(226, 232, 240, 0.9);
+          border-radius: 1.25rem;
+          box-shadow: var(--shadow-xl);
           overflow: hidden;
           z-index: 40;
         }
@@ -329,53 +370,75 @@ export default function Header({ siteName }: { siteName: string }) {
         .mobile-menu-inner {
           display: flex;
           flex-direction: column;
-          padding: 1rem 0;
+          gap: 0.25rem;
+          padding: 0.75rem 0;
         }
 
         .mobile-menu a {
           display: block;
           padding: 1rem 1.5rem;
           font-size: 1rem;
-          font-weight: 500;
-          color: #000206;
-          transition: all 0.3s ease;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+          font-weight: 600;
+          color: var(--text-primary);
+          transition: background 0.2s ease, color 0.2s ease;
+          border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .mobile-menu a:hover {
-          background: linear-gradient(90deg, rgba(0, 168, 157, 0.05), rgba(227, 167, 0, 0.05));
-          color: var(--wfp-green);
+          background: rgba(0, 135, 81, 0.08);
+          color: var(--wfp-green-dark);
         }
 
         .mobile-menu a.active {
-          color: var(--wfp-green);
-          font-weight: 600;
+          color: var(--wfp-green-dark);
         }
 
         .mobile-submenu {
           padding-left: 1rem;
+          border-left: 1px solid rgba(226, 232, 240, 0.9);
         }
 
         .mobile-submenu a {
-          font-size: 0.9rem;
-          padding: 0.75rem 1.5rem;
+          font-size: 0.95rem;
+          font-weight: 500;
           color: var(--text-secondary);
-          border-bottom: none;
+          padding: 0.85rem 1.5rem;
+          background: rgba(247, 250, 252, 0.8);
+        }
+
+        .mobile-submenu a:hover {
+          color: var(--wfp-green-dark);
         }
 
         .mobile-cta {
-          padding: 1rem 1.5rem;
-          margin-top: 0.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          padding: 0.75rem 1rem 1rem;
+        }
+
+        .mobile-cta .btn-cta {
+          width: 100%;
+          padding: 1rem;
+          justify-content: center;
         }
 
         @media (max-width: 800px) {
-          .nav-links { display: none; }
-          .header-cta .btn { display: none; }
-          .hamburger { display: flex; }
+          .nav-links {
+            display: none;
+          }
+
+          .header-cta .btn-cta {
+            display: none;
+          }
+
+          .hamburger {
+            display: inline-flex;
+          }
         }
       `}</style>
 
-      <header className="site-header">
+      <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
         <div className="header-wrap">
           {/* Glassmorphism Background */}
           <div className="header-glass"></div>
@@ -391,7 +454,6 @@ export default function Header({ siteName }: { siteName: string }) {
               </div>
               <div className="logo-text">
                 <span className="logo-name">National Fortification Alliance</span>
-                <span className="logo-sub">Nigeria · Powered by WFP</span>
               </div>
             </Link>
 
@@ -401,7 +463,8 @@ export default function Header({ siteName }: { siteName: string }) {
                 <div key={item.href} className="nav-item">
                   <Link
                     href={item.href}
-                    className={`nav-link ${pathname === item.href ? 'active' : ''}`}
+                    className={`nav-link ${isActivePath(pathname, item.href) ? 'active' : ''}`}
+                    aria-current={isActivePath(pathname, item.href) ? 'page' : undefined}
                   >
                     {item.label}
                     {'dropdown' in item && <span className="dropdown-arrow">▼</span>}
@@ -412,7 +475,7 @@ export default function Header({ siteName }: { siteName: string }) {
                         <Link
                           key={subItem.href}
                           href={subItem.href}
-                          className={pathname === subItem.href ? 'active' : ''}
+                          className={isActivePath(pathname, subItem.href) ? 'active' : ''}
                         >
                           {subItem.label}
                         </Link>
@@ -424,29 +487,11 @@ export default function Header({ siteName }: { siteName: string }) {
             </nav>
 
             {/* CTA - Asedo Style */}
-            <div className="header-cta" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="header-cta">
               <LanguageSwitcher />
               <Link
                 href="/contact"
-                className="btn btn-primary btn-sm"
-                style={{
-                  background: 'linear-gradient(90deg, var(--wfp-gold), #d09900)',
-                  border: 'none',
-                  borderRadius: '0.75rem',
-                  padding: '0.75rem 1.5rem',
-                  fontWeight: '600',
-                  fontSize: '0.875rem',
-                  boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 6px 16px rgba(245, 158, 11, 0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.3)';
-                }}
+                className="btn btn-primary btn-sm btn-cta"
               >
                 CONTACT US
               </Link>
@@ -454,8 +499,9 @@ export default function Header({ siteName }: { siteName: string }) {
 
             {/* Hamburger */}
             <button
-              className="hamburger"
-              aria-label="Open menu"
+              className={`hamburger${menuOpen ? ' active' : ''}`}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
               onClick={() => setMenuOpen(!menuOpen)}
             >
               <span />
@@ -471,7 +517,7 @@ export default function Header({ siteName }: { siteName: string }) {
             <div className="mobile-menu-inner">
               {NAV_LINKS.map((item) => (
                 <div key={item.href}>
-                  <Link href={item.href} className={pathname === item.href ? 'active' : ''}>
+                  <Link href={item.href} className={isActivePath(pathname, item.href) ? 'active' : ''}>
                     {item.label}
                   </Link>
                   {'dropdown' in item && item.dropdown && (
@@ -480,7 +526,7 @@ export default function Header({ siteName }: { siteName: string }) {
                         <Link
                           key={subItem.href}
                           href={subItem.href}
-                          className={pathname === subItem.href ? 'active' : ''}
+                          className={isActivePath(pathname, subItem.href) ? 'active' : ''}
                         >
                           {subItem.label}
                         </Link>
@@ -489,25 +535,13 @@ export default function Header({ siteName }: { siteName: string }) {
                   )}
                 </div>
               ))}
-              <div className="mobile-cta" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div className="mobile-cta">
                 <div style={{ padding: '0 1.5rem' }}>
                   <LanguageSwitcher />
                 </div>
                 <Link
                   href="/contact"
-                  style={{
-                    display: 'flex',
-                    padding: '0.75rem',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    background: 'linear-gradient(90deg, var(--wfp-gold), #d09900)',
-                    borderRadius: '0.75rem',
-                    boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)',
-                    color: 'var(--wfp-navy)',
-                    fontWeight: '600',
-                    fontSize: '1rem',
-                    margin: '0 1.5rem',
-                  }}
+                  className="btn btn-cta"
                 >
                   CONTACT US
                 </Link>
@@ -516,9 +550,6 @@ export default function Header({ siteName }: { siteName: string }) {
           </div>
         )}
       </header>
-
-      {/* Spacer — only on non-home pages */}
-      {!isHome && <div style={{ height: '100px' }} />}
     </>
   );
 }

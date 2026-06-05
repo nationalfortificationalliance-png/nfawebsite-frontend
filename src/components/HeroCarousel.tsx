@@ -89,9 +89,9 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
         .hero-carousel {
           position: relative;
           width: 100%;
-          min-height: 500px;
-          height: 65vh;
-          max-height: 700px;
+          min-height: 620px;
+          height: 75vh;
+          max-height: 820px;
           overflow: hidden;
           background: var(--wfp-navy);
         }
@@ -156,9 +156,9 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
         .hero-carousel-content {
           position: relative;
           z-index: 2;
-          min-height: 500px;
-          height: 65vh;
-          max-height: 700px;
+          min-height: 560px;
+          height: 70vh;
+          max-height: 760px;
           display: flex;
           align-items: center;
           padding: 4rem clamp(1.5rem, 6vw, 5rem) 4rem;
@@ -306,13 +306,13 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
         }
         @media (max-width: 900px) {
           .hero-carousel {
-            min-height: 620px;
-            height: 82vh;
+            min-height: 660px;
+            height: 86vh;
           }
           .hero-carousel-content {
-            min-height: 620px;
-            height: 82vh;
-            padding-top: 6rem;
+            min-height: 660px;
+            height: 86vh;
+            padding-top: 6.5rem;
             padding-bottom: 6.5rem;
           }
           .hero-carousel-subtitle {
@@ -329,13 +329,13 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
         }
         @media (max-width: 560px) {
           .hero-carousel {
-            min-height: 560px;
-            height: 78vh;
+            min-height: 600px;
+            height: 82vh;
           }
           .hero-carousel-content {
-            min-height: 560px;
-            height: 78vh;
-            padding: 5.5rem 1.25rem 5.75rem;
+            min-height: 600px;
+            height: 82vh;
+            padding: 6rem 1.25rem 6.25rem;
           }
           .hero-carousel-title {
             font-size: clamp(1.75rem, 8.2vw, 2.4rem);

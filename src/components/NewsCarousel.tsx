@@ -262,11 +262,22 @@ export default function NewsCarousel({
         .carousel-dots {
           display: flex;
           justify-content: center;
-          gap: 0.75rem;
-          margin-top: 2rem;
+          gap: 0.65rem;
+          margin-top: 1.75rem;
+          padding: 0 0.75rem;
+          width: 100%;
+          box-sizing: border-box;
+          overflow-x: visible;
+          overflow-y: visible;
+          scrollbar-width: none;
+        }
+
+        .carousel-dots::-webkit-scrollbar {
+          display: none;
         }
 
         .carousel-dot {
+          flex-shrink: 0;
           width: 10px;
           height: 10px;
           border-radius: 50%;

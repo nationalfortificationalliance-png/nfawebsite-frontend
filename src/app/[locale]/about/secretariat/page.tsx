@@ -47,9 +47,29 @@ export default async function SecretariatPage() {
     return (
         <main className="secretariat-page">
             <style>{`
-                /* Standard Hero - No Image */
+                /* Hero with Image */
                 .secretariat-hero {
-                    background: var(--wfp-navy);
+                    position: relative;
+                    min-height: 420px;
+                    display: flex;
+                    align-items: center;
+                    overflow: hidden;
+                }
+                .secretariat-hero-bg {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                }
+                .secretariat-hero-bg::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+                    z-index: 1;
+                }
+                .secretariat-hero-content {
+                    position: relative;
+                    z-index: 2;
                     padding: 5rem 0 4rem;
                 }
                 .secretariat-hero h1 {
@@ -58,17 +78,17 @@ export default async function SecretariatPage() {
                     margin-bottom: 1rem;
                 }
                 .secretariat-hero p {
-                    color: rgba(255,255,255,0.85);
+                    color: rgba(255,255,255,0.95);
                     max-width: 720px;
-                    font-size: 1.1rem;
-                    line-height: 1.6;
+                    font-size: 1.15rem;
+                    line-height: 1.7;
                 }
                 .secretariat-hero .breadcrumb {
                     margin-bottom: 2rem;
                 }
                 .secretariat-hero .breadcrumb a,
                 .secretariat-hero .breadcrumb span {
-                    color: rgba(255,255,255,0.7);
+                    color: rgba(255,255,255,0.8);
                 }
                 .secretariat-hero .breadcrumb a:hover {
                     color: #fff;
@@ -160,7 +180,16 @@ export default async function SecretariatPage() {
             `}</style>
 
             <div className="secretariat-hero">
-                <div className="container">
+                <div className="secretariat-hero-bg">
+                    <Image
+                        src="/hero-3.png"
+                        alt="NFA Secretariat Team"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container secretariat-hero-content">
                     <div className="breadcrumb">
                         <Link href="/">Home</Link>
                         <span className="breadcrumb-sep">›</span>

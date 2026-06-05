@@ -77,14 +77,16 @@ export default async function AboutPage() {
           max-width: 800px;
           margin-bottom: 1.5rem;
           font-size: clamp(2.5rem, 5vw, 4rem);
+          line-height: 1.3;
           text-shadow: 0 12px 48px rgba(0,0,0,0.5);
         }
         .about-hero p {
-          color: rgba(255,255,255,0.85);
+          color: rgba(255,255,255,0.95);
           max-width: 720px;
           font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-          line-height: 1.6;
+          line-height: 1.85;
           text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+          margin-top: 1.5rem;
         }
         .about-hero .breadcrumb {
           position: absolute;

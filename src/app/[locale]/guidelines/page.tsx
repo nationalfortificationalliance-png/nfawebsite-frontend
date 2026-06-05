@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getGuidelines } from '@/lib/api';
 import GuidelinesClient from '@/components/GuidelinesClient';
 
@@ -15,12 +16,35 @@ export default async function GuidelinesPage() {
     return (
         <>
             <style>{`
-        /* Standard Hero - No Image */
-        .gl-hero { background: var(--wfp-navy); padding: 5rem 0 4rem; }
+        /* Hero with Image */
+        .gl-hero {
+          position: relative;
+          min-height: 420px;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+        .gl-hero-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .gl-hero-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          z-index: 1;
+        }
+        .gl-hero-content {
+          position: relative;
+          z-index: 2;
+          padding: 5rem 0 4rem;
+        }
         .gl-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
-        .gl-hero p { color: rgba(255,255,255,0.85); max-width: 720px; font-size: 1.1rem; line-height: 1.6; }
+        .gl-hero p { color: rgba(255,255,255,0.95); max-width: 720px; font-size: 1.15rem; line-height: 1.7; }
         .gl-hero .breadcrumb { margin-bottom: 2rem; }
-        .gl-hero .breadcrumb a, .gl-hero .breadcrumb span { color: rgba(255,255,255,0.7); }
+        .gl-hero .breadcrumb a, .gl-hero .breadcrumb span { color: rgba(255,255,255,0.8); }
         .gl-hero .breadcrumb a:hover { color: #fff; }
 
         /* Search bar */
@@ -54,7 +78,16 @@ export default async function GuidelinesPage() {
 
             {/* ── Hero ── */}
             <div className="gl-hero">
-                <div className="container">
+                <div className="gl-hero-bg">
+                    <Image
+                        src="/factory.png"
+                        alt="Guidelines and Resources"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container gl-hero-content">
                     <div className="breadcrumb">
                         <Link href="/">Home</Link><span className="breadcrumb-sep">›</span><span>Guidelines</span>
                     </div>

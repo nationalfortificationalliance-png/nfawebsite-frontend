@@ -1,52 +1,21 @@
 'use client';
 import { ReactNode } from 'react';
 import AnimatedSection, { AnimatedGrid } from './AnimatedSection';
-import NumberCounter from './NumberCounter';
 import Icon, { IconName } from './Icon';
 
 // Stats section with animated counters - Original clean grid style
 export function AnimatedStats({ stats }: { stats: { number: string; label: string; icon: IconName }[] }) {
   return (
     <div className="stats-grid" style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
-      {stats.map((s, i) => {
-        // Check if it's a range like "60-70%" or a single value
-        const isRange = s.number.includes('-');
-
-        let numValue = 0;
-        let suffix = '';
-        let prefix = '';
-
-        if (!isRange) {
-          // Extract number from string like "12M+", "200+", "36%", "$1.5B"
-          const match = s.number.match(/(\d+\.?\d*)/);
-          numValue = match ? parseFloat(match[1]) : 0;
-
-          if (s.number.includes('+')) suffix = '+';
-          if (s.number.includes('M')) suffix = 'M' + (s.number.includes('+') ? '+' : '');
-          if (s.number.includes('B')) suffix = 'B';
-          if (s.number.includes('%')) suffix = '%';
-          if (s.number.includes('$')) prefix = '$';
-        }
-
-        return (
-          <div key={s.label} className="stat-item">
-            <div className="stat-icon" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--wfp-gold)' }}>
-              <Icon name={s.icon} size={40} />
-            </div>
-            <div className="stat-number text-gradient">
-              {isRange ? (
-                s.number
-              ) : (
-                <>
-                  {prefix}
-                  <NumberCounter end={numValue} suffix={suffix} duration={2000} />
-                </>
-              )}
-            </div>
-            <div className="stat-label">{s.label}</div>
+      {stats.map((s) => (
+        <div key={s.label} className="stat-item">
+          <div className="stat-icon" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--wfp-gold)' }}>
+            <Icon name={s.icon} size={40} />
           </div>
-        );
-      })}
+          <div className="stat-number text-gradient">{s.number}</div>
+          <div className="stat-label">{s.label}</div>
+        </div>
+      ))}
     </div>
   );
 }
