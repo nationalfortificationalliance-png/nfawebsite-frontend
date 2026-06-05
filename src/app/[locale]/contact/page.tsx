@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Icon from '@/components/Icon';
 import ContactForm from '@/components/ContactForm';
 
@@ -12,11 +13,52 @@ export default function ContactPage() {
     return (
         <>
             <style>{`
-        /* GAIN / WFP inspired hero - big bold typography on a solid background */
-        .contact-hero { background: var(--wfp-navy); color: #fff; padding: 5rem 0 4rem; position: relative; overflow: hidden; }
-        .contact-hero::after { content: ''; position: absolute; right: -5%; top: -20%; width: 40%; height: 140%; background: var(--wfp-blue); opacity: 0.15; transform: rotate(-15deg); border-radius: 40px; pointer-events: none; }
-        .contact-hero h1 { font-weight: 900; letter-spacing: -0.04em; margin-bottom: 1rem; max-width: 700px; line-height: 1.1; }
-        .contact-hero p { color: rgba(255,255,255,.8); max-width: 580px; line-height: 1.6; }
+        /* Hero with Image */
+        .contact-hero {
+          position: relative;
+          min-height: 420px;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+        .contact-hero-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .contact-hero-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          z-index: 1;
+        }
+        .contact-hero-content {
+          position: relative;
+          z-index: 2;
+          padding: 5rem 0 4rem;
+        }
+        .contact-hero h1 {
+          color: #fff;
+          max-width: 720px;
+          margin-bottom: 1rem;
+        }
+        .contact-hero p {
+          color: rgba(255,255,255,0.95);
+          max-width: 720px;
+          font-size: 1.15rem;
+          line-height: 1.7;
+        }
+        .contact-hero .breadcrumb {
+          margin-bottom: 2rem;
+        }
+        .contact-hero .breadcrumb a,
+        .contact-hero .breadcrumb span {
+          color: rgba(255,255,255,0.8);
+        }
+        .contact-hero .breadcrumb a:hover {
+          color: #fff;
+        }
 
         /* Two column layout */
         .contact-layout { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; padding: 4rem 0; align-items: start; }
@@ -66,11 +108,20 @@ export default function ContactPage() {
 
             {/* Hero */}
             <div className="contact-hero">
-                <div className="container">
-                    <div className="breadcrumb" style={{ marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,.3)' }}>›</span>
-                        <span style={{ color: '#fff' }}>Contact</span>
+                <div className="contact-hero-bg">
+                    <Image
+                        src="/about-hero.png"
+                        alt="Contact NFA"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container contact-hero-content">
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Contact</span>
                     </div>
                     <h1>Get in touch</h1>
                     <p>Whether you&apos;re looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.</p>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Icon from '@/components/Icon';
+import Image from 'next/image';
+import Icon, { IconName } from '@/components/Icon';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
@@ -10,6 +11,8 @@ export const metadata: Metadata = {
 const ROLES = [
     {
         name: 'Standards Organisation of Nigeria (SON)',
+        logo: '/son_png.png',
+        icon: 'shield',
         roles: [
             'Elaboration, review, and adoption of standards in collaboration with stakeholders',
             'Monitoring and testing of fortified foods at factory level',
@@ -21,6 +24,8 @@ const ROLES = [
     },
     {
         name: 'National Agency for Food and Drug Administration and Control (NAFDAC)',
+        logo: '/NAFDAC_emblem.png',
+        icon: 'shield-check',
         roles: [
             'Issuance of marketing authorization for fortified food products',
             'Registration of micronutrient premixes',
@@ -33,6 +38,8 @@ const ROLES = [
     },
     {
         name: 'Federal Ministry of Health and Social Welfare (FMOHSW)',
+        logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png',
+        icon: 'heart-pulse',
         roles: [
             'Nutrition policy development',
             'Programme evaluation and impact assessment',
@@ -41,6 +48,8 @@ const ROLES = [
     },
     {
         name: 'Federal Competition and Consumer Protection Commission (FCCPC)',
+        logo: '/fccpc_logo.png',
+        icon: 'users',
         roles: [
             'Household-level monitoring',
             'Consumer sensitization and awareness creation',
@@ -49,6 +58,7 @@ const ROLES = [
     },
     {
         name: 'Industry',
+        icon: 'factory',
         roles: [
             'Production and distribution of adequately fortified foods',
             'Sponsorship of NFA activities',
@@ -58,6 +68,7 @@ const ROLES = [
     },
     {
         name: 'Development Partners',
+        icon: 'handshake',
         roles: [
             'Technical assistance',
             'Capacity building',
@@ -157,34 +168,51 @@ export default function GovernancePage() {
     return (
         <main className="governance-page">
             <style>{`
+                /* Hero with Image */
                 .gov-hero {
                     position: relative;
-                    background: linear-gradient(135deg, var(--wfp-navy) 0%, var(--wfp-blue) 100%);
-                    color: #fff;
-                    padding: 8rem 0 6rem;
-                    text-align: center;
+                    min-height: 420px;
+                    display: flex;
+                    align-items: center;
                     overflow: hidden;
                 }
-                .gov-hero::before {
-                    content: "";
+                .gov-hero-bg {
                     position: absolute;
                     inset: 0;
-                    background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%);
-                    pointer-events: none;
+                    z-index: 0;
                 }
-                .hero-title {
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    margin-bottom: 1.5rem;
-                    letter-spacing: -0.02em;
-                    text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                .gov-hero-bg::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+                    z-index: 1;
                 }
-                .hero-subtitle {
-                    font-size: 1.25rem;
-                    color: rgba(255,255,255,0.8);
-                    max-width: 800px;
-                    margin: 0 auto;
+                .gov-hero-content {
+                    position: relative;
+                    z-index: 2;
+                    padding: 5rem 0 4rem;
+                }
+                .gov-hero h1 {
+                    color: #fff;
+                    max-width: 720px;
+                    margin-bottom: 1rem;
+                }
+                .gov-hero p {
+                    color: rgba(255,255,255,0.95);
+                    max-width: 720px;
+                    font-size: 1.15rem;
                     line-height: 1.7;
+                }
+                .gov-hero .breadcrumb {
+                    margin-bottom: 2rem;
+                }
+                .gov-hero .breadcrumb a,
+                .gov-hero .breadcrumb span {
+                    color: rgba(255,255,255,0.8);
+                }
+                .gov-hero .breadcrumb a:hover {
+                    color: #fff;
                 }
 
                 .roles-grid {
@@ -198,25 +226,52 @@ export default function GovernancePage() {
                     backdrop-filter: blur(10px);
                     border: 1px solid rgba(255,255,255,0.5);
                     border-radius: 24px;
-                    padding: 2.5rem;
+                    padding: 0;
                     box-shadow: 0 10px 40px rgba(0,0,0,0.04);
-                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    transition: all 0.3s ease;
                     display: flex;
                     flex-direction: column;
+                    overflow: hidden;
                 }
                 .role-card:hover {
-                    transform: translateY(-10px) scale(1.02);
+                    transform: translateY(-4px);
                     box-shadow: 0 20px 60px rgba(0,0,0,0.08);
                     background: #fff;
                     border-color: var(--wfp-blue-light);
                 }
-                .role-card h3 {
-                    color: var(--wfp-navy);
-                    font-size: 1.4rem;
-                    margin-bottom: 1.5rem;
+                .role-card-header {
+                    background: linear-gradient(135deg, var(--wfp-blue-light) 0%, rgba(0, 135, 81, 0.05) 100%);
+                    padding: 2rem;
                     display: flex;
                     align-items: center;
-                    gap: 0.75rem;
+                    justify-content: center;
+                    min-height: 140px;
+                    border-bottom: 1px solid var(--border-light);
+                }
+                .role-card-logo {
+                    max-width: 140px;
+                    max-height: 80px;
+                    object-fit: contain;
+                    filter: grayscale(20%);
+                    opacity: 0.9;
+                }
+                .role-card:hover .role-card-logo {
+                    filter: grayscale(0%);
+                    opacity: 1;
+                }
+                .role-card-icon {
+                    font-size: 3rem;
+                    color: var(--wfp-blue);
+                    opacity: 0.7;
+                }
+                .role-card-body {
+                    padding: 2rem;
+                }
+                .role-card h3 {
+                    color: var(--wfp-navy);
+                    font-size: 1.15rem;
+                    margin-bottom: 1.5rem;
+                    line-height: 1.4;
                 }
                 .role-list {
                     list-style: none;
@@ -271,28 +326,62 @@ export default function GovernancePage() {
                 .monitor-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--wfp-navy); }
                 .monitor-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
 
-                .table-container {
-                    overflow-x: auto;
-                    margin-top: 2rem;
-                    border: 1px solid var(--border-light);
-                    border-radius: var(--radius-md);
+                .labs-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                    gap: 1.5rem;
+                    margin-top: 3rem;
                 }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
+                .lab-card {
                     background: #fff;
+                    border: 1px solid var(--border-light);
+                    border-radius: 16px;
+                    padding: 1.75rem;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    gap: 1.25rem;
                 }
-                th, td {
-                    padding: 1rem;
-                    text-align: left;
-                    border-bottom: 1px solid var(--border-light);
+                .lab-card:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+                    border-color: var(--wfp-blue-light);
                 }
-                th {
-                    background: var(--bg-off);
+                .lab-icon {
+                    width: 48px;
+                    height: 48px;
+                    background: var(--wfp-blue-light);
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--wfp-blue);
+                    flex-shrink: 0;
+                }
+                .lab-info {
+                    flex: 1;
+                }
+                .lab-name {
                     font-weight: 700;
+                    font-size: 1.05rem;
                     color: var(--text-primary);
+                    margin-bottom: 0.5rem;
                 }
-                tr:last-child td { border-bottom: none; }
+                .lab-location {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                    color: var(--text-secondary);
+                    margin-bottom: 0.25rem;
+                }
+                .lab-contact {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                    color: var(--text-secondary);
+                    font-weight: 500;
+                }
                 
                 .challenges-grid {
                     display: grid;
@@ -373,29 +462,27 @@ export default function GovernancePage() {
             `}</style>
 
             <div className="gov-hero">
-                <div className="container">
-                    <div className="breadcrumb" style={{ justifyContent: 'center', marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,0.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-                        <Link href="/about" style={{ color: 'rgba(255,255,255,0.6)' }}>About</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-                        <span style={{ color: '#fff' }}>Governance & Compliance</span>
+                <div className="gov-hero-bg">
+                    <Image
+                        src="/about-hero.png"
+                        alt="Governance and Compliance"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container gov-hero-content">
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <Link href="/about">About</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Governance & Compliance</span>
                     </div>
-                    <h1 className="hero-title">Governance & Compliance</h1>
-                    <p className="hero-subtitle">
+                    <h1>Governance & Compliance</h1>
+                    <p>
                         The NFA operates through a collaborative governance framework involving regulators, policymakers, industry representatives, development partners, academia, and civil society.
                     </p>
-                    <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.25rem', borderRadius: '4px', fontSize: '0.9rem' }}>
-                            <span style={{ color: 'var(--wfp-gold)', fontWeight: 700 }}>Chair:</span> Industry Representative
-                        </div>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.25rem', borderRadius: '4px', fontSize: '0.9rem' }}>
-                            <span style={{ color: 'var(--wfp-gold)', fontWeight: 700 }}>Vice Chair:</span> SON
-                        </div>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '0.75rem 1.25rem', borderRadius: '4px', fontSize: '0.9rem' }}>
-                            <span style={{ color: 'var(--wfp-gold)', fontWeight: 700 }}>Secretariat:</span> NAFDAC
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -434,12 +521,30 @@ export default function GovernancePage() {
                     <div className="roles-grid">
                         {ROLES.map((role, idx) => (
                             <div key={idx} className="role-card">
-                                <h3>{role.name}</h3>
-                                <ul className="role-list">
-                                    {role.roles.map((r, rIdx) => (
-                                        <li key={rIdx}>{r}</li>
-                                    ))}
-                                </ul>
+                                <div className="role-card-header">
+                                    {role.logo ? (
+                                        <Image
+                                            src={role.logo}
+                                            alt={role.name}
+                                            width={140}
+                                            height={80}
+                                            className="role-card-logo"
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                    ) : (
+                                        <div className="role-card-icon">
+                                            <Icon name={role.icon as IconName} size={48} />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="role-card-body">
+                                    <h3>{role.name}</h3>
+                                    <ul className="role-list">
+                                        {role.roles.map((r, rIdx) => (
+                                            <li key={rIdx}>{r}</li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -479,6 +584,39 @@ export default function GovernancePage() {
                 </div>
             </section>
 
+            {/* Visual Feature Section */}
+            <section className="section" style={{ background: 'linear-gradient(135deg, var(--wfp-blue-light) 0%, rgba(0, 135, 81, 0.08) 100%)' }}>
+                <div className="container">
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+                        <div>
+                            <p className="section-eyebrow" style={{ color: 'var(--wfp-blue)' }}>Collaboration</p>
+                            <h2 style={{ fontSize: '2.25rem', marginBottom: '1.5rem' }}>Building Nigeria&apos;s Food Fortification Infrastructure</h2>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.75, fontSize: '1.05rem', marginBottom: '1.5rem' }}>
+                                Through multi-sectoral coordination, the NFA strengthens regulatory frameworks, laboratory capacity, and industry compliance to ensure every Nigerian has access to fortified foods.
+                            </p>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '2rem' }}>
+                                <div>
+                                    <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--wfp-blue)', marginBottom: '0.5rem' }}>8</div>
+                                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Accredited Laboratories</div>
+                                </div>
+                                <div>
+                                    <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--wfp-blue)', marginBottom: '0.5rem' }}>6</div>
+                                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Key Stakeholder Groups</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', aspectRatio: '4/3', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
+                            <Image
+                                src="/factory.png"
+                                alt="Food fortification infrastructure"
+                                fill
+                                style={{ objectFit: 'cover' }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Approved Labs */}
             <section className="section">
                 <div className="container">
@@ -487,26 +625,26 @@ export default function GovernancePage() {
                     <p className="section-lead">
                         The NFA, in collaboration with the Institute of Public Analysts of Nigeria (IPAN), recognizes accredited laboratories supporting micronutrient analysis and compliance monitoring.
                     </p>
-                    
-                    <div className="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Laboratory Name</th>
-                                    <th>Location</th>
-                                    <th>Contact</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {LABS.map((lab, idx) => (
-                                    <tr key={idx}>
-                                        <td><strong>{lab.name}</strong></td>
-                                        <td>{lab.location}</td>
-                                        <td>{lab.contact}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+
+                    <div className="labs-grid">
+                        {LABS.map((lab, idx) => (
+                            <div key={idx} className="lab-card">
+                                <div className="lab-icon">
+                                    <Icon name="microscope" size={24} />
+                                </div>
+                                <div className="lab-info">
+                                    <div className="lab-name">{lab.name}</div>
+                                    <div className="lab-location">
+                                        <Icon name="map-pin" size={14} />
+                                        {lab.location}
+                                    </div>
+                                    <div className="lab-contact">
+                                        <Icon name="phone" size={14} />
+                                        {lab.contact}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>

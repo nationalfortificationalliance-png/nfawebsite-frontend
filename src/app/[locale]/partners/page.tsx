@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import Icon from '@/components/Icon';
-import { getPartners } from '@/lib/api';
+import Icon, { IconName } from '@/components/Icon';
+import { getPartners, type Partner } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Partners',
@@ -44,8 +44,8 @@ export default async function PartnersPage() {
     const partners = rawPartners.length > 0 ? rawPartners : STATIC_PARTNERS.map(p => ({
         id: p.id,
         documentId: `mock-partner-${p.id}`,
-        name: p.name, partner_type: p.type, description: p.desc, website_url: undefined, logo: { id: 0, documentId: '', url: '' }, is_featured: true, order: p.id, is_active: true
-    } as any));
+        name: p.name, partner_type: p.type, description: p.desc, website_url: undefined, logo: { id: 0, documentId: '', url: '' }, order: p.id, is_active: true
+    } as Partner));
 
     const grouped = STATIC_PARTNERS.reduce<Record<string, typeof STATIC_PARTNERS>>((acc, p) => {
         if (!acc[p.type]) acc[p.type] = [];
@@ -56,11 +56,52 @@ export default async function PartnersPage() {
     return (
         <>
             <style>{`
-        .partners-hero { position: relative; height: 340px; overflow: hidden; }
-        .partners-hero-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(0,28,60,.82) 0%, rgba(0,80,140,.5) 70%, transparent 100%); }
-        .partners-hero-content { position: absolute; inset: 0; display: flex; align-items: flex-end; padding-bottom: 3rem; }
-        .partners-hero h1 { color: #fff; }
-        .partners-hero p { color: rgba(255,255,255,.75); font-size: 1rem; margin-top: 0.5rem; max-width: 520px; }
+        /* Hero with Image - consistent with other pages */
+        .partners-hero {
+          position: relative;
+          min-height: 420px;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+        .partners-hero-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+        .partners-hero-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          z-index: 1;
+        }
+        .partners-hero-content {
+          position: relative;
+          z-index: 2;
+          padding: 5rem 0 4rem;
+        }
+        .partners-hero h1 {
+          color: #fff;
+          max-width: 720px;
+          margin-bottom: 1rem;
+        }
+        .partners-hero p {
+          color: rgba(255,255,255,0.95);
+          max-width: 720px;
+          font-size: 1.15rem;
+          line-height: 1.7;
+        }
+        .partners-hero .breadcrumb {
+          margin-bottom: 2rem;
+        }
+        .partners-hero .breadcrumb a,
+        .partners-hero .breadcrumb span {
+          color: rgba(255,255,255,0.7);
+        }
+        .partners-hero .breadcrumb a:hover {
+          color: #fff;
+        }
 
         /* Quick stats */
         .partner-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #fff; }
@@ -93,6 +134,16 @@ export default async function PartnersPage() {
         .become-item-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 0.1rem; }
 
         @media (max-width: 900px) {
+          .partners-hero {
+            height: 60vh;
+            min-height: 500px;
+          }
+          .partners-hero h1 {
+            font-size: 2rem;
+          }
+          .partners-hero p {
+            font-size: 1rem;
+          }
           .partner-stats { grid-template-columns: repeat(2, 1fr); }
           .become-grid { grid-template-columns: 1fr; }
         }
@@ -103,16 +154,17 @@ export default async function PartnersPage() {
 
             {/* ── Hero ── */}
             <div className="partners-hero">
-                <Image src="/about-hero.png" alt="Partnership meeting" fill style={{ objectFit: 'cover' }} priority />
-                <div className="partners-hero-overlay" />
-                <div className="partners-hero-content">
-                    <div className="container">
-                        <div className="breadcrumb">
-                            <Link href="/">Home</Link><span className="breadcrumb-sep">›</span><span>Partners</span>
-                        </div>
-                        <h1>Our Partners</h1>
-                        <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
+                <div className="partners-hero-bg">
+                    <Image src="/about-hero.png" alt="Partnership meeting" fill style={{ objectFit: 'cover' }} priority />
+                </div>
+                <div className="container partners-hero-content">
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>Partners</span>
                     </div>
+                    <h1>Our Partners</h1>
+                    <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
                 </div>
             </div>
 
@@ -144,7 +196,7 @@ export default async function PartnersPage() {
                                                 {p.logo.startsWith('/') ? (
                                                     <Image src={p.logo} alt={p.name} fill style={{ objectFit: 'contain' }} />
                                                 ) : (
-                                                    <Icon name={p.logo as any} size={32} />
+                                                    <Icon name={p.logo as IconName} size={32} />
                                                 )}
                                             </div>
                                             <div className="partner-info">
@@ -181,7 +233,7 @@ export default async function PartnersPage() {
                                 { icon: 'handshake', text: 'NGOs and civil society can lead demand creation campaigns and community-level nutrition education.' },
                             ].map((item, i) => (
                                 <div key={i} className="become-item">
-                                    <span className="become-item-icon" style={{ display: 'flex' }}><Icon name={item.icon as any} size={28} /></span>
+                                    <span className="become-item-icon" style={{ display: 'flex' }}><Icon name={item.icon as IconName} size={28} /></span>
                                     <span>{item.text}</span>
                                 </div>
                             ))}

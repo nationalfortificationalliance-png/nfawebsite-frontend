@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getFAQs } from '@/lib/api';
 import Icon from '@/components/Icon';
 
@@ -78,20 +79,51 @@ export default async function FAQPage() {
     return (
         <>
             <style>{`
+                /* Hero with Image */
                 .faq-hero {
-                    background: var(--wfp-navy);
+                    position: relative;
+                    min-height: 420px;
+                    display: flex;
+                    align-items: center;
+                    overflow: hidden;
+                }
+                .faq-hero-bg {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                }
+                .faq-hero-bg::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+                    z-index: 1;
+                }
+                .faq-hero-content {
+                    position: relative;
+                    z-index: 2;
                     padding: 5rem 0 4rem;
-                    text-align: center;
-                    color: #fff;
                 }
                 .faq-hero h1 {
                     color: #fff;
+                    max-width: 720px;
                     margin-bottom: 1rem;
                 }
                 .faq-hero p {
-                    color: rgba(255,255,255,0.8);
-                    max-width: 600px;
-                    margin: 0 auto;
+                    color: rgba(255,255,255,0.95);
+                    max-width: 720px;
+                    font-size: 1.15rem;
+                    line-height: 1.7;
+                }
+                .faq-hero .breadcrumb {
+                    margin-bottom: 2rem;
+                }
+                .faq-hero .breadcrumb a,
+                .faq-hero .breadcrumb span {
+                    color: rgba(255,255,255,0.7);
+                }
+                .faq-hero .breadcrumb a:hover {
+                    color: #fff;
                 }
                 .faq-category {
                     margin-bottom: 4rem;
@@ -155,10 +187,19 @@ export default async function FAQPage() {
 
             {/* Hero */}
             <div className="faq-hero">
-                <div className="container">
-                    <div className="breadcrumb" style={{ justifyContent: 'center', marginBottom: '2rem' }}>
-                        <Link href="/" style={{ color: 'rgba(255,255,255,0.6)' }}>Home</Link>
-                        <span className="breadcrumb-sep" style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
+                <div className="faq-hero-bg">
+                    <Image
+                        src="/hero-3.png"
+                        alt="FAQ"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                    />
+                </div>
+                <div className="container faq-hero-content">
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
                         <span>FAQ</span>
                     </div>
                     <h1>Frequently Asked Questions</h1>

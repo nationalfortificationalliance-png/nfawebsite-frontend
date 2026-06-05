@@ -11,14 +11,29 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 16.5px; /* Slightly increased from default 16px */
+  font-size: 18px; /* Increased base font size for clearer readability */
 }
 
 body {
-  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #1a1a2e;
   background: #fff;
-  line-height: 1.65; /* Comfortable line height */
+  line-height: 1.7; /* Comfortable line height */
+}
+
+main {
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Remove any gap between header and page content */
+main > * {
+  margin-top: 0 !important;
+}
+
+main > *:first-child {
+  padding-top: 0;
 }
 
 img {
@@ -39,18 +54,23 @@ button {
 
 /* ─── Brand Tokens ───────────────────────────────────────────── */
 :root {
-  --wfp-blue: #009a44;
-  /* Re-mapped to NFA Green */
-  --wfp-blue-dark: #00732f;
-  --wfp-blue-light: #e6f5eb;
-  --wfp-green: #84cc16;
-  /* Lime accent */
-  --wfp-green-dark: #65a30d;
-  --wfp-gold: #f59e0b;
-  /* Amber */
+  /* === MATURE COLOR PALETTE === */
+  /* Primary Brand Color - Nigeria Green */
+  --wfp-green: #008751;
+  --wfp-green-dark: #006639;
+  --wfp-green-light: #e8f5f0;
+
+  /* Dark Sections - Deep Green */
   --wfp-navy: #064e3b;
-  /* Emerald 900 for dark headers */
-  --wfp-red: #e32d1c;
+
+  /* Accent - Gold */
+  --wfp-gold: #f59e0b;
+  --wfp-gold-light: #fef3c7;
+
+  /* Legacy aliases for compatibility */
+  --wfp-blue: #008751;
+  --wfp-blue-dark: #006639;
+  --wfp-blue-light: #e8f5f0;
 
   --text-primary: #0f172a;
   /* Deeper slate */
@@ -140,21 +160,21 @@ p {
 .section-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--wfp-blue);
-  margin-bottom: 1rem;
+  color: var(--wfp-gold);
+  margin-bottom: 1.25rem;
 }
 
 .section-eyebrow::before {
   content: '';
   display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--wfp-blue);
+  width: 32px;
+  height: 3px;
+  background: var(--wfp-gold);
   border-radius: 2px;
 }
 
@@ -164,10 +184,11 @@ p {
 }
 
 .section-lead {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  max-width: 560px;
-  line-height: 1.75;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.7;
+  font-weight: 500;
 }
 
 /* ─── Modern Buttons ──────────────────────────────────────────── */
@@ -319,13 +340,18 @@ p {
 .card:hover {
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.04),
-    0 16px 48px rgba(0, 0, 0, 0.08);
-  transform: translateY(-8px) scale(1.01);
-  border-color: rgba(0, 135, 81, 0.2);
+    0 16px 48px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 135, 81, 0.1);
+  transform: translateY(-4px) scale(1.005);
+  border-color: rgba(0, 135, 81, 0.3);
 }
 
 .card:hover::before {
   opacity: 1;
+}
+
+.card:active {
+  transform: translateY(-2px) scale(1.002);
 }
 
 /* Card with padding (for content cards) */
@@ -709,6 +735,199 @@ p {
 
 .stagger-4 {
   animation-delay: 0.4s;
+}
+
+/* ─── Scroll-Triggered Animations ────────────────────────────── */
+.scroll-reveal {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.scroll-reveal.reveal-visible {
+  opacity: 1;
+}
+
+/* Fade Up Animation */
+.reveal-fade-up {
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-fade-up.reveal-visible {
+  transform: translateY(0);
+}
+
+/* Fade Up with Scale */
+.reveal-fade-up-scale {
+  transform: translateY(40px) scale(0.95);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-fade-up-scale.reveal-visible {
+  transform: translateY(0) scale(1);
+}
+
+/* Slide Left Animation */
+.reveal-slide-left {
+  transform: translateX(60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-slide-left.reveal-visible {
+  transform: translateX(0);
+}
+
+/* Slide Right Animation */
+.reveal-slide-right {
+  transform: translateX(-60px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-slide-right.reveal-visible {
+  transform: translateX(0);
+}
+
+/* Scale Up Animation */
+.reveal-scale-up {
+  transform: scale(0.9);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale-up.reveal-visible {
+  transform: scale(1);
+}
+
+/* Fade In Animation */
+.reveal-fade-in {
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Number Counter Animation ────────────────────────────── */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.counter-animate {
+  animation: countUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Gradient Animations ────────────────────────────────── */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* ─── Floating Animation ────────────────────────────────── */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ─── Pulse Glow Animation ────────────────────────────────── */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.6);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* ─── Shimmer Effect ────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ─── Page Transition ────────────────────────────────── */
+@keyframes slideRight {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* ─── Enhanced Card Hover States ────────────────────────────────── */
+.card-hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.card-hover-glow {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.card-hover-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--wfp-blue), var(--wfp-gold));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.card-hover-glow:hover::before {
+  opacity: 0.3;
 }
 
 /* Text Gradient utility */

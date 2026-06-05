@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; overflow-x: hidden; }
+  </style>
+</head>
+<body>
+
+<!-- EXACT ASEDO STRUCTURE -->
+<div class="relative w-full min-h-[400px] md:min-h-[500px] lg:min-h-[700px] flex items-center overflow-hidden" style="background: red;">
+  <img
+    src="hero-1.png"
+    class="absolute inset-0 w-full h-full object-cover"
+    alt="Test"
+  />
+  <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/40 to-black/50"></div>
+
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-20 right-20 w-32 h-32 bg-green-500/20 rounded-full blur-3xl animate-pulse"></div>
+  </div>
+
+  <div class="relative z-10 w-full px-4 sm:px-6 md:px-10 lg:px-20 py-12 md:py-16 lg:py-24">
+    <div class="max-w-4xl">
+      <h1 class="text-white font-bold text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-6 md:mb-8" style="text-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        Combating Hidden Hunger in Nigeria Through Food Fortification
+      </h1>
+      <p class="text-white text-lg md:text-xl lg:text-2xl font-normal leading-relaxed mb-6 md:mb-8 max-w-3xl" style="text-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+        The National Fortification Alliance (NFA) is driving coordinated national efforts to improve nutrition outcomes.
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center sm:justify-start">
+        <button class="flex py-3 px-6 md:px-8 justify-center items-center gap-3 bg-orange-500 hover:bg-orange-600 transition-all duration-300 min-w-[140px] rounded-lg">
+          <span class="text-white font-semibold text-sm md:text-base">CONTACT US</span>
+        </button>
+        <button class="flex py-3 px-6 md:px-8 justify-center items-center gap-3 border-2 border-white/80 bg-white/10 hover:bg-white/20 transition-all duration-300 min-w-[140px] rounded-lg">
+          <span class="text-white font-semibold text-sm md:text-base">LEARN MORE</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding: 2rem; background: white;">
+  <h2>Content below hero</h2>
+  <p>This should be below the hero section</p>
+</div>
+
+</body>
+</html>
