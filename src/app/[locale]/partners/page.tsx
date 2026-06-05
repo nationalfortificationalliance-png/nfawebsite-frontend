@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import Icon from '@/components/Icon';
-import { getPartners } from '@/lib/api';
+import Icon, { IconName } from '@/components/Icon';
+import { getPartners, type Partner } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Partners',
@@ -44,8 +44,8 @@ export default async function PartnersPage() {
     const partners = rawPartners.length > 0 ? rawPartners : STATIC_PARTNERS.map(p => ({
         id: p.id,
         documentId: `mock-partner-${p.id}`,
-        name: p.name, partner_type: p.type, description: p.desc, website_url: undefined, logo: { id: 0, documentId: '', url: '' }, is_featured: true, order: p.id, is_active: true
-    } as any));
+        name: p.name, partner_type: p.type, description: p.desc, website_url: undefined, logo: { id: 0, documentId: '', url: '' }, order: p.id, is_active: true
+    } as Partner));
 
     const grouped = STATIC_PARTNERS.reduce<Record<string, typeof STATIC_PARTNERS>>((acc, p) => {
         if (!acc[p.type]) acc[p.type] = [];
@@ -196,7 +196,7 @@ export default async function PartnersPage() {
                                                 {p.logo.startsWith('/') ? (
                                                     <Image src={p.logo} alt={p.name} fill style={{ objectFit: 'contain' }} />
                                                 ) : (
-                                                    <Icon name={p.logo as any} size={32} />
+                                                    <Icon name={p.logo as IconName} size={32} />
                                                 )}
                                             </div>
                                             <div className="partner-info">
@@ -233,7 +233,7 @@ export default async function PartnersPage() {
                                 { icon: 'handshake', text: 'NGOs and civil society can lead demand creation campaigns and community-level nutrition education.' },
                             ].map((item, i) => (
                                 <div key={i} className="become-item">
-                                    <span className="become-item-icon" style={{ display: 'flex' }}><Icon name={item.icon as any} size={28} /></span>
+                                    <span className="become-item-icon" style={{ display: 'flex' }}><Icon name={item.icon as IconName} size={28} /></span>
                                     <span>{item.text}</span>
                                 </div>
                             ))}

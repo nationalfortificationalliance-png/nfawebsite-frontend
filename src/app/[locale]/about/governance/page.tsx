@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import Icon from '@/components/Icon';
+import Icon, { IconName } from '@/components/Icon';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
@@ -533,7 +533,7 @@ export default function GovernancePage() {
                                         />
                                     ) : (
                                         <div className="role-card-icon">
-                                            <Icon name={role.icon as any} size={48} />
+                                            <Icon name={role.icon as IconName} size={48} />
                                         </div>
                                     )}
                                 </div>
@@ -590,7 +590,7 @@ export default function GovernancePage() {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
                         <div>
                             <p className="section-eyebrow" style={{ color: 'var(--wfp-blue)' }}>Collaboration</p>
-                            <h2 style={{ fontSize: '2.25rem', marginBottom: '1.5rem' }}>Building Nigeria's Food Fortification Infrastructure</h2>
+                            <h2 style={{ fontSize: '2.25rem', marginBottom: '1.5rem' }}>Building Nigeria&apos;s Food Fortification Infrastructure</h2>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.75, fontSize: '1.05rem', marginBottom: '1.5rem' }}>
                                 Through multi-sectoral coordination, the NFA strengthens regulatory frameworks, laboratory capacity, and industry compliance to ensure every Nigerian has access to fortified foods.
                             </p>

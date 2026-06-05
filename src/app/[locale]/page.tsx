@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, type Partner } from '@/lib/api';
+import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, type Partner, type NewsEvent } from '@/lib/api';
 import {
   AnimatedStats,
   AnimatedCoreFunctions,
@@ -111,6 +111,7 @@ const MOCK_NEWS = [
     documentId: 'mock-1',
     title: 'NFA Launches Digital Monitoring System for Food Fortification',
     excerpt: 'Revolutionary DFQT+ platform goes live to track fortification compliance across Nigeria in real-time.',
+    body: 'Revolutionary DFQT+ platform goes live to track fortification compliance across Nigeria in real-time.',
     slug: 'nfa-launches-digital-monitoring',
     publishedAt: new Date().toISOString(),
     date: new Date().toISOString(),
@@ -120,7 +121,7 @@ const MOCK_NEWS = [
       url: 'http://localhost:3000/hero-1.png', // Full URL to bypass Strapi prepending
       alternativeText: 'Digital Monitoring System'
     },
-    category: 'Technology',
+    category: 'news' as const,
     is_featured: true,
   },
   {
@@ -128,6 +129,7 @@ const MOCK_NEWS = [
     documentId: 'mock-2',
     title: 'Nigeria Records 40% Increase in Fortified Food Production',
     excerpt: 'New report shows significant progress in national food fortification program with over 200 certified processors.',
+    body: 'New report shows significant progress in national food fortification program with over 200 certified processors.',
     slug: 'nigeria-fortified-food-increase',
     publishedAt: new Date().toISOString(),
     date: new Date().toISOString(),
@@ -137,7 +139,7 @@ const MOCK_NEWS = [
       url: 'http://localhost:3000/factory.png',
       alternativeText: 'Food Processing Factory'
     },
-    category: 'Impact',
+    category: 'news' as const,
     is_featured: true,
   },
   {
@@ -145,6 +147,7 @@ const MOCK_NEWS = [
     documentId: 'mock-3',
     title: 'WFP and NAFDAC Partner for Enhanced Laboratory Capacity',
     excerpt: 'Strategic partnership aims to strengthen micronutrient testing capabilities across all 36 states.',
+    body: 'Strategic partnership aims to strengthen micronutrient testing capabilities across all 36 states.',
     slug: 'wfp-nafdac-partnership',
     publishedAt: new Date().toISOString(),
     date: new Date().toISOString(),
@@ -154,10 +157,10 @@ const MOCK_NEWS = [
       url: 'http://localhost:3000/hero-3.png',
       alternativeText: 'WFP Partnership'
     },
-    category: 'Partnership',
+    category: 'news' as const,
     is_featured: true,
   },
-] as any[];
+] as NewsEvent[];
 
 export default async function HomePage() {
   const [carousels, featuredNews, quoteData, statsData, partnersData] = await Promise.all([
