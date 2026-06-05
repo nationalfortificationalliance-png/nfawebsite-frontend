@@ -29,7 +29,6 @@ const STATIC_PARTNERS = [
     { id: 6, type: 'un-agency', name: 'WHO Nigeria', desc: 'Technical collaborator providing global evidence and WHO-aligned premix specifications for all six fortification vehicles.', logo: 'stethoscope' },
     { id: 7, type: 'civil-society', name: 'GAIN (Nigeria)', desc: 'Global Alliance for Improved Nutrition supports premix supply chain strengthening, market assessments, and private sector engagement in Nigeria.', logo: '/GAIN_logo_RVB.webp' },
     { id: 8, type: 'private-sector', name: 'Nigerian Food Processors Association', desc: 'Largest representative body for certified food manufacturers — a key implementation partner for reaching processors at scale across all 36 states.', logo: 'factory' },
-    { id: 9, type: 'donor', name: 'Bill & Melinda Gates Foundation', desc: 'Strategic funder supporting research, evidence-generation, and innovation in Nigeria\'s food fortification program.', logo: '/gates foundation logo.svg' },
 ];
 
 const IMPACT_QUICK = [
