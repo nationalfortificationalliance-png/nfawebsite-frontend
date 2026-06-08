@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { NewsEvent } from '@/lib/api';
 import Icon from './Icon';
 
@@ -16,6 +17,8 @@ export default function NewsFlashCards({
   autoRotate = true,
   interval = 5000
 }: NewsFlashCardsProps) {
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -370,7 +373,7 @@ export default function NewsFlashCards({
           </div>
 
           <div className="flashcard-action">
-            <Link href={`/news/${currentNews.slug}`} className="flashcard-btn">
+            <Link href={`/${locale}/news/${currentNews.slug}`} className="flashcard-btn">
               Read Full Story
               <Icon name="arrow-right" size={18} />
             </Link>

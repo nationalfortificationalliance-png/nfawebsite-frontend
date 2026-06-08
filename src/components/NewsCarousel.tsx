@@ -2,6 +2,7 @@
 import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { getStrapiMediaUrl, NewsEvent } from '@/lib/api';
 import Icon from './Icon';
 
@@ -16,6 +17,8 @@ export default function NewsCarousel({
   autoScroll = true,
   scrollInterval = 4000
 }: NewsCarouselProps) {
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -384,7 +387,7 @@ export default function NewsCarousel({
             return (
               <Link
                 key={item.id}
-                href={`/news/${item.slug}`}
+                href={`/${locale}/news/${item.slug}`}
                 className="news-carousel-card"
               >
                 <div className="news-card-image-wrapper">
