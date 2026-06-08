@@ -118,7 +118,7 @@ const MOCK_NEWS = [
     image: {
       id: 1,
       documentId: 'img-1',
-      url: 'http://localhost:3000/hero-1.png', // Full URL to bypass Strapi prepending
+      url: '/hero-1.png',
       alternativeText: 'Digital Monitoring System'
     },
     category: 'news' as const,
@@ -136,7 +136,7 @@ const MOCK_NEWS = [
     image: {
       id: 2,
       documentId: 'img-2',
-      url: 'http://localhost:3000/factory.png',
+      url: '/factory.png',
       alternativeText: 'Food Processing Factory'
     },
     category: 'news' as const,
@@ -154,7 +154,7 @@ const MOCK_NEWS = [
     image: {
       id: 3,
       documentId: 'img-3',
-      url: 'http://localhost:3000/hero-3.png',
+      url: '/hero-3.png',
       alternativeText: 'WFP Partnership'
     },
     category: 'news' as const,
@@ -194,7 +194,7 @@ export default async function HomePage() {
     author_name: 'David Stevenson',
     author_title: 'WFP Nigeria Country Director',
     author_organization: 'World Food Programme Nigeria',
-    author_image: { id: 0, documentId: '', url: 'http://localhost:3000/team-1.png' }
+    author_image: { id: 0, documentId: '', url: '/team-1.png' }
   };
 
   // Fallback stats data
@@ -451,11 +451,12 @@ export default async function HomePage() {
                 {quote.author_organization && <span style={{ display: 'block', fontSize: '0.85rem', opacity: 0.8 }}>{quote.author_organization}</span>}
               </div>
             </div>
-            <div style={{ flexShrink: 0, minWidth: '240px', width: '240px', height: '240px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--wfp-gold)', boxShadow: '0 10px 32px rgba(0,0,0,0.18)' }}>
-              <img
+            <div style={{ flexShrink: 0, minWidth: '240px', width: '240px', height: '240px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--wfp-gold)', boxShadow: '0 10px 32px rgba(0,0,0,0.18)', position: 'relative' }}>
+              <Image
                 src={quote.author_image?.url ? getStrapiMediaUrl(quote.author_image.url) : '/team-1.png'}
                 alt={quote.author_name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                fill
+                style={{ objectFit: 'cover' }}
               />
             </div>
           </div>
