@@ -376,8 +376,10 @@ export default function NewsCarousel({
             transform: `translateX(calc(-1 * var(--news-current-index) * var(--news-carousel-step)))`,
           } as CSSProperties}
         >
-          {news.map((item) => {
-            const imageUrl = item.image?.url ? getStrapiMediaUrl(item.image.url) : null;
+          {news.map((item, index) => {
+            const FALLBACK_IMAGES = ['/hero-1.png', '/hero-2.png', '/hero-3.png', '/factory.png', '/about-hero.png'];
+            const fallbackImage = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
+            const imageUrl = item.image?.url ? getStrapiMediaUrl(item.image.url) : fallbackImage;
 
             return (
               <Link
@@ -386,19 +388,13 @@ export default function NewsCarousel({
                 className="news-carousel-card"
               >
                 <div className="news-card-image-wrapper">
-                  {imageUrl ? (
-                    <Image
-                      src={imageUrl}
-                      alt={item.image?.alternativeText || item.title}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                      sizes="(max-width: 640px) 100vw, 50vw"
-                    />
-                  ) : (
-                    <div className="news-card-image-empty" aria-hidden="true">
-                      <Icon name="newspaper" size={44} />
-                    </div>
-                  )}
+                  <Image
+                    src={imageUrl}
+                    alt={item.image?.alternativeText || item.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
                   <div className="news-card-badge">
                     {item.category}
                   </div>

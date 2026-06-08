@@ -996,7 +996,43 @@ p {
 }
 
 /* ─── Responsive ─────────────────────────────────────────────── */
+
+/* Tablet landscape and small desktop */
+@media (max-width: 1200px) {
+  html {
+    font-size: 17px;
+  }
+
+  h1 {
+    font-size: 2.75rem;
+  }
+
+  h2 {
+    font-size: 2.25rem;
+  }
+
+  .page-hero h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* Tablet */
 @media (max-width: 900px) {
+  html {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
 
   .grid-3,
   .grid-2 {
@@ -1018,11 +1054,71 @@ p {
   .stat-item:nth-last-child(-n+2) {
     border-bottom: none;
   }
+
+  .page-hero {
+    min-height: 360px !important;
+  }
+
+  .page-hero h1 {
+    font-size: 2rem;
+  }
+
+  .page-hero p {
+    font-size: 1rem;
+  }
+
+  .section {
+    padding: 4rem 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
 }
 
+/* Mobile landscape and small tablets */
+@media (max-width: 768px) {
+  .grid-3,
+  .grid-2,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .page-hero {
+    min-height: 320px !important;
+  }
+
+  .page-hero-content {
+    padding: 3rem 0 2.5rem !important;
+  }
+}
+
+/* Mobile */
 @media (max-width: 600px) {
   :root {
     --container: 100%;
+  }
+
+  html {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 1.875rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.625rem;
+    line-height: 1.25;
+  }
+
+  h3 {
+    font-size: 1.375rem;
+  }
+
+  h4 {
+    font-size: 1.125rem;
   }
 
   .container {
@@ -1037,13 +1133,89 @@ p {
   .grid-2,
   .grid-4 {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .stats-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .stat-item {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-item:last-child {
+    border-bottom: none;
   }
 
   .btn {
     justify-content: center;
+    width: 100%;
+  }
+
+  .page-hero {
+    min-height: 280px !important;
+  }
+
+  .page-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .page-hero p {
+    font-size: 0.95rem;
+  }
+
+  .page-hero-content {
+    padding: 2.5rem 0 2rem !important;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .card h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 400px) {
+  html {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 0 0.875rem;
+  }
+
+  h1 {
+    font-size: 1.625rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .page-hero {
+    min-height: 240px !important;
+  }
+
+  .page-hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .section {
+    padding: 2.5rem 0;
+  }
+
+  .btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
   }
 }

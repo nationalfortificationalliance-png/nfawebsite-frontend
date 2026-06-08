@@ -95,6 +95,52 @@ export default function PageHero({
                 .page-hero .breadcrumb a:hover {
                     color: #fff;
                 }
+
+                @media (max-width: 900px) {
+                    .page-hero {
+                        min-height: 360px;
+                    }
+                    .page-hero-content {
+                        padding: 4rem 0 3.5rem;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .page-hero {
+                        min-height: 320px;
+                    }
+                    .page-hero-content {
+                        padding: 3rem 0 2.5rem;
+                    }
+                    .page-hero p {
+                        font-size: 1rem;
+                    }
+                }
+
+                @media (max-width: 600px) {
+                    .page-hero {
+                        min-height: 280px;
+                    }
+                    .page-hero-content {
+                        padding: 2.5rem 0 2rem;
+                    }
+                    .page-hero .breadcrumb {
+                        margin-bottom: 1.5rem;
+                        font-size: 0.85rem;
+                    }
+                    .page-hero p {
+                        font-size: 0.95rem;
+                    }
+                }
+
+                @media (max-width: 400px) {
+                    .page-hero {
+                        min-height: 240px;
+                    }
+                    .page-hero-content {
+                        padding: 2rem 0 1.75rem;
+                    }
+                }
             `}</style>
         </div>
     );

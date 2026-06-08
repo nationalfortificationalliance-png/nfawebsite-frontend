@@ -451,15 +451,13 @@ export default async function HomePage() {
                 {quote.author_organization && <span style={{ display: 'block', fontSize: '0.85rem', opacity: 0.8 }}>{quote.author_organization}</span>}
               </div>
             </div>
-            {quote.author_image?.url && (
-              <div style={{ flexShrink: 0, minWidth: '240px', width: '240px', height: '240px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--wfp-gold)', boxShadow: '0 10px 32px rgba(0,0,0,0.18)' }}>
-                <img
-                  src={getStrapiMediaUrl(quote.author_image.url)}
-                  alt={quote.author_name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
-            )}
+            <div style={{ flexShrink: 0, minWidth: '240px', width: '240px', height: '240px', borderRadius: '50%', overflow: 'hidden', border: '4px solid var(--wfp-gold)', boxShadow: '0 10px 32px rgba(0,0,0,0.18)' }}>
+              <img
+                src={quote.author_image?.url ? getStrapiMediaUrl(quote.author_image.url) : '/team-1.png'}
+                alt={quote.author_name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
           </div>
         </div>
       </div>
