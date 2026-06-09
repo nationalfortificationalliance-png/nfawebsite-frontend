@@ -167,8 +167,26 @@ export default async function HomePage() {
     getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(),
   ]);
 
-  // Use mock data if no news from backend
-  const displayNews = featuredNews.length > 0 ? featuredNews : MOCK_NEWS;
+  // Fallback images for news items
+  const NEWS_FALLBACK_IMAGES = ['/hero-1.png', '/hero-2.png', '/hero-3.png', '/factory.png', '/about-hero.png'];
+
+  // Use mock data if no news from backend, and ensure all news have images
+  const rawDisplayNews = featuredNews.length > 0 ? featuredNews : MOCK_NEWS;
+  const displayNews = rawDisplayNews.map((item, index) => {
+    // If news item has no image or empty image URL, add fallback
+    if (!item.image || !item.image.url || item.image.url.trim().length === 0) {
+      return {
+        ...item,
+        image: {
+          id: 0,
+          documentId: '',
+          url: NEWS_FALLBACK_IMAGES[index % NEWS_FALLBACK_IMAGES.length],
+          alternativeText: item.title
+        }
+      };
+    }
+    return item;
+  });
 
   // Only include partners from API that actually have logos
   const partnersWithLogos = partnersData.filter((partner) => {

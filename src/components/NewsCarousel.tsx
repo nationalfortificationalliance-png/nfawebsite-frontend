@@ -382,7 +382,9 @@ export default function NewsCarousel({
           {news.map((item, index) => {
             const FALLBACK_IMAGES = ['/hero-1.png', '/hero-2.png', '/hero-3.png', '/factory.png', '/about-hero.png'];
             const fallbackImage = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
-            const imageUrl = item.image?.url ? getStrapiMediaUrl(item.image.url) : fallbackImage;
+            // Check if image URL exists and is not empty
+            const hasValidImage = item.image?.url && item.image.url.trim().length > 0;
+            const imageUrl = hasValidImage ? getStrapiMediaUrl(item.image.url) : fallbackImage;
 
             return (
               <Link
