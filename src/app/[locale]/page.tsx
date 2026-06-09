@@ -5,6 +5,7 @@ import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
 import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, type Partner, type NewsEvent } from '@/lib/api';
+import { MOCK_NEWS } from '@/lib/mockData';
 import {
   AnimatedStats,
   AnimatedCoreFunctions,
@@ -103,64 +104,6 @@ const HOMEPAGE_FALLBACK_PARTNERS: Partner[] = HOMEPAGE_FALLBACK_LOGOS.map((logo,
   is_active: true,
   partner_type: 'partner',
 }));
-
-// Fallback mock news data - using actual local images
-const MOCK_NEWS = [
-  {
-    id: 1,
-    documentId: 'mock-1',
-    title: 'NFA Launches Digital Monitoring System for Food Fortification',
-    excerpt: 'Revolutionary DFQT+ platform goes live to track fortification compliance across Nigeria in real-time.',
-    body: 'Revolutionary DFQT+ platform goes live to track fortification compliance across Nigeria in real-time.',
-    slug: 'nfa-launches-digital-monitoring',
-    publishedAt: new Date().toISOString(),
-    date: new Date().toISOString(),
-    image: {
-      id: 1,
-      documentId: 'img-1',
-      url: '/hero-1.png',
-      alternativeText: 'Digital Monitoring System'
-    },
-    category: 'news' as const,
-    is_featured: true,
-  },
-  {
-    id: 2,
-    documentId: 'mock-2',
-    title: 'Nigeria Records 40% Increase in Fortified Food Production',
-    excerpt: 'New report shows significant progress in national food fortification program with over 200 certified processors.',
-    body: 'New report shows significant progress in national food fortification program with over 200 certified processors.',
-    slug: 'nigeria-fortified-food-increase',
-    publishedAt: new Date().toISOString(),
-    date: new Date().toISOString(),
-    image: {
-      id: 2,
-      documentId: 'img-2',
-      url: '/factory.png',
-      alternativeText: 'Food Processing Factory'
-    },
-    category: 'news' as const,
-    is_featured: true,
-  },
-  {
-    id: 3,
-    documentId: 'mock-3',
-    title: 'WFP and NAFDAC Partner for Enhanced Laboratory Capacity',
-    excerpt: 'Strategic partnership aims to strengthen micronutrient testing capabilities across all 36 states.',
-    body: 'Strategic partnership aims to strengthen micronutrient testing capabilities across all 36 states.',
-    slug: 'wfp-nafdac-partnership',
-    publishedAt: new Date().toISOString(),
-    date: new Date().toISOString(),
-    image: {
-      id: 3,
-      documentId: 'img-3',
-      url: '/hero-3.png',
-      alternativeText: 'WFP Partnership'
-    },
-    category: 'news' as const,
-    is_featured: true,
-  },
-] as NewsEvent[];
 
 export default async function HomePage() {
   const [carousels, featuredNews, quoteData, statsData, partnersData] = await Promise.all([
