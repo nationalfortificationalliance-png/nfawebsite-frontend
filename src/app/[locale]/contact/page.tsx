@@ -147,7 +147,8 @@ export default function ContactPage() {
                             <div className="info-detail">
                                 <strong>NAFDAC Office Lagos</strong>
                                 <span>National Agency for Food and Drug Administration and Control</span>
-                                <span>Lagos Office</span>
+                                <span>Plot 1, Industrial Estate</span>
+                                <span>Lagos-Oshodi Apapa Expressway, Isolo</span>
                                 <span>Lagos, Nigeria</span>
                             </div>
                             <div className="map-wrapper">
@@ -158,7 +159,15 @@ export default function ContactPage() {
                         </div>
 
                         <div className="info-group">
-                            <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="mail" size={18} /></span> Direct Contacts</div>
+                            <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="phone" size={18} /></span> Phone</div>
+                            <div className="info-detail">
+                                <a href="tel:07001623322" style={{ color: 'var(--wfp-blue)', textDecoration: 'none', fontWeight: 600 }}>0700-1-NAFDAC (0700-1-623322)</a>
+                                <a href="tel:+23414609750" style={{ color: 'var(--wfp-blue)', textDecoration: 'none' }}>+234 (0) 1-4609750</a>
+                            </div>
+                        </div>
+
+                        <div className="info-group">
+                            <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="mail" size={18} /></span> Email Contacts</div>
                             <div className="info-card">
                                 <div className="info-detail">
                                     <strong>General Inquiries</strong>
