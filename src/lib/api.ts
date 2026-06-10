@@ -125,6 +125,8 @@ export interface TeamMember {
     bio?: string;
     image?: StrapiImage;
     order: number;
+    phone?: string;
+    email?: string;
 }
 
 export interface AboutPage {

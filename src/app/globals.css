@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   color: #1a1a2e;
   background: #fff;
   line-height: 1.7; /* Comfortable line height */
@@ -54,6 +54,23 @@ button {
 
 /* ─── Brand Tokens ───────────────────────────────────────────── */
 :root {
+  /* === TYPOGRAPHY SYSTEM === */
+  /*
+   * TO CHANGE THE FONT FOR THE ENTIRE WEBSITE:
+   * Simply change --font-primary below. The entire site will update automatically.
+   *
+   * Gothic Font Options (all free from Google Fonts):
+   * --font-primary: 'Libre Baskerville', 'Georgia', 'Times New Roman', serif;  (Current - Classic Gothic serif)
+   * --font-primary: 'EB Garamond', 'Garamond', serif;  (Elegant Gothic)
+   * --font-primary: 'Crimson Text', 'Times New Roman', serif;  (Book Gothic)
+   * --font-primary: 'Playfair Display', 'Georgia', serif;  (Modern Gothic)
+   *
+   * Remember to update the Google Fonts link in src/app/[locale]/layout.tsx
+   */
+  --font-primary: 'Libre Baskerville', 'Georgia', 'Times New Roman', serif;
+  --font-heading: var(--font-primary);
+  --font-body: var(--font-primary);
+
   /* === MATURE COLOR PALETTE === */
   /* Primary Brand Color - Nigeria Green */
   --wfp-green: #008751;
@@ -108,7 +125,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.25;
   color: var(--text-primary);

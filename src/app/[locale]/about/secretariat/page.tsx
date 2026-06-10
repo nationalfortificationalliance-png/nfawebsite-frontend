@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import Icon from '@/components/Icon';
 import { getTeamMembers, getStrapiMediaUrl, type TeamMember } from '@/lib/api';
 
 export const metadata: Metadata = {
@@ -15,24 +16,38 @@ const FALLBACK_SECRETARIAT: TeamMember[] = [
     {
         id: 1,
         documentId: 'fallback-1',
-        name: 'Mr. Abubakar Tanimu Umar',
-        role: 'Programme Officer',
-        organization: 'NFA Secretariat',
+        name: 'Mr. Abayomi Akinyemi',
+        role: 'Deputy Director ICT',
+        organization: 'NAFDAC',
         category: 'Secretariat',
         image: { id: 0, documentId: '', url: '/team-1.png' },
-        bio: 'Mr. Umar coordinates field activities and stakeholder engagement for the National Fortification Project.',
+        phone: '08099837920',
+        email: 'akinyemi.ta@nafdac.gov.ng',
         order: 1
     },
     {
         id: 2,
         documentId: 'fallback-2',
-        name: 'Mrs. Joy Haanya',
-        role: 'Programme Officer',
-        organization: 'NFA Secretariat',
+        name: 'Mr. Abubakar Tanimu Umar',
+        role: 'Assistant Chief Regulatory Officer FSAN',
+        organization: 'NAFDAC',
         category: 'Secretariat',
         image: { id: 0, documentId: '', url: '/team-2.png' },
-        bio: 'Mrs. Haanya supports programme implementation and administrative coordination within the NFA Secretariat.',
+        phone: '08035171719',
+        email: 'umar.tanimu@nafdac.gov.ng',
         order: 2
+    },
+    {
+        id: 3,
+        documentId: 'fallback-3',
+        name: 'Mrs. Joy Haanya',
+        role: 'Assistant Chief Regulatory Officer FSAN',
+        organization: 'NAFDAC',
+        category: 'Secretariat',
+        image: { id: 0, documentId: '', url: '/team-3.png' },
+        phone: '08065217543',
+        email: 'wandoo.haanya@nafdac.gov.ng',
+        order: 3
     }
 ];
 
@@ -151,13 +166,34 @@ export default async function SecretariatPage() {
                     font-size: 0.95rem;
                     font-weight: 500;
                     color: var(--text-secondary);
-                    margin-bottom: 1.25rem;
+                    margin-bottom: 0.75rem;
+                }
+
+                .member-contact {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.875rem;
+                    color: var(--text-muted);
+                    margin-bottom: 0.5rem;
+                }
+
+                .member-contact a {
+                    color: var(--wfp-green);
+                    text-decoration: none;
+                    transition: color 0.2s;
+                }
+
+                .member-contact a:hover {
+                    color: var(--wfp-green-dark);
+                    text-decoration: underline;
                 }
 
                 .member-bio {
                     font-size: 0.875rem;
                     line-height: 1.6;
                     color: var(--text-muted);
+                    margin-top: 1rem;
                 }
 
                 .admin-note {
@@ -235,6 +271,18 @@ export default async function SecretariatPage() {
                                     <div className="member-org">{m.organization || 'National Fortification Alliance'}</div>
                                     <h3 className="member-name">{m.name}</h3>
                                     <div className="member-role">{m.role}</div>
+                                    {m.phone && (
+                                        <div className="member-contact">
+                                            <Icon name="phone" size={14} />
+                                            <a href={`tel:${m.phone}`}>{m.phone}</a>
+                                        </div>
+                                    )}
+                                    {m.email && (
+                                        <div className="member-contact">
+                                            <Icon name="mail" size={14} />
+                                            <a href={`mailto:${m.email}`}>{m.email}</a>
+                                        </div>
+                                    )}
                                     {m.bio && <p className="member-bio">{m.bio}</p>}
                                 </div>
                             </div>
