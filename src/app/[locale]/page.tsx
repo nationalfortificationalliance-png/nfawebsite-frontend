@@ -49,23 +49,59 @@ const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string
 ];
 
 const PARTNER_LOGOS = [
-  { name: 'WFP Nigeria', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
-  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
-  { name: 'UNICEF Nigeria', src: '/UNICEF_Logo.png', width: 310, height: 130 },
-  { name: 'Federal Ministry of Health', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
-  { name: 'Standards Organisation of Nigeria (SON)', src: '/son_png.png', width: 260, height: 120 },
+  // Development Partners (with actual logos)
+  { name: 'WFP', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
+  { name: 'UNICEF', src: '/UNICEF_Logo.png', width: 310, height: 130 },
   { name: 'GAIN', src: '/GAIN_logo_RVB.webp', width: 300, height: 140 },
+
+  // Government (with actual logos)
+  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
+  { name: 'Federal Ministry of Health and Social Welfare', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
+  { name: 'Standards Organisation of Nigeria', src: '/son_png.png', width: 260, height: 120 },
   { name: 'FCCPC', src: '/fccpc_logo.png', width: 260, height: 120 },
+
+  // Government MDAs (icon placeholders)
+  { name: 'Federal Ministry of Education', src: 'building', width: 120, height: 120 },
+  { name: 'Federal Ministry of Industry, Trade and Investment', src: 'factory', width: 120, height: 120 },
+  { name: 'Federal Ministry of Finance', src: 'banknote', width: 120, height: 120 },
+  { name: 'Nigerian Customs Service', src: 'shield', width: 120, height: 120 },
+  { name: 'National Primary Health Care Development Agency', src: 'heart-pulse', width: 120, height: 120 },
+  { name: 'Federal Ministry of Agriculture', src: 'leaf', width: 120, height: 120 },
+  { name: 'Federal Ministry of Information', src: 'radio', width: 120, height: 120 },
+
+  // Industry Stakeholders
+  { name: 'Flour Millers', src: 'wheat', width: 120, height: 120 },
+  { name: 'Vegetable Oil Producers', src: 'droplet', width: 120, height: 120 },
+  { name: 'Sugar Producers', src: 'candy', width: 120, height: 120 },
+  { name: 'Salt Producers', src: 'box', width: 120, height: 120 },
+  { name: 'Bouillon Producers', src: 'soup', width: 120, height: 120 },
+  { name: 'Premix Manufacturers', src: 'flask-conical', width: 120, height: 120 },
+  { name: 'Rice Millers', src: 'wheat', width: 120, height: 120 },
+
+  // Professional Bodies
+  { name: 'Nutrition Society of Nigeria', src: 'apple', width: 120, height: 120 },
+  { name: 'Nigerian Institute of Food Science', src: 'microscope', width: 120, height: 120 },
+  { name: 'AFBTE', src: 'users', width: 120, height: 120 },
+
+  // Development Partners (icon placeholders)
+  { name: 'Helen Keller International', src: 'eye', width: 120, height: 120 },
+  { name: 'TechnoServe', src: 'sprout', width: 120, height: 120 },
+  { name: 'WHO', src: 'stethoscope', width: 120, height: 120 },
+  { name: 'Particle for Humanity', src: 'globe', width: 120, height: 120 },
+
+  // Academia & Civil Society
+  { name: 'Universities', src: 'graduation-cap', width: 120, height: 120 },
+  { name: 'Media Organizations', src: 'newspaper', width: 120, height: 120 },
+  { name: 'Civil Society Organizations', src: 'handshake', width: 120, height: 120 },
+  { name: 'Consumer Groups', src: 'shopping-basket', width: 120, height: 120 },
 ];
 
-const HOMEPAGE_FALLBACK_LOGOS = [
-  { src: '/son_png.png', width: 260, height: 120 },
-  { src: '/UNICEF_Logo.png', width: 310, height: 130 },
-  { src: '/NAFDAC_emblem.png', width: 220, height: 180 },
-  { src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
-  { src: '/GAIN_logo_RVB.webp', width: 300, height: 140 },
-  { src: '/fccpc_logo.png', width: 260, height: 120 },
-];
+const HOMEPAGE_FALLBACK_LOGOS = PARTNER_LOGOS.map(p => ({
+  src: p.src,
+  width: p.width,
+  height: p.height,
+  name: p.name
+}));
 
 const LOCAL_PARTNER_LOGO_MAP = new Map(PARTNER_LOGOS.map((partner) => [partner.name.toLowerCase(), partner]));
 
@@ -506,15 +542,25 @@ export default async function HomePage() {
               <div className="partner-grid" aria-label="Partner logos marquee">
                 {[...marqueePartners, ...marqueePartners].map((partner, i) => {
                   const resolvedLogo = resolvePartnerLogo(partner);
+                  const isIcon = !resolvedLogo.src.startsWith('/');
                   return (
                     <Link key={`${partner.name}-${i}`} href="/partners" className="partner-card" aria-label={`Partner logo: ${partner.name}`}>
-                      <Image
-                        src={resolvedLogo.src}
-                        alt={partner.name}
-                        width={resolvedLogo.width}
-                        height={resolvedLogo.height}
-                        style={{ maxWidth: '100%', height: 'auto' }}
-                      />
+                      {isIcon ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', padding: '1rem' }}>
+                          <Icon name={resolvedLogo.src as IconName} size={48} />
+                          <span style={{ fontSize: '0.75rem', textAlign: 'center', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                            {partner.name}
+                          </span>
+                        </div>
+                      ) : (
+                        <Image
+                          src={resolvedLogo.src}
+                          alt={partner.name}
+                          width={resolvedLogo.width}
+                          height={resolvedLogo.height}
+                          style={{ maxWidth: '100%', height: 'auto' }}
+                        />
+                      )}
                     </Link>
                   );
                 })}
