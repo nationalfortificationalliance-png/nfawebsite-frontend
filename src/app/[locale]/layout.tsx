@@ -96,16 +96,12 @@ export default async function LocaleLayout({
         <link rel="preconnect" href="https://nfawebsite-backend-production.up.railway.app" />
         <link rel="dns-prefetch" href="https://nfawebsite-backend-production.up.railway.app" />
 
-        {/* Favicon and Apple Touch Icons - Custom favicons from /public/favicon/ */}
-        <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
+        {/* Favicon and Apple Touch Icons - Custom favicons */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon_16x16.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon_32x32.png" />
-        <link rel="icon" type="image/png" sizes="48x48" href="/favicon/favicon_48x48.png" />
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon/favicon_64x64.png" />
-        <link rel="icon" type="image/png" sizes="128x128" href="/favicon/favicon_128x128.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/favicon/favicon_192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/favicon/favicon_512x512.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/favicon_180x180.png" />
+        <link rel="apple-touch-icon" href="/favicon/favicon_180x180.png" />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#008751" />
       </head>

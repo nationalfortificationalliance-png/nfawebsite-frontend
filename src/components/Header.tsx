@@ -141,8 +141,8 @@ export default function Header({ siteName }: { siteName: string }) {
         }
 
         .logo-emblem {
-          width: 52px;
-          height: 52px;
+          width: 70px;
+          height: 70px;
           border-radius: 1rem;
           background: rgba(0, 135, 81, 0.1);
           display: grid;
@@ -160,8 +160,8 @@ export default function Header({ siteName }: { siteName: string }) {
 
         @media (max-width: 800px) {
           .logo-emblem {
-            width: 44px;
-            height: 44px;
+            width: 56px;
+            height: 56px;
           }
 
           .logo-name {
@@ -450,7 +450,7 @@ export default function Header({ siteName }: { siteName: string }) {
             {/* Logo */}
             <Link href="/" className="logo">
               <div className="logo-emblem" style={{ background: 'transparent' }}>
-                <Image src="/logo.png" alt="NFA Logo" width={42} height={42} style={{ objectFit: 'contain' }} priority />
+                <Image src="/logo.png" alt="NFA Logo" width={60} height={60} style={{ objectFit: 'contain' }} priority />
               </div>
               <div className="logo-text">
                 <span className="logo-name">National Fortification Alliance</span>
