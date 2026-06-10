@@ -128,7 +128,7 @@ function resolvePartnerLogo(partner: Partner) {
 const HOMEPAGE_FALLBACK_PARTNERS: Partner[] = HOMEPAGE_FALLBACK_LOGOS.map((logo, index) => ({
   id: index + 1,
   documentId: `homepage-fallback-partner-${index + 1}`,
-  name: `Homepage Fallback ${index + 1}`,
+  name: logo.name,
   logo: {
     id: 0,
     documentId: '',
