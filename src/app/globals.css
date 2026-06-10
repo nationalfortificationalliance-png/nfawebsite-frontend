@@ -166,11 +166,11 @@ p {
 }
 
 .section {
-  padding: 2.5rem 0;
+  padding: 5rem 0;
 }
 
 .section-sm {
-  padding: 1.5rem 0;
+  padding: 3rem 0;
 }
 
 /* ─── Section Header ─────────────────────────────────────────── */
@@ -1085,7 +1085,7 @@ p {
   }
 
   .section {
-    padding: 2.5rem 0;
+    padding: 4rem 0;
   }
 
   .container {
@@ -1143,7 +1143,7 @@ p {
   }
 
   .section {
-    padding: 2rem 0;
+    padding: 3rem 0;
   }
 
   .grid-3,
@@ -1228,7 +1228,7 @@ p {
   }
 
   .section {
-    padding: 1.5rem 0;
+    padding: 2.5rem 0;
   }
 
   .btn {

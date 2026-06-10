@@ -164,8 +164,8 @@
   --md-sys-spacing-12: 48px;
   --md-sys-spacing-14: 56px;
   --md-sys-spacing-16: 64px;
-  --md-sys-spacing-20: 40px; /* Reduced from 80px to condense spacing */
-  --md-sys-spacing-24: 48px; /* Reduced from 96px to condense spacing */
+  --md-sys-spacing-20: 80px;
+  --md-sys-spacing-24: 96px;
 
   /* ===== SHAPE ===== */
   --md-sys-shape-corner-none: 0px;
