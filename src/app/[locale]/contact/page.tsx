@@ -145,11 +145,10 @@ export default function ContactPage() {
                         <div className="info-group">
                             <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="map-pin" size={18} /></span> NFA Secretariat</div>
                             <div className="info-detail">
-                                <strong>World Food Programme Nigeria</strong>
-                                <span>2nd Floor, UN House</span>
-                                <span>Plot 617/618 Diplomatic Drive</span>
-                                <span>Central Business District</span>
-                                <span>Abuja, Nigeria</span>
+                                <strong>NAFDAC Office Lagos</strong>
+                                <span>National Agency for Food and Drug Administration and Control</span>
+                                <span>Lagos Office</span>
+                                <span>Lagos, Nigeria</span>
                             </div>
                             <div className="map-wrapper">
                                 {/* Fallback pattern for map */}
