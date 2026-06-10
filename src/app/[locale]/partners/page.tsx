@@ -20,22 +20,53 @@ const PARTNER_TYPES: Record<string, { label: string; color: string; bg: string }
 };
 
 const STATIC_PARTNERS = [
+    // Lead Agency
     { id: 1, type: 'lead', name: 'WFP Nigeria', desc: 'Program lead and technical implementing partner, providing funding, coordination, and capacity building for the National Fortification Project.', logo: '/wfp-logo-standard-blue-en.svg' },
-    { id: 2, type: 'government', name: 'NAFDAC', desc: 'National Authority for Food & Drugs Control — the regulatory body responsible for certifying processors, conducting audits, and enforcing fortification standards.', logo: '/NAFDAC_emblem.png' },
-    { id: 3, type: 'government', name: 'Federal Ministry of Health', desc: 'Government policy owner of the national nutrition strategy, ensuring fortification aligns with Nigeria\'s public health and SDG commitments.', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
-    { id: 4, type: 'government', name: 'Standards Org. of Nigeria (SON)', desc: 'Sets and enforces product quality benchmarks for fortified foods, ensuring compliance with Nigerian and international standards.', logo: '/son_png.png' },
-    { id: 10, type: 'government', name: 'FCCPC', desc: 'Federal Competition and Consumer Protection Commission — ensuring consumer rights and quality at the household level.', logo: '/fccpc_logo.png' },
-    { id: 5, type: 'un-agency', name: 'UNICEF Nigeria', desc: 'Supports fortification interventions targeting child nutrition outcomes, providing technical assistance and advocacy aligned with child rights.', logo: '/UNICEF_Logo.png' },
-    { id: 6, type: 'un-agency', name: 'WHO Nigeria', desc: 'Technical collaborator providing global evidence and WHO-aligned premix specifications for all six fortification vehicles.', logo: 'stethoscope' },
-    { id: 7, type: 'civil-society', name: 'GAIN (Nigeria)', desc: 'Global Alliance for Improved Nutrition supports premix supply chain strengthening, market assessments, and private sector engagement in Nigeria.', logo: '/GAIN_logo_RVB.webp' },
-    { id: 8, type: 'private-sector', name: 'Nigerian Food Processors Association', desc: 'Largest representative body for certified food manufacturers — a key implementation partner for reaching processors at scale across all 36 states.', logo: 'factory' },
+
+    // Government MDAs
+    { id: 2, type: 'government', name: 'Federal Ministry of Health and Social Welfare', desc: 'Government policy owner of the national nutrition strategy, ensuring fortification aligns with Nigeria\'s public health and SDG commitments.', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
+    { id: 3, type: 'government', name: 'NAFDAC', desc: 'National Authority for Food & Drugs Control — the regulatory body responsible for certifying processors, conducting audits, and enforcing fortification standards.', logo: '/NAFDAC_emblem.png' },
+    { id: 4, type: 'government', name: 'Standards Organisation of Nigeria', desc: 'Sets and enforces product quality benchmarks for fortified foods, ensuring compliance with Nigerian and international standards.', logo: '/son_png.png' },
+    { id: 5, type: 'government', name: 'FCCPC', desc: 'Federal Competition and Consumer Protection Commission — ensuring consumer rights and quality at the household level.', logo: '/fccpc_logo.png' },
+    { id: 6, type: 'government', name: 'Federal Ministry of Education', desc: 'Supports school feeding programs and nutrition education initiatives.', logo: 'building' },
+    { id: 7, type: 'government', name: 'Federal Ministry of Industry, Trade and Investment', desc: 'Oversees industrial compliance and trade policy for fortified foods.', logo: 'factory' },
+    { id: 8, type: 'government', name: 'Federal Ministry of Finance, Budget and National Planning', desc: 'Provides budgetary support and economic planning for nutrition programs.', logo: 'banknote' },
+    { id: 9, type: 'government', name: 'Nigerian Customs Service', desc: 'Monitors import standards for premix and fortified food ingredients.', logo: 'shield' },
+    { id: 10, type: 'government', name: 'National Primary Health Care Development Agency', desc: 'Implements community-level nutrition interventions.', logo: 'heart-pulse' },
+    { id: 11, type: 'government', name: 'Federal Ministry of Agriculture and Food Security', desc: 'Coordinates agricultural value chains for fortified food commodities.', logo: 'leaf' },
+    { id: 12, type: 'government', name: 'Federal Ministry of Information and National Orientation', desc: 'Leads public awareness campaigns on fortified foods.', logo: 'radio' },
+
+    // UN Agencies & Development Partners
+    { id: 20, type: 'un-agency', name: 'UNICEF Nigeria', desc: 'Supports fortification interventions targeting child nutrition outcomes, providing technical assistance and advocacy aligned with child rights.', logo: '/UNICEF_Logo.png' },
+    { id: 21, type: 'un-agency', name: 'WHO Nigeria', desc: 'Technical collaborator providing global evidence and WHO-aligned premix specifications for all six fortification vehicles.', logo: 'stethoscope' },
+    { id: 22, type: 'donor', name: 'GAIN', desc: 'Global Alliance for Improved Nutrition supports premix supply chain strengthening, market assessments, and private sector engagement in Nigeria.', logo: '/GAIN_logo_RVB.webp' },
+    { id: 23, type: 'donor', name: 'Helen Keller International', desc: 'Provides technical support for micronutrient programs and fortification monitoring.', logo: 'eye' },
+    { id: 24, type: 'donor', name: 'TechnoServe', desc: 'Strengthens value chains and private sector capacity for fortified foods.', logo: 'sprout' },
+    { id: 25, type: 'donor', name: 'Particle for Humanity', desc: 'Supports innovative fortification technologies and delivery systems.', logo: 'globe' },
+
+    // Private Sector - Industry Stakeholders
+    { id: 30, type: 'private-sector', name: 'Flour Millers Association', desc: 'Represents wheat flour producers implementing mandatory fortification standards.', logo: 'wheat' },
+    { id: 31, type: 'private-sector', name: 'Vegetable Oil Producers', desc: 'Key stakeholders in edible oil fortification with Vitamin A.', logo: 'droplet' },
+    { id: 32, type: 'private-sector', name: 'Sugar Producers', desc: 'Implements fortification standards for refined sugar products.', logo: 'candy' },
+    { id: 33, type: 'private-sector', name: 'Salt Producers', desc: 'Mandatory iodization of table salt for thyroid health.', logo: 'box' },
+    { id: 34, type: 'private-sector', name: 'Bouillon Producers', desc: 'Fortification expansion partners for seasoning cubes.', logo: 'soup' },
+    { id: 35, type: 'private-sector', name: 'Premix Manufacturers', desc: 'Produces vitamin and mineral premixes for food fortification.', logo: 'flask-conical' },
+    { id: 36, type: 'private-sector', name: 'Rice Millers', desc: 'Emerging partners in rice fortification initiatives.', logo: 'wheat' },
+
+    // Professional Bodies & Civil Society
+    { id: 40, type: 'civil-society', name: 'Nutrition Society of Nigeria', desc: 'Professional body advancing nutrition science and fortification research.', logo: 'apple' },
+    { id: 41, type: 'civil-society', name: 'Nigerian Institute of Food Science and Technology', desc: 'Technical expertise in food processing and fortification standards.', logo: 'microscope' },
+    { id: 42, type: 'civil-society', name: 'Association of Food Beverage Tobacco Employees', desc: 'Labor union representing food industry workers.', logo: 'users' },
+    { id: 43, type: 'civil-society', name: 'Universities and Research Institutions', desc: 'Academic partners conducting fortification research and training.', logo: 'graduation-cap' },
+    { id: 44, type: 'civil-society', name: 'Media Organizations', desc: 'Communication partners for fortification awareness campaigns.', logo: 'newspaper' },
+    { id: 45, type: 'civil-society', name: 'Consumer Advocacy Groups', desc: 'Represent consumer interests in fortification policy and standards.', logo: 'shopping-basket' },
 ];
 
 const IMPACT_QUICK = [
-    { num: '9', label: 'Government Agencies' },
-    { num: '18', label: 'UN & INGO Partners' },
-    { num: '40+', label: 'Private Sector Partners' },
-    { num: '7', label: 'Donor Organizations' },
+    { num: '11', label: 'Government Agencies' },
+    { num: '5', label: 'UN & Development Partners' },
+    { num: '7', label: 'Private Sector Partners' },
+    { num: '6', label: 'Civil Society & Academia' },
 ];
 
 export default async function PartnersPage() {
