@@ -146,6 +146,10 @@ export default async function HomePage() {
     getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(), getUpcomingEvents(3),
   ]);
 
+  // Debug logging
+  console.log('Featured news count:', featuredNews.length);
+  console.log('Featured news:', featuredNews.map(n => ({ title: n.title, hasImage: !!n.image })));
+
   // Fallback images for news items
   const NEWS_FALLBACK_IMAGES = ['/hero-1.png', '/hero-2.png', '/hero-3.png', '/factory.png', '/about-hero.png'];
 

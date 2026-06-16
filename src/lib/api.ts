@@ -17,10 +17,14 @@ async function fetchAPI<T>(
             next: { revalidate: 60 },
             headers: { 'Content-Type': 'application/json' },
         });
-        if (!res.ok) return null;
+        if (!res.ok) {
+            console.error(`API error: ${res.status} ${res.statusText} - ${url}`);
+            return null;
+        }
         const json = await res.json();
         return json;
-    } catch {
+    } catch (error) {
+        console.error(`API fetch failed for ${url}:`, error);
         return null;
     }
 }
