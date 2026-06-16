@@ -16,6 +16,7 @@ const PARTNER_TYPES: Record<string, { label: string; color: string; bg: string }
     'un-agency': { label: 'UN Agency', color: '#0070bc', bg: '#e8f4fb' },
     'civil-society': { label: 'Civil Society', color: '#7e22ce', bg: '#f3e8ff' },
     'private-sector': { label: 'Private Sector', color: '#b45309', bg: '#fef3c7' },
+    'professional-body': { label: 'Professional Bodies', color: '#0891b2', bg: '#cffafe' },
     donor: { label: 'Donor', color: '#be123c', bg: '#ffe4e6' },
 };
 
@@ -85,6 +86,10 @@ export default async function PartnersPage() {
         {
             num: String(partnerCounts['private-sector'] || 0),
             label: 'Private Sector Partners'
+        },
+        {
+            num: String(partnerCounts['professional-body'] || 0),
+            label: 'Professional Bodies'
         },
         {
             num: String(partnerCounts['civil-society'] || 0),
