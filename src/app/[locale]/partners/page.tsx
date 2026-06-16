@@ -11,13 +11,11 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 const PARTNER_TYPES: Record<string, { label: string; color: string; bg: string }> = {
-    lead: { label: 'Lead Agency', color: '#1d4ed8', bg: '#dbeafe' },
-    government: { label: 'Government', color: '#15803d', bg: '#dcfce7' },
-    'un-agency': { label: 'UN Agency', color: '#0070bc', bg: '#e8f4fb' },
-    'civil-society': { label: 'Civil Society', color: '#7e22ce', bg: '#f3e8ff' },
-    'private-sector': { label: 'Private Sector', color: '#b45309', bg: '#fef3c7' },
-    'professional-body': { label: 'Professional Bodies', color: '#0891b2', bg: '#cffafe' },
-    donor: { label: 'Donor', color: '#be123c', bg: '#ffe4e6' },
+    government: { label: 'Government MDAs', color: '#15803d', bg: '#dcfce7' },
+    'private-sector': { label: 'Industry Stakeholders', color: '#b45309', bg: '#fef3c7' },
+    'professional-body': { label: 'Professional Bodies & Associations', color: '#0891b2', bg: '#cffafe' },
+    'development-partner': { label: 'Development Partners', color: '#0070bc', bg: '#e8f4fb' },
+    'civil-society': { label: 'Academia, Media & Civil Society', color: '#7e22ce', bg: '#f3e8ff' },
 };
 
 const STATIC_PARTNERS = [
@@ -73,27 +71,27 @@ export default async function PartnersPage() {
         return acc;
     }, {} as Record<string, number>);
 
-    // Group partner types for display stats
+    // Group partner types for display stats - matching client's exact categories
     const IMPACT_QUICK = [
         {
             num: String(partnerCounts['government'] || 0),
-            label: 'Government Agencies'
-        },
-        {
-            num: String((partnerCounts['un-agency'] || 0) + (partnerCounts['donor'] || 0) + (partnerCounts['lead'] || 0)),
-            label: 'UN & Development Partners'
+            label: 'Government MDAs'
         },
         {
             num: String(partnerCounts['private-sector'] || 0),
-            label: 'Private Sector Partners'
+            label: 'Industry Stakeholders'
         },
         {
             num: String(partnerCounts['professional-body'] || 0),
-            label: 'Professional Bodies'
+            label: 'Professional Bodies & Associations'
+        },
+        {
+            num: String(partnerCounts['development-partner'] || 0),
+            label: 'Development Partners'
         },
         {
             num: String(partnerCounts['civil-society'] || 0),
-            label: 'Civil Society & Academia'
+            label: 'Academia, Media & Civil Society'
         },
     ];
 
