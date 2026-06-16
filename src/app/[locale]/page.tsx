@@ -147,14 +147,24 @@ export default async function HomePage() {
   ]);
 
   // Debug logging
+  console.log('=== NEWS DEBUG ===');
   console.log('Featured news count:', featuredNews.length);
-  console.log('Featured news:', featuredNews.map(n => ({ title: n.title, hasImage: !!n.image })));
+  console.log('Featured news data:', JSON.stringify(featuredNews.map(n => ({
+    title: n.title,
+    hasImage: !!n.image,
+    category: n.category,
+    is_featured: n.is_featured
+  })), null, 2));
+  console.log('Using backend data:', featuredNews.length > 0);
 
   // Fallback images for news items
   const NEWS_FALLBACK_IMAGES = ['/hero-1.png', '/hero-2.png', '/hero-3.png', '/factory.png', '/about-hero.png'];
 
-  // Use mock data if no news from backend, and ensure all news have images
+  // ALWAYS try to use backend data first, even if images are missing
+  // Fallback to mock data only if API returns nothing
   const rawDisplayNews = featuredNews.length > 0 ? featuredNews : MOCK_NEWS;
+  console.log('Raw display news count:', rawDisplayNews.length);
+  console.log('Using MOCK_NEWS:', featuredNews.length === 0);
   const displayNews = rawDisplayNews.map((item, index) => {
     // If news item has no image or empty image URL, add fallback
     if (!item.image || !item.image.url || item.image.url.trim().length === 0) {
