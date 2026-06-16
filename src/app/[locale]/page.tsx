@@ -606,7 +606,7 @@ export default async function HomePage() {
               <div className="partner-grid" aria-label="Partner logos marquee">
                 {[...marqueePartners, ...marqueePartners].map((partner, i) => {
                   const resolvedLogo = resolvePartnerLogo(partner);
-                  const isIcon = !resolvedLogo.src.startsWith('/');
+                  const isIcon = !resolvedLogo.src.startsWith('/') && !resolvedLogo.src.startsWith('http');
                   return (
                     <Link key={`${partner.name}-${i}`} href="/partners" className="partner-card" aria-label={`Partner logo: ${partner.name}`}>
                       {isIcon ? (

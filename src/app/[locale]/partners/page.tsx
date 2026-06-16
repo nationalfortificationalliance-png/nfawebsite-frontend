@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon, { IconName } from '@/components/Icon';
-import { getPartners, type Partner } from '@/lib/api';
+import { getPartners, getStrapiMediaUrl, type Partner } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Partners',
@@ -71,13 +71,42 @@ const IMPACT_QUICK = [
 
 export default async function PartnersPage() {
     const rawPartners = await getPartners();
-    const partners = rawPartners.length > 0 ? rawPartners : STATIC_PARTNERS.map(p => ({
-        id: p.id,
-        documentId: `mock-partner-${p.id}`,
-        name: p.name, partner_type: p.type, description: p.desc, website_url: undefined, logo: { id: 0, documentId: '', url: '' }, order: p.id, is_active: true
-    } as Partner));
 
-    const grouped = STATIC_PARTNERS.reduce<Record<string, typeof STATIC_PARTNERS>>((acc, p) => {
+    // Helper to resolve partner logo from API or fallback to static
+    const resolvePartnerLogo = (partner: Partner) => {
+        const logoUrl = partner.logo?.url?.trim();
+        if (logoUrl) {
+            if (logoUrl.startsWith('http')) {
+                return logoUrl;
+            }
+            if (logoUrl.startsWith('/uploads')) {
+                return getStrapiMediaUrl(logoUrl);
+            }
+            if (logoUrl.startsWith('/')) {
+                return logoUrl;
+            }
+        }
+
+        // Fallback to static partner logo if name matches
+        const staticMatch = STATIC_PARTNERS.find(
+            sp => sp.name.toLowerCase() === partner.name.toLowerCase()
+        );
+        return staticMatch?.logo || 'building';
+    };
+
+    // If we have API partners, transform them to match the display format
+    const displayPartners = rawPartners.length > 0
+        ? rawPartners.map(p => ({
+            id: p.id,
+            type: p.partner_type || 'partner',
+            name: p.name,
+            desc: p.description || '',
+            logo: resolvePartnerLogo(p),
+        }))
+        : STATIC_PARTNERS;
+
+    // Group partners by type
+    const grouped = displayPartners.reduce<Record<string, typeof STATIC_PARTNERS>>((acc, p) => {
         if (!acc[p.type]) acc[p.type] = [];
         acc[p.type].push(p);
         return acc;
@@ -223,7 +252,7 @@ export default async function PartnersPage() {
                                     {group.map((p) => (
                                         <div key={p.id} className="partner-card">
                                             <div className="partner-logo">
-                                                {p.logo.startsWith('/') ? (
+                                                {(p.logo.startsWith('/') || p.logo.startsWith('http')) ? (
                                                     <Image src={p.logo} alt={p.name} fill style={{ objectFit: 'contain' }} />
                                                 ) : (
                                                     <Icon name={p.logo as IconName} size={32} />
