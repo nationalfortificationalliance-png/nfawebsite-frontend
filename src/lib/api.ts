@@ -184,7 +184,8 @@ export async function getCarousels(locale?: string): Promise<Carousel[]> {
 export async function getAllNews(page = 1, pageSize = 12): Promise<{ data: NewsEvent[]; total: number }> {
     const res = await fetchAPI<{ data: NewsEvent[]; meta: { pagination: { total: number } } }>('/news-events', {
         'sort': 'date:desc',
-        'populate': 'image,gallery',
+        'populate[0]': 'image',
+        'populate[1]': 'gallery',
         'pagination[page]': String(page),
         'pagination[pageSize]': String(pageSize),
     });
@@ -195,7 +196,8 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
     const featured = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
         'filters[is_featured][$eq]': 'true',
         'sort': 'date:desc',
-        'populate': 'image,gallery',
+        'populate[0]': 'image',
+        'populate[1]': 'gallery',
         'pagination[pageSize]': '6',
     });
 
@@ -205,7 +207,8 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
 
     const latest = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
         'sort': 'date:desc',
-        'populate': 'image,gallery',
+        'populate[0]': 'image',
+        'populate[1]': 'gallery',
         'pagination[pageSize]': '6',
     });
 
@@ -215,14 +218,16 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
 export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
     const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events', {
         'filters[slug][$eq]': slug,
-        'populate': 'image,gallery',
+        'populate[0]': 'image',
+        'populate[1]': 'gallery',
     });
     return res?.data?.[0] || null;
 }
 
 export async function getUpcomingEvents(pageSize = 6): Promise<NewsEvent[]> {
     const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events/upcoming', {
-        'populate': 'image,gallery',
+        'populate[0]': 'image',
+        'populate[1]': 'gallery',
         'pagination[pageSize]': String(pageSize),
     });
     return res?.data || [];
@@ -230,7 +235,8 @@ export async function getUpcomingEvents(pageSize = 6): Promise<NewsEvent[]> {
 
 export async function getPastEvents(page = 1, pageSize = 12): Promise<{ data: NewsEvent[]; total: number }> {
     const res = await fetchAPI<{ data: NewsEvent[]; meta: { pagination: { total: number } } }>('/news-events/past', {
-        'populate': 'image,gallery',
+        'populate[0]': 'image',
+        'populate[1]': 'gallery',
         'pagination[page]': String(page),
         'pagination[pageSize]': String(pageSize),
     });
@@ -241,7 +247,8 @@ export async function getNewsByCategory(category: string, page = 1, pageSize = 1
     const res = await fetchAPI<{ data: NewsEvent[]; meta: { pagination: { total: number } } }>('/news-events', {
         'filters[category][$eq]': category,
         'sort': 'date:desc',
-        'populate': 'image,gallery',
+        'populate[0]': 'image',
+        'populate[1]': 'gallery',
         'pagination[page]': String(page),
         'pagination[pageSize]': String(pageSize),
     });
