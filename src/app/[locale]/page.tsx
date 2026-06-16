@@ -457,7 +457,7 @@ export default async function HomePage() {
                 {quote.text}
               </p>
               <div className="quote-author">
-                <span style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--wfp-navy)' }}>{quote.author_name}</span>
+                <span style={{ fontWeight: 700, fontSize: '1.05rem', color: '#fff' }}>{quote.author_name}</span>
                 <span style={{ display: 'block', marginTop: '0.25rem' }}>{quote.author_title}</span>
                 {quote.author_organization && <span style={{ display: 'block', fontSize: '0.85rem', opacity: 0.8 }}>{quote.author_organization}</span>}
               </div>
