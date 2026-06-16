@@ -213,6 +213,34 @@ export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
     return res?.data?.[0] || null;
 }
 
+export async function getUpcomingEvents(pageSize = 6): Promise<NewsEvent[]> {
+    const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events/upcoming', {
+        'populate': 'image,gallery',
+        'pagination[pageSize]': String(pageSize),
+    });
+    return res?.data || [];
+}
+
+export async function getPastEvents(page = 1, pageSize = 12): Promise<{ data: NewsEvent[]; total: number }> {
+    const res = await fetchAPI<{ data: NewsEvent[]; meta: { pagination: { total: number } } }>('/news-events/past', {
+        'populate': 'image,gallery',
+        'pagination[page]': String(page),
+        'pagination[pageSize]': String(pageSize),
+    });
+    return { data: res?.data || [], total: res?.meta?.pagination?.total || 0 };
+}
+
+export async function getNewsByCategory(category: string, page = 1, pageSize = 12): Promise<{ data: NewsEvent[]; total: number }> {
+    const res = await fetchAPI<{ data: NewsEvent[]; meta: { pagination: { total: number } } }>('/news-events', {
+        'filters[category][$eq]': category,
+        'sort': 'date:desc',
+        'populate': 'image,gallery',
+        'pagination[page]': String(page),
+        'pagination[pageSize]': String(pageSize),
+    });
+    return { data: res?.data || [], total: res?.meta?.pagination?.total || 0 };
+}
+
 export async function getGuidelines(): Promise<GuidelineDocument[]> {
     const res = await fetchAPI<{ data: GuidelineDocument[] }>('/guideline-documents', {
         'sort': 'published_date:desc',

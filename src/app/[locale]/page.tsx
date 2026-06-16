@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, type Partner, type NewsEvent } from '@/lib/api';
+import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, getUpcomingEvents, type Partner, type NewsEvent } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 import {
   AnimatedStats,
@@ -142,8 +142,8 @@ const HOMEPAGE_FALLBACK_PARTNERS: Partner[] = HOMEPAGE_FALLBACK_LOGOS.map((logo,
 }));
 
 export default async function HomePage() {
-  const [carousels, featuredNews, quoteData, statsData, partnersData] = await Promise.all([
-    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(),
+  const [carousels, featuredNews, quoteData, statsData, partnersData, upcomingEvents] = await Promise.all([
+    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(), getUpcomingEvents(3),
   ]);
 
   // Fallback images for news items
@@ -339,6 +339,20 @@ export default async function HomePage() {
         .resource-tag { display: inline-flex; align-items: center; gap: var(--md-sys-spacing-2); padding: var(--md-sys-spacing-2) var(--md-sys-spacing-4); border: 1.5px solid var(--md-sys-color-outline); border-radius: var(--md-sys-shape-corner-small); font-size: var(--md-sys-typescale-label-medium-size); font-weight: 600; color: var(--md-sys-color-on-surface-variant); transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard); }
         .resource-tag:hover { border-color: var(--md-sys-color-secondary); color: var(--md-sys-color-secondary); background: var(--md-sys-color-secondary-container); }
 
+        /* ── Upcoming Events ── */
+        .upcoming-events-section { background: var(--md-sys-color-surface-container); padding: var(--md-sys-spacing-20) 0; }
+        .upcoming-events-section .section-eyebrow { color: var(--wfp-blue); }
+        .events-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--md-sys-spacing-8); margin-top: var(--md-sys-spacing-10); }
+        .event-card { background: var(--md-sys-color-surface); border-radius: var(--md-sys-shape-corner-large); overflow: hidden; box-shadow: var(--md-sys-shadow-level2); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized); border: 1px solid var(--md-sys-color-outline-variant); }
+        .event-card:hover { box-shadow: var(--md-sys-shadow-level4); transform: translateY(-4px); }
+        .event-date-badge { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); padding: var(--md-sys-spacing-4) var(--md-sys-spacing-6); text-align: center; font-weight: 700; }
+        .event-date-badge .day { font-size: var(--md-sys-typescale-headline-medium-size); display: block; line-height: 1.2; }
+        .event-date-badge .month { font-size: var(--md-sys-typescale-label-large-size); text-transform: uppercase; letter-spacing: 0.1em; }
+        .event-content { padding: var(--md-sys-spacing-6); }
+        .event-title { font-size: var(--md-sys-typescale-title-large-size); font-weight: 700; color: var(--md-sys-color-on-surface); margin-bottom: var(--md-sys-spacing-3); }
+        .event-excerpt { font-size: var(--md-sys-typescale-body-medium-size); color: var(--md-sys-color-on-surface-variant); line-height: 1.6; margin-bottom: var(--md-sys-spacing-4); }
+        .event-meta { display: flex; align-items: center; gap: var(--md-sys-spacing-2); font-size: var(--md-sys-typescale-label-medium-size); color: var(--md-sys-color-on-surface-variant); }
+
         /* ── Partners ── White background */
         .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: 8rem 0 8rem 0; background: #fff; overflow: hidden; }
         .partners-strip .section-eyebrow { color: var(--text-muted); }
@@ -525,8 +539,58 @@ export default async function HomePage() {
         </div>
       </div>
 
+      {/* ── Upcoming Events ── */}
+      {upcomingEvents.length > 0 && (
+        <section className="upcoming-events-section">
+          <div className="container">
+            <AnimatedSectionWrapper animation="fade-up" delay={0}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 'var(--md-sys-spacing-2)', flexWrap: 'wrap', gap: 'var(--md-sys-spacing-4)' }}>
+                <div>
+                  <p className="section-eyebrow">What&apos;s Coming</p>
+                  <h2 className="section-title">Upcoming Events</h2>
+                </div>
+                <Link href="/news" className="btn btn-outline btn-sm">
+                  View All Events →
+                </Link>
+              </div>
+            </AnimatedSectionWrapper>
 
+            <div className="events-grid">
+              {upcomingEvents.map((event) => {
+                const eventDate = new Date(event.date);
+                const day = eventDate.getDate();
+                const month = eventDate.toLocaleString('en-US', { month: 'short' });
+                const year = eventDate.getFullYear();
 
+                return (
+                  <AnimatedSectionWrapper key={event.id} animation="fade-up-scale" delay={100}>
+                    <Link href={`/news/${event.slug}`} className="event-card" style={{ textDecoration: 'none' }}>
+                      <div className="event-date-badge">
+                        <span className="day">{day}</span>
+                        <span className="month">{month} {year}</span>
+                      </div>
+                      <div className="event-content">
+                        <h3 className="event-title">{event.title}</h3>
+                        {event.excerpt && (
+                          <p className="event-excerpt">
+                            {event.excerpt.length > 120
+                              ? `${event.excerpt.substring(0, 120)}...`
+                              : event.excerpt}
+                          </p>
+                        )}
+                        <div className="event-meta">
+                          <Icon name="calendar" size={16} />
+                          <span>{eventDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </AnimatedSectionWrapper>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
 
       {/* ── Partners strip ── */}

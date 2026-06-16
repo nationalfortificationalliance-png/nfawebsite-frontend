@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Icon from '@/components/Icon';
-import NewsCard from '@/components/NewsCard';
-import { getAllNews, type NewsEvent } from '@/lib/api';
+import NewsFilter from '@/components/NewsFilter';
+import { getAllNews } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 
 export const metadata: Metadata = {
@@ -126,40 +126,14 @@ export default async function NewsPage() {
                 </div>
             </div>
 
-            {/* Filter bar */}
-            <div className="news-filter-bar">
-                <div className="container">
-                    <div className="news-filter-inner">
-                        <span className="filter-chip active">All</span>
-                        {categories.map((c) => (
-                            <span key={c} className="filter-chip">{c}</span>
-                        ))}
-                    </div>
+            {isMock && (
+                <div style={{ background: '#fff3e0', color: '#e65100', padding: '0.75rem 1rem', borderRadius: '8px', margin: '2rem auto', fontSize: '0.85rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '1200px' }}>
+                    <Icon name="sparkles" size={16} /> Viewing sample data. Add articles in the Strapi CMS to replace this placeholder content.
                 </div>
-            </div>
+            )}
 
-            {/* News Grid */}
-            <section className="section">
-                <div className="container">
-                    {isMock && (
-                        <div style={{ background: '#fff3e0', color: '#e65100', padding: '0.75rem 1rem', borderRadius: '8px', marginBottom: '2rem', fontSize: '0.85rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Icon name="sparkles" size={16} /> Viewing sample data. Add articles in the Strapi CMS to replace this placeholder content.
-                        </div>
-                    )}
-
-                    {total > 0 && (
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <p className="news-count" style={{ margin: 0 }}>Showing {news.length} of {total} items</p>
-                        </div>
-                    )}
-
-                    <div className="grid-3">
-                        {news.map((article: NewsEvent) => (
-                            <NewsCard key={article.id} article={article} />
-                        ))}
-                    </div>
-                </div>
-            </section>
+            {/* Filter bar & News Grid */}
+            <NewsFilter allNews={news} categories={categories} />
         </>
     );
 }
