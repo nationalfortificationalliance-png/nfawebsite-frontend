@@ -62,15 +62,35 @@ const STATIC_PARTNERS = [
     { id: 45, type: 'civil-society', name: 'Consumer Advocacy Groups', desc: 'Represent consumer interests in fortification policy and standards.', logo: 'shopping-basket' },
 ];
 
-const IMPACT_QUICK = [
-    { num: '11', label: 'Government Agencies' },
-    { num: '5', label: 'UN & Development Partners' },
-    { num: '7', label: 'Private Sector Partners' },
-    { num: '6', label: 'Civil Society & Academia' },
-];
-
 export default async function PartnersPage() {
     const rawPartners = await getPartners();
+
+    // Calculate dynamic partner counts from actual backend data
+    const partnerCounts = rawPartners.reduce((acc, p) => {
+        const type = p.partner_type || 'un-agency';
+        acc[type] = (acc[type] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+
+    // Group partner types for display stats
+    const IMPACT_QUICK = [
+        {
+            num: String(partnerCounts['government'] || 0),
+            label: 'Government Agencies'
+        },
+        {
+            num: String((partnerCounts['un-agency'] || 0) + (partnerCounts['donor'] || 0) + (partnerCounts['lead'] || 0)),
+            label: 'UN & Development Partners'
+        },
+        {
+            num: String(partnerCounts['private-sector'] || 0),
+            label: 'Private Sector Partners'
+        },
+        {
+            num: String(partnerCounts['civil-society'] || 0),
+            label: 'Civil Society & Academia'
+        },
+    ];
 
     // Helper to resolve partner logo from API or fallback to static
     const resolvePartnerLogo = (partner: Partner) => {

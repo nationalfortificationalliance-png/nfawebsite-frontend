@@ -268,8 +268,8 @@ export async function getPartners(): Promise<Partner[]> {
     const res = await fetchAPI<{ data: Partner[] }>('/partners', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
-        'populate': 'logo',
-        'pagination[pageSize]': '20',
+        'populate[0]': 'logo',
+        'pagination[pageSize]': '100',
     });
     return res?.data || [];
 }
