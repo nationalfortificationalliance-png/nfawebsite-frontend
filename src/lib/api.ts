@@ -28,8 +28,11 @@ async function fetchAPI<T>(
 export function getStrapiMediaUrl(url: string | null | undefined): string {
     if (!url) return '/placeholder.jpg';
     if (url.startsWith('http')) return url;
-    // If it's already a local path (starts with /), return as-is
+    // Strapi uploads paths need to be converted to full URLs
+    if (url.startsWith('/uploads')) return `${STRAPI_URL}${url}`;
+    // Local frontend paths (not from Strapi) can stay as-is
     if (url.startsWith('/')) return url;
+    // Relative paths from Strapi
     return `${STRAPI_URL}${url}`;
 }
 
