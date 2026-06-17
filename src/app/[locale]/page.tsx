@@ -511,15 +511,15 @@ export default async function HomePage() {
         }
 
         /* ── Partners ── White background */
-        .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: 8rem 0 8rem 0; background: #fff; overflow: hidden; }
+        .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: 5rem 0 5rem 0; background: #fff; overflow: hidden; }
         .partners-strip .section-eyebrow { color: var(--text-muted); }
         .partners-strip .section-title { color: var(--text-primary); margin-bottom: var(--md-sys-spacing-12); }
         .partner-marquee { width: 100%; overflow: hidden; }
         .partner-grid { display: flex; align-items: center; gap: 2.5rem; margin-top: var(--md-sys-spacing-10); min-width: max-content; animation: marquee 80s linear infinite; }
         .partner-grid:hover { animation-play-state: paused; }
-        .partner-card { flex: 0 0 auto; min-width: 170px; max-width: 260px; padding: 1.25rem 1rem; border-radius: 24px; border: 1px solid rgba(15,23,42,0.07); background: rgba(255,255,255,0.96); box-shadow: 0 12px 30px rgba(15,23,42,0.08); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease, box-shadow 0.25s ease; min-height: 140px; }
+        .partner-card { flex: 0 0 auto; min-width: 140px; max-width: 200px; padding: 1rem 0.85rem; border-radius: 20px; border: 1px solid rgba(15,23,42,0.07); background: rgba(255,255,255,0.96); box-shadow: 0 8px 24px rgba(15,23,42,0.06); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease, box-shadow 0.25s ease; min-height: 110px; }
         .partner-card:hover { transform: translateY(-4px); box-shadow: 0 20px 46px rgba(15,23,42,0.12); }
-        .partner-card img { max-width: 220px; max-height: 72px; object-fit: contain; display: block; filter: grayscale(0.05); opacity: 0.95; }
+        .partner-card img { max-width: 160px; max-height: 55px; object-fit: contain; display: block; filter: grayscale(0.05); opacity: 0.95; }
         .partner-card span { transition: opacity 0.25s ease; }
         .partner-card:hover span { opacity: 1; }
         .partner-logo-hm { filter: grayscale(10%) opacity(0.85); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-standard); display: flex; align-items: center; justify-content: center; padding: var(--md-sys-spacing-4) var(--md-sys-spacing-14); position: relative; flex-shrink: 0; min-height: 110px; }
