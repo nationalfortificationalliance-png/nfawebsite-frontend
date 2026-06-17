@@ -357,11 +357,6 @@ export interface PhoneContact {
     phone: string;
 }
 
-export interface ContactFAQ {
-    question: string;
-    answer: string;
-}
-
 export interface ContactPage {
     id: number;
     documentId: string;
@@ -378,7 +373,6 @@ export interface ContactPage {
     phone_contacts: PhoneContact[];
     office_hours: string;
     office_hours_note: string;
-    faqs: ContactFAQ[];
 }
 
 export async function getContactPage(): Promise<ContactPage | null> {

@@ -41,24 +41,6 @@ export default async function ContactPage() {
     const officeHours = contactData?.office_hours || 'Monday – Thursday: 8:00 AM – 4:30 PM\nFriday: 8:00 AM – 1:30 PM';
     const officeHoursNote = contactData?.office_hours_note || '* Closed on Nigerian public holidays and UN official holidays.';
 
-    const faqs = contactData?.faqs || [
-        {
-            question: 'How do I start the NAFDAC certification process?',
-            answer: 'We recommend downloading the "Food Processor Certification Handbook" from our Guidelines page. It contains the application forms, compliance checklists, and contact details for the NAFDAC Food Safety Directorate.'
-        },
-        {
-            question: 'Where can I source approved vitamin premixes?',
-            answer: 'The NFA partners with GAIN and trusted international suppliers to ensure high-quality premixes. Reach out via the contact form and select "Premix Supply" for an updated list of accredited vendors.'
-        },
-        {
-            question: 'Is fortification mandatory in Nigeria?',
-            answer: 'Yes. Under the Food, Drugs and Related Products Regulation, the fortification of wheat flour, maize flour, vegetable oil, and sugar is mandatory for all registered commercial processors serving the Nigerian market.'
-        },
-        {
-            question: 'How can NGOs collaborate with the NFA?',
-            answer: 'The NFA frequently collaborates with NGOs on consumer demand creation and grassroots nutrition awareness. Select "Partnership Inquiry" on the form to discuss alignment with current campaigns.'
-        }
-    ];
     return (
         <>
             <style>{`
@@ -139,19 +121,10 @@ export default async function ContactPage() {
         
         .map-wrapper { width: 100%; aspect-ratio: 4/3; background: #e2e8f0; border-radius: var(--radius-md); overflow: hidden; position: relative; margin-top: 1.5rem; }
 
-        /* FAQs */
-        .faq-section { background: var(--bg-off); padding: 5rem 0; border-top: 1px solid var(--border); }
-        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
-        .faq-item { background: #fff; padding: 2.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid transparent; transition: box-shadow 0.2s; }
-        .faq-item:hover { box-shadow: var(--shadow-md); }
-        .faq-q { font-weight: 700; color: var(--wfp-navy); margin-bottom: 0.75rem; }
-        .faq-a { color: var(--text-secondary); line-height: 1.65; }
-
         @media (max-width: 900px) {
           .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
           .form-panel { transform: none; margin-top: -3rem; }
           .form-grid { grid-template-columns: 1fr; gap: 1rem; }
-          .faq-grid { grid-template-columns: 1fr; gap: 1rem; }
         }
       `}</style>
 
@@ -247,22 +220,6 @@ export default async function ContactPage() {
                     </div>
                 </div>
             </div>
-
-            {/* FAQs */}
-            <section className="faq-section">
-                <div className="container">
-                    <p className="section-eyebrow">Quick Answers</p>
-                    <h2 className="section-title">Frequently Asked Questions</h2>
-                    <div className="faq-grid">
-                        {faqs.map((faq, idx) => (
-                            <div key={idx} className="faq-item">
-                                <div className="faq-q">{faq.question}</div>
-                                <div className="faq-a">{faq.answer}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
         </>
     );
 }
