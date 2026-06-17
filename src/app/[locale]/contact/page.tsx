@@ -192,6 +192,7 @@ export default async function ContactPage() {
                                 {addressLines.map((line, idx) => (
                                     idx === 0 ? <strong key={idx}>{line}</strong> : <span key={idx}>{line}</span>
                                 ))}
+                            </div>
                             <div className="map-wrapper">
                                 {/* Fallback pattern for map */}
                                 <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }} />
