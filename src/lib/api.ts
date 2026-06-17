@@ -352,6 +352,11 @@ export interface EmailContact {
     email: string;
 }
 
+export interface PhoneContact {
+    label: string;
+    phone: string;
+}
+
 export interface ContactFAQ {
     question: string;
     answer: string;
@@ -370,6 +375,7 @@ export interface ContactPage {
     address_line_4: string;
     address_line_5: string;
     email_contacts: EmailContact[];
+    phone_contacts: PhoneContact[];
     office_hours: string;
     office_hours_note: string;
     faqs: ContactFAQ[];

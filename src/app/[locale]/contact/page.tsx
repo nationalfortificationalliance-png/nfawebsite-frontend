@@ -33,6 +33,11 @@ export default async function ContactPage() {
         { label: 'Media & Press', email: 'media.nigeria@wfp.org' }
     ];
 
+    const phoneContacts = contactData?.phone_contacts || [
+        { label: 'NAFDAC Helpline', phone: '0700-1-NAFDAC (0700-1-623322)' },
+        { label: 'Office Line', phone: '+234 (0) 1-4609750' }
+    ];
+
     const officeHours = contactData?.office_hours || 'Monday – Thursday: 8:00 AM – 4:30 PM\nFriday: 8:00 AM – 1:30 PM';
     const officeHoursNote = contactData?.office_hours_note || '* Closed on Nigerian public holidays and UN official holidays.';
 
@@ -197,6 +202,21 @@ export default async function ContactPage() {
                                 {/* Fallback pattern for map */}
                                 <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }} />
                                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>Map View</div>
+                            </div>
+                        </div>
+
+                        <div className="info-group">
+                            <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="phone" size={18} /></span> Phone</div>
+                            <div className="info-card">
+                                {phoneContacts.map((contact, idx) => (
+                                    <div key={idx}>
+                                        <div className="info-detail">
+                                            <strong>{contact.label}</strong>
+                                            <a href={`tel:${contact.phone.replace(/[^0-9+]/g, '')}`} style={{ color: 'var(--wfp-blue)', textDecoration: 'none', fontWeight: 600 }}>{contact.phone}</a>
+                                        </div>
+                                        {idx < phoneContacts.length - 1 && <div style={{ height: '1px', background: 'var(--border)', margin: '0.25rem 0' }} />}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
