@@ -53,11 +53,12 @@ const FALLBACK_SECRETARIAT: TeamMember[] = [
 
 export default async function SecretariatPage() {
     // Fetch members specifically from the Secretariat category
-    const secretariatMembers = await getTeamMembers('Secretariat');
+    const backendMembers = await getTeamMembers('Secretariat');
 
-    // Always use fallback data until Strapi is properly configured
-    const displayMembers = FALLBACK_SECRETARIAT;
-    const useFallback = true;
+    // Use backend data if available, otherwise fall back to hardcoded data
+    const hasBackendData = backendMembers && backendMembers.length > 0;
+    const displayMembers = hasBackendData ? backendMembers : FALLBACK_SECRETARIAT;
+    const useFallback = !hasBackendData;
 
     return (
         <main className="secretariat-page">

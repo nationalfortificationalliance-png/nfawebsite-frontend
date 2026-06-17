@@ -346,3 +346,38 @@ export async function getPageSetting(pageKey: string): Promise<PageSetting | nul
     });
     return res?.data?.[0] || null;
 }
+
+export interface EmailContact {
+    label: string;
+    email: string;
+}
+
+export interface ContactFAQ {
+    question: string;
+    answer: string;
+}
+
+export interface ContactPage {
+    id: number;
+    documentId: string;
+    hero_title: string;
+    hero_description: string;
+    hero_image?: StrapiImage;
+    office_name: string;
+    address_line_1: string;
+    address_line_2: string;
+    address_line_3: string;
+    address_line_4: string;
+    address_line_5: string;
+    email_contacts: EmailContact[];
+    office_hours: string;
+    office_hours_note: string;
+    faqs: ContactFAQ[];
+}
+
+export async function getContactPage(): Promise<ContactPage | null> {
+    const res = await fetchAPI<{ data: ContactPage }>('/contact-page', {
+        'populate': 'hero_image',
+    });
+    return res?.data || null;
+}
