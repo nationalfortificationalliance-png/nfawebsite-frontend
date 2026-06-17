@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, getUpcomingEvents, type Partner, type NewsEvent } from '@/lib/api';
+import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, getAllNews, type Partner, type NewsEvent } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 import {
   AnimatedStats,
@@ -142,9 +142,18 @@ const HOMEPAGE_FALLBACK_PARTNERS: Partner[] = HOMEPAGE_FALLBACK_LOGOS.map((logo,
 }));
 
 export default async function HomePage() {
-  const [carousels, featuredNews, quoteData, statsData, partnersData, upcomingEvents] = await Promise.all([
-    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(), getUpcomingEvents(3),
+  const [carousels, featuredNews, quoteData, statsData, partnersData, allEvents] = await Promise.all([
+    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(), getAllNews(1, 50),
   ]);
+
+  // Filter upcoming events (events with future dates)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcomingEvents = allEvents.data
+    .filter((item: NewsEvent) => item.category === 'event')
+    .filter((item: NewsEvent) => new Date(item.date) >= today)
+    .sort((a: NewsEvent, b: NewsEvent) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 3);
 
   // Debug logging
   console.log('=== NEWS DEBUG ===');
