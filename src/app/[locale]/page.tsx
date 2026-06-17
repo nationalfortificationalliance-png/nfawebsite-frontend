@@ -376,19 +376,139 @@ export default async function HomePage() {
         .resource-tag { display: inline-flex; align-items: center; gap: var(--md-sys-spacing-2); padding: var(--md-sys-spacing-2) var(--md-sys-spacing-4); border: 1.5px solid var(--md-sys-color-outline); border-radius: var(--md-sys-shape-corner-small); font-size: var(--md-sys-typescale-label-medium-size); font-weight: 600; color: var(--md-sys-color-on-surface-variant); transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard); }
         .resource-tag:hover { border-color: var(--md-sys-color-secondary); color: var(--md-sys-color-secondary); background: var(--md-sys-color-secondary-container); }
 
-        /* ── Upcoming Events ── */
-        .upcoming-events-section { background: var(--md-sys-color-surface-container); padding: var(--md-sys-spacing-20) 0; }
-        .upcoming-events-section .section-eyebrow { color: var(--wfp-blue); }
-        .events-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--md-sys-spacing-8); margin-top: var(--md-sys-spacing-10); }
-        .event-card { background: var(--md-sys-color-surface); border-radius: var(--md-sys-shape-corner-large); overflow: hidden; box-shadow: var(--md-sys-shadow-level2); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-emphasized); border: 1px solid var(--md-sys-color-outline-variant); }
-        .event-card:hover { box-shadow: var(--md-sys-shadow-level4); transform: translateY(-4px); }
-        .event-date-badge { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); padding: var(--md-sys-spacing-4) var(--md-sys-spacing-6); text-align: center; font-weight: 700; }
-        .event-date-badge .day { font-size: var(--md-sys-typescale-headline-medium-size); display: block; line-height: 1.2; }
-        .event-date-badge .month { font-size: var(--md-sys-typescale-label-large-size); text-transform: uppercase; letter-spacing: 0.1em; }
-        .event-content { padding: var(--md-sys-spacing-6); }
-        .event-title { font-size: var(--md-sys-typescale-title-large-size); font-weight: 700; color: var(--md-sys-color-on-surface); margin-bottom: var(--md-sys-spacing-3); }
-        .event-excerpt { font-size: var(--md-sys-typescale-body-medium-size); color: var(--md-sys-color-on-surface-variant); line-height: 1.6; margin-bottom: var(--md-sys-spacing-4); }
-        .event-meta { display: flex; align-items: center; gap: var(--md-sys-spacing-2); font-size: var(--md-sys-typescale-label-medium-size); color: var(--md-sys-color-on-surface-variant); }
+        /* ── Upcoming Events ── Enhanced Professional Design */
+        .upcoming-events-section {
+          background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0f9ff 100%);
+          padding: 5rem 0;
+          position: relative;
+          overflow: hidden;
+        }
+        .upcoming-events-section::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, rgba(0, 112, 188, 0.08) 0%, transparent 70%);
+          pointer-events: none;
+        }
+        .upcoming-events-section .section-eyebrow {
+          color: var(--wfp-blue);
+          font-size: 0.875rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+        }
+        .upcoming-events-section .section-title {
+          background: linear-gradient(135deg, var(--wfp-blue) 0%, #0369a1 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        .events-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+          gap: 2rem;
+          margin-top: 3rem;
+          position: relative;
+          z-index: 1;
+        }
+        .event-card {
+          background: #fff;
+          border-radius: 24px;
+          overflow: hidden;
+          box-shadow: 0 8px 32px rgba(0, 112, 188, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          border: 2px solid transparent;
+          position: relative;
+        }
+        .event-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 5px;
+          background: linear-gradient(90deg, var(--wfp-blue) 0%, var(--wfp-gold) 100%);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .event-card:hover {
+          box-shadow: 0 20px 48px rgba(0, 112, 188, 0.15), 0 8px 16px rgba(0, 0, 0, 0.08);
+          transform: translateY(-12px) scale(1.02);
+          border-color: rgba(0, 112, 188, 0.2);
+        }
+        .event-card:hover::before { opacity: 1; }
+        .event-date-badge {
+          background: linear-gradient(135deg, var(--wfp-blue) 0%, #0369a1 100%);
+          color: #fff;
+          padding: 1.5rem 1.25rem;
+          text-align: center;
+          font-weight: 700;
+          position: relative;
+          overflow: hidden;
+        }
+        .event-date-badge::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 100px;
+          height: 100px;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+        }
+        .event-date-badge .day {
+          font-size: 2.5rem;
+          display: block;
+          line-height: 1;
+          margin-bottom: 0.25rem;
+          font-weight: 800;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .event-date-badge .month {
+          font-size: 0.875rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          opacity: 0.95;
+          font-weight: 600;
+        }
+        .event-content {
+          padding: 2rem 1.75rem;
+          background: linear-gradient(to bottom, #fff 0%, #fafafa 100%);
+        }
+        .event-title {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin-bottom: 0.75rem;
+          line-height: 1.4;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .event-excerpt {
+          font-size: 0.95rem;
+          color: #64748b;
+          line-height: 1.65;
+          margin-bottom: 1.25rem;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .event-meta {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.85rem;
+          color: var(--wfp-blue);
+          font-weight: 600;
+          padding-top: 1rem;
+          border-top: 1px solid #e2e8f0;
+        }
 
         /* ── Partners ── White background */
         .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: 8rem 0 8rem 0; background: #fff; overflow: hidden; }
@@ -620,12 +740,15 @@ export default async function HomePage() {
         <section className="upcoming-events-section">
           <div className="container">
             <AnimatedSectionWrapper animation="fade-up" delay={0}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 'var(--md-sys-spacing-2)', flexWrap: 'wrap', gap: 'var(--md-sys-spacing-4)' }}>
-                <div>
-                  <p className="section-eyebrow">What&apos;s Coming</p>
-                  <h2 className="section-title">Upcoming Events</h2>
-                </div>
-                <Link href="/news" className="btn btn-outline btn-sm">
+              <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 3rem' }}>
+                <p className="section-eyebrow" style={{ marginBottom: '1rem' }}>WHAT&apos;S COMING</p>
+                <h2 className="section-title" style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', marginBottom: '1rem', fontWeight: 800 }}>
+                  Upcoming Events
+                </h2>
+                <p style={{ fontSize: '1.05rem', color: '#64748b', lineHeight: '1.75', marginBottom: '1.5rem' }}>
+                  Join us at these important gatherings shaping the future of food fortification in Nigeria
+                </p>
+                <Link href="/news" className="btn btn-outline btn-sm" style={{ background: 'var(--wfp-blue)', color: '#fff', border: 'none', padding: '0.75rem 2rem' }}>
                   View All Events →
                 </Link>
               </div>
