@@ -225,6 +225,20 @@ export default async function HomePage() {
         .stat-number { font-size: clamp(var(--md-sys-typescale-headline-large-size), 4vw, var(--md-sys-typescale-display-small-size)); font-weight: 800; color: var(--md-sys-color-secondary); letter-spacing: -0.04em; line-height: 1; margin-bottom: var(--md-sys-spacing-1); }
         .stat-label { font-size: var(--md-sys-typescale-label-small-size); text-transform: uppercase; letter-spacing: 0.08em; color: var(--md-sys-color-on-surface-variant); font-weight: 600; }
 
+        /* ── Upcoming Events Marquee ── */
+        .events-marquee-strip { background: linear-gradient(135deg, var(--wfp-blue) 0%, #0369a1 100%); padding: 1rem 0; overflow: hidden; border-bottom: 3px solid var(--wfp-gold); }
+        .events-marquee-container { display: flex; align-items: center; gap: 1.5rem; max-width: 100%; }
+        .events-marquee-label { flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; padding: 0 2rem; color: var(--wfp-gold); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .events-marquee-scroll { flex: 1; overflow: hidden; }
+        .events-marquee-content { display: flex; gap: 3rem; animation: marquee-events 40s linear infinite; }
+        .events-marquee-content:hover { animation-play-state: paused; }
+        .events-marquee-item { display: flex; align-items: center; gap: 0.75rem; color: #fff; text-decoration: none; white-space: nowrap; padding: 0.5rem 1rem; border-radius: 8px; transition: background 0.2s ease; }
+        .events-marquee-item:hover { background: rgba(255, 255, 255, 0.1); }
+        .event-marquee-date { font-weight: 600; font-size: 0.85rem; color: var(--wfp-gold); }
+        .event-marquee-separator { color: rgba(255, 255, 255, 0.4); }
+        .event-marquee-title { font-weight: 500; font-size: 0.9rem; }
+        @keyframes marquee-events { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
         /* ── Latest News Carousel ── */
         .news-carousel-section { background: #fff; padding: var(--md-sys-spacing-24) 0; }
         .news-carousel-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: var(--md-sys-spacing-12); flex-wrap: wrap; }
@@ -403,6 +417,7 @@ export default async function HomePage() {
           .about-split-inner { grid-template-columns: 1fr; gap: var(--md-sys-spacing-12); }
           .about-image-panel { transform: none; aspect-ratio: 16/9; }
           .challenge-grid { grid-template-columns: 1fr; }
+          .events-marquee-label { padding: 0 1rem; font-size: 0.75rem; }
           .involved-grid { grid-template-columns: 1fr; }
           .partner-grid { animation: none; flex-wrap: wrap; justify-content: center; }
         }
@@ -415,6 +430,42 @@ export default async function HomePage() {
 
       {/* ── Hero ── */}
       <HeroCarousel slides={carousels} />
+
+      {/* ── Upcoming Events Marquee ── */}
+      {upcomingEvents.length > 0 && (
+        <div className="events-marquee-strip">
+          <div className="events-marquee-container">
+            <div className="events-marquee-label">
+              <Icon name="calendar" size={18} />
+              <span>Upcoming Events</span>
+            </div>
+            <div className="events-marquee-scroll">
+              <div className="events-marquee-content">
+                {[...upcomingEvents, ...upcomingEvents].map((event, index) => {
+                  const eventDate = new Date(event.date);
+                  const formattedDate = eventDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  });
+                  return (
+                    <Link
+                      key={`marquee-event-${event.id}-${index}`}
+                      href={`/news/${event.slug}`}
+                      className="events-marquee-item"
+                    >
+                      <Icon name="calendar" size={16} />
+                      <span className="event-marquee-date">{formattedDate}</span>
+                      <span className="event-marquee-separator">•</span>
+                      <span className="event-marquee-title">{event.title}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Latest News Carousel ── */}
       <section className="news-carousel-section">
