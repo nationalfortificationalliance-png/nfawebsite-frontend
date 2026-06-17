@@ -235,13 +235,13 @@ export default async function HomePage() {
         .stat-label { font-size: var(--md-sys-typescale-label-small-size); text-transform: uppercase; letter-spacing: 0.08em; color: var(--md-sys-color-on-surface-variant); font-weight: 600; }
 
         /* ── Upcoming Events Marquee ── */
-        .events-marquee-strip { background: linear-gradient(135deg, var(--wfp-blue) 0%, #0369a1 100%); padding: 1rem 0; overflow: hidden; border-bottom: 3px solid var(--wfp-gold); }
+        .events-marquee-strip { background: linear-gradient(135deg, var(--wfp-blue) 0%, #0369a1 100%); padding: 1.25rem 0; overflow: hidden; border-bottom: 3px solid var(--wfp-gold); }
         .events-marquee-container { display: flex; align-items: center; gap: 1.5rem; max-width: 100%; }
-        .events-marquee-label { flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; padding: 0 2rem; color: var(--wfp-gold); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .events-marquee-label { flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; padding: 0 2rem; color: var(--wfp-gold); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.5; }
         .events-marquee-scroll { flex: 1; overflow: hidden; }
         .events-marquee-content { display: flex; gap: 3rem; animation: marquee-events 40s linear infinite; }
         .events-marquee-content:hover { animation-play-state: paused; }
-        .events-marquee-item { display: flex; align-items: center; gap: 0.75rem; color: #fff; text-decoration: none; white-space: nowrap; padding: 0.5rem 1rem; border-radius: 8px; transition: background 0.2s ease; }
+        .events-marquee-item { display: flex; align-items: center; gap: 0.75rem; color: #fff; text-decoration: none; white-space: nowrap; padding: 0.5rem 1rem; border-radius: 8px; transition: background 0.2s ease; line-height: 1.5; }
         .events-marquee-item:hover { background: rgba(255, 255, 255, 0.1); }
         .event-marquee-date { font-weight: 600; font-size: 0.85rem; color: var(--wfp-gold); }
         .event-marquee-separator { color: rgba(255, 255, 255, 0.4); }
