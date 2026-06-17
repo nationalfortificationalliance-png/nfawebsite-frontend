@@ -3,13 +3,57 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Icon from '@/components/Icon';
 import ContactForm from '@/components/ContactForm';
+import { getContactPage, getStrapiMediaUrl } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Contact the NFA',
     description: 'Get in touch with the National Fortification Alliance secretariat for processor support, partnership inquiries, and technical guidance.',
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+    const contactData = await getContactPage();
+
+    // Fallback data
+    const heroTitle = contactData?.hero_title || 'Get in touch';
+    const heroDescription = contactData?.hero_description || "Whether you're looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.";
+    const heroImage = contactData?.hero_image ? getStrapiMediaUrl(contactData.hero_image.url) : '/about-hero.png';
+
+    const officeName = contactData?.office_name || 'NFA Secretariat';
+    const addressLines = [
+        contactData?.address_line_1 || 'NAFDAC Office Lagos',
+        contactData?.address_line_2 || 'National Agency for Food and Drug Administration and Control',
+        contactData?.address_line_3 || 'Plot 1, Industrial Estate',
+        contactData?.address_line_4 || 'Lagos-Oshodi Apapa Expressway, Isolo',
+        contactData?.address_line_5 || 'Lagos, Nigeria'
+    ].filter(Boolean);
+
+    const emailContacts = contactData?.email_contacts || [
+        { label: 'General Inquiries', email: 'info.ngo@wfp.org' },
+        { label: 'Processor Support (NAFDAC)', email: 'certification@nafdac.gov.ng' },
+        { label: 'Media & Press', email: 'media.nigeria@wfp.org' }
+    ];
+
+    const officeHours = contactData?.office_hours || 'Monday – Thursday: 8:00 AM – 4:30 PM\nFriday: 8:00 AM – 1:30 PM';
+    const officeHoursNote = contactData?.office_hours_note || '* Closed on Nigerian public holidays and UN official holidays.';
+
+    const faqs = contactData?.faqs || [
+        {
+            question: 'How do I start the NAFDAC certification process?',
+            answer: 'We recommend downloading the "Food Processor Certification Handbook" from our Guidelines page. It contains the application forms, compliance checklists, and contact details for the NAFDAC Food Safety Directorate.'
+        },
+        {
+            question: 'Where can I source approved vitamin premixes?',
+            answer: 'The NFA partners with GAIN and trusted international suppliers to ensure high-quality premixes. Reach out via the contact form and select "Premix Supply" for an updated list of accredited vendors.'
+        },
+        {
+            question: 'Is fortification mandatory in Nigeria?',
+            answer: 'Yes. Under the Food, Drugs and Related Products Regulation, the fortification of wheat flour, maize flour, vegetable oil, and sugar is mandatory for all registered commercial processors serving the Nigerian market.'
+        },
+        {
+            question: 'How can NGOs collaborate with the NFA?',
+            answer: 'The NFA frequently collaborates with NGOs on consumer demand creation and grassroots nutrition awareness. Select "Partnership Inquiry" on the form to discuss alignment with current campaigns.'
+        }
+    ];
     return (
         <>
             <style>{`
@@ -110,7 +154,7 @@ export default function ContactPage() {
             <div className="contact-hero">
                 <div className="contact-hero-bg">
                     <Image
-                        src="/about-hero.png"
+                        src={heroImage}
                         alt="Contact NFA"
                         fill
                         style={{ objectFit: 'cover' }}
@@ -123,8 +167,8 @@ export default function ContactPage() {
                         <span className="breadcrumb-sep">›</span>
                         <span>Contact</span>
                     </div>
-                    <h1>Get in touch</h1>
-                    <p>Whether you&apos;re looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.</p>
+                    <h1>{heroTitle}</h1>
+                    <p>{heroDescription}</p>
                 </div>
             </div>
 
@@ -143,14 +187,11 @@ export default function ContactPage() {
                     {/* Sidebar */}
                     <div className="info-sidebar">
                         <div className="info-group">
-                            <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="map-pin" size={18} /></span> NFA Secretariat</div>
+                            <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="map-pin" size={18} /></span> {officeName}</div>
                             <div className="info-detail">
-                                <strong>NAFDAC Office Lagos</strong>
-                                <span>National Agency for Food and Drug Administration and Control</span>
-                                <span>Plot 1, Industrial Estate</span>
-                                <span>Lagos-Oshodi Apapa Expressway, Isolo</span>
-                                <span>Lagos, Nigeria</span>
-                            </div>
+                                {addressLines.map((line, idx) => (
+                                    idx === 0 ? <strong key={idx}>{line}</strong> : <span key={idx}>{line}</span>
+                                ))}
                             <div className="map-wrapper">
                                 {/* Fallback pattern for map */}
                                 <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }} />
@@ -159,39 +200,27 @@ export default function ContactPage() {
                         </div>
 
                         <div className="info-group">
-                            <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="phone" size={18} /></span> Phone</div>
-                            <div className="info-detail">
-                                <a href="tel:07001623322" style={{ color: 'var(--wfp-blue)', textDecoration: 'none', fontWeight: 600 }}>0700-1-NAFDAC (0700-1-623322)</a>
-                                <a href="tel:+23414609750" style={{ color: 'var(--wfp-blue)', textDecoration: 'none' }}>+234 (0) 1-4609750</a>
-                            </div>
-                        </div>
-
-                        <div className="info-group">
                             <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="mail" size={18} /></span> Email Contacts</div>
                             <div className="info-card">
-                                <div className="info-detail">
-                                    <strong>General Inquiries</strong>
-                                    <a href="mailto:info.ngo@wfp.org" style={{ color: 'var(--wfp-blue)', textDecoration: 'none' }}>info.ngo@wfp.org</a>
-                                </div>
-                                <div style={{ height: '1px', background: 'var(--border)', margin: '0.25rem 0' }} />
-                                <div className="info-detail">
-                                    <strong>Processor Support (NAFDAC)</strong>
-                                    <a href="mailto:certification@nafdac.gov.ng" style={{ color: 'var(--wfp-blue)', textDecoration: 'none' }}>certification@nafdac.gov.ng</a>
-                                </div>
-                                <div style={{ height: '1px', background: 'var(--border)', margin: '0.25rem 0' }} />
-                                <div className="info-detail">
-                                    <strong>Media & Press</strong>
-                                    <a href="mailto:media.nigeria@wfp.org" style={{ color: 'var(--wfp-blue)', textDecoration: 'none' }}>media.nigeria@wfp.org</a>
-                                </div>
+                                {emailContacts.map((contact, idx) => (
+                                    <div key={idx}>
+                                        <div className="info-detail">
+                                            <strong>{contact.label}</strong>
+                                            <a href={`mailto:${contact.email}`} style={{ color: 'var(--wfp-blue)', textDecoration: 'none' }}>{contact.email}</a>
+                                        </div>
+                                        {idx < emailContacts.length - 1 && <div style={{ height: '1px', background: 'var(--border)', margin: '0.25rem 0' }} />}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
                         <div className="info-group">
                             <div className="info-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}><span className="info-label-icon" style={{ display: 'flex' }}><Icon name="clock" size={18} /></span> Office Hours</div>
                             <div className="info-detail">
-                                <span>Monday – Thursday: 8:00 AM – 4:30 PM</span>
-                                <span>Friday: 8:00 AM – 1:30 PM</span>
-                                <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.5rem' }}>* Closed on Nigerian public holidays and UN official holidays.</span>
+                                {officeHours.split('\n').map((line, idx) => (
+                                    <span key={idx}>{line}</span>
+                                ))}
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.5rem' }}>{officeHoursNote}</span>
                             </div>
                         </div>
                     </div>
@@ -204,22 +233,12 @@ export default function ContactPage() {
                     <p className="section-eyebrow">Quick Answers</p>
                     <h2 className="section-title">Frequently Asked Questions</h2>
                     <div className="faq-grid">
-                        <div className="faq-item">
-                            <div className="faq-q">How do I start the NAFDAC certification process?</div>
-                            <div className="faq-a">We recommend downloading the &quot;Food Processor Certification Handbook&quot; from our Guidelines page. It contains the application forms, compliance checklists, and contact details for the NAFDAC Food Safety Directorate.</div>
-                        </div>
-                        <div className="faq-item">
-                            <div className="faq-q">Where can I source approved vitamin premixes?</div>
-                            <div className="faq-a">The NFA partners with GAIN and trusted international suppliers to ensure high-quality premixes. Reach out via the contact form and select &quot;Premix Supply&quot; for an updated list of accredited vendors.</div>
-                        </div>
-                        <div className="faq-item">
-                            <div className="faq-q">Is fortification mandatory in Nigeria?</div>
-                            <div className="faq-a">Yes. Under the Food, Drugs and Related Products Regulation, the fortification of wheat flour, maize flour, vegetable oil, and sugar is mandatory for all registered commercial processors serving the Nigerian market.</div>
-                        </div>
-                        <div className="faq-item">
-                            <div className="faq-q">How can NGOs collaborate with the NFA?</div>
-                            <div className="faq-a">The NFA frequently collaborates with NGOs on consumer demand creation and grassroots nutrition awareness. Select &quot;Partnership Inquiry&quot; on the form to discuss alignment with current campaigns.</div>
-                        </div>
+                        {faqs.map((faq, idx) => (
+                            <div key={idx} className="faq-item">
+                                <div className="faq-q">{faq.question}</div>
+                                <div className="faq-a">{faq.answer}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
