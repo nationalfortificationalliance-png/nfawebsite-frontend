@@ -495,7 +495,7 @@ export default async function HomePage() {
           line-height: 1.65;
           margin-bottom: 1.25rem;
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 4;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
@@ -772,9 +772,7 @@ export default async function HomePage() {
                         <h3 className="event-title">{event.title}</h3>
                         {event.excerpt && (
                           <p className="event-excerpt">
-                            {event.excerpt.length > 120
-                              ? `${event.excerpt.substring(0, 120)}...`
-                              : event.excerpt}
+                            {event.excerpt}
                           </p>
                         )}
                         <div className="event-meta">
