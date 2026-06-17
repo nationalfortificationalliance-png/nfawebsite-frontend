@@ -172,9 +172,16 @@ export default async function ContactPage() {
                                 ))}
                             </div>
                             <div className="map-wrapper">
-                                {/* Fallback pattern for map */}
-                                <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }} />
-                                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>Map View</div>
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.335024315744584!3d6.535131395311901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8f9c069e924b%3A0xad71e5e3c4a4efd8!2sNAFDAC%20Office!5e0!3m2!1sen!2sng!4v1234567890"
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="NAFDAC Office Location"
+                                />
                             </div>
                         </div>
 
