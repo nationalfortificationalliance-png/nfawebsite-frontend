@@ -742,7 +742,7 @@ export default async function HomePage() {
             <AnimatedSectionWrapper animation="fade-up" delay={0}>
               <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 3rem' }}>
                 <p className="section-eyebrow" style={{ marginBottom: '1rem' }}>WHAT&apos;S COMING</p>
-                <h2 className="section-title" style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', marginBottom: '1rem', fontWeight: 800 }}>
+                <h2 className="section-title" style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', marginBottom: '1rem', fontWeight: 800, lineHeight: '1.2' }}>
                   Upcoming Events
                 </h2>
                 <p style={{ fontSize: '1.05rem', color: '#64748b', lineHeight: '1.75', marginBottom: '1.5rem' }}>
