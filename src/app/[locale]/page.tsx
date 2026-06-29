@@ -196,6 +196,13 @@ export default async function HomePage() {
     return logoUrl && logoUrl.length > 0;
   });
 
+  console.log('🔍 DEBUG Partners from backend:', partnersWithLogos.map(p => ({
+    name: p.name,
+    hasLogo: !!p.logo,
+    logoUrl: p.logo?.url,
+    resolved: resolvePartnerLogo(p).src
+  })));
+
   const existingPartnerLogoUrls = new Set(
     partnersWithLogos.map((partner) => resolvePartnerLogo(partner).src.toLowerCase())
   );
@@ -203,6 +210,8 @@ export default async function HomePage() {
   const partnerFallbacks = HOMEPAGE_FALLBACK_PARTNERS.filter((fallback) =>
     !existingPartnerLogoUrls.has(fallback.logo.url.toLowerCase())
   );
+
+  console.log('🔍 DEBUG Fallback partners added:', partnerFallbacks.map(p => p.name));
 
   const marqueePartners = partnersWithLogos.length > 0
     ? [...partnersWithLogos, ...partnerFallbacks]
