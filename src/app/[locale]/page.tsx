@@ -203,12 +203,14 @@ export default async function HomePage() {
     resolved: resolvePartnerLogo(p).src
   })));
 
-  const existingPartnerLogoUrls = new Set(
-    partnersWithLogos.map((partner) => resolvePartnerLogo(partner).src.toLowerCase())
+  // Create a set of partner NAMES from the backend (not logo URLs)
+  // This prevents fallback partners from being added if the same partner exists in backend
+  const existingPartnerNames = new Set(
+    partnersWithLogos.map((partner) => partner.name.toLowerCase())
   );
 
   const partnerFallbacks = HOMEPAGE_FALLBACK_PARTNERS.filter((fallback) =>
-    !existingPartnerLogoUrls.has(fallback.logo.url.toLowerCase())
+    !existingPartnerNames.has(fallback.name.toLowerCase())
   );
 
   console.log('🔍 DEBUG Fallback partners added:', partnerFallbacks.map(p => p.name));
