@@ -196,28 +196,19 @@ export default async function HomePage() {
     return logoUrl && logoUrl.length > 0;
   });
 
-  console.log('🔍 DEBUG Partners from backend:', partnersWithLogos.map(p => ({
+  console.log('🔍 DEBUG Partners from backend:', partnersWithLogos.length, partnersWithLogos.map(p => ({
     name: p.name,
-    hasLogo: !!p.logo,
     logoUrl: p.logo?.url,
     resolved: resolvePartnerLogo(p).src
   })));
 
-  // Create a set of partner NAMES from the backend (not logo URLs)
-  // This prevents fallback partners from being added if the same partner exists in backend
-  const existingPartnerNames = new Set(
-    partnersWithLogos.map((partner) => partner.name.toLowerCase())
-  );
-
-  const partnerFallbacks = HOMEPAGE_FALLBACK_PARTNERS.filter((fallback) =>
-    !existingPartnerNames.has(fallback.name.toLowerCase())
-  );
-
-  console.log('🔍 DEBUG Fallback partners added:', partnerFallbacks.map(p => p.name));
-
+  // If backend has partners, use ONLY backend partners (no fallbacks)
+  // Fallbacks are only used when backend is completely empty
   const marqueePartners = partnersWithLogos.length > 0
-    ? [...partnersWithLogos, ...partnerFallbacks]
+    ? partnersWithLogos
     : HOMEPAGE_FALLBACK_PARTNERS;
+
+  console.log('🔍 DEBUG Total partners to display:', marqueePartners.length);
 
   // Fallback quote data
   const quote = quoteData || {
