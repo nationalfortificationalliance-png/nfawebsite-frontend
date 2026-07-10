@@ -122,7 +122,7 @@ export default async function NewsPage() {
                         <span>News & Events</span>
                     </div>
                     <h1>News & Events</h1>
-                    <p>Stay updated on the National Fortification Project — news, events, reports, and announcements.</p>
+                    <p>Stay updated on the National Fortification Alliance — news, events, reports, and announcements.</p>
                 </div>
             </div>
 

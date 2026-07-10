@@ -74,7 +74,6 @@ const PARTNER_LOGOS = [
   { name: 'Vegetable Oil Producers', src: 'droplet', width: 120, height: 120 },
   { name: 'Sugar Producers', src: 'candy', width: 120, height: 120 },
   { name: 'Salt Producers', src: 'box', width: 120, height: 120 },
-  { name: 'Bouillon Producers', src: 'soup', width: 120, height: 120 },
   { name: 'Premix Manufacturers', src: 'flask-conical', width: 120, height: 120 },
   { name: 'Rice Millers', src: 'wheat', width: 120, height: 120 },
 
@@ -807,7 +806,7 @@ export default async function HomePage() {
                   const resolvedLogo = resolvePartnerLogo(partner);
                   const isIcon = !resolvedLogo.src.startsWith('/') && !resolvedLogo.src.startsWith('http');
                   return (
-                    <Link key={`${partner.name}-${i}`} href="/partners" className="partner-card" aria-label={`Partner logo: ${partner.name}`}>
+                    <div key={`${partner.name}-${i}`} className="partner-card" aria-label={`Partner logo: ${partner.name}`}>
                       {isIcon ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', padding: '1rem' }}>
                           <Icon name={resolvedLogo.src as IconName} size={48} />
@@ -837,7 +836,7 @@ export default async function HomePage() {
                           </span>
                         </div>
                       )}
-                    </Link>
+                    </div>
                   );
                 })}
               </div>

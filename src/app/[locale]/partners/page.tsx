@@ -20,7 +20,7 @@ const PARTNER_TYPES: Record<string, { label: string; color: string; bg: string }
 
 const STATIC_PARTNERS = [
     // Lead Agency
-    { id: 1, type: 'lead', name: 'WFP Nigeria', desc: 'Program lead and technical implementing partner, providing funding, coordination, and capacity building for the National Fortification Project.', logo: '/wfp-logo-standard-blue-en.svg' },
+    { id: 1, type: 'lead', name: 'WFP Nigeria', desc: 'Program lead and technical implementing partner, providing funding, coordination, and capacity building for the National Fortification Alliance.', logo: '/wfp-logo-standard-blue-en.svg' },
 
     // Government MDAs
     { id: 2, type: 'government', name: 'Federal Ministry of Health and Social Welfare', desc: 'Government policy owner of the national nutrition strategy, ensuring fortification aligns with Nigeria\'s public health and SDG commitments.', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
@@ -48,7 +48,6 @@ const STATIC_PARTNERS = [
     { id: 31, type: 'private-sector', name: 'Vegetable Oil Producers', desc: 'Key stakeholders in edible oil fortification with Vitamin A.', logo: 'droplet' },
     { id: 32, type: 'private-sector', name: 'Sugar Producers', desc: 'Implements fortification standards for refined sugar products.', logo: 'candy' },
     { id: 33, type: 'private-sector', name: 'Salt Producers', desc: 'Mandatory iodization of table salt for thyroid health.', logo: 'box' },
-    { id: 34, type: 'private-sector', name: 'Bouillon Producers', desc: 'Fortification expansion partners for seasoning cubes.', logo: 'soup' },
     { id: 35, type: 'private-sector', name: 'Premix Manufacturers', desc: 'Produces vitamin and mineral premixes for food fortification.', logo: 'flask-conical' },
     { id: 36, type: 'private-sector', name: 'Rice Millers', desc: 'Emerging partners in rice fortification initiatives.', logo: 'wheat' },
 

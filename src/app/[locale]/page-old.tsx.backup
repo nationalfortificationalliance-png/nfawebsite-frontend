@@ -245,7 +245,7 @@ export default async function HomePage() {
             <p className="section-eyebrow">About the NFP</p>
             <div className="line" />
             <h2 className="text-gradient hover:scale-[1.01] transition-transform duration-500 ease-out origin-left">Built on partnership.<br />Driven by evidence.</h2>
-            <p className="text-lg">The National Fortification Project (NFP) was established in response to Nigeria's growing burden of micronutrient deficiency. Supported by the World Food Programme and enforced by NAFDAC, it unites government, UN agencies, and the private sector under one national framework.</p>
+            <p className="text-lg">The National Fortification Alliance (NFP) was established in response to Nigeria's growing burden of micronutrient deficiency. Supported by the World Food Programme and enforced by NAFDAC, it unites government, UN agencies, and the private sector under one national framework.</p>
             <p className="text-lg">Food fortification is among the most cost-effective public health interventions proven to reduce child stunting, anaemia, and preventable blindness — and Nigeria is building a model the continent can follow.</p>
             <div style={{ marginTop: '2rem' }}>
               <Link href="/about" className="btn btn-green btn-lg">Read Our Full Story →</Link>

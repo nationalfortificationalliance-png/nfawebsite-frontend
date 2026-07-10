@@ -9,6 +9,22 @@ export const metadata: Metadata = {
 };
 
 const ROLES = [
+     {
+        name: 'National Agency for Food and Drug Administration and Control (NAFDAC)',
+        logo: '/NAFDAC_emblem.png',
+        icon: 'shield-check',
+        roles: [
+            'Secretariat of the National Fortification Alliance',
+            'Issuance of marketing authorization for fortified food products',
+            'Registration of micronutrient premixes',
+            'Monitoring and testing of fortified foods at retail, distribution, and port levels',
+            'Funding of monitoring and laboratory activities',
+            'Capacity building for regulatory staff',
+            'Development and review of fortification regulations',
+            'Issuance of import permits for vitamins and premixes and management of the database of premix producers/suppliers',
+            'Provide support for NFA meetings'
+        ]
+    },
     {
         name: 'Standards Organisation of Nigeria (SON)',
         logo: '/son_png.png',
@@ -19,21 +35,8 @@ const ROLES = [
             'Capacity building on food fortification',
             'Funding of laboratory testing and monitoring activities',
             'Secretariat for the USI/IDD Taskforce and Hosting of Taskforce meetings',
-            'Collaboration with IPAN on laboratory certification'
-        ]
-    },
-    {
-        name: 'National Agency for Food and Drug Administration and Control (NAFDAC)',
-        logo: '/NAFDAC_emblem.png',
-        icon: 'shield-check',
-        roles: [
-            'Issuance of marketing authorization for fortified food products',
-            'Registration of micronutrient premixes',
-            'Monitoring and testing of fortified foods at retail, distribution, and port levels',
-            'Funding of monitoring and laboratory activities',
-            'Capacity building for regulatory staff',
-            'Secretariat of the National Fortification Alliance',
-            'Review and development of fortification regulations'
+            'Collaboration with relevant bodies (IPAN, NINAS, etc.) on laboratory certification/accreditation',
+            'Provide support for NFA meetings'
         ]
     },
     {
@@ -42,8 +45,10 @@ const ROLES = [
         icon: 'heart-pulse',
         roles: [
             'Nutrition policy development',
-            'Programme evaluation and impact assessment',
-            'Support for NFA coordination and activities'
+            'Advocate for an enabling environment to promote local production of micronutrients in Nigeria',
+            'Support for NFA coordination and activities',
+            'Advocacy activities with relevant bodies in the area of food fortification in Nigeria',
+            'Provide support for NFA meetings'
         ]
     },
     {
@@ -118,49 +123,25 @@ const STEERING_COMMITTEE = [
     'Federal Competition and Consumer Protection Commission'
 ];
 
-const MEMBERSHIP = {
-    mdas: [
-        { name: 'National Agency for Food and Drug Administration and Control', logo: '/NAFDAC_emblem.png' },
-        { name: 'Federal Ministry of Health and Social Welfare', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
-        { name: 'Federal Ministry of Education' },
-        { name: 'Federal Ministry of Industry, Trade and Investment' },
-        { name: 'Federal Ministry of Finance, Budget and National Planning' },
-        { name: 'Standards Organisation of Nigeria', logo: '/son_png.png' },
-        { name: 'Federal Competition and Consumer Protection Commission', logo: '/fccpc_logo.png' },
-        { name: 'Nigerian Customs Service' },
-        { name: 'National Primary Health Care Development Agency' },
-        { name: 'Federal Ministry of Agriculture and Food Security' },
-        { name: 'Federal Ministry of Information and National Orientation' }
+const MEMBERSHIP: Record<string, { name: string; logo?: string }[]> = {
+    core: [
+        { name: 'Standards Organisation of Nigeria (SON)', logo: '/son_png.png' },
+        { name: 'National Agency for Food and Drug Administration and Control (NAFDAC)', logo: '/NAFDAC_emblem.png' },
+        { name: 'Federal Ministry of Education (FME)' },
+        { name: 'Federal Competition and Consumer Protection Commission (FCCPC)', logo: '/fccpc_logo.png' },
+        { name: 'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
+        { name: 'Federal Ministry of Agriculture and Food Security (FMAFS)' },
+        { name: 'Federal Ministry of Budget and Economic Planning (FMBEP)' },
+        { name: 'Institute of Public Analysts of Nigeria (IPAN)' },
+        { name: 'Federal Ministry of Information and National Orientation (FMINO)' },
+        { name: 'Industry' }
     ],
-    industry: [
-        'Flour Millers',
-        'Vegetable Oil Producers',
-        'Sugar Producers',
-        'Salt Producers',
-        'Bouillon Producers',
-        'Premix Manufacturers, Suppliers, Importers, and Blenders',
-        'Rice Millers'
-    ],
-    professional: [
-        'Nutrition Society of Nigeria (NSN)',
-        'Nigerian Institute of Food Science and Technology (NIFST)',
-        'Association of Food Beverage Tobacco Employees (AFBTE)'
-    ],
-    partners: [
-        { name: 'World Food Programme (WFP)', logo: '/wfp-logo-standard-blue-en.svg' },
-        { name: 'UNICEF', logo: '/UNICEF_Logo.png' },
-        { name: 'Global Alliance for Improved Nutrition (GAIN)', logo: '/GAIN_logo_RVB.webp' },
-        { name: 'Bill & Melinda Gates Foundation', logo: '/gates foundation logo.svg' },
-        { name: 'Helen Keller International (HKI)' },
-        { name: 'TechnoServe' },
-        { name: 'World Health Organization (WHO)' },
-        { name: 'Particle for Humanity (PFH)' }
-    ],
-    others: [
-        'Universities and research institutions',
-        'Media organizations',
-        'Civil society organizations',
-        'Consumer advocacy groups'
+    stakeholders: [
+        { name: 'Development Partners (GAIN, HKI, TechnoServe, WFP, UNICEF, etc.)' },
+        { name: 'Academia' },
+        { name: 'Professional Associations (e.g., NIFST, NSN)' },
+        { name: 'Civil Society Organisations (CSOs) / Non-Governmental Organisations (NGOs)' },
+        { name: 'Media' }
     ]
 };
 
@@ -494,7 +475,7 @@ export default function GovernancePage() {
                             <p className="section-eyebrow">Leadership</p>
                             <h2>NFA Steering Committee</h2>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginTop: '1rem' }}>
-                                The Steering Committee provides high-level strategic direction and oversight for the National Fortification Project, ensuring policy alignment and cross-sectoral accountability.
+                                The Steering Committee provides high-level strategic direction and oversight for the National Fortification Alliance, ensuring policy alignment and cross-sectoral accountability.
                             </p>
                         </div>
                         <div style={{ background: '#fff', padding: '2rem', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-light)' }}>
@@ -516,7 +497,7 @@ export default function GovernancePage() {
                 <div className="container">
                     <p className="section-eyebrow">Accountability</p>
                     <h2 className="section-title">Roles and Responsibilities</h2>
-                    <p className="section-lead">The success of the National Fortification Project relies on clearly defined roles across all stakeholder groups.</p>
+                    <p className="section-lead">The success of the National Fortification Alliance relies on clearly defined roles across all stakeholder groups.</p>
                     
                     <div className="roles-grid">
                         {ROLES.map((role, idx) => (
@@ -578,7 +559,7 @@ export default function GovernancePage() {
                                 <Icon name="home" size={32} />
                             </div>
                             <h3>Household Level</h3>
-                            <p>Conducted by the <strong>Federal Competition and Consumer Protection Commission (FCCPC)</strong> and Federal Ministry of Education (FME).</p>
+                            <p>Conducted by the <strong>Federal Competition and Consumer Protection Commission (FCCPC)</strong>.</p>
                         </div>
                     </div>
                 </div>
@@ -709,43 +690,25 @@ export default function GovernancePage() {
                         
                         <div className="membership-grid">
                             <div className="member-cat-card">
-                                <h4><Icon name="landmark" size={18} /> Government (MDAs)</h4>
+                                <h4><Icon name="landmark" size={18} /> Core Members</h4>
                                 <ul className="member-list">
-                                    {MEMBERSHIP.mdas.map((m, i) => (
+                                    {MEMBERSHIP.core.map((m, i) => (
                                         <li key={i}>
-                                            {typeof m === 'object' && m.logo && <img src={m.logo} alt="" className="member-logo-mini" />}
-                                            {typeof m === 'object' ? m.name : m}
+                                            {m.logo && <img src={m.logo} alt="" className="member-logo-mini" />}
+                                            {m.name}
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                             <div className="member-cat-card">
-                                <h4><Icon name="factory" size={18} /> Industry Stakeholders</h4>
+                                <h4><Icon name="heart-handshake" size={18} /> Stakeholders</h4>
                                 <ul className="member-list">
-                                    {MEMBERSHIP.industry.map((m, i) => <li key={i}>{m}</li>)}
-                                </ul>
-                            </div>
-                            <div className="member-cat-card">
-                                <h4><Icon name="graduation-cap" size={18} /> Professional Bodies</h4>
-                                <ul className="member-list">
-                                    {MEMBERSHIP.professional.map((m, i) => <li key={i}>{m}</li>)}
-                                </ul>
-                            </div>
-                            <div className="member-cat-card">
-                                <h4><Icon name="heart-handshake" size={18} /> Development Partners</h4>
-                                <ul className="member-list">
-                                    {MEMBERSHIP.partners.map((m, i) => (
+                                    {MEMBERSHIP.stakeholders.map((m, i) => (
                                         <li key={i}>
-                                            {typeof m === 'object' && m.logo && <img src={m.logo} alt="" className="member-logo-mini" />}
-                                            {typeof m === 'object' ? m.name : m}
+                                            {m.logo && <img src={m.logo} alt="" className="member-logo-mini" />}
+                                            {m.name}
                                         </li>
                                     ))}
-                                </ul>
-                            </div>
-                            <div className="member-cat-card">
-                                <h4><Icon name="megaphone" size={18} /> Academia & Media</h4>
-                                <ul className="member-list">
-                                    {MEMBERSHIP.others.map((m, i) => <li key={i}>{m}</li>)}
                                 </ul>
                             </div>
                         </div>

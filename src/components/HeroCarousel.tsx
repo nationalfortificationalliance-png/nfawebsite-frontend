@@ -376,7 +376,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
             {/* Content */}
             <div className="hero-carousel-content">
               <div className="hero-carousel-copy">
-                <p className="hero-carousel-eyebrow">National Fortification Project</p>
+                <p className="hero-carousel-eyebrow">National Fortification Alliance</p>
                 <h1 className="hero-carousel-title">{slideData.title}</h1>
                 {slideData.subtitle && <p className="hero-carousel-subtitle">{slideData.subtitle}</p>}
                 <div className="hero-carousel-actions">

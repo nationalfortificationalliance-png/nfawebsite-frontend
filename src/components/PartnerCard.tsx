@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import type { Partner } from '@/lib/api';
 import { getStrapiMediaUrl } from '@/lib/api';
@@ -26,7 +25,7 @@ interface PartnerCardProps {
 }
 
 export default function PartnerCard({ partner }: PartnerCardProps) {
-    const { name, logo, website_url, description, partner_type } = partner;
+    const { name, logo, description, partner_type } = partner;
     const logoUrl = getStrapiMediaUrl(logo?.url);
     const hasLogo = !!logo?.url;
     const accentColor = PARTNER_COLORS[partner_type] || '#007DBC';
@@ -134,17 +133,7 @@ export default function PartnerCard({ partner }: PartnerCardProps) {
             {/* Description */}
             {description && <p className="partner-desc">{description}</p>}
 
-            {/* Link */}
-            {website_url && (
-                <Link
-                    href={website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="partner-link"
-                >
-                    Visit Website <span>↗</span>
-                </Link>
-            )}
+            {/* Partner website links are temporarily disabled at the request of the NFA secretariat (July 2026). */}
         </div>
     );
 }

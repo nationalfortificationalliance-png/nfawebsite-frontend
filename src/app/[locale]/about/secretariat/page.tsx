@@ -6,7 +6,7 @@ import { getTeamMembers, getStrapiMediaUrl, type TeamMember } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'NFA Secretariat | National Fortification Alliance Nigeria',
-    description: 'Meet the dedicated team at the NFA Secretariat coordinating the National Fortification Project across Nigeria.',
+    description: 'Meet the dedicated team at the NFA Secretariat coordinating the National Fortification Alliance across Nigeria.',
 };
 
 export const revalidate = 60;
@@ -236,7 +236,7 @@ export default async function SecretariatPage() {
                     </div>
                     <h1>NFA Secretariat</h1>
                     <p>
-                        A dedicated multidisciplinary team coordinating the National Fortification Project,
+                        A dedicated multidisciplinary team coordinating the National Fortification Alliance,
                         bridging the gap between policy, industry, and impact across all 36 states of Nigeria.
                     </p>
                 </div>

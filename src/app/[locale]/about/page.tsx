@@ -5,17 +5,17 @@ import Icon, { IconName } from '@/components/Icon';
 import { getAboutPage, getStrapiMediaUrl } from '@/lib/api';
 
 export const metadata: Metadata = {
-    title: 'About the National Fortification Project',
+    title: 'About the National Fortification Alliance',
     description: 'Learn about NFA Nigeria — our mission, vision, history, and objectives for eliminating micronutrient malnutrition.',
 };
 export const revalidate = 60;
 
 const TIMELINE = [
     { year: '2004', event: 'Nigeria enacts the Food, Drugs and Related Products (Fortification) Regulation, making fortification mandatory for key staple foods.' },
-    { year: '2011', event: 'WFP Nigeria launches the National Fortification Project with NAFDAC to strengthen enforcement and processor capacity across 6 key food vehicles.' },
+    { year: '2011', event: 'WFP Nigeria launches the National Fortification Alliance with NAFDAC to strengthen enforcement and processor capacity across 6 key food vehicles.' },
     { year: '2016', event: 'Coverage of Vitamin A-fortified vegetable oil reaches 70% of households. NFA introduces the national quality mark seal for certified products.' },
-    { year: '2020', event: 'NFP expands to include Maize Flour and Wheat Flour in NAFDAC\'s mass fortification mandate. Premix fund established for small processors.' },
-    { year: '2024', event: 'Over 200 processors certified across 36 states, reaching 12M+ consumers. NFP achieves 68% household coverage of fortified staple foods.' },
+    { year: '2020', event: 'NFA expands to include Maize Flour and Wheat Flour in NAFDAC\'s mass fortification mandate. Premix fund established for small processors.' },
+    { year: '2024', event: 'Over 200 processors certified across 36 states, reaching 12M+ consumers. NFA achieves 68% household coverage of fortified staple foods.' },
 ];
 
 const OBJECTIVES: { icon: IconName; text: string }[] = [
@@ -184,7 +184,7 @@ export default async function AboutPage() {
                 </div>
                 <div className="about-hero-content">
                     <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                        <h1>About the National Fortification Project</h1>
+                        <h1>About the National Fortification Alliance</h1>
                         <p>{about?.hero_tagline || 'A coordinated national effort to eliminate micronutrient malnutrition through food fortification — for every Nigerian, in every community.'}</p>
                     </div>
                 </div>
