@@ -74,7 +74,7 @@ export default function Header({ siteName }: { siteName: string }) {
         }
 
         .site-header.scrolled .header-bar {
-          min-height: 84px;
+          min-height: 76px;
         }
 
         .header-wrap {
@@ -105,24 +105,24 @@ export default function Header({ siteName }: { siteName: string }) {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0.9rem clamp(1rem, 6vw, 4rem);
+          padding: 0.7rem clamp(1rem, 6vw, 4rem);
           margin: 0 auto;
           max-width: var(--container);
-          min-height: 96px;
+          min-height: 84px;
           gap: 1.5rem;
         }
 
         @media (max-width: 1024px) {
           .header-bar {
-            min-height: 88px;
+            min-height: 78px;
             gap: 1rem;
           }
         }
 
         @media (max-width: 800px) {
           .header-bar {
-            min-height: 72px;
-            padding: 0.85rem 1rem;
+            min-height: 64px;
+            padding: 0.65rem 1rem;
           }
         }
 
@@ -141,8 +141,8 @@ export default function Header({ siteName }: { siteName: string }) {
         }
 
         .logo-emblem {
-          width: 110px;
-          height: 110px;
+          width: 96px;
+          height: 96px;
           border-radius: 1rem;
           background: rgba(0, 135, 81, 0.1);
           display: grid;
@@ -160,8 +160,8 @@ export default function Header({ siteName }: { siteName: string }) {
 
         @media (max-width: 800px) {
           .logo-emblem {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
           }
 
           .logo-name {

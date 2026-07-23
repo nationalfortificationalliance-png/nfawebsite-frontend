@@ -29,6 +29,13 @@ const STATS: { number: string; label: string; icon: IconName }[] = [
   { number: '95%', label: 'Calcium Inadequacy in Non-Pregnant Women', icon: 'trending-up' },
 ];
 
+const STAT_CATEGORY_ICONS: Record<string, IconName> = {
+  Programme: 'calendar',
+  Compliance: 'shield-check',
+  'Health Impact': 'heart-pulse',
+  General: 'bar-chart',
+};
+
 const CORE_FUNCTIONS: { icon: IconName; title: string; desc: string }[] = [
   { icon: 'handshake', title: 'Coordination', desc: 'Serving as the primary forum for government, industry, and partners to align on nutrition goals.' },
   { icon: 'scale', title: 'Regulatory Advocacy', desc: 'Pushing for enforcement of mandatory fortification for wheat flour, oil, sugar, and salt.' },
@@ -108,7 +115,7 @@ export default async function HomePage() {
 
   // Fallback stats data
   const displayStats = statsData.length > 0
-    ? statsData.map(s => ({ number: s.number, label: s.label, icon: s.icon as IconName }))
+    ? statsData.map(s => ({ number: s.value?.trim() || '—', label: s.label, icon: STAT_CATEGORY_ICONS[s.category] || 'bar-chart' }))
     : STATS;
 
   return (

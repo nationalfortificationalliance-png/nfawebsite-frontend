@@ -115,11 +115,12 @@ export interface Quote {
 export interface Stat {
     id: number;
     documentId: string;
-    number: string;
     label: string;
-    icon: string;
+    value: string;
+    description?: string;
     order: number;
-    is_active: boolean;
+    category: 'General' | 'Compliance' | 'Health Impact' | 'Programme';
+    is_featured: boolean;
 }
 
 export interface TeamMember {
@@ -322,10 +323,10 @@ export async function getFeaturedQuote(): Promise<Quote | null> {
 }
 
 export async function getStats(): Promise<Stat[]> {
-    const res = await fetchAPI<{ data: Stat[] }>('/stats', {
-        'filters[is_active][$eq]': 'true',
+    const res = await fetchAPI<{ data: Stat[] }>('/statistics', {
+        'filters[category][$eq]': 'Health Impact',
         'sort': 'order:asc',
-        'pagination[pageSize]': '10',
+        'pagination[pageSize]': '4',
     });
     return res?.data || [];
 }
