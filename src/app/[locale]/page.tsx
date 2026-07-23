@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getPartners, getAllNews, type Partner, type NewsEvent } from '@/lib/api';
+import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getAllNews, type NewsEvent } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 import {
   AnimatedStats,
@@ -48,101 +48,9 @@ const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string
   { icon: 'gem', title: 'Efficiency', desc: 'Fortification is one of the most cost-effective health interventions, with an estimated cost of only $0.01–$0.25 per person per year.', link: '/about', cta: 'Learn About Impact →' },
 ];
 
-const PARTNER_LOGOS = [
-  // Development Partners (with actual logos)
-  { name: 'WFP', src: '/wfp-logo-standard-blue-en.svg', width: 340, height: 150 },
-  { name: 'UNICEF', src: '/UNICEF_Logo.png', width: 310, height: 130 },
-  { name: 'GAIN', src: '/GAIN_logo_RVB.webp', width: 300, height: 140 },
-
-  // Government (with actual logos)
-  { name: 'NAFDAC', src: '/NAFDAC_emblem.png', width: 220, height: 180 },
-  { name: 'Federal Ministry of Health and Social Welfare', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 340, height: 180 },
-  { name: 'Standards Organisation of Nigeria', src: '/son_png.png', width: 260, height: 120 },
-  { name: 'FCCPC', src: '/fccpc_logo.png', width: 260, height: 120 },
-
-  // Government MDAs (icon placeholders)
-  { name: 'Federal Ministry of Education', src: 'building', width: 120, height: 120 },
-  { name: 'Federal Ministry of Industry, Trade and Investment', src: 'factory', width: 120, height: 120 },
-  { name: 'Federal Ministry of Finance', src: 'banknote', width: 120, height: 120 },
-  { name: 'Nigerian Customs Service', src: 'shield', width: 120, height: 120 },
-  { name: 'National Primary Health Care Development Agency', src: 'heart-pulse', width: 120, height: 120 },
-  { name: 'Federal Ministry of Agriculture', src: 'leaf', width: 120, height: 120 },
-  { name: 'Federal Ministry of Information', src: 'radio', width: 120, height: 120 },
-
-  // Industry Stakeholders
-  { name: 'Flour Millers', src: 'wheat', width: 120, height: 120 },
-  { name: 'Vegetable Oil Producers', src: 'droplet', width: 120, height: 120 },
-  { name: 'Sugar Producers', src: 'candy', width: 120, height: 120 },
-  { name: 'Salt Producers', src: 'box', width: 120, height: 120 },
-  { name: 'Premix Manufacturers', src: 'flask-conical', width: 120, height: 120 },
-  { name: 'Rice Millers', src: 'wheat', width: 120, height: 120 },
-
-  // Professional Bodies
-  { name: 'Nutrition Society of Nigeria', src: 'apple', width: 120, height: 120 },
-  { name: 'Nigerian Institute of Food Science', src: 'microscope', width: 120, height: 120 },
-  { name: 'AFBTE', src: 'users', width: 120, height: 120 },
-
-  // Development Partners (icon placeholders)
-  { name: 'Helen Keller International', src: 'eye', width: 120, height: 120 },
-  { name: 'TechnoServe', src: 'sprout', width: 120, height: 120 },
-  { name: 'WHO', src: 'stethoscope', width: 120, height: 120 },
-  { name: 'Particle for Humanity', src: 'globe', width: 120, height: 120 },
-
-  // Academia & Civil Society
-  { name: 'Universities', src: 'graduation-cap', width: 120, height: 120 },
-  { name: 'Media Organizations', src: 'newspaper', width: 120, height: 120 },
-  { name: 'Civil Society Organizations', src: 'handshake', width: 120, height: 120 },
-  { name: 'Consumer Groups', src: 'shopping-basket', width: 120, height: 120 },
-];
-
-const HOMEPAGE_FALLBACK_LOGOS = PARTNER_LOGOS.map(p => ({
-  src: p.src,
-  width: p.width,
-  height: p.height,
-  name: p.name
-}));
-
-const LOCAL_PARTNER_LOGO_MAP = new Map(PARTNER_LOGOS.map((partner) => [partner.name.toLowerCase(), partner]));
-
-function resolvePartnerLogo(partner: Partner) {
-  const logoUrl = partner.logo?.url?.trim();
-  if (logoUrl) {
-    if (logoUrl.startsWith('http')) {
-      return { src: logoUrl, width: partner.logo.width || 220, height: partner.logo.height || 120 };
-    }
-    if (logoUrl.startsWith('/uploads')) {
-      return { src: getStrapiMediaUrl(logoUrl), width: partner.logo.width || 220, height: partner.logo.height || 120 };
-    }
-    return { src: logoUrl, width: partner.logo.width || 220, height: partner.logo.height || 120 };
-  }
-
-  const fallback = LOCAL_PARTNER_LOGO_MAP.get(partner.name.toLowerCase());
-  if (fallback) {
-    return { src: fallback.src, width: fallback.width, height: fallback.height };
-  }
-
-  return { src: '/wfp-logo-standard-blue-en.svg', width: 280, height: 120 };
-}
-
-const HOMEPAGE_FALLBACK_PARTNERS: Partner[] = HOMEPAGE_FALLBACK_LOGOS.map((logo, index) => ({
-  id: index + 1,
-  documentId: `homepage-fallback-partner-${index + 1}`,
-  name: logo.name,
-  logo: {
-    id: 0,
-    documentId: '',
-    url: logo.src,
-    width: logo.width,
-    height: logo.height,
-  },
-  order: index,
-  is_active: true,
-  partner_type: 'partner',
-}));
-
 export default async function HomePage() {
-  const [carousels, featuredNews, quoteData, statsData, partnersData, allEvents] = await Promise.all([
-    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getPartners(), getAllNews(1, 50),
+  const [carousels, featuredNews, quoteData, statsData, allEvents] = await Promise.all([
+    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getAllNews(1, 50),
   ]);
 
   // Filter upcoming events (events with future dates)
@@ -188,26 +96,6 @@ export default async function HomePage() {
     }
     return item;
   });
-
-  // Only include partners from API that actually have logos
-  const partnersWithLogos = partnersData.filter((partner) => {
-    const logoUrl = partner.logo?.url?.trim();
-    return logoUrl && logoUrl.length > 0;
-  });
-
-  console.log('🔍 DEBUG Partners from backend:', partnersWithLogos.length, partnersWithLogos.map(p => ({
-    name: p.name,
-    logoUrl: p.logo?.url,
-    resolved: resolvePartnerLogo(p).src
-  })));
-
-  // If backend has partners, use ONLY backend partners (no fallbacks)
-  // Fallbacks are only used when backend is completely empty
-  const marqueePartners = partnersWithLogos.length > 0
-    ? partnersWithLogos
-    : HOMEPAGE_FALLBACK_PARTNERS;
-
-  console.log('🔍 DEBUG Total partners to display:', marqueePartners.length);
 
   // Fallback quote data
   const quote = quoteData || {
@@ -511,23 +399,6 @@ export default async function HomePage() {
           border-top: 1px solid #e2e8f0;
         }
 
-        /* ── Partners ── White background */
-        .partners-strip { border-top: 1px solid var(--md-sys-color-outline-variant); padding: 5rem 0 5rem 0; background: #fff; overflow: hidden; }
-        .partners-strip .section-eyebrow { color: var(--text-muted); }
-        .partners-strip .section-title { color: var(--text-primary); margin-bottom: var(--md-sys-spacing-12); }
-        .partner-marquee { width: 100%; overflow: hidden; }
-        .partner-grid { display: flex; align-items: center; gap: 2.5rem; margin-top: var(--md-sys-spacing-10); min-width: max-content; animation: marquee 80s linear infinite; }
-        .partner-grid:hover { animation-play-state: paused; }
-        .partner-card { flex: 0 0 auto; min-width: 140px; max-width: 200px; padding: 1rem 0.85rem; border-radius: 20px; border: 1px solid rgba(15,23,42,0.07); background: rgba(255,255,255,0.96); box-shadow: 0 8px 24px rgba(15,23,42,0.06); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease, box-shadow 0.25s ease; min-height: 110px; }
-        .partner-card:hover { transform: translateY(-4px); box-shadow: 0 20px 46px rgba(15,23,42,0.12); }
-        .partner-card img { max-width: 160px; max-height: 55px; object-fit: contain; display: block; filter: grayscale(0.05); opacity: 0.95; }
-        .partner-card span { transition: opacity 0.25s ease; }
-        .partner-card:hover span { opacity: 1; }
-        .partner-logo-hm { filter: grayscale(10%) opacity(0.85); transition: all var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-standard); display: flex; align-items: center; justify-content: center; padding: var(--md-sys-spacing-4) var(--md-sys-spacing-14); position: relative; flex-shrink: 0; min-height: 110px; }
-        .partner-logo-hm img { object-fit: contain; width: auto; height: 100%; max-width: 220px; max-height: 90px; }
-        .partner-logo-hm:hover { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
         /* ── CTA ── Dark green section */
         .cta-full { position: relative; overflow: hidden; background: var(--wfp-navy); padding: var(--md-sys-spacing-24) 0; border-top: 1px solid rgba(255,255,255,0.1); }
         .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(245, 158, 11, 0.05); top: -200px; right: -150px; }
@@ -549,7 +420,6 @@ export default async function HomePage() {
           .challenge-grid { grid-template-columns: 1fr; }
           .events-marquee-label { padding: 0 1rem; font-size: 0.75rem; }
           .involved-grid { grid-template-columns: 1fr; }
-          .partner-grid { animation: none; flex-wrap: wrap; justify-content: center; }
         }
         @media (max-width: 600px) {
           .stats-grid { grid-template-columns: 1fr 1fr; }
@@ -790,61 +660,6 @@ export default async function HomePage() {
         </section>
       )}
 
-
-      {/* ── Partners strip ── */}
-      <div className="partners-strip fade-up stagger-1">
-        <div className="container" style={{ maxWidth: '1600px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem' }}>
-            <div style={{ textAlign: 'center' }}>
-              <p className="section-eyebrow">Collaboration</p>
-              <h2 className="section-title">Our Partners</h2>
-            </div>
-
-            <div className="partner-marquee">
-              <div className="partner-grid" aria-label="Partner logos marquee">
-                {[...marqueePartners, ...marqueePartners].map((partner, i) => {
-                  const resolvedLogo = resolvePartnerLogo(partner);
-                  const isIcon = !resolvedLogo.src.startsWith('/') && !resolvedLogo.src.startsWith('http');
-                  return (
-                    <div key={`${partner.name}-${i}`} className="partner-card" aria-label={`Partner logo: ${partner.name}`}>
-                      {isIcon ? (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', padding: '1rem' }}>
-                          <Icon name={resolvedLogo.src as IconName} size={48} />
-                          <span style={{ fontSize: '0.7rem', textAlign: 'center', color: 'var(--text-secondary)', fontWeight: 500, lineHeight: '1.3' }}>
-                            {partner.name}
-                          </span>
-                        </div>
-                      ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', padding: '1rem 0.5rem' }}>
-                          <Image
-                            src={resolvedLogo.src}
-                            alt={partner.name}
-                            width={resolvedLogo.width}
-                            height={resolvedLogo.height}
-                            style={{ maxWidth: '100%', height: 'auto' }}
-                          />
-                          <span style={{
-                            fontSize: '0.7rem',
-                            textAlign: 'center',
-                            color: 'var(--md-sys-color-on-surface-variant)',
-                            fontWeight: 500,
-                            lineHeight: '1.3',
-                            opacity: 0.8,
-                            maxWidth: '160px'
-                          }}>
-                            {partner.name}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
       {/* ── CTA Banner ── */}
       <div className="cta-full">
