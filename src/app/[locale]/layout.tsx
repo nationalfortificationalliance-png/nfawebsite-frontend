@@ -6,7 +6,7 @@ import { locales, type Locale } from '@/i18n';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
-import { getGlobalSettings } from "@/lib/api";
+import { getGlobalSettings, getContactPage } from "@/lib/api";
 import { generateSEOMetadata, generateOrganizationSchema, generateWebSiteSchema, generateGovernmentOrganizationSchema } from '@/components/SEO';
 
 export function generateStaticParams() {
@@ -63,7 +63,7 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
-  const settings = await getGlobalSettings();
+  const [settings, contact] = await Promise.all([getGlobalSettings(), getContactPage()]);
 
   // Generate structured data
   const organizationSchema = generateOrganizationSchema();
@@ -110,7 +110,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <Header siteName={settings?.site_name || "National Fortification Alliance"} />
           <main>{children}</main>
-          <Footer settings={settings} />
+          <Footer settings={settings} contact={contact} />
         </NextIntlClientProvider>
       </body>
     </html>

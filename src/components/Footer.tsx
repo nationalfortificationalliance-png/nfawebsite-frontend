@@ -1,11 +1,31 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { GlobalSetting } from '@/lib/api';
+import type { GlobalSetting, ContactPage } from '@/lib/api';
 
-interface FooterProps { settings: GlobalSetting | null; }
+interface FooterProps { settings: GlobalSetting | null; contact: ContactPage | null; }
 
-export default function Footer({ settings }: FooterProps) {
+export default function Footer({ settings, contact }: FooterProps) {
   const year = new Date().getFullYear();
+
+  const addressLines = [
+    contact?.address_line_1 || 'NAFDAC Office',
+    contact?.address_line_2 || 'Plot 2032, Olusegun Obasanjo Way',
+    contact?.address_line_3 || 'Wuse Zone 7',
+    contact?.address_line_4 || 'Abuja, Federal Capital Territory',
+    contact?.address_line_5 || 'Nigeria'
+  ].filter(Boolean);
+
+  const emailContacts = contact?.email_contacts || [
+    { label: 'General Inquiries', email: 'info.ngo@wfp.org' },
+    { label: 'Processor Support (NAFDAC)', email: 'certification@nafdac.gov.ng' },
+    { label: 'Media & Press', email: 'media.nigeria@wfp.org' }
+  ];
+
+  const phoneContacts = contact?.phone_contacts || [
+    { label: 'NFA Secretariat', phone: '08099837920' },
+    { label: 'NFA Secretariat', phone: '08035171719' },
+    { label: 'NFA Secretariat', phone: '08065217543' }
+  ];
 
   return (
     <>
@@ -21,7 +41,6 @@ export default function Footer({ settings }: FooterProps) {
           flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 4px;
         }
         .footer-logo-name { font-size: 1.1rem; font-weight: 800; color: #fff; line-height: 1.15; letter-spacing: -0.01em; }
-        .footer-logo-sub { font-size: 0.7rem; color: var(--wfp-gold); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-top: 0.2rem; }
         .footer-brand p { font-size: 0.95rem; line-height: 1.7; color: rgba(255,255,255,.7); max-width: 300px; }
         
         .footer-socials { display: flex; gap: 0.75rem; margin-top: 2rem; }
@@ -55,20 +74,6 @@ export default function Footer({ settings }: FooterProps) {
         }
         .footer-bottom a { color: rgba(255,255,255,.5); transition: color .2s; text-decoration: underline; text-decoration-color: transparent; }
         .footer-bottom a:hover { color: #fff; text-decoration-color: currentColor; }
-        
-        .footer-wfp-badge {
-          display: inline-flex; align-items: center; gap: 0.75rem;
-          background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.1);
-          border-radius: var(--radius-full); padding: 0.5rem 1.25rem;
-          font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,.9);
-        }
-        
-        .footer-wfp-badge {
-          display: inline-flex; align-items: center; gap: 0.75rem;
-          background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.1);
-          border-radius: var(--radius-full); padding: 0.5rem 1.25rem;
-          font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,.9);
-        }
 
         @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; } }
         @media (max-width: 560px) { .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
@@ -87,7 +92,6 @@ export default function Footer({ settings }: FooterProps) {
                   </div>
                   <div>
                     <div className="footer-logo-name">National Fortification Alliance</div>
-                    <div className="footer-logo-sub">Powered by WFP Nigeria</div>
                   </div>
                 </div>
                 <p>
@@ -115,26 +119,28 @@ export default function Footer({ settings }: FooterProps) {
               {/* Contact */}
               <div className="footer-col">
                 <h4>Contact</h4>
-                {settings?.contact_email && (
-                  <div className="footer-contact-item">
-                    <span className="footer-contact-icon">✉</span>
-                    <div className="footer-contact-val">
-                      <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a>
-                    </div>
+                <div className="footer-contact-item">
+                  <span className="footer-contact-icon">✉</span>
+                  <div className="footer-contact-val">
+                    {emailContacts.map((c, idx) => (
+                      <div key={idx}><a href={`mailto:${c.email}`}>{c.email}</a></div>
+                    ))}
                   </div>
-                )}
-                {settings?.contact_phone && (
-                  <div className="footer-contact-item">
-                    <span className="footer-contact-icon">📞</span>
-                    <div className="footer-contact-val">{settings.contact_phone}</div>
+                </div>
+                <div className="footer-contact-item">
+                  <span className="footer-contact-icon">📞</span>
+                  <div className="footer-contact-val">
+                    {phoneContacts.map((c, idx) => (
+                      <div key={idx}><a href={`tel:${c.phone.replace(/[^0-9+]/g, '')}`}>{c.phone}</a></div>
+                    ))}
                   </div>
-                )}
-                {settings?.address && (
-                  <div className="footer-contact-item">
-                    <span className="footer-contact-icon">📍</span>
-                    <div className="footer-contact-val">{settings.address}</div>
+                </div>
+                <div className="footer-contact-item">
+                  <span className="footer-contact-icon">📍</span>
+                  <div className="footer-contact-val">
+                    {addressLines.map((line, idx) => <div key={idx}>{line}</div>)}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
@@ -149,7 +155,6 @@ export default function Footer({ settings }: FooterProps) {
                 Privacy Policy and accessibility statements to be developed and approved.
               </div>
             </div>
-            <div className="footer-wfp-badge">🌐 Supported by World Food Programme Nigeria</div>
             <span>
               <Link href="/about">About</Link> &nbsp;·&nbsp; <Link href="/contact">Contact</Link>
             </span>
