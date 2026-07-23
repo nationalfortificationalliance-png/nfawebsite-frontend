@@ -45,58 +45,48 @@ export default async function AboutPage() {
     return (
         <>
             <style>{`
-        /* Image Hero - matches homepage carousel style */
+        /* Image Hero - matches News & Events hero style */
         .about-hero {
           position: relative;
-          height: 75vh;
-          min-height: 600px;
-          max-height: 900px;
+          min-height: 420px;
+          display: flex;
+          align-items: center;
           overflow: hidden;
+        }
+        .about-hero-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
         }
         .about-hero-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.9) 0%,
-            rgba(0, 0, 0, 0.5) 40%,
-            rgba(0, 0, 0, 0.1) 100%
-          );
+          z-index: 1;
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
         }
         .about-hero-content {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 4rem 5%;
-          text-align: center;
+          position: relative;
+          z-index: 2;
+          padding: 5rem 0 4rem;
         }
         .about-hero h1 {
           color: #fff;
-          max-width: 800px;
-          margin-bottom: 1.5rem;
-          font-size: clamp(2.5rem, 5vw, 4rem);
-          line-height: 1.3;
-          text-shadow: 0 12px 48px rgba(0,0,0,0.5);
+          max-width: 720px;
+          margin-bottom: 1rem;
         }
         .about-hero p {
           color: rgba(255,255,255,0.95);
           max-width: 720px;
-          font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-          line-height: 1.85;
-          text-shadow: 0 4px 12px rgba(0,0,0,0.4);
-          margin-top: 1.5rem;
+          font-size: 1.15rem;
+          line-height: 1.7;
         }
         .about-hero .breadcrumb {
-          position: absolute;
-          top: 2rem;
-          left: 5%;
-          margin-bottom: 0;
+          justify-content: flex-start;
+          margin-bottom: 2rem;
         }
         .about-hero .breadcrumb a,
         .about-hero .breadcrumb span {
-          color: rgba(255,255,255,0.7);
+          color: rgba(255,255,255,0.8);
         }
         .about-hero .breadcrumb a:hover {
           color: #fff;
@@ -145,16 +135,6 @@ export default async function AboutPage() {
         .governance-role { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
 
         @media (max-width: 900px) {
-          .about-hero {
-            height: 60vh;
-            min-height: 500px;
-          }
-          .about-hero h1 {
-            font-size: 2rem;
-          }
-          .about-hero p {
-            font-size: 1rem;
-          }
           .mv-grid { grid-template-columns: 1fr; }
           .challenge-row { grid-template-columns: 1fr; }
           .objectives-grid { grid-template-columns: 1fr; }
@@ -175,18 +155,18 @@ export default async function AboutPage() {
 
             {/* ── Full-width hero ── */}
             <div className="about-hero">
-                <Image src="/about-hero.png" alt="NFA meeting" fill style={{ objectFit: 'cover' }} priority />
-                <div className="about-hero-overlay" />
-                <div className="breadcrumb">
-                    <Link href="/">Home</Link>
-                    <span className="breadcrumb-sep">›</span>
-                    <span>About</span>
+                <div className="about-hero-bg">
+                    <Image src="/about-hero.png" alt="NFA meeting" fill style={{ objectFit: 'cover' }} priority />
                 </div>
-                <div className="about-hero-content">
-                    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                        <h1>About the National Fortification Alliance</h1>
-                        <p>{about?.hero_tagline || 'A coordinated national effort to eliminate micronutrient malnutrition through food fortification — for every Nigerian, in every community.'}</p>
+                <div className="about-hero-overlay" />
+                <div className="container about-hero-content">
+                    <div className="breadcrumb">
+                        <Link href="/">Home</Link>
+                        <span className="breadcrumb-sep">›</span>
+                        <span>About</span>
                     </div>
+                    <h1>About the National Fortification Alliance</h1>
+                    <p>{about?.hero_tagline || 'A coordinated national effort to eliminate micronutrient malnutrition through food fortification — for every Nigerian, in every community.'}</p>
                 </div>
             </div>
 
