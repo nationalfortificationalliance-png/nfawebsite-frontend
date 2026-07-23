@@ -380,7 +380,7 @@ export default function NewsCarousel({
           } as CSSProperties}
         >
           {news.map((item, index) => {
-            const FALLBACK_IMAGES = ['/hero-1.png', '/hero-2.png', '/hero-3.png', '/factory.png', '/about-hero.png'];
+            const FALLBACK_IMAGES = ['/about-hero.jpg', '/news_hero.jpg', '/factory.jpg'];
             const fallbackImage = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
             // Check if image URL exists and is not empty
             const hasValidImage = item.image?.url && item.image.url.trim().length > 0;

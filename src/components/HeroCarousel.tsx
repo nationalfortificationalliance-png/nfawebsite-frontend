@@ -6,17 +6,17 @@ import type { Carousel } from '@/lib/api';
 import { getStrapiMediaUrl } from '@/lib/api';
 
 // Each image is matched to its slide's narrative:
-// Slide 1 — "Combating Hidden Hunger in Nigeria"      → hero-1.png  (Nigerian market/food fortification)
-// Slide 2 — "Strengthening National Food Systems"     → factory.png (food processing facility)
-// Slide 3 — "Partnerships Driving Nutrition Impact"   → hero-3.png (WFP partnerships)
-// Slide 4 — "Advancing Regulatory Compliance"         → hero-2.png (laboratory/quality control)
-// Slide 5 — "Innovation and Research"                 → hero-1.png (research/innovation)
+// Slide 1 — "Combating Hidden Hunger in Nigeria"      → about-hero.jpg (stakeholder meeting)
+// Slide 2 — "Strengthening National Food Systems"     → factory.jpg (food processing facility)
+// Slide 3 — "Partnerships Driving Nutrition Impact"   → news_hero.jpg (partnerships)
+// Slide 4 — "Advancing Regulatory Compliance"         → about-hero.jpg (laboratory/quality control)
+// Slide 5 — "Innovation and Research"                 → news_hero.jpg (research/innovation)
 const HERO_IMAGES = [
-  { src: '/hero-1.png', credit: 'WFP Nigeria — food fortification' },
-  { src: '/factory.png', credit: 'WFP Nigeria — food processing' },
-  { src: '/hero-3.png', credit: 'WFP Nigeria — partnerships' },
-  { src: '/hero-2.png', credit: 'WFP Nigeria — quality assurance' },
-  { src: '/hero-1.png', credit: 'WFP Nigeria — innovation' },
+  { src: '/about-hero.jpg', credit: 'WFP Nigeria — food fortification' },
+  { src: '/factory.jpg', credit: 'WFP Nigeria — food processing' },
+  { src: '/news_hero.jpg', credit: 'WFP Nigeria — partnerships' },
+  { src: '/about-hero.jpg', credit: 'WFP Nigeria — quality assurance' },
+  { src: '/news_hero.jpg', credit: 'WFP Nigeria — innovation' },
 ];
 
 interface HeroCarouselProps {

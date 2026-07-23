@@ -81,7 +81,7 @@ export default async function HomePage() {
   console.log('Using backend data:', featuredNews.length > 0);
 
   // Fallback images for news items
-  const NEWS_FALLBACK_IMAGES = ['/hero-1.png', '/hero-2.png', '/hero-3.png', '/factory.png', '/about-hero.png'];
+  const NEWS_FALLBACK_IMAGES = ['/about-hero.jpg', '/news_hero.jpg', '/factory.jpg'];
 
   // ALWAYS try to use backend data first, even if images are missing
   // Fallback to mock data only if API returns nothing
@@ -541,6 +541,7 @@ export default async function HomePage() {
                 src={quote.author_image?.url ? getStrapiMediaUrl(quote.author_image.url) : '/team-1.png'}
                 alt={quote.author_name}
                 fill
+                sizes="240px"
                 style={{ objectFit: 'cover' }}
               />
             </div>

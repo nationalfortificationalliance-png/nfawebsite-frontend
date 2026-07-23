@@ -269,6 +269,7 @@ export default async function NewsDetailPage({ params }: Props) {
                                                 src={galleryImageUrl}
                                                 alt={img.alternativeText || title}
                                                 fill
+                                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 280px"
                                                 style={{ objectFit: 'cover' }}
                                             />
                                         </div>

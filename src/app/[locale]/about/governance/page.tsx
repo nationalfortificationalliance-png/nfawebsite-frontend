@@ -445,9 +445,10 @@ export default function GovernancePage() {
             <div className="gov-hero">
                 <div className="gov-hero-bg">
                     <Image
-                        src="/about-hero.png"
+                        src="/about-hero.jpg"
                         alt="Governance and Compliance"
                         fill
+                        sizes="100vw"
                         style={{ objectFit: 'cover' }}
                         priority
                     />
@@ -588,9 +589,10 @@ export default function GovernancePage() {
                         </div>
                         <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', aspectRatio: '4/3', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
                             <Image
-                                src="/factory.png"
+                                src="/factory.jpg"
                                 alt="Food fortification infrastructure"
                                 fill
+                                sizes="(max-width: 900px) 100vw, 50vw"
                                 style={{ objectFit: 'cover' }}
                             />
                         </div>
@@ -694,7 +696,7 @@ export default function GovernancePage() {
                                 <ul className="member-list">
                                     {MEMBERSHIP.core.map((m, i) => (
                                         <li key={i}>
-                                            {m.logo && <img src={m.logo} alt="" className="member-logo-mini" />}
+                                            {m.logo && <Image src={m.logo} alt="" width={24} height={24} className="member-logo-mini" />}
                                             {m.name}
                                         </li>
                                     ))}
@@ -705,7 +707,7 @@ export default function GovernancePage() {
                                 <ul className="member-list">
                                     {MEMBERSHIP.stakeholders.map((m, i) => (
                                         <li key={i}>
-                                            {m.logo && <img src={m.logo} alt="" className="member-logo-mini" />}
+                                            {m.logo && <Image src={m.logo} alt="" width={24} height={24} className="member-logo-mini" />}
                                             {m.name}
                                         </li>
                                     ))}

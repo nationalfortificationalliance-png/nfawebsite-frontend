@@ -219,9 +219,10 @@ export default async function SecretariatPage() {
             <div className="secretariat-hero">
                 <div className="secretariat-hero-bg">
                     <Image
-                        src="/hero-3.png"
+                        src="/news_hero.jpg"
                         alt="NFA Secretariat Team"
                         fill
+                        sizes="100vw"
                         style={{ objectFit: 'cover' }}
                         priority
                     />
@@ -265,6 +266,7 @@ export default async function SecretariatPage() {
                                         src={imageUrl}
                                         alt={m.name}
                                         fill
+                                        sizes="(max-width: 640px) 50vw, 280px"
                                         style={{ objectFit: 'cover' }}
                                     />
                                 </div>

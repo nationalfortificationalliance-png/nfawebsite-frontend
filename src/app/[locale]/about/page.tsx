@@ -156,7 +156,7 @@ export default async function AboutPage() {
             {/* ── Full-width hero ── */}
             <div className="about-hero">
                 <div className="about-hero-bg">
-                    <Image src="/about-hero.png" alt="NFA meeting" fill style={{ objectFit: 'cover' }} priority />
+                    <Image src="/about-hero.jpg" alt="NFA meeting" fill style={{ objectFit: 'cover' }} priority />
                 </div>
                 <div className="about-hero-overlay" />
                 <div className="container about-hero-content">

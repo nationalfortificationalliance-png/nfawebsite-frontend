@@ -236,7 +236,7 @@ export default async function PartnersPage() {
             {/* ── Hero ── */}
             <div className="partners-hero">
                 <div className="partners-hero-bg">
-                    <Image src="/about-hero.png" alt="Partnership meeting" fill style={{ objectFit: 'cover' }} priority />
+                    <Image src="/about-hero.jpg" alt="Partnership meeting" fill sizes="100vw" style={{ objectFit: 'cover' }} priority />
                 </div>
                 <div className="container partners-hero-content">
                     <div className="breadcrumb">
@@ -275,7 +275,7 @@ export default async function PartnersPage() {
                                         <div key={p.id} className="partner-card">
                                             <div className="partner-logo">
                                                 {(p.logo.startsWith('/') || p.logo.startsWith('http')) ? (
-                                                    <Image src={p.logo} alt={p.name} fill style={{ objectFit: 'contain' }} />
+                                                    <Image src={p.logo} alt={p.name} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'contain' }} />
                                                 ) : (
                                                     <Icon name={p.logo as IconName} size={32} />
                                                 )}

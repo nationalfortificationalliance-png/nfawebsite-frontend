@@ -108,9 +108,10 @@ export default async function NewsPage() {
             <div className="news-hero">
                 <div className="news-hero-bg">
                     <Image
-                        src="/news_hero.png"
+                        src="/news_hero.jpg"
                         alt="News and Events"
                         fill
+                        sizes="100vw"
                         style={{ objectFit: 'cover' }}
                         priority
                     />

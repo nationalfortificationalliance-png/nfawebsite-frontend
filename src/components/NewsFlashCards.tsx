@@ -43,7 +43,7 @@ export default function NewsFlashCards({
   const currentNews = news[current];
   const imageUrl = currentNews.image?.url
     ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nfawebsite-backend-production.up.railway.app'}${currentNews.image.url}`
-    : '/hero-1.png';
+    : '/about-hero.jpg';
 
   return (
     <div className="flashcard-container">
@@ -334,6 +334,7 @@ export default function NewsFlashCards({
             src={imageUrl}
             alt={currentNews.title}
             fill
+            sizes="100vw"
             style={{ objectFit: 'cover' }}
             priority
           />
@@ -411,7 +412,7 @@ export default function NewsFlashCards({
           {news.map((item, index) => {
             const thumbUrl = item.image?.url
               ? `${process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nfawebsite-backend-production.up.railway.app'}${item.image.url}`
-              : '/hero-1.png';
+              : '/news_hero.jpg';
 
             return (
               <div
@@ -423,6 +424,7 @@ export default function NewsFlashCards({
                   src={thumbUrl}
                   alt={item.title}
                   fill
+                  sizes="80px"
                   style={{ objectFit: 'cover' }}
                 />
               </div>

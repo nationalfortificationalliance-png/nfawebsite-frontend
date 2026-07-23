@@ -239,7 +239,7 @@ export default async function HomePage() {
           <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
 
           <div className="about-image-panel fade-up">
-            <Image src="/about-hero.png" alt="NFA partnership meeting" fill style={{ objectFit: 'cover' }} />
+            <Image src="/about-hero.jpg" alt="NFA partnership meeting" fill style={{ objectFit: 'cover' }} />
           </div>
           <div className="about-content-panel fade-up stagger-1 relative z-10">
             <p className="section-eyebrow">About the NFP</p>

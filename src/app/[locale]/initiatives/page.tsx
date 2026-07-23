@@ -284,9 +284,10 @@ export default function InitiativesPage() {
             <div className="initiatives-hero">
                 <div className="initiatives-hero-bg">
                     <Image
-                        src="/factory.png"
+                        src="/factory.jpg"
                         alt="Food fortification facility"
                         fill
+                        sizes="100vw"
                         style={{ objectFit: "cover" }}
                         priority
                     />

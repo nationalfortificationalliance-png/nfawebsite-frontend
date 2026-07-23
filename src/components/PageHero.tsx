@@ -26,6 +26,7 @@ export default function PageHero({
                     src={imageUrl}
                     alt={title}
                     fill
+                    sizes="100vw"
                     style={{ objectFit: "cover" }}
                     priority
                 />

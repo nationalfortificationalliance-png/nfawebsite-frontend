@@ -80,9 +80,10 @@ export default async function GuidelinesPage() {
             <div className="gl-hero">
                 <div className="gl-hero-bg">
                     <Image
-                        src="/factory.png"
+                        src="/factory.jpg"
                         alt="Guidelines and Resources"
                         fill
+                        sizes="100vw"
                         style={{ objectFit: 'cover' }}
                         priority
                     />

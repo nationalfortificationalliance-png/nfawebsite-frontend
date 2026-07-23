@@ -16,7 +16,7 @@ export default async function ContactPage() {
     // Fallback data
     const heroTitle = contactData?.hero_title || 'Get in touch';
     const heroDescription = contactData?.hero_description || "Whether you're looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.";
-    const heroImage = contactData?.hero_image ? getStrapiMediaUrl(contactData.hero_image.url) : '/about-hero.png';
+    const heroImage = contactData?.hero_image ? getStrapiMediaUrl(contactData.hero_image.url) : '/about-hero.jpg';
 
     const officeName = contactData?.office_name || 'NFA Secretariat';
     const addressLines = [
@@ -135,6 +135,7 @@ export default async function ContactPage() {
                         src={heroImage}
                         alt="Contact NFA"
                         fill
+                        sizes="100vw"
                         style={{ objectFit: 'cover' }}
                         priority
                     />

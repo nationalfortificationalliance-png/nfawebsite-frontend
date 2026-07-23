@@ -189,9 +189,10 @@ export default async function FAQPage() {
             <div className="faq-hero">
                 <div className="faq-hero-bg">
                     <Image
-                        src="/hero-3.png"
+                        src="/about-hero.jpg"
                         alt="FAQ"
                         fill
+                        sizes="100vw"
                         style={{ objectFit: 'cover' }}
                         priority
                     />
