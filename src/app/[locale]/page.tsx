@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getAllNews, type NewsEvent } from '@/lib/api';
+import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getAllNews, getGlobalSettings, type NewsEvent } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 import {
   AnimatedStats,
@@ -56,9 +56,12 @@ const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string
 ];
 
 export default async function HomePage() {
-  const [carousels, featuredNews, quoteData, statsData, allEvents] = await Promise.all([
-    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getAllNews(1, 50),
+  const [carousels, featuredNews, quoteData, statsData, allEvents, globalSettings] = await Promise.all([
+    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getAllNews(1, 50), getGlobalSettings(),
   ]);
+
+  const statsSource = globalSettings?.stats_source
+    || 'Source: Nigeria Demographic and Health Survey (NDHS) 2024; National Food Consumption and Micronutrient Survey (NFCMS) 2021; UNICEF Nigeria, Situation Analysis of Children and Adolescents in Nigeria (2024).';
 
   // Filter upcoming events (events with future dates)
   const today = new Date();
@@ -499,6 +502,7 @@ export default async function HomePage() {
             <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.9)', maxWidth: '650px', margin: '0 auto', lineHeight: 1.6 }}>Critical health statistics that demonstrate the urgent need for food fortification</p>
           </div>
           <AnimatedStats stats={displayStats} />
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', textAlign: 'center', maxWidth: '800px', margin: '2rem auto 0', lineHeight: 1.6 }}>{statsSource}</p>
         </div>
       </section>
 

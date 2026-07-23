@@ -159,6 +159,7 @@ export interface GlobalSetting {
     facebook_url?: string;
     linkedin_url?: string;
     footer_text?: string;
+    stats_source?: string;
 }
 
 export interface FAQ {
