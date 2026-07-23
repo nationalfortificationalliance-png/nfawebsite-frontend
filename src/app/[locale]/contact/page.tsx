@@ -18,13 +18,13 @@ export default async function ContactPage() {
     const heroDescription = contactData?.hero_description || "Whether you're looking for certification support, partnership opportunities, or media requests, our team at the National Fortification Alliance is here to help.";
     const heroImage = contactData?.hero_image ? getStrapiMediaUrl(contactData.hero_image.url) : '/about-hero.jpg';
 
-    const officeName = contactData?.office_name || 'NFA Secretariat';
+    const officeName = contactData?.office_name || 'NAFDAC Office';
     const addressLines = [
-        contactData?.address_line_1 || 'NAFDAC Office Lagos',
-        contactData?.address_line_2 || 'National Agency for Food and Drug Administration and Control',
-        contactData?.address_line_3 || 'Plot 1, Industrial Estate',
-        contactData?.address_line_4 || 'Lagos-Oshodi Apapa Expressway, Isolo',
-        contactData?.address_line_5 || 'Lagos, Nigeria'
+        contactData?.address_line_1 || 'NAFDAC Office',
+        contactData?.address_line_2 || 'Plot 2032, Olusegun Obasanjo Way',
+        contactData?.address_line_3 || 'Wuse Zone 7',
+        contactData?.address_line_4 || 'Abuja, Federal Capital Territory',
+        contactData?.address_line_5 || 'Nigeria'
     ].filter(Boolean);
 
     const emailContacts = contactData?.email_contacts || [
@@ -34,8 +34,9 @@ export default async function ContactPage() {
     ];
 
     const phoneContacts = contactData?.phone_contacts || [
-        { label: 'NAFDAC Helpline', phone: '0700-1-NAFDAC (0700-1-623322)' },
-        { label: 'Office Line', phone: '+234 (0) 1-4609750' }
+        { label: 'NFA Secretariat', phone: '08099837920' },
+        { label: 'NFA Secretariat', phone: '08035171719' },
+        { label: 'NFA Secretariat', phone: '08065217543' }
     ];
 
     const officeHours = contactData?.office_hours || 'Monday – Thursday: 8:00 AM – 4:30 PM\nFriday: 8:00 AM – 1:30 PM';
@@ -174,7 +175,7 @@ export default async function ContactPage() {
                             </div>
                             <div className="map-wrapper">
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.335024315744584!3d6.535131395311901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8f9c069e924b%3A0xad71e5e3c4a4efd8!2sNAFDAC%20Office!5e0!3m2!1sen!2sng!4v1234567890"
+                                    src="https://www.google.com/maps?q=Plot+2032,+Olusegun+Obasanjo+Way,+Wuse+Zone+7,+Abuja+904101,+Federal+Capital+Territory&output=embed"
                                     width="100%"
                                     height="100%"
                                     style={{ border: 0 }}
