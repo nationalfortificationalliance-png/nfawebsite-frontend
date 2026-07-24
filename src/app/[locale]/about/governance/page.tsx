@@ -2,11 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Icon, { IconName } from '@/components/Icon';
+import { getGovernanceRepresentatives, getStrapiMediaUrl, type GovernanceOrgKey } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
     description: 'Learn about the roles, responsibilities, regulatory monitoring, and industry compliance structure of the NFA Nigeria.',
 };
+
+// Order matches ORG_KEYS below index-for-index, so representative data fetched
+// from the backend can override the matching card's bullet list at render time.
+const ORG_KEYS: GovernanceOrgKey[] = ['NAFDAC', 'SON', 'FMOHSW', 'FCCPC', 'Industry', 'Development Partners'];
 
 const ROLES = [
      {
@@ -145,7 +150,25 @@ const MEMBERSHIP: Record<string, { name: string; logo?: string }[]> = {
     ]
 };
 
-export default function GovernancePage() {
+const ORG_LOGOS: Partial<Record<GovernanceOrgKey, string>> = {
+    NAFDAC: '/NAFDAC_emblem.png',
+    SON: '/son_png.png',
+    FMOHSW: '/Nigeria_Federal_Ministry_of_Health_Logo.png',
+    FCCPC: '/fccpc_logo.png',
+};
+
+export default async function GovernancePage() {
+    const representatives = await getGovernanceRepresentatives();
+    const repsByOrgKey = new Map(representatives.map((r) => [r.organization_key, r]));
+
+    const mergedRoles = ROLES.map((staticRole, idx) => {
+        const rep = repsByOrgKey.get(ORG_KEYS[idx]);
+        if (rep?.key_contributions?.length) {
+            return { ...staticRole, roles: rep.key_contributions };
+        }
+        return staticRole;
+    });
+
     return (
         <main className="governance-page">
             <style>{`
@@ -440,6 +463,104 @@ export default function GovernancePage() {
                 @media (max-width: 900px) {
                     .monitoring-grid { grid-template-columns: 1fr; }
                 }
+
+                .reps-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                    gap: 2rem;
+                    margin-top: 3rem;
+                }
+                .rep-card {
+                    background: #fff;
+                    border: 1px solid var(--border-light);
+                    border-radius: var(--radius-lg);
+                    padding: 2rem;
+                    box-shadow: var(--shadow-sm);
+                    transition: all 0.3s ease;
+                }
+                .rep-card:hover {
+                    box-shadow: var(--shadow-xl);
+                    border-color: var(--wfp-blue-light);
+                }
+                .rep-card-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 1.25rem;
+                    margin-bottom: 1.5rem;
+                }
+                .rep-photo-wrap {
+                    position: relative;
+                    width: 88px;
+                    height: 88px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    flex-shrink: 0;
+                    background: var(--bg-off);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid var(--wfp-blue-light);
+                }
+                .rep-photo-fallback {
+                    font-size: 1.5rem;
+                    font-weight: 800;
+                    color: var(--wfp-blue);
+                }
+                .rep-org-badge {
+                    position: absolute;
+                    bottom: -4px;
+                    right: -4px;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: #fff;
+                    border: 1px solid var(--border-light);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 4px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                }
+                .rep-name {
+                    font-size: 1.1rem;
+                    font-weight: 800;
+                    color: var(--wfp-navy);
+                    line-height: 1.3;
+                }
+                .rep-title {
+                    font-size: 0.88rem;
+                    color: var(--wfp-blue);
+                    font-weight: 600;
+                    margin-top: 0.2rem;
+                }
+                .rep-org {
+                    font-size: 0.82rem;
+                    color: var(--text-muted);
+                    margin-top: 0.15rem;
+                }
+                .rep-bio {
+                    font-size: 0.92rem;
+                    color: var(--text-secondary);
+                    line-height: 1.65;
+                    margin-bottom: 1.25rem;
+                }
+                .rep-org-profile {
+                    border-top: 1px solid var(--border-light);
+                    padding-top: 1.25rem;
+                }
+                .rep-org-profile-label {
+                    font-size: 0.75rem;
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                    color: var(--text-muted);
+                    margin-bottom: 0.5rem;
+                }
+                .rep-org-profile-text {
+                    font-size: 0.88rem;
+                    color: var(--text-secondary);
+                    line-height: 1.6;
+                }
             `}</style>
 
             <div className="gov-hero">
@@ -467,6 +588,65 @@ export default function GovernancePage() {
                     </p>
                 </div>
             </div>
+
+            {/* Alliance Leadership & Representatives */}
+            {representatives.length > 0 && (
+                <section className="section">
+                    <div className="container">
+                        <p className="section-eyebrow">People</p>
+                        <h2 className="section-title">Alliance Leadership &amp; Representatives</h2>
+                        <p className="section-lead">Meet the individuals representing each member organization on the National Fortification Alliance.</p>
+
+                        <div className="reps-grid">
+                            {representatives.map((rep) => {
+                                const orgLogo = ORG_LOGOS[rep.organization_key];
+                                const initials = rep.name
+                                    .split(' ')
+                                    .filter((w) => /^[A-Z]/.test(w))
+                                    .map((w) => w[0])
+                                    .join('')
+                                    .slice(0, 2);
+                                return (
+                                    <div key={rep.id} className="rep-card">
+                                        <div className="rep-card-header">
+                                            <div className="rep-photo-wrap">
+                                                {rep.photo ? (
+                                                    <Image
+                                                        src={getStrapiMediaUrl(rep.photo.url)}
+                                                        alt={rep.name}
+                                                        fill
+                                                        sizes="88px"
+                                                        style={{ objectFit: 'cover' }}
+                                                    />
+                                                ) : (
+                                                    <span className="rep-photo-fallback">{initials}</span>
+                                                )}
+                                                {orgLogo && (
+                                                    <div className="rep-org-badge">
+                                                        <Image src={orgLogo} alt="" width={22} height={22} style={{ objectFit: 'contain' }} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <div className="rep-name">{rep.name}</div>
+                                                <div className="rep-title">{rep.title}</div>
+                                                <div className="rep-org">{rep.organization_short_name || rep.organization_name}</div>
+                                            </div>
+                                        </div>
+                                        <p className="rep-bio">{rep.bio}</p>
+                                        {rep.organization_profile && (
+                                            <div className="rep-org-profile">
+                                                <div className="rep-org-profile-label">About {rep.organization_short_name || rep.organization_name}</div>
+                                                <p className="rep-org-profile-text">{rep.organization_profile}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Steering Committee Section */}
             <section className="section" style={{ background: 'var(--bg-off)', borderBottom: '1px solid var(--border-light)' }}>
@@ -501,7 +681,7 @@ export default function GovernancePage() {
                     <p className="section-lead">The success of the National Fortification Alliance relies on clearly defined roles across all stakeholder groups.</p>
                     
                     <div className="roles-grid">
-                        {ROLES.map((role, idx) => (
+                        {mergedRoles.map((role, idx) => (
                             <div key={idx} className="role-card">
                                 <div className="role-card-header">
                                     {role.logo ? (

@@ -383,3 +383,39 @@ export async function getContactPage(): Promise<ContactPage | null> {
     });
     return res?.data || null;
 }
+
+export type GovernanceOrgKey = 'NAFDAC' | 'SON' | 'FMOHSW' | 'FCCPC' | 'Industry' | 'Development Partners';
+
+interface RawGovernanceRepresentative {
+    id: number;
+    documentId: string;
+    name: string;
+    title: string;
+    organization_name: string;
+    organization_short_name?: string;
+    organization_key: GovernanceOrgKey;
+    photo?: StrapiImage;
+    bio: string;
+    organization_profile?: string;
+    key_contributions?: { text: string }[];
+    order: number;
+    is_active: boolean;
+}
+
+export interface GovernanceRepresentative extends Omit<RawGovernanceRepresentative, 'key_contributions'> {
+    key_contributions: string[];
+}
+
+export async function getGovernanceRepresentatives(): Promise<GovernanceRepresentative[]> {
+    const res = await fetchAPI<{ data: RawGovernanceRepresentative[] }>('/governance-representatives', {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:asc',
+        'populate[0]': 'photo',
+        'populate[1]': 'key_contributions',
+        'pagination[pageSize]': '50',
+    });
+    return (res?.data || []).map((rep) => ({
+        ...rep,
+        key_contributions: (rep.key_contributions || []).map((b) => b.text),
+    }));
+}

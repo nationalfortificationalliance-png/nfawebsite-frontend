@@ -2,29 +2,24 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { GlobalSetting, ContactPage } from '@/lib/api';
 
-interface FooterProps { settings: GlobalSetting | null; contact: ContactPage | null; }
+interface FooterProps { settings: GlobalSetting | null; secretariatPhones: string[]; contact: ContactPage | null; }
 
-export default function Footer({ settings, contact }: FooterProps) {
+export default function Footer({ settings, secretariatPhones, contact }: FooterProps) {
   const year = new Date().getFullYear();
 
   const addressLines = [
     contact?.address_line_1 || 'NAFDAC Office',
     contact?.address_line_2 || 'Plot 2032, Olusegun Obasanjo Way',
     contact?.address_line_3 || 'Wuse Zone 7',
-    contact?.address_line_4 || 'Abuja, Federal Capital Territory',
-    contact?.address_line_5 || 'Nigeria'
+    [contact?.address_line_4, contact?.address_line_5].filter(Boolean).join(', ') || 'Abuja, Federal Capital Territory, Nigeria'
   ].filter(Boolean);
 
-  const emailContacts = contact?.email_contacts || [
-    { label: 'General Inquiries', email: 'info.ngo@wfp.org' },
-    { label: 'Processor Support (NAFDAC)', email: 'certification@nafdac.gov.ng' },
-    { label: 'Media & Press', email: 'media.nigeria@wfp.org' }
-  ];
+  const footerEmail = 'info@nationalfortificationalliance.org.ng';
 
-  const phoneContacts = contact?.phone_contacts || [
-    { label: 'NFA Secretariat', phone: '08099837920' },
-    { label: 'NFA Secretariat', phone: '08035171719' },
-    { label: 'NFA Secretariat', phone: '08065217543' }
+  const phoneContacts = secretariatPhones.length > 0 ? secretariatPhones : [
+    '08099837920',
+    '08035171719',
+    '08065217543'
   ];
 
   return (
@@ -122,16 +117,14 @@ export default function Footer({ settings, contact }: FooterProps) {
                 <div className="footer-contact-item">
                   <span className="footer-contact-icon">✉</span>
                   <div className="footer-contact-val">
-                    {emailContacts.map((c, idx) => (
-                      <div key={idx}><a href={`mailto:${c.email}`}>{c.email}</a></div>
-                    ))}
+                    <a href={`mailto:${footerEmail}`}>{footerEmail}</a>
                   </div>
                 </div>
                 <div className="footer-contact-item">
                   <span className="footer-contact-icon">📞</span>
                   <div className="footer-contact-val">
-                    {phoneContacts.map((c, idx) => (
-                      <div key={idx}><a href={`tel:${c.phone.replace(/[^0-9+]/g, '')}`}>{c.phone}</a></div>
+                    {phoneContacts.map((phone, idx) => (
+                      <div key={idx}><a href={`tel:${phone.replace(/[^0-9+]/g, '')}`}>{phone}</a></div>
                     ))}
                   </div>
                 </div>
