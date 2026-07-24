@@ -389,13 +389,14 @@ export type GovernanceOrgKey = 'NAFDAC' | 'SON' | 'FMOHSW' | 'FCCPC' | 'Industry
 interface RawGovernanceRepresentative {
     id: number;
     documentId: string;
-    name: string;
-    title: string;
+    name?: string;
+    title?: string;
     organization_name: string;
     organization_short_name?: string;
     organization_key: GovernanceOrgKey;
+    organization_logo?: StrapiImage;
     photo?: StrapiImage;
-    bio: string;
+    bio?: string;
     organization_profile?: string;
     key_contributions?: { text: string }[];
     order: number;
@@ -412,6 +413,7 @@ export async function getGovernanceRepresentatives(): Promise<GovernanceRepresen
         'sort': 'order:asc',
         'populate[0]': 'photo',
         'populate[1]': 'key_contributions',
+        'populate[2]': 'organization_logo',
         'pagination[pageSize]': '50',
     });
     return (res?.data || []).map((rep) => ({

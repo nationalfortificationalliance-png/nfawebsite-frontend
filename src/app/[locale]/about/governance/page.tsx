@@ -1,93 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import Icon, { IconName } from '@/components/Icon';
-import { getGovernanceRepresentatives, getStrapiMediaUrl, type GovernanceOrgKey } from '@/lib/api';
+import Icon from '@/components/Icon';
+import { getGovernanceRepresentatives, getStrapiMediaUrl } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
     description: 'Learn about the roles, responsibilities, regulatory monitoring, and industry compliance structure of the NFA Nigeria.',
 };
-
-// Order matches ORG_KEYS below index-for-index, so representative data fetched
-// from the backend can override the matching card's bullet list at render time.
-const ORG_KEYS: GovernanceOrgKey[] = ['NAFDAC', 'SON', 'FMOHSW', 'FCCPC', 'Industry', 'Development Partners'];
-
-const ROLES = [
-     {
-        name: 'National Agency for Food and Drug Administration and Control (NAFDAC)',
-        logo: '/NAFDAC_emblem.png',
-        icon: 'shield-check',
-        roles: [
-            'Secretariat of the National Fortification Alliance',
-            'Issuance of marketing authorization for fortified food products',
-            'Registration of micronutrient premixes',
-            'Monitoring and testing of fortified foods at retail, distribution, and port levels',
-            'Funding of monitoring and laboratory activities',
-            'Capacity building for regulatory staff',
-            'Development and review of fortification regulations',
-            'Issuance of import permits for vitamins and premixes and management of the database of premix producers/suppliers',
-            'Provide support for NFA meetings'
-        ]
-    },
-    {
-        name: 'Standards Organisation of Nigeria (SON)',
-        logo: '/son_png.png',
-        icon: 'shield',
-        roles: [
-            'Elaboration, review, and adoption of standards in collaboration with stakeholders',
-            'Monitoring and testing of fortified foods at factory level',
-            'Capacity building on food fortification',
-            'Funding of laboratory testing and monitoring activities',
-            'Secretariat for the USI/IDD Taskforce and Hosting of Taskforce meetings',
-            'Collaboration with relevant bodies (IPAN, NINAS, etc.) on laboratory certification/accreditation',
-            'Provide support for NFA meetings'
-        ]
-    },
-    {
-        name: 'Federal Ministry of Health and Social Welfare (FMOHSW)',
-        logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png',
-        icon: 'heart-pulse',
-        roles: [
-            'Nutrition policy development',
-            'Advocate for an enabling environment to promote local production of micronutrients in Nigeria',
-            'Support for NFA coordination and activities',
-            'Advocacy activities with relevant bodies in the area of food fortification in Nigeria',
-            'Provide support for NFA meetings'
-        ]
-    },
-    {
-        name: 'Federal Competition and Consumer Protection Commission (FCCPC)',
-        logo: '/fccpc_logo.png',
-        icon: 'users',
-        roles: [
-            'Household-level monitoring',
-            'Consumer sensitization and awareness creation',
-            'Advocacy activities'
-        ]
-    },
-    {
-        name: 'Industry',
-        icon: 'factory',
-        roles: [
-            'Production and distribution of adequately fortified foods',
-            'Sponsorship of NFA activities',
-            'Support for food fortification research',
-            'Consumer awareness and social marketing'
-        ]
-    },
-    {
-        name: 'Development Partners',
-        icon: 'handshake',
-        roles: [
-            'Technical assistance',
-            'Capacity building',
-            'Laboratory strengthening',
-            'Financial support',
-            'Public awareness creation'
-        ]
-    }
-];
 
 const LABS = [
     { name: 'Saag Chemicals', location: 'Lagos', contact: '08025589200' },
@@ -150,24 +70,8 @@ const MEMBERSHIP: Record<string, { name: string; logo?: string }[]> = {
     ]
 };
 
-const ORG_LOGOS: Partial<Record<GovernanceOrgKey, string>> = {
-    NAFDAC: '/NAFDAC_emblem.png',
-    SON: '/son_png.png',
-    FMOHSW: '/Nigeria_Federal_Ministry_of_Health_Logo.png',
-    FCCPC: '/fccpc_logo.png',
-};
-
 export default async function GovernancePage() {
     const representatives = await getGovernanceRepresentatives();
-    const repsByOrgKey = new Map(representatives.map((r) => [r.organization_key, r]));
-
-    const mergedRoles = ROLES.map((staticRole, idx) => {
-        const rep = repsByOrgKey.get(ORG_KEYS[idx]);
-        if (rep?.key_contributions?.length) {
-            return { ...staticRole, roles: rep.key_contributions };
-        }
-        return staticRole;
-    });
 
     return (
         <main className="governance-page">
@@ -224,78 +128,6 @@ export default async function GovernancePage() {
                     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
                     gap: 2.5rem;
                     margin-top: 4rem;
-                }
-                .role-card {
-                    background: rgba(255,255,255,0.8);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255,255,255,0.5);
-                    border-radius: 24px;
-                    padding: 0;
-                    box-shadow: 0 10px 40px rgba(0,0,0,0.04);
-                    transition: all 0.3s ease;
-                    display: flex;
-                    flex-direction: column;
-                    overflow: hidden;
-                }
-                .role-card:hover {
-                    transform: translateY(-4px);
-                    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-                    background: #fff;
-                    border-color: var(--wfp-blue-light);
-                }
-                .role-card-header {
-                    background: linear-gradient(135deg, var(--wfp-blue-light) 0%, rgba(0, 135, 81, 0.05) 100%);
-                    padding: 2rem;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    min-height: 140px;
-                    border-bottom: 1px solid var(--border-light);
-                }
-                .role-card-logo {
-                    max-width: 140px;
-                    max-height: 80px;
-                    object-fit: contain;
-                    filter: grayscale(20%);
-                    opacity: 0.9;
-                }
-                .role-card:hover .role-card-logo {
-                    filter: grayscale(0%);
-                    opacity: 1;
-                }
-                .role-card-icon {
-                    font-size: 3rem;
-                    color: var(--wfp-blue);
-                    opacity: 0.7;
-                }
-                .role-card-body {
-                    padding: 2rem;
-                }
-                .role-card h3 {
-                    color: var(--wfp-navy);
-                    font-size: 1.15rem;
-                    margin-bottom: 1.5rem;
-                    line-height: 1.4;
-                }
-                .role-list {
-                    list-style: none;
-                    padding-left: 0;
-                }
-                .role-list li {
-                    position: relative;
-                    padding-left: 1.75rem;
-                    margin-bottom: 1rem;
-                    font-size: 0.95rem;
-                    color: var(--text-secondary);
-                    line-height: 1.6;
-                }
-                .role-list li::before {
-                    content: "✓";
-                    color: var(--wfp-blue);
-                    font-weight: 900;
-                    position: absolute;
-                    left: 0;
-                    top: 0;
                 }
 
                 .monitoring-grid {
@@ -465,68 +297,48 @@ export default async function GovernancePage() {
                 }
 
                 .reps-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-                    gap: 2.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2rem;
                     margin-top: 3.5rem;
                 }
-                .rep-card {
+                .rep-row {
+                    display: flex;
+                    gap: 2.25rem;
                     background: #fff;
                     border: 1px solid var(--border-light);
                     border-radius: 28px;
-                    overflow: hidden;
+                    padding: 2rem;
                     box-shadow: 0 10px 40px rgba(0,0,0,0.04);
                     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
                 }
-                .rep-card:hover {
-                    transform: translateY(-6px);
-                    box-shadow: 0 24px 60px rgba(0,0,0,0.1);
+                .rep-row:hover {
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
                     border-color: var(--wfp-blue-light);
                 }
-                .rep-photo-cover {
-                    position: relative;
-                    height: 230px;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.95) 0%, rgba(6, 78, 59, 0.9) 100%);
-                    overflow: hidden;
-                }
-                .rep-photo-cover::after {
-                    content: '';
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.05) 55%, transparent 75%);
-                    z-index: 1;
-                }
-                .rep-photo-fallback {
-                    position: absolute;
-                    inset: 0;
+                .rep-row-media {
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
-                    justify-content: center;
-                    font-size: 4rem;
-                    font-weight: 900;
-                    color: rgba(255,255,255,0.22);
-                    letter-spacing: -0.02em;
+                    gap: 0.9rem;
+                    flex-shrink: 0;
+                    width: 240px;
                 }
                 .rep-org-chip {
-                    position: absolute;
-                    top: 1rem;
-                    right: 1rem;
-                    z-index: 2;
                     display: flex;
                     align-items: center;
-                    gap: 0.4rem;
-                    background: rgba(255,255,255,0.95);
-                    backdrop-filter: blur(6px);
+                    gap: 0.6rem;
+                    background: var(--wfp-blue-light);
                     border-radius: 999px;
-                    padding: 0.35rem 0.85rem 0.35rem 0.35rem;
-                    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+                    padding: 0.4rem 1rem 0.4rem 0.4rem;
+                    max-width: 100%;
                 }
                 .rep-org-chip.no-logo {
-                    padding: 0.4rem 0.9rem;
+                    padding: 0.5rem 1rem;
                 }
                 .rep-org-chip-logo {
-                    width: 22px;
-                    height: 22px;
+                    width: 36px;
+                    height: 36px;
                     border-radius: 50%;
                     background: #fff;
                     display: flex;
@@ -535,60 +347,134 @@ export default async function GovernancePage() {
                     flex-shrink: 0;
                 }
                 .rep-org-chip-text {
-                    font-size: 0.72rem;
+                    font-size: 0.78rem;
                     font-weight: 800;
                     color: var(--wfp-navy);
                     letter-spacing: 0.01em;
                     white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
-                .rep-photo-text {
-                    position: absolute;
-                    left: 1.5rem;
-                    right: 1.5rem;
-                    bottom: 1.25rem;
-                    z-index: 2;
+                .rep-photo-wrap {
+                    position: relative;
+                    width: 240px;
+                    height: 240px;
+                    border-radius: 28px;
+                    overflow: hidden;
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.95) 0%, rgba(6, 78, 59, 0.9) 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .rep-photo-fallback {
+                    font-size: 4.5rem;
+                    font-weight: 900;
+                    color: rgba(255,255,255,0.85);
+                    letter-spacing: -0.02em;
+                }
+                .rep-row-unassigned {
+                    background: var(--bg-off);
+                }
+                .rep-photo-wrap-placeholder {
+                    background: #fff;
+                    border: 2px dashed var(--border-light);
+                    color: var(--text-muted);
+                }
+                .rep-name-placeholder {
+                    font-style: italic;
+                    font-weight: 700;
+                    color: var(--text-muted);
+                }
+                .rep-row-content {
+                    flex: 1;
+                    min-width: 0;
                 }
                 .rep-name {
                     font-size: 1.3rem;
                     font-weight: 800;
-                    color: #fff;
+                    color: var(--wfp-navy);
                     line-height: 1.25;
                 }
                 .rep-title {
-                    font-size: 0.85rem;
-                    color: rgba(255,255,255,0.85);
-                    font-weight: 500;
+                    font-size: 0.9rem;
+                    color: var(--wfp-blue);
+                    font-weight: 600;
                     margin-top: 0.3rem;
                     line-height: 1.4;
                 }
-                .rep-card-body {
-                    padding: 1.75rem;
+                .rep-org {
+                    font-size: 0.85rem;
+                    color: var(--text-muted);
+                    margin-top: 0.15rem;
+                    margin-bottom: 1.25rem;
                 }
-                .rep-bio {
-                    font-size: 0.92rem;
-                    color: var(--text-secondary);
-                    line-height: 1.7;
-                    margin-bottom: 1.5rem;
-                }
-                .rep-org-profile {
+                .rep-collapsible {
                     border-top: 1px solid var(--border-light);
-                    padding-top: 1.25rem;
+                    padding: 1rem 0;
                 }
-                .rep-org-profile-label {
+                .rep-collapsible summary {
                     display: flex;
                     align-items: center;
-                    gap: 0.5rem;
-                    font-size: 0.72rem;
+                    justify-content: space-between;
+                    cursor: pointer;
+                    list-style: none;
+                    font-size: 0.78rem;
                     font-weight: 800;
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     color: var(--wfp-blue);
-                    margin-bottom: 0.6rem;
                 }
-                .rep-org-profile-text {
-                    font-size: 0.87rem;
+                .rep-collapsible summary::-webkit-details-marker {
+                    display: none;
+                }
+                .rep-collapsible summary::after {
+                    content: '+';
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    color: var(--wfp-blue);
+                    transition: transform 0.2s ease;
+                }
+                .rep-collapsible[open] summary::after {
+                    transform: rotate(45deg);
+                }
+                .rep-collapsible-body {
+                    font-size: 0.92rem;
                     color: var(--text-secondary);
-                    line-height: 1.65;
+                    line-height: 1.7;
+                    margin-top: 0.9rem;
+                }
+                .rep-responsibility-list {
+                    list-style: none;
+                    padding-left: 0;
+                    margin-top: 0.9rem;
+                }
+                .rep-responsibility-list li {
+                    position: relative;
+                    padding-left: 1.5rem;
+                    margin-bottom: 0.75rem;
+                    font-size: 0.9rem;
+                    color: var(--text-secondary);
+                    line-height: 1.6;
+                }
+                .rep-responsibility-list li::before {
+                    content: "✓";
+                    color: var(--wfp-blue);
+                    font-weight: 900;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+                @media (max-width: 640px) {
+                    .rep-row {
+                        flex-direction: column;
+                        align-items: center;
+                        text-align: center;
+                    }
+                    .rep-collapsible summary {
+                        justify-content: center;
+                        gap: 0.5rem;
+                    }
                 }
             `}</style>
 
@@ -628,47 +514,78 @@ export default async function GovernancePage() {
 
                         <div className="reps-grid">
                             {representatives.map((rep) => {
-                                const orgLogo = ORG_LOGOS[rep.organization_key];
-                                const initials = rep.name
-                                    .split(' ')
-                                    .filter((w) => /^[A-Z]/.test(w))
-                                    .map((w) => w[0])
-                                    .join('')
-                                    .slice(0, 2);
+                                const isAssigned = Boolean(rep.name);
+                                const orgLogo = rep.organization_logo ? getStrapiMediaUrl(rep.organization_logo.url) : null;
+                                const orgLabel = rep.organization_short_name || rep.organization_name;
+                                const initials = isAssigned
+                                    ? rep.name!
+                                        .split(' ')
+                                        .filter((w) => /^[A-Z]/.test(w))
+                                        .map((w) => w[0])
+                                        .join('')
+                                        .slice(0, 2)
+                                    : '';
                                 return (
-                                    <div key={rep.id} className="rep-card">
-                                        <div className="rep-photo-cover">
-                                            {rep.photo ? (
-                                                <Image
-                                                    src={getStrapiMediaUrl(rep.photo.url)}
-                                                    alt={rep.name}
-                                                    fill
-                                                    sizes="(max-width: 768px) 100vw, 400px"
-                                                    style={{ objectFit: 'cover' }}
-                                                />
-                                            ) : (
-                                                <span className="rep-photo-fallback">{initials}</span>
-                                            )}
+                                    <div key={rep.id} className={`rep-row${isAssigned ? '' : ' rep-row-unassigned'}`}>
+                                        <div className="rep-row-media">
                                             <div className={`rep-org-chip${orgLogo ? '' : ' no-logo'}`}>
                                                 {orgLogo && (
                                                     <span className="rep-org-chip-logo">
-                                                        <Image src={orgLogo} alt="" width={16} height={16} style={{ objectFit: 'contain' }} />
+                                                        <Image src={orgLogo} alt="" width={28} height={28} style={{ objectFit: 'contain' }} />
                                                     </span>
                                                 )}
-                                                <span className="rep-org-chip-text">{rep.organization_short_name || rep.organization_name}</span>
+                                                <span className="rep-org-chip-text">{orgLabel}</span>
                                             </div>
-                                            <div className="rep-photo-text">
-                                                <div className="rep-name">{rep.name}</div>
-                                                <div className="rep-title">{rep.title}</div>
+                                            <div className={`rep-photo-wrap${isAssigned ? '' : ' rep-photo-wrap-placeholder'}`}>
+                                                {isAssigned && rep.photo ? (
+                                                    <Image
+                                                        src={getStrapiMediaUrl(rep.photo.url)}
+                                                        alt={rep.name!}
+                                                        fill
+                                                        sizes="240px"
+                                                        style={{ objectFit: 'cover' }}
+                                                    />
+                                                ) : isAssigned ? (
+                                                    <span className="rep-photo-fallback">{initials}</span>
+                                                ) : (
+                                                    <Icon name="users" size={56} />
+                                                )}
                                             </div>
                                         </div>
-                                        <div className="rep-card-body">
-                                            <p className="rep-bio">{rep.bio}</p>
+                                        <div className="rep-row-content">
+                                            {isAssigned ? (
+                                                <>
+                                                    <div className="rep-name">{rep.name}</div>
+                                                    <div className="rep-title">{rep.title}</div>
+                                                </>
+                                            ) : (
+                                                <div className="rep-name rep-name-placeholder">Representative yet to be assigned</div>
+                                            )}
+                                            <div className="rep-org">{rep.organization_name}</div>
+
+                                            {isAssigned && rep.bio && (
+                                                <details className="rep-collapsible" open>
+                                                    <summary>About {rep.name!.split(' ').slice(-1)[0]}</summary>
+                                                    <p className="rep-collapsible-body">{rep.bio}</p>
+                                                </details>
+                                            )}
+
                                             {rep.organization_profile && (
-                                                <div className="rep-org-profile">
-                                                    <div className="rep-org-profile-label">About {rep.organization_short_name || rep.organization_name}</div>
-                                                    <p className="rep-org-profile-text">{rep.organization_profile}</p>
-                                                </div>
+                                                <details className="rep-collapsible">
+                                                    <summary>About {orgLabel}</summary>
+                                                    <p className="rep-collapsible-body">{rep.organization_profile}</p>
+                                                </details>
+                                            )}
+
+                                            {rep.key_contributions?.length > 0 && (
+                                                <details className="rep-collapsible" open={!isAssigned}>
+                                                    <summary>Key Responsibilities</summary>
+                                                    <ul className="rep-responsibility-list">
+                                                        {rep.key_contributions.map((item, i) => (
+                                                            <li key={i}>{item}</li>
+                                                        ))}
+                                                    </ul>
+                                                </details>
                                             )}
                                         </div>
                                     </div>
@@ -704,45 +621,6 @@ export default async function GovernancePage() {
                 </div>
             </section>
 
-            {/* Roles and Responsibilities */}
-            <section className="section">
-                <div className="container">
-                    <p className="section-eyebrow">Accountability</p>
-                    <h2 className="section-title">Roles and Responsibilities</h2>
-                    <p className="section-lead">The success of the National Fortification Alliance relies on clearly defined roles across all stakeholder groups.</p>
-                    
-                    <div className="roles-grid">
-                        {mergedRoles.map((role, idx) => (
-                            <div key={idx} className="role-card">
-                                <div className="role-card-header">
-                                    {role.logo ? (
-                                        <Image
-                                            src={role.logo}
-                                            alt={role.name}
-                                            width={140}
-                                            height={80}
-                                            className="role-card-logo"
-                                            style={{ objectFit: 'contain' }}
-                                        />
-                                    ) : (
-                                        <div className="role-card-icon">
-                                            <Icon name={role.icon as IconName} size={48} />
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="role-card-body">
-                                    <h3>{role.name}</h3>
-                                    <ul className="role-list">
-                                        {role.roles.map((r, rIdx) => (
-                                            <li key={rIdx}>{r}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* Regulatory Monitoring System */}
             <section className="section" style={{ background: 'var(--bg-off)' }}>
