@@ -2,12 +2,21 @@
 
 import { useState } from 'react';
 import NewsCard from '@/components/NewsCard';
+import Icon, { IconName } from '@/components/Icon';
 import type { NewsEvent } from '@/lib/api';
 
 interface NewsFilterProps {
   allNews: NewsEvent[];
   categories: string[];
 }
+
+const CATEGORY_LABELS: Record<string, string> = {
+  news: 'News', event: 'Events', communique: 'Communiqués', report: 'Reports',
+};
+
+const CATEGORY_EMPTY_ICONS: Record<string, IconName> = {
+  news: 'newspaper', event: 'calendar', communique: 'scroll-text', report: 'bar-chart',
+};
 
 export default function NewsFilter({ allNews, categories }: NewsFilterProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -54,8 +63,20 @@ export default function NewsFilter({ allNews, categories }: NewsFilterProps) {
 
           {filteredNews.length === 0 ? (
             <div className="news-empty">
-              <div className="news-empty-icon">📭</div>
-              <p>No {activeCategory} items found.</p>
+              <div className="news-empty-icon">
+                <Icon name={CATEGORY_EMPTY_ICONS[activeCategory] || 'newspaper'} size={28} />
+              </div>
+              <h3 className="news-empty-title">
+                No {CATEGORY_LABELS[activeCategory] || activeCategory} yet
+              </h3>
+              <p className="news-empty-text">
+                Check back soon — new {(CATEGORY_LABELS[activeCategory] || activeCategory).toLowerCase()} will appear here as they&apos;re published.
+              </p>
+              {activeCategory !== 'all' && (
+                <button type="button" className="news-empty-reset" onClick={() => setActiveCategory('all')}>
+                  View all news &amp; events
+                </button>
+              )}
             </div>
           ) : (
             <div className="grid-3">

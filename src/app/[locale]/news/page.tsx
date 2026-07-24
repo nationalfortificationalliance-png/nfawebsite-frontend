@@ -93,9 +93,48 @@ export default async function NewsPage() {
         .news-empty {
           text-align: center;
           padding: 5rem 2rem;
-          color: var(--color-gray-400);
+          max-width: 420px;
+          margin: 0 auto;
         }
-        .news-empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .news-empty-icon {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          background: var(--wfp-green-light, #e6f4ee);
+          color: var(--wfp-green, #008751);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 1.25rem;
+        }
+        .news-empty-title {
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: var(--text-primary);
+          margin-bottom: 0.5rem;
+        }
+        .news-empty-text {
+          color: var(--color-gray-400);
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
+        }
+        .news-empty-reset {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.6rem 1.4rem;
+          border-radius: var(--radius-full);
+          border: 1px solid var(--wfp-green, #008751);
+          background: transparent;
+          color: var(--wfp-green, #008751);
+          font-weight: 600;
+          font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.2s var(--ease-out);
+        }
+        .news-empty-reset:hover {
+          background: var(--wfp-green, #008751);
+          color: #fff;
+        }
         .news-count {
           font-size: 0.875rem;
           color: var(--color-gray-400);
