@@ -363,20 +363,6 @@ export default async function AboutPage() {
                     </div>
                 </div>
             </section>
-
-            {/* ── CTA ── */}
-            <div style={{ background: 'var(--wfp-navy)', padding: '4rem 0' }}>
-                <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '2rem' }}>
-                    <div>
-                        <h3 style={{ color: '#fff', marginBottom: '0.4rem' }}>Want to know more or get involved?</h3>
-                        <p style={{ color: 'rgba(255,255,255,.65)', margin: 0 }}>Our team is ready to answer your questions and explore paths to collaboration.</p>
-                    </div>
-                    <div style={{ display: 'flex', gap: '1rem', flexShrink: 0 }}>
-                        <Link href="/partners" className="btn btn-outline-white">Meet Our Partners</Link>
-                        <Link href="/contact" className="btn btn-white">Contact the NFA</Link>
-                    </div>
-                </div>
-            </div>
         </>
     );
 }

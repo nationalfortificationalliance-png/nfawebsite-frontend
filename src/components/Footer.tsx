@@ -7,12 +7,9 @@ interface FooterProps { settings: GlobalSetting | null; secretariatPhones: strin
 export default function Footer({ settings, secretariatPhones, contact }: FooterProps) {
   const year = new Date().getFullYear();
 
-  const addressLines = [
-    contact?.address_line_1 || 'NAFDAC Office',
-    contact?.address_line_2 || 'Plot 2032, Olusegun Obasanjo Way',
-    contact?.address_line_3 || 'Wuse Zone 7',
-    [contact?.address_line_4, contact?.address_line_5].filter(Boolean).join(', ') || 'Abuja, Federal Capital Territory, Nigeria'
-  ].filter(Boolean);
+  const addressLines = contact
+    ? [contact.address_line_1, contact.address_line_2, contact.address_line_3, contact.address_line_4, contact.address_line_5].filter(Boolean)
+    : ['NAFDAC Office', 'Plot 2032, Olusegun Obasanjo Way', 'Wuse Zone 7', 'Abuja, Federal Capital Territory, Nigeria'];
 
   const footerEmail = 'info@nationalfortificationalliance.org.ng';
 
@@ -26,6 +23,7 @@ export default function Footer({ settings, secretariatPhones, contact }: FooterP
     <>
       <style>{`
         .footer { background: var(--wfp-navy); color: rgba(255,255,255,.8); font-size: 0.95rem; }
+        .footer .container { max-width: 1600px; }
         .footer-main { padding: 5rem 0 4rem; border-bottom: 1px solid rgba(255,255,255,.1); }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 4rem; }
         
