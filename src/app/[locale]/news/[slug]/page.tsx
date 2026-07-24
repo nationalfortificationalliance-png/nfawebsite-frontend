@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Icon, { IconName } from '@/components/Icon';
+import GalleryLightbox from '@/components/GalleryLightbox';
 import { getNewsBySlug, getAllNews, getStrapiMediaUrl } from '@/lib/api';
 import { generateSEOMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/components/SEO';
 import { locales } from '@/i18n';
@@ -243,6 +244,53 @@ export default async function NewsDetailPage({ params }: Props) {
           transform: scale(1.02);
           box-shadow: var(--shadow-lg);
         }
+        .gallery-item { border: none; padding: 0; display: block; width: 100%; }
+        .gallery-zoom-hint {
+          position: absolute; top: 0.6rem; right: 0.6rem;
+          width: 32px; height: 32px; border-radius: 50%;
+          background: rgba(0,0,0,0.55); color: white;
+          display: flex; align-items: center; justify-content: center;
+          opacity: 0; transition: opacity 0.2s;
+        }
+        .gallery-item:hover .gallery-zoom-hint { opacity: 1; }
+        .lightbox-backdrop {
+          position: fixed; inset: 0; z-index: 1000;
+          background: rgba(0,0,0,0.9);
+          display: flex; align-items: center; justify-content: center;
+          padding: 2rem;
+        }
+        .lightbox-image-wrap { max-width: 92vw; max-height: 88vh; }
+        .lightbox-image {
+          max-width: 92vw; max-height: 88vh;
+          width: auto; height: auto;
+          display: block; border-radius: 6px;
+          box-shadow: var(--shadow-xl);
+        }
+        .lightbox-close {
+          position: absolute; top: 1.25rem; right: 1.5rem;
+          width: 44px; height: 44px; border-radius: 50%;
+          background: rgba(255,255,255,0.12); color: white;
+          font-size: 1.75rem; line-height: 1; border: none; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.2s;
+        }
+        .lightbox-close:hover { background: rgba(255,255,255,0.25); }
+        .lightbox-nav {
+          position: absolute; top: 50%; transform: translateY(-50%);
+          width: 52px; height: 52px; border-radius: 50%;
+          background: rgba(255,255,255,0.12); color: white;
+          font-size: 2rem; line-height: 1; border: none; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.2s;
+        }
+        .lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+        .lightbox-prev { left: 1.5rem; }
+        .lightbox-next { right: 1.5rem; }
+        .lightbox-counter {
+          position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+          color: rgba(255,255,255,0.85); font-size: 0.875rem;
+          background: rgba(0,0,0,0.4); padding: 0.3rem 0.9rem; border-radius: 100px;
+        }
       `}</style>
 
             {/* Hero */}
@@ -290,22 +338,13 @@ export default async function NewsDetailPage({ params }: Props) {
                     {hasGallery && (
                         <div className="article-gallery">
                             <h3>Photo Gallery</h3>
-                            <div className="gallery-grid">
-                                {gallery!.map((img) => {
-                                    const galleryImageUrl = getStrapiMediaUrl(img.url);
-                                    return (
-                                        <div key={img.id} className="gallery-item">
-                                            <Image
-                                                src={galleryImageUrl}
-                                                alt={img.alternativeText || title}
-                                                fill
-                                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 280px"
-                                                style={{ objectFit: 'cover' }}
-                                            />
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                            <GalleryLightbox
+                                images={gallery!.map((img) => ({
+                                    id: img.id,
+                                    url: getStrapiMediaUrl(img.url),
+                                    alt: img.alternativeText || title,
+                                }))}
+                            />
                         </div>
                     )}
                 </div>
