@@ -31,14 +31,6 @@ const OBJECTIVES: { icon: IconName; text: string }[] = [
     { icon: 'monitor', text: 'Supporting innovation and digital traceability systems.' },
 ];
 
-const LEADERSHIP = [
-    { name: 'Industry Representative', role: 'Chair', src: '/industry-placeholder.png', width: 60, height: 60 },
-    { name: 'Standards Organisation of Nigeria (SON)', role: 'Vice Chair', src: '/son_png.png', width: 60, height: 60 },
-    { name: 'NAFDAC', role: 'Secretariat', src: '/NAFDAC_emblem.png', width: 56, height: 56 },
-    { name: 'FMoHSW', role: 'Core Official', src: '/Nigeria_Federal_Ministry_of_Health_Logo.png', width: 56, height: 56 },
-    { name: 'FCCPC', role: 'Core Official', src: '/fccpc_logo.png', width: 56, height: 56 },
-];
-
 export default async function AboutPage() {
     const about = await getAboutPage();
 
@@ -127,18 +119,13 @@ export default async function AboutPage() {
         .objective-text { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.65; }
 
         /* Governance */
-        .governance-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 2.5rem; }
-        .governance-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1.75rem; text-align: center; }
-        .governance-logo { height: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; filter: grayscale(100%); opacity: 0.8; transition: all 0.3s; }
-        .governance-card:hover .governance-logo { filter: grayscale(0%); opacity: 1; }
-        .governance-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
-        .governance-role { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+        .governance-cta { text-align: center; max-width: 640px; margin: 2.5rem auto 0; }
+        .governance-cta p { color: var(--text-secondary); margin-bottom: 1.5rem; }
 
         @media (max-width: 900px) {
           .mv-grid { grid-template-columns: 1fr; }
           .challenge-row { grid-template-columns: 1fr; }
           .objectives-grid { grid-template-columns: 1fr; }
-          .governance-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* Stats Section */
@@ -344,22 +331,9 @@ export default async function AboutPage() {
                 <div className="container">
                     <p className="section-eyebrow">Governance</p>
                     <h2 className="section-title">Who Runs the NFA</h2>
-                    <div className="governance-grid">
-                        {LEADERSHIP.map((l) => (
-                            <Link key={l.name} href={l.role === 'Secretariat' ? '/about/secretariat' : '/about/governance'} className="governance-card" style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-                                <div className="governance-logo">
-                                    <Image src={l.src} alt={l.name} width={l.width} height={l.height} style={{ objectFit: 'contain' }} />
-                                </div>
-                                <div className="governance-name">{l.name}</div>
-                                <div className="governance-role">{l.role}</div>
-                                {l.role === 'Secretariat' && (
-                                    <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--wfp-blue)', fontWeight: 700 }}>View Secretariat Team ›</div>
-                                )}
-                            </Link>
-                        ))}
-                    </div>
-                    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                        <Link href="/about/governance" className="btn btn-outline-primary">View Full Governance & Compliance Structure</Link>
+                    <div className="governance-cta">
+                        <p>The NFA is led by a multi-sectoral alliance of government regulators, industry representatives, and development partners, supported by a dedicated secretariat.</p>
+                        <Link href="/about/governance" className="btn btn-outline-primary">View Full Governance &amp; Compliance Structure</Link>
                     </div>
                 </div>
             </section>
