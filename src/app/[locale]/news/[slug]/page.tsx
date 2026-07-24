@@ -164,13 +164,43 @@ export default async function NewsDetailPage({ params }: Props) {
           margin-bottom: 2rem;
           line-height: 1.75;
         }
-        .article-richtext { color: var(--color-gray-800); line-height: 1.85; }
-        .article-richtext h2, .article-richtext h3 { margin: 2rem 0 0.75rem; color: var(--color-navy); }
-        .article-richtext p { margin-bottom: 1rem; }
-        .article-richtext ul, .article-richtext ol {
-          padding-left: 1.5rem; margin-bottom: 1rem;
+        .article-richtext { color: var(--color-gray-800); line-height: 1.85; font-size: 1.05rem; }
+        .article-richtext h2 {
+          margin: 2.75rem 0 1rem; color: var(--color-navy);
+          font-size: 1.5rem; font-weight: 800;
         }
-        .article-richtext li { margin-bottom: 0.4rem; }
+        .article-richtext h3 {
+          margin: 2.5rem 0 1rem; color: var(--color-navy);
+          font-size: 1.2rem; font-weight: 700;
+          padding-bottom: 0.5rem;
+          border-bottom: 2px solid var(--color-primary, #005249);
+          display: inline-block;
+        }
+        .article-richtext p { margin-bottom: 1.15rem; }
+        .article-richtext strong { color: var(--color-navy); font-weight: 700; }
+        .article-richtext ul, .article-richtext ol {
+          padding-left: 0; margin: 0 0 1.5rem; list-style: none;
+        }
+        .article-richtext ul li {
+          position: relative; padding-left: 1.6rem; margin-bottom: 0.65rem;
+        }
+        .article-richtext ul li::before {
+          content: ''; position: absolute; left: 0; top: 0.55rem;
+          width: 8px; height: 8px; border-radius: 50%;
+          background: var(--color-primary, #005249);
+        }
+        .article-richtext ol {
+          padding-left: 1.4rem; list-style: decimal;
+        }
+        .article-richtext ol li { margin-bottom: 0.65rem; padding-left: 0.3rem; }
+        .article-richtext a { color: var(--color-primary, #005249); text-decoration: underline; }
+        .article-richtext blockquote {
+          margin: 1.75rem 0; padding: 1.1rem 1.4rem;
+          background: var(--bg-off, #f6f7f8);
+          border-left: 4px solid var(--color-primary, #005249);
+          border-radius: 8px;
+          font-style: italic; color: var(--color-gray-700, #374151);
+        }
         .article-back {
           display: inline-flex; align-items: center; gap: 0.4rem;
           color: var(--color-primary); font-weight: 600;
