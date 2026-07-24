@@ -430,22 +430,22 @@ export default function NewsCarousel({
             );
           })}
         </div>
-
-        {/* Dots Navigation */}
-        {news.length > 1 && (
-          <div className="carousel-dots">
-            {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-              <button
-                key={index}
-                className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
-                type="button"
-                onClick={() => goTo(index)}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
       </div>
+
+      {/* Dots Navigation */}
+      {news.length > 1 && (
+        <div className="carousel-dots">
+          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            <button
+              key={index}
+              className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
+              type="button"
+              onClick={() => goTo(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
