@@ -64,7 +64,8 @@ export default function NewsCarousel({
         .news-carousel-container {
           position: relative;
           overflow: hidden;
-          padding: 0 3rem;
+          padding: 1.5rem 3rem;
+          margin: -1.5rem 0;
         }
 
         .news-carousel-track {
@@ -312,7 +313,7 @@ export default function NewsCarousel({
 
         @media (max-width: 640px) {
           .news-carousel-container {
-            padding: 0 1rem;
+            padding: 1.5rem 1rem;
           }
 
           .news-carousel-track {
