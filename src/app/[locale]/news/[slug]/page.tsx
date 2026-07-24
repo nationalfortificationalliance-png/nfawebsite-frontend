@@ -98,6 +98,7 @@ export default async function NewsDetailPage({ params }: Props) {
     const hasImage = !!image?.url;
     const hasGallery = gallery && gallery.length > 0;
     const fileUrl = file?.url ? getStrapiMediaUrl(file.url) : null;
+    const isCommunique = category === 'communique';
 
     const formattedDate = new Date(date).toLocaleDateString('en-GB', {
         day: 'numeric', month: 'long', year: 'numeric',
@@ -217,6 +218,33 @@ export default async function NewsDetailPage({ params }: Props) {
           transition: background 0.2s;
         }
         .article-download:hover { background: var(--wfp-green-dark, #006639); }
+        .communique-card {
+          text-align: center;
+          max-width: 560px;
+          margin: 0 auto 2rem;
+          padding: 3rem 2rem;
+          border: 1px solid var(--border-light);
+          border-radius: 16px;
+          background: var(--bg-off, #f6f7f8);
+        }
+        .communique-card-icon {
+          width: 64px; height: 64px; border-radius: 50%;
+          background: var(--wfp-green-light, #e6f4ee);
+          color: var(--wfp-green, #008751);
+          display: flex; align-items: center; justify-content: center;
+          margin: 0 auto 1.25rem;
+        }
+        .communique-card-excerpt {
+          color: var(--color-gray-700, #374151);
+          font-size: 1.05rem;
+          line-height: 1.75;
+          margin-bottom: 1.75rem;
+        }
+        .communique-card .article-download { margin-bottom: 0; }
+        .communique-card-nofile {
+          color: var(--color-gray-400);
+          font-style: italic;
+        }
         .article-category-badge {
           display: inline-flex; align-items: center; gap: 0.35rem;
           background: rgba(255,255,255,0.2);
@@ -337,16 +365,34 @@ export default async function NewsDetailPage({ params }: Props) {
             <div className="container">
                 <div className="article-body-wrap">
                     <Link href="/news" className="article-back">← Back to News</Link>
-                    {excerpt && <p className="article-excerpt">{excerpt}</p>}
-                    {fileUrl && (
-                        <a href={fileUrl} download className="article-download">
-                            <Icon name="file-text" size={16} /> Download {category === 'communique' ? 'Communiqué' : 'Document'} (PDF)
-                        </a>
+                    {isCommunique ? (
+                        <div className="communique-card">
+                            <div className="communique-card-icon">
+                                <Icon name="scroll-text" size={28} />
+                            </div>
+                            {excerpt && <p className="communique-card-excerpt">{excerpt}</p>}
+                            {fileUrl ? (
+                                <a href={fileUrl} download className="article-download">
+                                    <Icon name="file-text" size={16} /> Download Communiqué (PDF)
+                                </a>
+                            ) : (
+                                <p className="communique-card-nofile">No document has been attached to this communiqué yet.</p>
+                            )}
+                        </div>
+                    ) : (
+                        <>
+                            {excerpt && <p className="article-excerpt">{excerpt}</p>}
+                            {fileUrl && (
+                                <a href={fileUrl} download className="article-download">
+                                    <Icon name="file-text" size={16} /> Download Document (PDF)
+                                </a>
+                            )}
+                            <div
+                                className="article-richtext"
+                                dangerouslySetInnerHTML={{ __html: body }}
+                            />
+                        </>
                     )}
-                    <div
-                        className="article-richtext"
-                        dangerouslySetInnerHTML={{ __html: body }}
-                    />
 
                     {/* Gallery Section */}
                     {hasGallery && (
