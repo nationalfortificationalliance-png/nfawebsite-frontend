@@ -462,3 +462,57 @@ export async function getLaboratories(): Promise<Laboratory[]> {
     });
     return res?.data || [];
 }
+
+export interface MeetingSchedule {
+    id: number;
+    documentId: string;
+    year: string;
+    june_host: string;
+    december_host: string;
+    order: number;
+}
+
+export async function getMeetingSchedule(): Promise<MeetingSchedule[]> {
+    const res = await fetchAPI<{ data: MeetingSchedule[] }>('/meeting-schedules', {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:asc',
+        'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}
+
+export interface IndustryChallenge {
+    id: number;
+    documentId: string;
+    text: string;
+    category: string;
+    order: number;
+}
+
+export async function getIndustryChallenges(): Promise<IndustryChallenge[]> {
+    const res = await fetchAPI<{ data: IndustryChallenge[] }>('/industry-challenges', {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:asc',
+        'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}
+
+export interface MemberOrganization {
+    id: number;
+    documentId: string;
+    name: string;
+    category: string;
+    logo?: StrapiImage;
+    order: number;
+}
+
+export async function getMemberOrganizations(): Promise<MemberOrganization[]> {
+    const res = await fetchAPI<{ data: MemberOrganization[] }>('/member-organizations', {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:asc',
+        'populate': 'logo',
+        'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}

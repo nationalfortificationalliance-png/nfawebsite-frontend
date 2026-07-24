@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import Icon from '@/components/Icon';
-import { getGovernanceRepresentatives, getStrapiMediaUrl, getLaboratories, Laboratory } from '@/lib/api';
+import Icon, { IconName } from '@/components/Icon';
+import { getGovernanceRepresentatives, getStrapiMediaUrl, getLaboratories, Laboratory, getMeetingSchedule, MeetingSchedule, getIndustryChallenges, IndustryChallenge, getMemberOrganizations, MemberOrganization } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
@@ -20,24 +20,32 @@ const LABS_FALLBACK: Laboratory[] = [
     { id: 8, documentId: '8', name: 'Bureau Veritas Nigeria Ltd', location: 'Ogun State', contact: '08095559245', order: 8 },
 ];
 
-const MEETINGS = [
-    { year: '2026', june: 'NAFDAC', december: 'Industry' },
-    { year: '2027', june: 'SON', december: 'FCCPC' },
-    { year: '2028', june: 'FMoHSW', december: 'NAFDAC' }
+const MEETINGS_FALLBACK: MeetingSchedule[] = [
+    { id: 1, documentId: '1', year: '2026', june_host: 'NAFDAC', december_host: 'Industry', order: 1 },
+    { id: 2, documentId: '2', year: '2027', june_host: 'SON', december_host: 'FCCPC', order: 2 },
+    { id: 3, documentId: '3', year: '2028', june_host: 'FMoHSW', december_host: 'NAFDAC', order: 3 },
 ];
 
-const CHALLENGES = [
-    'Scarcity of Vitamin A Palmitate',
-    'Foreign exchange constraints affecting premix supply',
-    'Technical limitations in fortification equipment',
-    'Inconsistencies in laboratory analytical results',
-    'Challenges with shelf-life stability studies',
-    'Packaging and storage limitations',
-    'Inconsistent customs tariff implementation',
-    'Inadequate monitoring of imported products',
-    'Informal retail packaging challenges',
-    'Technical capacity gaps in micronutrient testing'
-];
+const CHALLENGES_FALLBACK: IndustryChallenge[] = [
+    { text: 'Scarcity of Vitamin A Palmitate', category: 'Supply Chain' },
+    { text: 'Foreign exchange constraints affecting premix supply', category: 'Supply Chain' },
+    { text: 'Technical limitations in fortification equipment', category: 'Technical & Equipment' },
+    { text: 'Challenges with shelf-life stability studies', category: 'Technical & Equipment' },
+    { text: 'Technical capacity gaps in micronutrient testing', category: 'Technical & Equipment' },
+    { text: 'Inconsistencies in laboratory analytical results', category: 'Quality & Compliance' },
+    { text: 'Packaging and storage limitations', category: 'Quality & Compliance' },
+    { text: 'Informal retail packaging challenges', category: 'Quality & Compliance' },
+    { text: 'Inconsistent customs tariff implementation', category: 'Regulatory & Customs' },
+    { text: 'Inadequate monitoring of imported products', category: 'Regulatory & Customs' },
+].map((c, i) => ({ id: i + 1, documentId: String(i + 1), text: c.text, category: c.category, order: i + 1 }));
+
+const CHALLENGE_CATEGORY_ORDER = ['Supply Chain', 'Technical & Equipment', 'Quality & Compliance', 'Regulatory & Customs'];
+const CHALLENGE_CATEGORY_ICONS: Record<string, IconName> = {
+    'Supply Chain': 'truck',
+    'Technical & Equipment': 'settings',
+    'Quality & Compliance': 'microscope',
+    'Regulatory & Customs': 'landmark',
+};
 
 const STEERING_COMMITTEE = [
     'Industry Representatives',
@@ -48,32 +56,43 @@ const STEERING_COMMITTEE = [
     'Federal Competition and Consumer Protection Commission'
 ];
 
-const MEMBERSHIP: Record<string, { name: string; logo?: string }[]> = {
-    core: [
-        { name: 'Standards Organisation of Nigeria (SON)', logo: '/son_png.png' },
-        { name: 'National Agency for Food and Drug Administration and Control (NAFDAC)', logo: '/NAFDAC_emblem.png' },
-        { name: 'Federal Ministry of Education (FME)' },
-        { name: 'Federal Competition and Consumer Protection Commission (FCCPC)', logo: '/fccpc_logo.png' },
-        { name: 'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
-        { name: 'Federal Ministry of Agriculture and Food Security (FMAFS)' },
-        { name: 'Federal Ministry of Budget and Economic Planning (FMBEP)' },
-        { name: 'Institute of Public Analysts of Nigeria (IPAN)' },
-        { name: 'Federal Ministry of Information and National Orientation (FMINO)' },
-        { name: 'Industry' }
-    ],
-    stakeholders: [
-        { name: 'Development Partners (GAIN, HKI, TechnoServe, WFP, UNICEF, etc.)' },
-        { name: 'Academia' },
-        { name: 'Professional Associations (e.g., NIFST, NSN)' },
-        { name: 'Civil Society Organisations (CSOs) / Non-Governmental Organisations (NGOs)' },
-        { name: 'Media' }
-    ]
+const MEMBER_LOGO_FALLBACK: Record<string, string> = {
+    'Standards Organisation of Nigeria (SON)': '/son_png.png',
+    'National Agency for Food and Drug Administration and Control (NAFDAC)': '/NAFDAC_emblem.png',
+    'Federal Competition and Consumer Protection Commission (FCCPC)': '/fccpc_logo.png',
+    'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department': '/Nigeria_Federal_Ministry_of_Health_Logo.png',
 };
+
+const MEMBERS_FALLBACK: MemberOrganization[] = [
+    { name: 'Standards Organisation of Nigeria (SON)', category: 'Core Members' },
+    { name: 'National Agency for Food and Drug Administration and Control (NAFDAC)', category: 'Core Members' },
+    { name: 'Federal Ministry of Education (FME)', category: 'Core Members' },
+    { name: 'Federal Competition and Consumer Protection Commission (FCCPC)', category: 'Core Members' },
+    { name: 'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department', category: 'Core Members' },
+    { name: 'Federal Ministry of Agriculture and Food Security (FMAFS)', category: 'Core Members' },
+    { name: 'Federal Ministry of Budget and Economic Planning (FMBEP)', category: 'Core Members' },
+    { name: 'Institute of Public Analysts of Nigeria (IPAN)', category: 'Core Members' },
+    { name: 'Federal Ministry of Information and National Orientation (FMINO)', category: 'Core Members' },
+    { name: 'Industry', category: 'Core Members' },
+    { name: 'Development Partners (GAIN, HKI, TechnoServe, WFP, UNICEF, etc.)', category: 'Stakeholders' },
+    { name: 'Academia', category: 'Stakeholders' },
+    { name: 'Professional Associations (e.g., NIFST, NSN)', category: 'Stakeholders' },
+    { name: 'Civil Society Organisations (CSOs) / Non-Governmental Organisations (NGOs)', category: 'Stakeholders' },
+    { name: 'Media', category: 'Stakeholders' },
+].map((m, i) => ({ id: i + 1, documentId: String(i + 1), order: i + 1, ...m }));
 
 export default async function GovernancePage() {
     const representatives = await getGovernanceRepresentatives();
     const laboratoriesData = await getLaboratories();
     const labs = laboratoriesData.length ? laboratoriesData : LABS_FALLBACK;
+    const meetingScheduleData = await getMeetingSchedule();
+    const meetings = meetingScheduleData.length ? meetingScheduleData : MEETINGS_FALLBACK;
+    const industryChallengesData = await getIndustryChallenges();
+    const challenges = industryChallengesData.length ? industryChallengesData : CHALLENGES_FALLBACK;
+    const memberOrganizationsData = await getMemberOrganizations();
+    const members = memberOrganizationsData.length ? memberOrganizationsData : MEMBERS_FALLBACK;
+    const coreMembers = members.filter((m) => m.category === 'Core Members');
+    const stakeholderMembers = members.filter((m) => m.category === 'Stakeholders');
 
     return (
         <main className="governance-page">
@@ -221,20 +240,88 @@ export default async function GovernancePage() {
                     font-weight: 500;
                 }
                 
+                .meetings-card {
+                    background: #fff;
+                    border: 1px solid var(--border-light);
+                    border-radius: 16px;
+                    overflow: hidden;
+                    margin-top: 1rem;
+                }
+                .meetings-row {
+                    display: grid;
+                    grid-template-columns: 0.8fr 1fr 1fr;
+                    align-items: center;
+                    gap: 0.75rem;
+                    padding: 1rem 1.5rem;
+                    border-bottom: 1px solid var(--border-light);
+                }
+                .meetings-row:last-child {
+                    border-bottom: none;
+                }
+                .meetings-row:not(.meetings-head):hover {
+                    background: var(--bg-off);
+                }
+                .meetings-head {
+                    background: var(--wfp-navy, #0f2f4c);
+                    color: #fff;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    letter-spacing: 0.04em;
+                    text-transform: uppercase;
+                }
+                .meetings-year {
+                    font-weight: 800;
+                    color: var(--wfp-navy, #0f2f4c);
+                    font-size: 1.05rem;
+                }
+                .host-pill {
+                    display: inline-block;
+                    justify-self: start;
+                    background: var(--wfp-blue-light);
+                    color: var(--wfp-blue);
+                    font-size: 0.82rem;
+                    font-weight: 600;
+                    padding: 0.35rem 0.85rem;
+                    border-radius: 999px;
+                }
+
+                .challenges-groups {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.25rem;
+                    margin-top: 1.5rem;
+                }
+                .challenge-group-title {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    color: var(--wfp-red, #dc2626);
+                    margin: 0 0 0.5rem;
+                }
                 .challenges-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                    gap: 1rem;
-                    margin-top: 2rem;
+                    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                    gap: 0.4rem;
                 }
                 .challenge-item {
                     background: #fff;
-                    padding: 1rem;
+                    display: flex;
+                    align-items: flex-start;
+                    width: 100%;
+                    padding: 0.55rem 0.85rem;
                     border: 1px solid var(--border-light);
-                    border-left: 4px solid var(--wfp-red, #dc2626);
-                    border-radius: 4px;
-                    font-size: 0.9rem;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
                     color: var(--text-secondary);
+                    line-height: 1.4;
+                    transition: all 0.2s ease;
+                }
+                .challenge-item:hover {
+                    transform: translateX(4px);
+                    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+                    border-color: var(--wfp-red, #dc2626);
                 }
 
                 .membership-section {
@@ -296,6 +383,13 @@ export default async function GovernancePage() {
 
                 @media (max-width: 900px) {
                     .monitoring-grid { grid-template-columns: 1fr; }
+                }
+
+                @media (max-width: 480px) {
+                    .meetings-row { grid-template-columns: 1fr; gap: 0.4rem; padding: 0.85rem 1.1rem; }
+                    .meetings-head { display: none; }
+                    .meetings-row:not(.meetings-head) { padding-bottom: 1rem; }
+                    .host-pill { justify-self: start; }
                 }
 
                 .reps-grid {
@@ -726,8 +820,8 @@ export default async function GovernancePage() {
             {/* Biannual Meetings & Challenges */}
             <section className="section" style={{ background: 'var(--bg-off)' }}>
                 <div className="container">
-                    <div className="roles-grid" style={{ marginTop: 0, gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
-                        
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
+
                         {/* Meetings */}
                         <div>
                             <p className="section-eyebrow">Collaboration</p>
@@ -735,26 +829,20 @@ export default async function GovernancePage() {
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
                                 The Alliance convenes twice yearly to review programme implementation, discuss technical updates, strengthen coordination, review compliance, and agree on strategic actions.
                             </p>
-                            
-                            <div className="table-container" style={{ marginTop: '1rem' }}>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Year</th>
-                                            <th>June Meeting Host</th>
-                                            <th>December Meeting Host</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {MEETINGS.map((m, idx) => (
-                                            <tr key={idx}>
-                                                <td><strong>{m.year}</strong></td>
-                                                <td>{m.june}</td>
-                                                <td>{m.december}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+
+                            <div className="meetings-card">
+                                <div className="meetings-row meetings-head">
+                                    <span>Year</span>
+                                    <span>June Host</span>
+                                    <span>December Host</span>
+                                </div>
+                                {meetings.map((m) => (
+                                    <div className="meetings-row" key={m.id}>
+                                        <span className="meetings-year">{m.year}</span>
+                                        <span className="host-pill">{m.june_host}</span>
+                                        <span className="host-pill">{m.december_host}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
@@ -765,12 +853,25 @@ export default async function GovernancePage() {
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
                                 Identifying and addressing operational hurdles is critical. The NFA actively works to mitigate the following identified industry challenges:
                             </p>
-                            <div className="challenges-grid">
-                                {CHALLENGES.map((challenge, idx) => (
-                                    <div key={idx} className="challenge-item">
-                                        {challenge}
-                                    </div>
-                                ))}
+                            <div className="challenges-groups">
+                                {CHALLENGE_CATEGORY_ORDER
+                                    .map((category) => ({ category, items: challenges.filter((c) => c.category === category) }))
+                                    .filter((group) => group.items.length > 0)
+                                    .map((group) => (
+                                        <div key={group.category} className="challenge-group">
+                                            <h4 className="challenge-group-title">
+                                                <Icon name={CHALLENGE_CATEGORY_ICONS[group.category] || 'settings'} size={18} />
+                                                {group.category}
+                                            </h4>
+                                            <div className="challenges-grid">
+                                                {group.items.map((challenge) => (
+                                                    <div key={challenge.id} className="challenge-item">
+                                                        <span>{challenge.text}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
                             </div>
                         </div>
 
@@ -785,23 +886,29 @@ export default async function GovernancePage() {
                             <div className="member-cat-card">
                                 <h4><Icon name="landmark" size={18} /> Core Members</h4>
                                 <ul className="member-list">
-                                    {MEMBERSHIP.core.map((m, i) => (
-                                        <li key={i}>
-                                            {m.logo && <Image src={m.logo} alt="" width={24} height={24} className="member-logo-mini" />}
-                                            {m.name}
-                                        </li>
-                                    ))}
+                                    {coreMembers.map((m) => {
+                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
+                                        return (
+                                            <li key={m.id}>
+                                                {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}
+                                                {m.name}
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
                             <div className="member-cat-card">
                                 <h4><Icon name="heart-handshake" size={18} /> Stakeholders</h4>
                                 <ul className="member-list">
-                                    {MEMBERSHIP.stakeholders.map((m, i) => (
-                                        <li key={i}>
-                                            {m.logo && <Image src={m.logo} alt="" width={24} height={24} className="member-logo-mini" />}
-                                            {m.name}
-                                        </li>
-                                    ))}
+                                    {stakeholderMembers.map((m) => {
+                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
+                                        return (
+                                            <li key={m.id}>
+                                                {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}
+                                                {m.name}
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
                         </div>
