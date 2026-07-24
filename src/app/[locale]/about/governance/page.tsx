@@ -2,22 +2,22 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Icon from '@/components/Icon';
-import { getGovernanceRepresentatives, getStrapiMediaUrl } from '@/lib/api';
+import { getGovernanceRepresentatives, getStrapiMediaUrl, getLaboratories, Laboratory } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
     description: 'Learn about the roles, responsibilities, regulatory monitoring, and industry compliance structure of the NFA Nigeria.',
 };
 
-const LABS = [
-    { name: 'Saag Chemicals', location: 'Lagos', contact: '08025589200' },
-    { name: 'Remaben Scientific Services Ltd', location: 'Ikeja', contact: '08023037743' },
-    { name: 'Bato Chemical Labs Ltd', location: 'Ogun State', contact: '08091972222' },
-    { name: 'Jawura Environmental Services Ltd', location: 'Lagos', contact: '09058592802' },
-    { name: 'LS Scientific Limited', location: 'Ikeja', contact: '08094709004' },
-    { name: 'Alfa Laboratories', location: 'Lagos', contact: '08023093103' },
-    { name: 'Katchey Laboratory', location: 'Ikeja', contact: '08036209410' },
-    { name: 'Bureau Veritas Nigeria Ltd', location: 'Ogun State', contact: '08095559245' }
+const LABS_FALLBACK: Laboratory[] = [
+    { id: 1, documentId: '1', name: 'Saag Chemicals', location: 'Lagos', contact: '08025589200', order: 1 },
+    { id: 2, documentId: '2', name: 'Remaben Scientific Services Ltd', location: 'Ikeja', contact: '08023037743', order: 2 },
+    { id: 3, documentId: '3', name: 'Bato Chemical Labs Ltd', location: 'Ogun State', contact: '08091972222', order: 3 },
+    { id: 4, documentId: '4', name: 'Jawura Environmental Services Ltd', location: 'Lagos', contact: '09058592802', order: 4 },
+    { id: 5, documentId: '5', name: 'LS Scientific Limited', location: 'Ikeja', contact: '08094709004', order: 5 },
+    { id: 6, documentId: '6', name: 'Alfa Laboratories', location: 'Lagos', contact: '08023093103', order: 6 },
+    { id: 7, documentId: '7', name: 'Katchey Laboratory', location: 'Ikeja', contact: '08036209410', order: 7 },
+    { id: 8, documentId: '8', name: 'Bureau Veritas Nigeria Ltd', location: 'Ogun State', contact: '08095559245', order: 8 },
 ];
 
 const MEETINGS = [
@@ -72,6 +72,8 @@ const MEMBERSHIP: Record<string, { name: string; logo?: string }[]> = {
 
 export default async function GovernancePage() {
     const representatives = await getGovernanceRepresentatives();
+    const laboratoriesData = await getLaboratories();
+    const labs = laboratoriesData.length ? laboratoriesData : LABS_FALLBACK;
 
     return (
         <main className="governance-page">
@@ -699,8 +701,8 @@ export default async function GovernancePage() {
                     </p>
 
                     <div className="labs-grid">
-                        {LABS.map((lab, idx) => (
-                            <div key={idx} className="lab-card">
+                        {labs.map((lab) => (
+                            <div key={lab.id} className="lab-card">
                                 <div className="lab-icon">
                                     <Icon name="microscope" size={24} />
                                 </div>

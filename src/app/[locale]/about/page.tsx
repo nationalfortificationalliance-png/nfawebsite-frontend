@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon, { IconName } from '@/components/Icon';
-import { getAboutPage, getStrapiMediaUrl } from '@/lib/api';
+import { getAboutPage, getStrapiMediaUrl, AboutChallengeStat, AboutKeyStat, AboutTimelineItem } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'About the National Fortification Alliance',
@@ -10,13 +10,59 @@ export const metadata: Metadata = {
 };
 export const revalidate = 60;
 
-const TIMELINE = [
-    { year: '2004', event: 'Nigeria enacts the Food, Drugs and Related Products (Fortification) Regulation, making fortification mandatory for key staple foods.' },
-    { year: '2011', event: 'WFP Nigeria launches the National Fortification Alliance with NAFDAC to strengthen enforcement and processor capacity across 6 key food vehicles.' },
-    { year: '2016', event: 'Coverage of Vitamin A-fortified vegetable oil reaches 70% of households. NFA introduces the national quality mark seal for certified products.' },
-    { year: '2020', event: 'NFA expands to include Maize Flour and Wheat Flour in NAFDAC\'s mass fortification mandate. Premix fund established for small processors.' },
-    { year: '2024', event: 'Over 200 processors certified across 36 states, reaching 12M+ consumers. NFA achieves 68% household coverage of fortified staple foods.' },
+const TIMELINE_FALLBACK: AboutTimelineItem[] = [
+    { id: 1, year: '2004', event: 'Nigeria enacts the Food, Drugs and Related Products (Fortification) Regulation, making fortification mandatory for key staple foods.' },
+    { id: 2, year: '2011', event: 'WFP Nigeria launches the National Fortification Alliance with NAFDAC to strengthen enforcement and processor capacity across 6 key food vehicles.' },
+    { id: 3, year: '2016', event: 'Coverage of Vitamin A-fortified vegetable oil reaches 70% of households. NFA introduces the national quality mark seal for certified products.' },
+    { id: 4, year: '2020', event: 'NFA expands to include Maize Flour and Wheat Flour in NAFDAC\'s mass fortification mandate. Premix fund established for small processors.' },
+    { id: 5, year: '2024', event: 'Over 200 processors certified across 36 states, reaching 12M+ consumers. NFA achieves 68% household coverage of fortified staple foods.' },
 ];
+
+const CHALLENGE_STATS_FALLBACK: AboutChallengeStat[] = [
+    { id: 1, value: '37%', label: 'Child Stunting Rate', description: '37% of children under 5 are stunted — one of the highest rates in sub-Saharan Africa.' },
+    { id: 2, value: '30%', label: 'Vitamin A Deficiency', description: 'Nearly 1 in 3 children are Vitamin A deficient, risking blindness, immune weakness, and developmental impact.' },
+    { id: 3, value: '72%', label: 'Women with Anaemia', description: '72% of women of reproductive age are anaemic, primarily due to iron deficiency — with serious maternal and infant health consequences.' },
+];
+
+const KEY_STATS_FALLBACK: AboutKeyStat[] = [
+    {
+        id: 1, value: '2002', title: 'Programme Initiation', accent_color: 'none',
+        description: 'The year Nigeria\'s mandatory food fortification programme was officially launched.',
+        sub_stats: [{ id: 1, label: 'NFA Established', value: '2004' }],
+    },
+    {
+        id: 2, value: '57%', title: 'National Compliance', accent_color: 'blue',
+        description: 'Average compliance across all mandatory food vehicles in Nigeria.',
+        sub_stats: [
+            { id: 2, label: 'Salt (Iodized)', value: '67%' },
+            { id: 3, label: 'Veg Oil (Vit A)', value: '58%' },
+            { id: 4, label: 'Flour (Vit A)', value: '48%' },
+        ],
+    },
+    {
+        id: 3, value: '37%', title: 'Child Stunting', accent_color: 'gold',
+        description: 'Prevalence of stunting among children under five years of age.',
+        sub_stats: [
+            { id: 5, label: 'Vitamin A Deficiency', value: '~30%' },
+            { id: 6, label: 'Anaemia (Women)', value: '60–70%' },
+        ],
+    },
+    {
+        id: 4, value: '92%', title: 'Calcium Inadequacy', accent_color: 'green',
+        description: 'High prevalence of calcium deficiency across children and pregnant women.',
+        sub_stats: [
+            { id: 7, label: 'Non-Pregnant Women', value: '95%' },
+            { id: 8, label: 'Pregnant Women', value: '92%' },
+            { id: 9, label: 'Children', value: '92%' },
+        ],
+    },
+];
+
+const ACCENT_COLOR_MAP: Record<string, string> = {
+    blue: 'var(--wfp-blue)',
+    gold: 'var(--wfp-gold)',
+    green: 'var(--wfp-green)',
+};
 
 const OBJECTIVES: { icon: IconName; text: string }[] = [
     { icon: 'users', text: 'Providing a platform for collaboration between government and industry.' },
@@ -33,6 +79,10 @@ const OBJECTIVES: { icon: IconName; text: string }[] = [
 
 export default async function AboutPage() {
     const about = await getAboutPage();
+
+    const challengeStats = about?.challenge_stats?.length ? about.challenge_stats : CHALLENGE_STATS_FALLBACK;
+    const keyStats = about?.key_stats?.length ? about.key_stats : KEY_STATS_FALLBACK;
+    const timeline = about?.timeline_items?.length ? about.timeline_items : TIMELINE_FALLBACK;
 
     return (
         <>
@@ -138,6 +188,8 @@ export default async function AboutPage() {
         .stats-sub { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 0.5rem; }
         .stats-sub-label { color: var(--text-secondary); }
         .stats-sub-val { font-weight: 700; color: var(--wfp-blue); }
+        .stats-source { font-size: 0.72rem; color: var(--text-muted); margin-top: 1rem; font-style: italic; }
+        .challenge-source { font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-top: 0.5rem; font-style: italic; }
       `}</style>
 
             {/* ── Full-width hero ── */}
@@ -190,24 +242,17 @@ export default async function AboutPage() {
             {/* ── The Challenge ── */}
             <div className="challenge-panel">
                 <div className="container">
-                    <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>The Scale of the Problem</p>
-                    <h2 style={{ color: '#fff' }}>Nigeria&apos;s Hidden Hunger Crisis</h2>
+                    <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>{about?.challenge_eyebrow || 'The Scale of the Problem'}</p>
+                    <h2 style={{ color: '#fff' }}>{about?.challenge_heading || 'Nigeria’s Hidden Hunger Crisis'}</h2>
                     <div className="challenge-row" style={{ marginTop: '2.5rem' }}>
-                        <div className="challenge-item">
-                            <div className="challenge-big">37%</div>
-                            <div className="challenge-label">Child Stunting Rate</div>
-                            <div className="challenge-desc">37% of children under 5 are stunted — one of the highest rates in sub-Saharan Africa.</div>
-                        </div>
-                        <div className="challenge-item">
-                            <div className="challenge-big">30%</div>
-                            <div className="challenge-label">Vitamin A Deficiency</div>
-                            <div className="challenge-desc">Nearly 1 in 3 children are Vitamin A deficient, risking blindness, immune weakness, and developmental impact.</div>
-                        </div>
-                        <div className="challenge-item">
-                            <div className="challenge-big">72%</div>
-                            <div className="challenge-label">Women with Anaemia</div>
-                            <div className="challenge-desc">72% of women of reproductive age are anaemic, primarily due to iron deficiency — with serious maternal and infant health consequences.</div>
-                        </div>
+                        {challengeStats.map((stat) => (
+                            <div className="challenge-item" key={stat.id}>
+                                <div className="challenge-big">{stat.value}</div>
+                                <div className="challenge-label">{stat.label}</div>
+                                {stat.description && <div className="challenge-desc">{stat.description}</div>}
+                                {stat.source && <div className="challenge-source">Source: {stat.source}</div>}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -218,75 +263,31 @@ export default async function AboutPage() {
                     <p className="section-eyebrow">NFA by the Numbers</p>
                     <h2 className="section-title">Key Statistics & Compliance</h2>
                     <p className="section-lead">Current data on national fortification coverage, compliance levels, and the underlying nutritional challenges being addressed across Nigeria.</p>
-                    
+
                     <div className="stats-grid">
-                        {/* Milestone Stats */}
-                        <div className="stats-card">
-                            <div className="stats-val">2002</div>
-                            <div className="stats-title">Programme Initiation</div>
-                            <div className="stats-meta">The year Nigeria&apos;s mandatory food fortification programme was officially launched.</div>
-                            <div className="stats-divider" />
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">NFA Established</span>
-                                <span className="stats-sub-val">2004</span>
+                        {keyStats.map((stat) => (
+                            <div
+                                className="stats-card"
+                                key={stat.id}
+                                style={stat.accent_color && stat.accent_color !== 'none' ? { borderTop: `4px solid ${ACCENT_COLOR_MAP[stat.accent_color]}` } : undefined}
+                            >
+                                <div className="stats-val">{stat.value}</div>
+                                <div className="stats-title">{stat.title}</div>
+                                {stat.description && <div className="stats-meta">{stat.description}</div>}
+                                {!!stat.sub_stats?.length && (
+                                    <>
+                                        <div className="stats-divider" />
+                                        {stat.sub_stats.map((sub) => (
+                                            <div className="stats-sub" key={sub.id}>
+                                                <span className="stats-sub-label">{sub.label}</span>
+                                                <span className="stats-sub-val">{sub.value}</span>
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
+                                {stat.source && <div className="stats-source">Source: {stat.source}</div>}
                             </div>
-                        </div>
-
-                        {/* Compliance Stats */}
-                        <div className="stats-card" style={{ borderTop: '4px solid var(--wfp-blue)' }}>
-                            <div className="stats-val">57%</div>
-                            <div className="stats-title">National Compliance</div>
-                            <div className="stats-meta">Average compliance across all mandatory food vehicles in Nigeria.</div>
-                            <div className="stats-divider" />
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Salt (Iodized)</span>
-                                <span className="stats-sub-val">67%</span>
-                            </div>
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Veg Oil (Vit A)</span>
-                                <span className="stats-sub-val">58%</span>
-                            </div>
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Flour (Vit A)</span>
-                                <span className="stats-sub-val">48%</span>
-                            </div>
-                        </div>
-
-                        {/* Nutritional Deficit Stats */}
-                        <div className="stats-card" style={{ borderTop: '4px solid var(--wfp-gold)' }}>
-                            <div className="stats-val">37%</div>
-                            <div className="stats-title">Child Stunting</div>
-                            <div className="stats-meta">Prevalence of stunting among children under five years of age.</div>
-                            <div className="stats-divider" />
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Vitamin A Deficiency</span>
-                                <span className="stats-sub-val">~30%</span>
-                            </div>
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Anaemia (Women)</span>
-                                <span className="stats-sub-val">60–70%</span>
-                            </div>
-                        </div>
-
-                        {/* Calcium Inadequacy */}
-                        <div className="stats-card" style={{ borderTop: '4px solid var(--wfp-green)' }}>
-                            <div className="stats-val">92%</div>
-                            <div className="stats-title">Calcium Inadequacy</div>
-                            <div className="stats-meta">High prevalence of calcium deficiency across children and pregnant women.</div>
-                            <div className="stats-divider" />
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Non-Pregnant Women</span>
-                                <span className="stats-sub-val">95%</span>
-                            </div>
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Pregnant Women</span>
-                                <span className="stats-sub-val">92%</span>
-                            </div>
-                            <div className="stats-sub">
-                                <span className="stats-sub-label">Children</span>
-                                <span className="stats-sub-val">92%</span>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -297,11 +298,11 @@ export default async function AboutPage() {
                     <p className="section-eyebrow">Our History</p>
                     <h2 className="section-title">Two Decades of Progress</h2>
                     <p className="section-lead">
-                        Mandatory food fortification of selected staple food vehicles—including wheat flour, maize flour, sugar, and vegetable oil—commenced in Nigeria in 2002 as a core national strategy for combating micronutrient deficiencies. In 2004, the NFA was formally established under the chairmanship of the then National Planning Commission to mobilize stakeholders for coordinated implementation.
+                        {about?.history_intro || 'Mandatory food fortification of selected staple food vehicles—including wheat flour, maize flour, sugar, and vegetable oil—commenced in Nigeria in 2002 as a core national strategy for combating micronutrient deficiencies. In 2004, the NFA was formally established under the chairmanship of the then National Planning Commission to mobilize stakeholders for coordinated implementation.'}
                     </p>
                     <div className="timeline">
-                        {TIMELINE.map((t) => (
-                            <div key={t.year} className="timeline-item">
+                        {timeline.map((t) => (
+                            <div key={t.id} className="timeline-item">
                                 <div className="timeline-year">{t.year}</div>
                                 <div className="timeline-event">{t.event}</div>
                             </div>
