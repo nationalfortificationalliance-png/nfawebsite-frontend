@@ -136,7 +136,7 @@ export default async function NewsDetailPage({ params }: Props) {
 
             <style>{`
         .article-hero {
-          background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-primary) 100%);
+          background: linear-gradient(135deg, var(--wfp-green-dark, #006639) 0%, var(--wfp-navy, #064e3b) 100%);
           padding: 3.5rem 0 5rem;
           color: white;
         }
@@ -159,7 +159,7 @@ export default async function NewsDetailPage({ params }: Props) {
           font-size: 1.15rem;
           font-weight: 500;
           color: var(--color-gray-600);
-          border-left: 4px solid var(--color-primary);
+          border-left: 4px solid var(--wfp-green, #008751);
           padding-left: 1rem;
           margin-bottom: 2rem;
           line-height: 1.75;
@@ -173,7 +173,7 @@ export default async function NewsDetailPage({ params }: Props) {
           margin: 2.5rem 0 1rem; color: var(--color-navy);
           font-size: 1.2rem; font-weight: 700;
           padding-bottom: 0.5rem;
-          border-bottom: 2px solid var(--color-primary, #005249);
+          border-bottom: 2px solid var(--wfp-green, #008751);
           display: inline-block;
         }
         .article-richtext p { margin-bottom: 1.15rem; }
@@ -187,23 +187,23 @@ export default async function NewsDetailPage({ params }: Props) {
         .article-richtext ul li::before {
           content: ''; position: absolute; left: 0; top: 0.55rem;
           width: 8px; height: 8px; border-radius: 50%;
-          background: var(--color-primary, #005249);
+          background: var(--wfp-green, #008751);
         }
         .article-richtext ol {
           padding-left: 1.4rem; list-style: decimal;
         }
         .article-richtext ol li { margin-bottom: 0.65rem; padding-left: 0.3rem; }
-        .article-richtext a { color: var(--color-primary, #005249); text-decoration: underline; }
+        .article-richtext a { color: var(--wfp-green, #008751); text-decoration: underline; }
         .article-richtext blockquote {
           margin: 1.75rem 0; padding: 1.1rem 1.4rem;
           background: var(--bg-off, #f6f7f8);
-          border-left: 4px solid var(--color-primary, #005249);
+          border-left: 4px solid var(--wfp-green, #008751);
           border-radius: 8px;
           font-style: italic; color: var(--color-gray-700, #374151);
         }
         .article-back {
           display: inline-flex; align-items: center; gap: 0.4rem;
-          color: var(--color-primary); font-weight: 600;
+          color: var(--wfp-green, #008751); font-weight: 600;
           margin-bottom: 1.5rem; transition: gap 0.2s;
         }
         .article-back:hover { gap: 0.65rem; }
