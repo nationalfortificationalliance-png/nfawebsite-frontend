@@ -79,7 +79,7 @@ export async function generateStaticParams() {
 export const revalidate = 60;
 
 const CATEGORY_ICONS: Record<string, IconName> = {
-    news: 'newspaper', event: 'calendar', announcement: 'megaphone', report: 'bar-chart',
+    news: 'newspaper', event: 'calendar', communique: 'scroll-text', report: 'bar-chart',
 };
 
 export default async function NewsDetailPage({ params }: Props) {
@@ -93,10 +93,11 @@ export default async function NewsDetailPage({ params }: Props) {
 
     if (!article) notFound();
 
-    const { title, excerpt, body, date, image, gallery, category, publishedAt } = article;
+    const { title, excerpt, body, date, image, gallery, file, category, publishedAt } = article;
     const imageUrl = getStrapiMediaUrl(image?.url);
     const hasImage = !!image?.url;
     const hasGallery = gallery && gallery.length > 0;
+    const fileUrl = file?.url ? getStrapiMediaUrl(file.url) : null;
 
     const formattedDate = new Date(date).toLocaleDateString('en-GB', {
         day: 'numeric', month: 'long', year: 'numeric',
@@ -208,6 +209,14 @@ export default async function NewsDetailPage({ params }: Props) {
           margin-bottom: 1.5rem; transition: gap 0.2s;
         }
         .article-back:hover { gap: 0.65rem; }
+        .article-download {
+          display: inline-flex; align-items: center; gap: 0.5rem;
+          background: var(--wfp-green, #008751); color: white;
+          font-weight: 600; padding: 0.65rem 1.25rem;
+          border-radius: 8px; margin-bottom: 2rem;
+          transition: background 0.2s;
+        }
+        .article-download:hover { background: var(--wfp-green-dark, #006639); }
         .article-category-badge {
           display: inline-flex; align-items: center; gap: 0.35rem;
           background: rgba(255,255,255,0.2);
@@ -329,6 +338,11 @@ export default async function NewsDetailPage({ params }: Props) {
                 <div className="article-body-wrap">
                     <Link href="/news" className="article-back">← Back to News</Link>
                     {excerpt && <p className="article-excerpt">{excerpt}</p>}
+                    {fileUrl && (
+                        <a href={fileUrl} download className="article-download">
+                            <Icon name="file-text" size={16} /> Download {category === 'communique' ? 'Communiqué' : 'Document'} (PDF)
+                        </a>
+                    )}
                     <div
                         className="article-richtext"
                         dangerouslySetInnerHTML={{ __html: body }}

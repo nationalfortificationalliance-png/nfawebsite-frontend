@@ -72,7 +72,8 @@ export interface NewsEvent {
     date: string;
     image: StrapiImage;
     gallery?: StrapiImage[];
-    category: 'news' | 'event' | 'announcement' | 'report';
+    file?: StrapiImage;
+    category: 'news' | 'event' | 'communique' | 'report';
     is_featured: boolean;
     tags?: string;
     publishedAt: string;
@@ -213,6 +214,7 @@ export async function getAllNews(page = 1, pageSize = 12): Promise<{ data: NewsE
         'sort': 'date:desc',
         'populate[0]': 'image',
         'populate[1]': 'gallery',
+        'populate[2]': 'file',
         'pagination[page]': String(page),
         'pagination[pageSize]': String(pageSize),
     });
@@ -225,6 +227,7 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
         'sort': 'date:desc',
         'populate[0]': 'image',
         'populate[1]': 'gallery',
+        'populate[2]': 'file',
         'pagination[pageSize]': '6',
     });
 
@@ -236,6 +239,7 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
         'sort': 'date:desc',
         'populate[0]': 'image',
         'populate[1]': 'gallery',
+        'populate[2]': 'file',
         'pagination[pageSize]': '6',
     });
 
@@ -247,6 +251,7 @@ export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
         'filters[slug][$eq]': slug,
         'populate[0]': 'image',
         'populate[1]': 'gallery',
+        'populate[2]': 'file',
     });
     return res?.data?.[0] || null;
 }
@@ -255,6 +260,7 @@ export async function getUpcomingEvents(pageSize = 6): Promise<NewsEvent[]> {
     const res = await fetchAPI<{ data: NewsEvent[] }>('/news-events/upcoming', {
         'populate[0]': 'image',
         'populate[1]': 'gallery',
+        'populate[2]': 'file',
         'pagination[pageSize]': String(pageSize),
     });
     return res?.data || [];
@@ -264,6 +270,7 @@ export async function getPastEvents(page = 1, pageSize = 12): Promise<{ data: Ne
     const res = await fetchAPI<{ data: NewsEvent[]; meta: { pagination: { total: number } } }>('/news-events/past', {
         'populate[0]': 'image',
         'populate[1]': 'gallery',
+        'populate[2]': 'file',
         'pagination[page]': String(page),
         'pagination[pageSize]': String(pageSize),
     });
@@ -276,6 +283,7 @@ export async function getNewsByCategory(category: string, page = 1, pageSize = 1
         'sort': 'date:desc',
         'populate[0]': 'image',
         'populate[1]': 'gallery',
+        'populate[2]': 'file',
         'pagination[page]': String(page),
         'pagination[pageSize]': String(pageSize),
     });

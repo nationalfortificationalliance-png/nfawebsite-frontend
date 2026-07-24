@@ -20,7 +20,7 @@ export default async function NewsPage() {
     const news = isMock ? MOCK_NEWS : dbNews;
     const total = isMock ? MOCK_NEWS.length : dbTotal;
 
-    const categories = ['news', 'event', 'announcement', 'report'];
+    const categories = ['news', 'event', 'communique', 'report'];
 
     return (
         <>
@@ -123,7 +123,7 @@ export default async function NewsPage() {
                         <span>News & Events</span>
                     </div>
                     <h1>News & Events</h1>
-                    <p>Stay updated on the National Fortification Alliance — news, events, reports, and announcements.</p>
+                    <p>Stay updated on the National Fortification Alliance — news, events, reports, and communiqués.</p>
                 </div>
             </div>
 

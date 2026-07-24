@@ -10,20 +10,20 @@ interface NewsCardProps { article: NewsEvent; }
 const CATEGORY_BADGE: Record<string, [string, string]> = {
   news: ['bg-blue-50 text-blue-700', 'News'],
   event: ['bg-green-50 text-green-700', 'Event'],
-  announcement: ['bg-amber-50 text-amber-700', 'Announcement'],
+  communique: ['bg-amber-50 text-amber-700', 'Communiqué'],
   report: ['bg-purple-50 text-purple-700', 'Report'],
 };
 
 const PLACEHOLDER_IMAGES: Record<string, string> = {
   news: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&h=420&fit=crop&q=75&auto=format',
   event: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=640&h=420&fit=crop&q=75&auto=format',
-  announcement: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=640&h=420&fit=crop&q=75&auto=format',
+  communique: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=640&h=420&fit=crop&q=75&auto=format',
   report: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=420&fit=crop&q=75&auto=format',
 };
 
 export default function NewsCard({ article }: NewsCardProps) {
   const locale = useLocale();
-  const { title, excerpt, date, image, category, slug, is_featured } = article;
+  const { title, excerpt, date, image, category, slug, is_featured, file } = article;
   const imgSrc = image?.url
     ? getStrapiMediaUrl(image.url)
     : (PLACEHOLDER_IMAGES[category] ?? PLACEHOLDER_IMAGES.news);
@@ -118,31 +118,50 @@ export default function NewsCard({ article }: NewsCardProps) {
           transition: gap var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
         }
         .news-card:hover .news-card-link { gap: var(--md-sys-spacing-3); }
+        .news-card-actions { display: flex; gap: var(--md-sys-spacing-5); }
+        .news-card-download {
+          color: var(--md-sys-color-on-surface-variant);
+        }
       `}</style>
 
-      <Link href={newsUrl} className="card news-card">
-        <div className="news-card-img">
-          <Image
-            src={imgSrc}
-            alt={title}
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="(max-width:600px) 100vw, (max-width:900px) 50vw, 33vw"
-            unoptimized={!hasStrapi}
-          />
-          <div className="news-card-img-overlay" />
-          {is_featured && <span className="news-card-featured-tag">Featured</span>}
-        </div>
+      <div className="card news-card">
+        <Link href={newsUrl}>
+          <div className="news-card-img">
+            <Image
+              src={imgSrc}
+              alt={title}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width:600px) 100vw, (max-width:900px) 50vw, 33vw"
+              unoptimized={!hasStrapi}
+            />
+            <div className="news-card-img-overlay" />
+            {is_featured && <span className="news-card-featured-tag">Featured</span>}
+          </div>
+        </Link>
         <div className="news-card-body">
           <div className="news-card-meta">
             <span className={`news-card-badge ${badgeClass}`}>{badgeLabel}</span>
             <span className="news-card-date">{formattedDate}</span>
           </div>
-          <h3 className="news-card-title">{title}</h3>
+          <Link href={newsUrl}>
+            <h3 className="news-card-title">{title}</h3>
+          </Link>
           {excerpt && <p className="news-card-excerpt">{excerpt}</p>}
-          <span className="news-card-link">Read more →</span>
+          {category === 'communique' ? (
+            <div className="news-card-actions">
+              <Link href={newsUrl} className="news-card-link">View →</Link>
+              {file?.url && (
+                <a href={getStrapiMediaUrl(file.url)} download className="news-card-link news-card-download">
+                  Download
+                </a>
+              )}
+            </div>
+          ) : (
+            <Link href={newsUrl} className="news-card-link">Read more →</Link>
+          )}
         </div>
-      </Link>
+      </div>
     </>
   );
 }
