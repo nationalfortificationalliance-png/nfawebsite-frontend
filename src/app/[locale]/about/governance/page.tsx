@@ -466,100 +466,129 @@ export default async function GovernancePage() {
 
                 .reps-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-                    gap: 2rem;
-                    margin-top: 3rem;
+                    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+                    gap: 2.5rem;
+                    margin-top: 3.5rem;
                 }
                 .rep-card {
                     background: #fff;
                     border: 1px solid var(--border-light);
-                    border-radius: var(--radius-lg);
-                    padding: 2rem;
-                    box-shadow: var(--shadow-sm);
-                    transition: all 0.3s ease;
+                    border-radius: 28px;
+                    overflow: hidden;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+                    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
                 }
                 .rep-card:hover {
-                    box-shadow: var(--shadow-xl);
+                    transform: translateY(-6px);
+                    box-shadow: 0 24px 60px rgba(0,0,0,0.1);
                     border-color: var(--wfp-blue-light);
                 }
-                .rep-card-header {
-                    display: flex;
-                    align-items: center;
-                    gap: 1.25rem;
-                    margin-bottom: 1.5rem;
-                }
-                .rep-photo-wrap {
+                .rep-photo-cover {
                     position: relative;
-                    width: 88px;
-                    height: 88px;
-                    border-radius: 50%;
+                    height: 230px;
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.95) 0%, rgba(6, 78, 59, 0.9) 100%);
                     overflow: hidden;
-                    flex-shrink: 0;
-                    background: var(--bg-off);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: 2px solid var(--wfp-blue-light);
+                }
+                .rep-photo-cover::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.05) 55%, transparent 75%);
+                    z-index: 1;
                 }
                 .rep-photo-fallback {
-                    font-size: 1.5rem;
-                    font-weight: 800;
-                    color: var(--wfp-blue);
-                }
-                .rep-org-badge {
                     position: absolute;
-                    bottom: -4px;
-                    right: -4px;
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 50%;
-                    background: #fff;
-                    border: 1px solid var(--border-light);
+                    inset: 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 4px;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                    font-size: 4rem;
+                    font-weight: 900;
+                    color: rgba(255,255,255,0.22);
+                    letter-spacing: -0.02em;
                 }
-                .rep-name {
-                    font-size: 1.1rem;
+                .rep-org-chip {
+                    position: absolute;
+                    top: 1rem;
+                    right: 1rem;
+                    z-index: 2;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    background: rgba(255,255,255,0.95);
+                    backdrop-filter: blur(6px);
+                    border-radius: 999px;
+                    padding: 0.35rem 0.85rem 0.35rem 0.35rem;
+                    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+                }
+                .rep-org-chip.no-logo {
+                    padding: 0.4rem 0.9rem;
+                }
+                .rep-org-chip-logo {
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .rep-org-chip-text {
+                    font-size: 0.72rem;
                     font-weight: 800;
                     color: var(--wfp-navy);
-                    line-height: 1.3;
+                    letter-spacing: 0.01em;
+                    white-space: nowrap;
+                }
+                .rep-photo-text {
+                    position: absolute;
+                    left: 1.5rem;
+                    right: 1.5rem;
+                    bottom: 1.25rem;
+                    z-index: 2;
+                }
+                .rep-name {
+                    font-size: 1.3rem;
+                    font-weight: 800;
+                    color: #fff;
+                    line-height: 1.25;
                 }
                 .rep-title {
-                    font-size: 0.88rem;
-                    color: var(--wfp-blue);
-                    font-weight: 600;
-                    margin-top: 0.2rem;
+                    font-size: 0.85rem;
+                    color: rgba(255,255,255,0.85);
+                    font-weight: 500;
+                    margin-top: 0.3rem;
+                    line-height: 1.4;
                 }
-                .rep-org {
-                    font-size: 0.82rem;
-                    color: var(--text-muted);
-                    margin-top: 0.15rem;
+                .rep-card-body {
+                    padding: 1.75rem;
                 }
                 .rep-bio {
                     font-size: 0.92rem;
                     color: var(--text-secondary);
-                    line-height: 1.65;
-                    margin-bottom: 1.25rem;
+                    line-height: 1.7;
+                    margin-bottom: 1.5rem;
                 }
                 .rep-org-profile {
                     border-top: 1px solid var(--border-light);
                     padding-top: 1.25rem;
                 }
                 .rep-org-profile-label {
-                    font-size: 0.75rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.72rem;
                     font-weight: 800;
                     text-transform: uppercase;
-                    letter-spacing: 0.06em;
-                    color: var(--text-muted);
-                    margin-bottom: 0.5rem;
+                    letter-spacing: 0.08em;
+                    color: var(--wfp-blue);
+                    margin-bottom: 0.6rem;
                 }
                 .rep-org-profile-text {
-                    font-size: 0.88rem;
+                    font-size: 0.87rem;
                     color: var(--text-secondary);
-                    line-height: 1.6;
+                    line-height: 1.65;
                 }
             `}</style>
 
@@ -608,38 +637,40 @@ export default async function GovernancePage() {
                                     .slice(0, 2);
                                 return (
                                     <div key={rep.id} className="rep-card">
-                                        <div className="rep-card-header">
-                                            <div className="rep-photo-wrap">
-                                                {rep.photo ? (
-                                                    <Image
-                                                        src={getStrapiMediaUrl(rep.photo.url)}
-                                                        alt={rep.name}
-                                                        fill
-                                                        sizes="88px"
-                                                        style={{ objectFit: 'cover' }}
-                                                    />
-                                                ) : (
-                                                    <span className="rep-photo-fallback">{initials}</span>
-                                                )}
+                                        <div className="rep-photo-cover">
+                                            {rep.photo ? (
+                                                <Image
+                                                    src={getStrapiMediaUrl(rep.photo.url)}
+                                                    alt={rep.name}
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, 400px"
+                                                    style={{ objectFit: 'cover' }}
+                                                />
+                                            ) : (
+                                                <span className="rep-photo-fallback">{initials}</span>
+                                            )}
+                                            <div className={`rep-org-chip${orgLogo ? '' : ' no-logo'}`}>
                                                 {orgLogo && (
-                                                    <div className="rep-org-badge">
-                                                        <Image src={orgLogo} alt="" width={22} height={22} style={{ objectFit: 'contain' }} />
-                                                    </div>
+                                                    <span className="rep-org-chip-logo">
+                                                        <Image src={orgLogo} alt="" width={16} height={16} style={{ objectFit: 'contain' }} />
+                                                    </span>
                                                 )}
+                                                <span className="rep-org-chip-text">{rep.organization_short_name || rep.organization_name}</span>
                                             </div>
-                                            <div>
+                                            <div className="rep-photo-text">
                                                 <div className="rep-name">{rep.name}</div>
                                                 <div className="rep-title">{rep.title}</div>
-                                                <div className="rep-org">{rep.organization_short_name || rep.organization_name}</div>
                                             </div>
                                         </div>
-                                        <p className="rep-bio">{rep.bio}</p>
-                                        {rep.organization_profile && (
-                                            <div className="rep-org-profile">
-                                                <div className="rep-org-profile-label">About {rep.organization_short_name || rep.organization_name}</div>
-                                                <p className="rep-org-profile-text">{rep.organization_profile}</p>
-                                            </div>
-                                        )}
+                                        <div className="rep-card-body">
+                                            <p className="rep-bio">{rep.bio}</p>
+                                            {rep.organization_profile && (
+                                                <div className="rep-org-profile">
+                                                    <div className="rep-org-profile-label">About {rep.organization_short_name || rep.organization_name}</div>
+                                                    <p className="rep-org-profile-text">{rep.organization_profile}</p>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 );
                             })}
