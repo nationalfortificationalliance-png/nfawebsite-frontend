@@ -59,7 +59,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
       documentId: 'fallback-4',
       title: 'Advancing Regulatory Compliance and Food Quality',
       subtitle: 'The Alliance supports coordinated monitoring, standards enforcement, laboratory strengthening, and digital compliance systems for fortified foods in Nigeria.',
-      link_url: '/guidelines',
+      link_url: 'https://nafdac.gov.ng/regulatory-resources/guidelines/',
       link_text: 'Regulatory Framework',
       order: 4, is_active: true, image: { id: 0, documentId: '', url: '' },
     },
@@ -388,12 +388,14 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
                       {slideData.link_text?.toUpperCase() || 'LEARN MORE'}
                     </Link>
                   )}
-                  <Link
-                    href="/guidelines"
+                  <a
+                    href="https://nafdac.gov.ng/regulatory-resources/guidelines/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hero-carousel-button secondary"
                   >
                     GUIDELINES
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

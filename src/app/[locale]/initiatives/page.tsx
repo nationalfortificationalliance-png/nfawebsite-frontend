@@ -388,7 +388,7 @@ export default function InitiativesPage() {
                         <p>Whether you are a processor, regulator, funder or technical partner, NFA offers pathways for joint action that strengthen nutrition outcomes and supply chain integrity.</p>
                         <div className="cta-actions">
                             <Link href="/contact" className="btn btn-primary btn-lg">Contact NFA</Link>
-                            <Link href="/guidelines" className="btn btn-outline btn-lg">Explore Guidelines</Link>
+                            <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Explore Guidelines</a>
                         </div>
                     </div>
                 </div>

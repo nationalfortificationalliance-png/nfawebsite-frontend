@@ -303,7 +303,7 @@ export default async function PartnersPage() {
                             <p>NFA welcomes new partners who share our commitment to eliminating malnutrition in Nigeria. We work with organizations across sectors to expand reach and deepen impact.</p>
                             <div style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                                 <Link href="/contact" className="btn btn-white btn-lg">Express Interest →</Link>
-                                <Link href="/guidelines" className="btn btn-outline-white btn-lg">View Partnership Guide</Link>
+                                <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline-white btn-lg">View Partnership Guide</a>
                             </div>
                         </div>
                         <div className="become-items">

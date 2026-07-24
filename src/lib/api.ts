@@ -78,17 +78,6 @@ export interface NewsEvent {
     publishedAt: string;
 }
 
-export interface GuidelineDocument {
-    id: number;
-    documentId: string;
-    title: string;
-    description?: string;
-    file: StrapiImage;
-    category: string;
-    published_date?: string;
-    is_featured: boolean;
-}
-
 export interface Partner {
     id: number;
     documentId: string;
@@ -255,15 +244,6 @@ export async function getNewsByCategory(category: string, page = 1, pageSize = 1
         'pagination[pageSize]': String(pageSize),
     });
     return { data: res?.data || [], total: res?.meta?.pagination?.total || 0 };
-}
-
-export async function getGuidelines(): Promise<GuidelineDocument[]> {
-    const res = await fetchAPI<{ data: GuidelineDocument[] }>('/guideline-documents', {
-        'sort': 'published_date:desc',
-        'populate': 'file',
-        'pagination[pageSize]': '50',
-    });
-    return res?.data || [];
 }
 
 export async function getPartners(): Promise<Partner[]> {
