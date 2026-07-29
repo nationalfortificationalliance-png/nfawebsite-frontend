@@ -523,6 +523,11 @@ export async function getAllInitiatives(): Promise<Initiative[]> {
     return res?.data || [];
 }
 
+export function isRecentlyUpdated(updatedAt: string | null | undefined, withinDays: number): boolean {
+    if (!updatedAt) return false;
+    return (Date.now() - new Date(updatedAt).getTime()) / 86_400_000 <= withinDays;
+}
+
 export interface IndustryChallenge {
     id: number;
     documentId: string;

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Icon, { IconName } from '@/components/Icon';
-import { getInitiatives } from '@/lib/api';
+import { getInitiatives, isRecentlyUpdated } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Initiatives & Priority Areas | National Fortification Alliance',
@@ -88,7 +88,6 @@ const RECENTLY_UPDATED_DAYS = 30;
 
 export default async function InitiativesPage() {
     const initiatives = await getInitiatives();
-    const now = Date.now();
     const displayInitiatives = initiatives.length > 0
         ? initiatives.map((initiative) => ({
             title: initiative.title,
@@ -96,9 +95,7 @@ export default async function InitiativesPage() {
             icon: (initiative.icon || 'trending-up') as IconName,
             description: initiative.description,
             bullets: (initiative.highlights || []).map((h) => h.text),
-            isRecentlyUpdated: initiative.updatedAt
-                ? (now - new Date(initiative.updatedAt).getTime()) / 86_400_000 <= RECENTLY_UPDATED_DAYS
-                : false,
+            isRecentlyUpdated: isRecentlyUpdated(initiative.updatedAt, RECENTLY_UPDATED_DAYS),
         }))
         : INITIATIVES_FALLBACK.map((initiative) => ({ ...initiative, slug: undefined, isRecentlyUpdated: false }));
 

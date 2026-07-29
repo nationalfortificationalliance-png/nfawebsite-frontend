@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Icon, { IconName } from '@/components/Icon';
-import { getInitiativeBySlug, getAllInitiatives, getStrapiMediaUrl } from '@/lib/api';
+import { getInitiativeBySlug, getAllInitiatives, getStrapiMediaUrl, isRecentlyUpdated } from '@/lib/api';
 import { generateSEOMetadata } from '@/components/SEO';
 import { locales } from '@/i18n';
 
@@ -54,9 +54,7 @@ export default async function InitiativeDetailPage({ params }: Props) {
     const { title, description, objectives, highlights, image, category, status } = initiative;
     const imageUrl = getStrapiMediaUrl(image?.url);
     const hasImage = !!image?.url;
-    const isRecentlyUpdated = initiative.updatedAt
-        ? (Date.now() - new Date(initiative.updatedAt).getTime()) / 86_400_000 <= RECENTLY_UPDATED_DAYS
-        : false;
+    const recentlyUpdated = isRecentlyUpdated(initiative.updatedAt, RECENTLY_UPDATED_DAYS);
 
     return (
         <>
@@ -136,7 +134,7 @@ export default async function InitiativeDetailPage({ params }: Props) {
                             <span className="initiative-badge"><Icon name={'trending-up' as IconName} size={14} /> {category}</span>
                         )}
                         {status && <span className="initiative-badge">{status}</span>}
-                        {isRecentlyUpdated && (
+                        {recentlyUpdated && (
                             <span className="initiative-badge updated">Recently updated</span>
                         )}
                     </div>
