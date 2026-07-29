@@ -4,6 +4,9 @@ import Link from 'next/link';
 import Icon from '@/components/Icon';
 import { getTeamMembers, getStrapiMediaUrl, type TeamMember } from '@/lib/api';
 
+const SECRETARIAT_EMAIL = 'secretariat@nationalfortificationalliance.org.ng';
+const SECRETARIAT_HERO_IMAGE = getStrapiMediaUrl('/uploads/6_B5_A4269_1_2_cbab97361b.jpg');
+
 export const metadata: Metadata = {
     title: 'NFA Secretariat | National Fortification Alliance Nigeria',
     description: 'Meet the dedicated team at the NFA Secretariat coordinating the National Fortification Alliance across Nigeria.',
@@ -29,7 +32,7 @@ const FALLBACK_SECRETARIAT: TeamMember[] = [
         id: 2,
         documentId: 'fallback-2',
         name: 'Mr. Abubakar Tanimu Umar',
-        role: 'Assistant Chief Regulatory Officer FSAN',
+        role: 'Assistant Chief Regulatory Officer/Program Officer',
         organization: 'NAFDAC',
         category: 'Secretariat',
         image: { id: 0, documentId: '', url: '/team-2.png' },
@@ -41,7 +44,7 @@ const FALLBACK_SECRETARIAT: TeamMember[] = [
         id: 3,
         documentId: 'fallback-3',
         name: 'Mrs. Joy Haanya',
-        role: 'Assistant Chief Regulatory Officer FSAN',
+        role: 'Assistant Chief Regulatory Officer/Program Officer',
         organization: 'NAFDAC',
         category: 'Secretariat',
         image: { id: 0, documentId: '', url: '/team-3.png' },
@@ -80,7 +83,7 @@ export default async function SecretariatPage() {
                     content: '';
                     position: absolute;
                     inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.84) 0%, rgba(6, 78, 59, 0.80) 100%);
                     z-index: 1;
                 }
                 .secretariat-hero-content {
@@ -190,11 +193,72 @@ export default async function SecretariatPage() {
                     text-decoration: underline;
                 }
 
-                .member-bio {
-                    font-size: 0.875rem;
-                    line-height: 1.6;
-                    color: var(--text-muted);
-                    margin-top: 1rem;
+                .member-contact-list {
+                    margin-top: auto;
+                    padding-top: 0.75rem;
+                }
+
+                .secretariat-intro {
+                    max-width: 820px;
+                    margin: 0 auto 1rem;
+                }
+
+                .secretariat-intro h2 {
+                    text-align: center;
+                    margin-bottom: 1.5rem;
+                }
+
+                .secretariat-intro p {
+                    color: var(--text-secondary);
+                    line-height: 1.8;
+                    margin-bottom: 1.25rem;
+                }
+
+                .functions-section {
+                    background: var(--bg-off);
+                    padding: 5rem 0;
+                }
+
+                .functions-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: 2rem;
+                }
+
+                .function-card {
+                    background: #fff;
+                    border: 1px solid var(--border-light);
+                    border-radius: var(--radius-lg);
+                    padding: 2rem;
+                }
+
+                .function-card h3 {
+                    font-size: 1.1rem;
+                    margin-bottom: 0.75rem;
+                    color: var(--text-primary);
+                }
+
+                .function-card p {
+                    font-size: 0.9rem;
+                    line-height: 1.7;
+                    color: var(--text-secondary);
+                }
+
+                .cta-section {
+                    background: linear-gradient(135deg, #005249 0%, #064e3b 100%);
+                    padding: 5rem 0;
+                }
+
+                .btn-outline-light {
+                    background: transparent;
+                    border: 1.5px solid rgba(255,255,255,0.6);
+                    color: #fff;
+                }
+
+                .btn-outline-light:hover {
+                    background: rgba(255,255,255,0.1);
+                    border-color: #fff;
+                    color: #fff;
                 }
 
                 .admin-note {
@@ -219,7 +283,7 @@ export default async function SecretariatPage() {
             <div className="secretariat-hero">
                 <div className="secretariat-hero-bg">
                     <Image
-                        src="/news_hero.jpg"
+                        src={SECRETARIAT_HERO_IMAGE}
                         alt="NFA Secretariat Team"
                         fill
                         sizes="100vw"
@@ -245,6 +309,29 @@ export default async function SecretariatPage() {
 
             <section className="section">
                 <div className="container">
+                    <div className="secretariat-intro">
+                        <h2>About the NFA Secretariat</h2>
+                        <p>
+                            The National Fortification Alliance (NFA) Secretariat serves as the operational and coordinating hub of the
+                            Alliance, providing the technical, administrative, and strategic support required to drive Nigeria&apos;s food
+                            fortification programme. Hosted by the National Agency for Food and Drug Administration and Control (NAFDAC),
+                            the Secretariat facilitates collaboration among government institutions, development partners, industry,
+                            academia, civil society organizations, and other stakeholders committed to improving national nutrition outcomes.
+                        </p>
+                        <p>
+                            Working under the guidance of the NFA Steering Committee and Governance, the Secretariat coordinates Alliance
+                            activities, convenes technical and governance meetings, supports policy implementation, monitors progress
+                            against agreed priorities, manages communications and knowledge resources, and promotes accountability across
+                            member institutions. It also serves as the primary point of contact for stakeholders seeking information,
+                            technical guidance, and partnership opportunities related to large-scale food fortification in Nigeria.
+                        </p>
+                        <p>
+                            Through effective coordination, evidence-based planning, and multi-sectoral engagement, the Secretariat ensures
+                            that the Alliance functions as a unified platform dedicated to reducing micronutrient deficiencies and improving
+                            the health and nutrition of all Nigerians.
+                        </p>
+                    </div>
+
                     {useFallback && (
                         <div className="admin-note">
                             <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -267,26 +354,31 @@ export default async function SecretariatPage() {
                                         alt={m.name}
                                         fill
                                         sizes="(max-width: 640px) 50vw, 280px"
-                                        style={{ objectFit: 'cover' }}
+                                        style={{ objectFit: 'cover', objectPosition: 'top' }}
                                     />
                                 </div>
                                 <div className="member-info">
                                     <div className="member-org">{m.organization || 'National Fortification Alliance'}</div>
                                     <h3 className="member-name">{m.name}</h3>
                                     <div className="member-role">{m.role}</div>
-                                    {m.phone && (
+                                    <div className="member-contact-list">
+                                        {m.phone && (
+                                            <div className="member-contact">
+                                                <Icon name="phone" size={14} aria-hidden="true" />
+                                                <a href={`tel:${m.phone}`}>{m.phone}</a>
+                                            </div>
+                                        )}
                                         <div className="member-contact">
-                                            <Icon name="phone" size={14} />
-                                            <a href={`tel:${m.phone}`}>{m.phone}</a>
+                                            <Icon name="mail" size={14} aria-hidden="true" />
+                                            <a href={`mailto:${SECRETARIAT_EMAIL}`}>{SECRETARIAT_EMAIL}</a>
                                         </div>
-                                    )}
-                                    {m.email && (
-                                        <div className="member-contact">
-                                            <Icon name="mail" size={14} />
-                                            <a href={`mailto:${m.email}`}>{m.email}</a>
-                                        </div>
-                                    )}
-                                    {m.bio && <p className="member-bio">{m.bio}</p>}
+                                        {m.email && (
+                                            <div className="member-contact">
+                                                <Icon name="mail" size={14} aria-hidden="true" />
+                                                <a href={`mailto:${m.email}`}>{m.email}</a>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             );
@@ -295,15 +387,112 @@ export default async function SecretariatPage() {
                 </div>
             </section>
 
-            {/* Support section */}
+            <div className="functions-section">
+                <div className="container">
+                    <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>Core Functions of the Secretariat</h2>
+                    <p style={{ maxWidth: '800px', margin: '0 auto 3rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                        The National Fortification Alliance (NFA) Secretariat serves as the central coordinating body responsible for
+                        ensuring the effective functioning of the Alliance. It provides the administrative, technical, and operational
+                        support required to facilitate collaboration among member institutions, coordinate national food fortification
+                        activities, and monitor the implementation of the Alliance&apos;s strategic priorities.
+                    </p>
+                    <div className="functions-grid">
+                        <div className="function-card">
+                            <h3>Coordinating Alliance Meetings</h3>
+                            <p>
+                                The Secretariat plans, organizes, and coordinates meetings of the National Fortification Alliance, the
+                                Steering Committee, technical working groups, and other stakeholder engagements. It prepares meeting
+                                agendas, facilitates deliberations, records proceedings, and follows up on agreed action points to ensure
+                                timely implementation.
+                            </p>
+                        </div>
+                        <div className="function-card">
+                            <h3>Providing Technical and Administrative Support</h3>
+                            <p>
+                                The Secretariat provides continuous technical and administrative support to the Alliance by coordinating
+                                programmes, supporting committee activities, managing official correspondence, preparing technical
+                                documents, and facilitating collaboration among member institutions and development partners.
+                            </p>
+                        </div>
+                        <div className="function-card">
+                            <h3>Managing Stakeholder Communication</h3>
+                            <p>
+                                The Secretariat serves as the primary communication hub for the Alliance, maintaining regular engagement
+                                with government ministries, regulatory agencies, industry associations, development partners, academia,
+                                civil society organizations, and other stakeholders. It supports information sharing, public awareness
+                                initiatives, and dissemination of technical guidance and official communications.
+                            </p>
+                        </div>
+                        <div className="function-card">
+                            <h3>Monitoring Implementation of Alliance Decisions</h3>
+                            <p>
+                                The Secretariat tracks the implementation of resolutions, recommendations, and action plans approved by
+                                the Alliance and its committees. It monitors progress across member institutions, facilitates follow-up
+                                activities, and provides periodic updates to support accountability and continuous programme improvement.
+                            </p>
+                        </div>
+                        <div className="function-card">
+                            <h3>Maintaining Records and Documentation</h3>
+                            <p>
+                                The Secretariat is responsible for preserving institutional memory through the maintenance of meeting
+                                minutes, communiqués, policy documents, technical reports, guidelines, correspondence, and other official
+                                records. It ensures that documentation is organized, accessible, and available to support decision-making
+                                and knowledge management.
+                            </p>
+                        </div>
+                        <div className="function-card">
+                            <h3>Supporting Policy Implementation and Reporting</h3>
+                            <p>
+                                The Secretariat supports the implementation of national food fortification policies, standards,
+                                regulations, and strategic initiatives by coordinating reporting activities, compiling programme data,
+                                preparing progress reports, and providing evidence to inform policy review, programme evaluation, and
+                                strategic decision-making.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Mission section */}
             <div style={{ background: 'var(--bg-off)', padding: '5rem 0' }}>
                 <div className="container" style={{ textAlign: 'center' }}>
-                    <h2 style={{ marginBottom: '1rem' }}>Our Mission</h2>
-                    <p style={{ maxWidth: '800px', margin: '0 auto 2.5rem', color: 'var(--text-secondary)' }}>
-                        The Secretariat provides technical, administrative, and strategic support to the National Fortification Alliance, 
-                        ensuring that every decision translates into measurable improved nutrition for the Nigerian people.
+                    <h2 style={{ marginBottom: '1rem' }}>Our Role and Mission</h2>
+                    <div style={{ maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', textAlign: 'left' }}>
+                        <p style={{ marginBottom: '1.25rem' }}>
+                            The National Fortification Alliance (NFA) Secretariat is committed to providing the administrative, technical,
+                            and strategic support required for the effective coordination and implementation of Nigeria&apos;s national food
+                            fortification programme. As the operational arm of the Alliance, the Secretariat works to ensure that decisions
+                            of the Steering Committee are translated into coordinated actions that strengthen food fortification across the
+                            country.
+                        </p>
+                        <p>
+                            The Secretariat facilitates technical coordination among government institutions, development partners,
+                            industry, academia, and civil society organizations, promoting collaboration and alignment toward shared
+                            nutrition objectives. It coordinates meetings of the Alliance and its technical committees, supports programme
+                            planning and implementation, manages stakeholder communications, and provides monitoring and reporting support
+                            to track progress, document achievements, and inform evidence-based decision-making.
+                        </p>
+                        <p style={{ marginTop: '1.25rem' }}>
+                            Through effective coordination, transparent communication, and strong institutional partnerships, the
+                            Secretariat contributes to the sustainable delivery of large-scale food fortification initiatives that improve
+                            micronutrient intake, protect public health, and advance nutrition outcomes for all Nigerians.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Closing call-to-action */}
+            <div className="cta-section">
+                <div className="container" style={{ textAlign: 'center' }}>
+                    <h2 style={{ color: '#fff', marginBottom: '1rem' }}>Work With the Secretariat</h2>
+                    <p style={{ maxWidth: '640px', margin: '0 auto 2rem', color: 'rgba(255,255,255,0.9)' }}>
+                        Have a question, a partnership idea, or need technical guidance on food fortification in Nigeria? Reach out to
+                        the Secretariat directly.
                     </p>
-                    <Link href="/contact" className="btn btn-primary">Work With Us</Link>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <Link href="/contact" className="btn btn-primary">Contact the Secretariat</Link>
+                        <Link href="/resources" className="btn btn-outline-light">Access Secretariat Resources</Link>
+                    </div>
                 </div>
             </div>
         </main>
