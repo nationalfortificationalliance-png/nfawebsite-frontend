@@ -54,10 +54,15 @@ export default async function GovernancePage() {
     return (
         <main className="governance-page">
             <style>{`
+                /* Reduce default section padding on this content-dense page */
+                .governance-page .section {
+                    padding: 3.5rem 0;
+                }
+
                 /* Hero with Image */
                 .gov-hero {
                     position: relative;
-                    min-height: 420px;
+                    min-height: 340px;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
@@ -77,12 +82,12 @@ export default async function GovernancePage() {
                 .gov-hero-content {
                     position: relative;
                     z-index: 2;
-                    padding: 5rem 0 4rem;
+                    padding: 3.5rem 0 2.75rem;
                 }
                 .gov-hero h1 {
                     color: #fff;
                     max-width: 720px;
-                    margin-bottom: 1rem;
+                    margin-bottom: 0.75rem;
                 }
                 .gov-hero p {
                     color: rgba(255,255,255,0.95);
@@ -91,7 +96,7 @@ export default async function GovernancePage() {
                     line-height: 1.7;
                 }
                 .gov-hero .breadcrumb {
-                    margin-bottom: 2rem;
+                    margin-bottom: 1.25rem;
                 }
                 .gov-hero .breadcrumb a,
                 .gov-hero .breadcrumb span {
@@ -104,14 +109,14 @@ export default async function GovernancePage() {
                 .overview-grid {
                     display: grid;
                     grid-template-columns: repeat(4, 1fr);
-                    gap: 2rem;
-                    margin-top: 3rem;
+                    gap: 1.5rem;
+                    margin-top: 2rem;
                 }
                 .overview-card {
                     background: #fff;
                     border: 1px solid var(--border-light);
                     border-radius: var(--radius-md);
-                    padding: 1.75rem;
+                    padding: 1.5rem;
                     text-align: center;
                 }
                 .overview-card-icon {
@@ -132,7 +137,7 @@ export default async function GovernancePage() {
                     display: flex;
                     align-items: center;
                     gap: 1.25rem;
-                    margin-top: 3rem;
+                    margin-top: 2rem;
                 }
                 .monitor-arrow {
                     color: var(--wfp-gold);
@@ -143,7 +148,7 @@ export default async function GovernancePage() {
                 .monitor-card {
                     flex: 1;
                     background: #fff;
-                    padding: 3rem 2rem;
+                    padding: 2.25rem 1.75rem;
                     border-radius: 32px;
                     text-align: center;
                     border: 1px solid var(--border-light);
@@ -154,9 +159,9 @@ export default async function GovernancePage() {
                     box-shadow: var(--shadow-xl);
                 }
                 .monitor-icon-box {
-                    width: 80px;
-                    height: 80px;
-                    margin: 0 auto 2rem;
+                    width: 72px;
+                    height: 72px;
+                    margin: 0 auto 1.25rem;
                     border-radius: 20px;
                     display: flex;
                     align-items: center;
@@ -168,7 +173,7 @@ export default async function GovernancePage() {
                 .monitor-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
 
                 .membership-section {
-                    margin-top: 4rem;
+                    margin-top: 0;
                 }
                 .membership-grid {
                     display: grid;
@@ -237,10 +242,13 @@ export default async function GovernancePage() {
                     display: grid;
                     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
                     gap: 1.75rem;
-                    margin-top: 3.5rem;
-                    align-items: start;
+                    margin-top: 2.25rem;
+                    align-items: stretch;
                 }
                 .rep-card {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
                     background: #fff;
                     border: 1px solid var(--border-light);
                     border-radius: 24px;
@@ -343,7 +351,8 @@ export default async function GovernancePage() {
                     font-style: italic;
                 }
                 .rep-accordion {
-                    margin-top: 1.25rem;
+                    margin-top: auto;
+                    padding-top: 1.25rem;
                     text-align: left;
                 }
                 .rep-collapsible {
