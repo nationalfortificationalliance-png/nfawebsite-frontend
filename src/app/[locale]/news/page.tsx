@@ -44,7 +44,7 @@ export default async function NewsPage() {
         /* Hero with Image */
         .news-hero {
           position: relative;
-          min-height: 420px;
+          min-height: 340px;
           display: flex;
           align-items: center;
           overflow: hidden;
@@ -64,7 +64,7 @@ export default async function NewsPage() {
         .news-hero-content {
           position: relative;
           z-index: 2;
-          padding: 5rem 0 4rem;
+          padding: 3.5rem 0 2.75rem;
         }
         .news-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
         .news-hero p { color: rgba(255,255,255,0.95); max-width: 720px; font-size: 1.15rem; line-height: 1.7; }

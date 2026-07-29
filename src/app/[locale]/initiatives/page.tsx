@@ -88,7 +88,7 @@ export default function InitiativesPage() {
                 /* Hero with Image - consistent with other pages */
                 .initiatives-hero {
                     position: relative;
-                    min-height: 420px;
+                    min-height: 340px;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
@@ -108,7 +108,7 @@ export default function InitiativesPage() {
                 .initiatives-hero-content {
                     position: relative;
                     z-index: 2;
-                    padding: 5rem 0 4rem;
+                    padding: 3.5rem 0 2.75rem;
                 }
                 .initiatives-hero h1 {
                     color: #fff;

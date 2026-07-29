@@ -82,7 +82,7 @@ export default async function FAQPage() {
                 /* Hero with Image */
                 .faq-hero {
                     position: relative;
-                    min-height: 420px;
+                    min-height: 340px;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
@@ -102,7 +102,7 @@ export default async function FAQPage() {
                 .faq-hero-content {
                     position: relative;
                     z-index: 2;
-                    padding: 5rem 0 4rem;
+                    padding: 3.5rem 0 2.75rem;
                 }
                 .faq-hero h1 {
                     color: #fff;

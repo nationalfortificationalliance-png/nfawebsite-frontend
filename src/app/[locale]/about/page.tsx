@@ -66,7 +66,7 @@ export default async function AboutPage() {
         /* Image Hero - matches News & Events hero style */
         .about-hero {
           position: relative;
-          min-height: 420px;
+          min-height: 340px;
           display: flex;
           align-items: center;
           overflow: hidden;
@@ -85,7 +85,7 @@ export default async function AboutPage() {
         .about-hero-content {
           position: relative;
           z-index: 2;
-          padding: 5rem 0 4rem;
+          padding: 3.5rem 0 2.75rem;
         }
         .about-hero h1 {
           color: #fff;
@@ -206,7 +206,7 @@ export default async function AboutPage() {
             </section>
 
             {/* ── Background / History ── */}
-            <section className="section" style={{ background: 'var(--bg-off)', paddingBottom: '3rem' }}>
+            <section className="section" style={{ background: 'var(--bg-off)', paddingBottom: '2rem' }}>
                 <div className="container">
                     <p className="section-eyebrow">Our History</p>
                     <h2 className="section-title">Two Decades of Progress</h2>

@@ -66,7 +66,7 @@ export default async function SecretariatPage() {
                 /* Hero with Image */
                 .secretariat-hero {
                     position: relative;
-                    min-height: 420px;
+                    min-height: 340px;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
@@ -86,7 +86,7 @@ export default async function SecretariatPage() {
                 .secretariat-hero-content {
                     position: relative;
                     z-index: 2;
-                    padding: 5rem 0 4rem;
+                    padding: 3.5rem 0 2.75rem;
                 }
                 .secretariat-hero h1 {
                     color: #fff;

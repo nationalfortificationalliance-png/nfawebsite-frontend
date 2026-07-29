@@ -54,11 +54,6 @@ export default async function GovernancePage() {
     return (
         <main className="governance-page">
             <style>{`
-                /* Reduce default section padding on this content-dense page */
-                .governance-page .section {
-                    padding: 3.5rem 0;
-                }
-
                 /* Hero with Image */
                 .gov-hero {
                     position: relative;

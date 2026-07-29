@@ -60,7 +60,7 @@ export default async function ResourcesPage() {
             <style>{`
                 .res-hero {
                     position: relative;
-                    min-height: 380px;
+                    min-height: 340px;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
@@ -69,7 +69,7 @@ export default async function ResourcesPage() {
                 .res-hero-content {
                     position: relative;
                     z-index: 2;
-                    padding: 4.5rem 0 3.5rem;
+                    padding: 3.5rem 0 2.75rem;
                 }
                 .res-hero .breadcrumb { justify-content: flex-start; margin-bottom: 1.5rem; }
                 .res-hero .breadcrumb a, .res-hero .breadcrumb span { color: rgba(255,255,255,0.8); }

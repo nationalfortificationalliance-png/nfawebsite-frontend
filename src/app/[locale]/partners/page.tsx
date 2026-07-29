@@ -140,7 +140,7 @@ export default async function PartnersPage() {
         /* Hero with Image - consistent with other pages */
         .partners-hero {
           position: relative;
-          min-height: 420px;
+          min-height: 340px;
           display: flex;
           align-items: center;
           overflow: hidden;
@@ -160,7 +160,7 @@ export default async function PartnersPage() {
         .partners-hero-content {
           position: relative;
           z-index: 2;
-          padding: 5rem 0 4rem;
+          padding: 3.5rem 0 2.75rem;
         }
         .partners-hero h1 {
           color: #fff;
@@ -206,7 +206,7 @@ export default async function PartnersPage() {
         .partner-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
 
         /* Become a partner */
-        .become-section { background: var(--wfp-blue); padding: 5rem 0; }
+        .become-section { background: var(--wfp-blue); padding: 3.5rem 0; }
         .become-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
         .become-section h2 { color: #fff; }
         .become-section p { color: rgba(255,255,255,.75); font-size: 1rem; line-height: 1.75; margin-top: 0.75rem; }
