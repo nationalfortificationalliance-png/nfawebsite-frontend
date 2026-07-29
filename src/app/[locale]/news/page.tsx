@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Icon from '@/components/Icon';
 import NewsFilter from '@/components/NewsFilter';
-import { getAllNews, getMeetingSchedule, MeetingSchedule } from '@/lib/api';
+import { getAllNews, getMeetingSchedule, getComplianceReports, MeetingSchedule, ComplianceReport } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 
 export const metadata: Metadata = {
@@ -19,6 +19,10 @@ const MEETINGS_FALLBACK: MeetingSchedule[] = [
     { id: 3, documentId: '3', year: '2028', june_host: 'FMoHSW', december_host: 'NAFDAC', order: 3 },
 ];
 
+const COMPLIANCE_REPORTS_FALLBACK: ComplianceReport[] = [
+    { id: 1, documentId: '1', year: '2024', national_compliance: '57%', salt_compliance: '67%', veg_oil_compliance: '58%', flour_compliance: '48%', source: 'NAFDAC Compliance Monitoring Report', order: 1 },
+];
+
 export default async function NewsPage() {
     const { data: dbNews, total: dbTotal } = await getAllNews(1, 12);
 
@@ -30,6 +34,9 @@ export default async function NewsPage() {
 
     const meetingScheduleData = await getMeetingSchedule();
     const meetings = meetingScheduleData.length ? meetingScheduleData : MEETINGS_FALLBACK;
+
+    const complianceReportsData = await getComplianceReports();
+    const complianceReports = complianceReportsData.length ? complianceReportsData : COMPLIANCE_REPORTS_FALLBACK;
 
     return (
         <>
@@ -203,6 +210,69 @@ export default async function NewsPage() {
           padding: 0.3rem 0.85rem;
           border-radius: 999px;
         }
+
+        /* Compliance Reports */
+        .compliance-reports-section {
+          background: #fff;
+          padding: 4rem 0;
+          border-bottom: 1px solid var(--border-light);
+        }
+        .compliance-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1.5rem;
+          margin-top: 2.5rem;
+        }
+        .compliance-card {
+          flex: 1;
+          min-width: 260px;
+          background: var(--bg-off);
+          border: 1px solid var(--border-light);
+          border-radius: 16px;
+          padding: 1.75rem;
+          border-top: 3px solid var(--wfp-blue);
+        }
+        .compliance-year {
+          font-size: 1.4rem;
+          font-weight: 900;
+          color: var(--wfp-navy);
+          margin-bottom: 1rem;
+        }
+        .compliance-headline {
+          font-size: 2rem;
+          font-weight: 800;
+          color: var(--wfp-blue);
+          margin-bottom: 0.25rem;
+        }
+        .compliance-headline-label {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          margin-bottom: 1.25rem;
+        }
+        .compliance-sub-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.5rem 0;
+          font-size: 0.85rem;
+        }
+        .compliance-sub-row + .compliance-sub-row {
+          border-top: 1px solid var(--border-light);
+        }
+        .compliance-sub-label {
+          color: var(--text-muted);
+          font-weight: 600;
+        }
+        .compliance-sub-val {
+          font-weight: 700;
+          color: var(--wfp-navy);
+        }
+        .compliance-source {
+          font-size: 0.72rem;
+          color: var(--text-muted);
+          margin-top: 1rem;
+          font-style: italic;
+        }
       `}</style>
 
             {/* Hero with Background */}
@@ -254,6 +324,45 @@ export default async function NewsPage() {
                                     <span className="timeline-host-label">December Host</span>
                                     <span className="timeline-host-pill">{m.december_host}</span>
                                 </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Compliance Reports */}
+            <section className="compliance-reports-section">
+                <div className="container">
+                    <p className="section-eyebrow">Reports</p>
+                    <h2 style={{ marginBottom: '0.5rem' }}>Fortification Compliance Reports</h2>
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '640px' }}>
+                        Annual compliance figures for mandatory fortification vehicles across Nigeria, updated year by year.
+                    </p>
+                    <div className="compliance-grid">
+                        {complianceReports.map((r) => (
+                            <div className="compliance-card" key={r.id}>
+                                <div className="compliance-year">{r.year}</div>
+                                <div className="compliance-headline">{r.national_compliance}</div>
+                                <div className="compliance-headline-label">National Compliance</div>
+                                {r.salt_compliance && (
+                                    <div className="compliance-sub-row">
+                                        <span className="compliance-sub-label">Salt (Iodized)</span>
+                                        <span className="compliance-sub-val">{r.salt_compliance}</span>
+                                    </div>
+                                )}
+                                {r.veg_oil_compliance && (
+                                    <div className="compliance-sub-row">
+                                        <span className="compliance-sub-label">Veg Oil (Vit A)</span>
+                                        <span className="compliance-sub-val">{r.veg_oil_compliance}</span>
+                                    </div>
+                                )}
+                                {r.flour_compliance && (
+                                    <div className="compliance-sub-row">
+                                        <span className="compliance-sub-label">Flour (Vit A)</span>
+                                        <span className="compliance-sub-val">{r.flour_compliance}</span>
+                                    </div>
+                                )}
+                                {r.source && <div className="compliance-source">Source: {r.source}</div>}
                             </div>
                         ))}
                     </div>

@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon, { IconName } from '@/components/Icon';
-import { getAboutPage, getStrapiMediaUrl, AboutChallengeStat, AboutKeyStat, AboutTimelineItem } from '@/lib/api';
+import { getAboutPage, getStats, getStrapiMediaUrl, getGlobalSettings, AboutTimelineItem } from '@/lib/api';
+import { AnimatedStats } from '@/components/HomePageClient';
 
 export const metadata: Metadata = {
     title: 'About the National Fortification Alliance',
@@ -18,71 +19,46 @@ const TIMELINE_FALLBACK: AboutTimelineItem[] = [
     { id: 5, year: '2024', event: 'Over 200 processors certified across 36 states, reaching 12M+ consumers. NFA achieves 68% household coverage of fortified staple foods.' },
 ];
 
-const CHALLENGE_STATS_FALLBACK: AboutChallengeStat[] = [
-    { id: 1, value: '37%', label: 'Child Stunting Rate', description: '37% of children under 5 are stunted — one of the highest rates in sub-Saharan Africa.' },
-    { id: 2, value: '30%', label: 'Vitamin A Deficiency', description: 'Nearly 1 in 3 children are Vitamin A deficient, risking blindness, immune weakness, and developmental impact.' },
-    { id: 3, value: '72%', label: 'Women with Anaemia', description: '72% of women of reproductive age are anaemic, primarily due to iron deficiency — with serious maternal and infant health consequences.' },
+const STATS_FALLBACK: { number: string; label: string; icon: IconName }[] = [
+    { number: '37%', label: 'Child Stunting Rate', icon: 'shield' },
+    { number: '30%', label: 'Vitamin A Deficiency in Children', icon: 'heart-handshake' },
+    { number: '60-70%', label: 'Anaemia in Women of Reproductive Age', icon: 'activity' },
+    { number: '95%', label: 'Calcium Inadequacy in Non-Pregnant Women', icon: 'trending-up' },
 ];
 
-const KEY_STATS_FALLBACK: AboutKeyStat[] = [
-    {
-        id: 1, value: '2002', title: 'Programme Initiation', accent_color: 'none',
-        description: 'The year Nigeria\'s mandatory food fortification programme was officially launched.',
-        sub_stats: [{ id: 1, label: 'NFA Established', value: '2004' }],
-    },
-    {
-        id: 2, value: '57%', title: 'National Compliance', accent_color: 'blue',
-        description: 'Average compliance across all mandatory food vehicles in Nigeria.',
-        sub_stats: [
-            { id: 2, label: 'Salt (Iodized)', value: '67%' },
-            { id: 3, label: 'Veg Oil (Vit A)', value: '58%' },
-            { id: 4, label: 'Flour (Vit A)', value: '48%' },
-        ],
-    },
-    {
-        id: 3, value: '37%', title: 'Child Stunting', accent_color: 'gold',
-        description: 'Prevalence of stunting among children under five years of age.',
-        sub_stats: [
-            { id: 5, label: 'Vitamin A Deficiency', value: '~30%' },
-            { id: 6, label: 'Anaemia (Women)', value: '60–70%' },
-        ],
-    },
-    {
-        id: 4, value: '92%', title: 'Calcium Inadequacy', accent_color: 'green',
-        description: 'High prevalence of calcium deficiency across children and pregnant women.',
-        sub_stats: [
-            { id: 7, label: 'Non-Pregnant Women', value: '95%' },
-            { id: 8, label: 'Pregnant Women', value: '92%' },
-            { id: 9, label: 'Children', value: '92%' },
-        ],
-    },
-];
-
-const ACCENT_COLOR_MAP: Record<string, string> = {
-    blue: 'var(--wfp-blue)',
-    gold: 'var(--wfp-gold)',
-    green: 'var(--wfp-green)',
+const STAT_CATEGORY_ICONS: Record<string, IconName> = {
+    Programme: 'calendar',
+    Compliance: 'shield-check',
+    'Health Impact': 'heart-pulse',
+    General: 'bar-chart',
 };
 
 const OBJECTIVES: { icon: IconName; text: string }[] = [
     { icon: 'users', text: 'Providing a platform for collaboration between government and industry.' },
-    { icon: 'shield', text: 'Supporting implementation of mandatory food fortification.' },
+    { icon: 'shield', text: 'Supporting the implementation of mandatory food fortification.' },
     { icon: 'check-circle', text: 'Strengthening compliance with national fortification standards.' },
-    { icon: 'bar-chart', text: 'Supporting monitoring and evaluation systems.' },
-    { icon: 'handshake', text: 'Promoting stakeholder coordination.' },
-    { icon: 'activity', text: 'Improving laboratory capacity.' },
+    { icon: 'bar-chart', text: 'Supporting monitoring and evaluation systems in food fortification.' },
+    { icon: 'handshake', text: 'Promoting coordination among fortification stakeholders.' },
+    { icon: 'activity', text: 'Strengthening national laboratory capacity for fortification testing.' },
     { icon: 'file-text', text: 'Supporting evidence-based nutrition interventions.' },
-    { icon: 'box', text: 'Expanding fortification to additional food vehicles.' },
-    { icon: 'megaphone', text: 'Promoting public awareness on fortified foods.' },
-    { icon: 'monitor', text: 'Supporting innovation and digital traceability systems.' },
+    { icon: 'box', text: 'Expanding fortification to additional staple food vehicles.' },
+    { icon: 'megaphone', text: 'Promoting public awareness of fortified foods.' },
+    { icon: 'monitor', text: 'Promoting digital innovation and traceability in food fortification.' },
 ];
 
 export default async function AboutPage() {
-    const about = await getAboutPage();
+    const [about, statsData, globalSettings] = await Promise.all([
+        getAboutPage(),
+        getStats(),
+        getGlobalSettings(),
+    ]);
 
-    const challengeStats = about?.challenge_stats?.length ? about.challenge_stats : CHALLENGE_STATS_FALLBACK;
-    const keyStats = about?.key_stats?.length ? about.key_stats : KEY_STATS_FALLBACK;
     const timeline = about?.timeline_items?.length ? about.timeline_items : TIMELINE_FALLBACK;
+    const displayStats = statsData.length > 0
+        ? statsData.map((s) => ({ number: s.value?.trim() || '—', label: s.label, icon: STAT_CATEGORY_ICONS[s.category] || 'bar-chart' }))
+        : STATS_FALLBACK;
+    const statsSource = globalSettings?.stats_source
+        || 'Source: Nigeria Demographic and Health Survey (NDHS) 2024; National Food Consumption and Micronutrient Survey (NFCMS) 2021; UNICEF Nigeria, Situation Analysis of Children and Adolescents in Nigeria (2024).';
 
     return (
         <>
@@ -145,15 +121,6 @@ export default async function AboutPage() {
         .mv-card h3 { margin-bottom: 0.75rem; }
         .mv-card p  { color: var(--text-secondary); line-height: 1.75; }
 
-        /* Challenge stats */
-        .challenge-panel { background: var(--wfp-navy); color: rgba(255,255,255,.8); padding: 4rem 0; }
-        .challenge-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .challenge-item { padding: 2rem; border-left: 1px solid rgba(255,255,255,.1); }
-        .challenge-item:first-child { border-left: none; }
-        .challenge-big { font-size: 3rem; font-weight: 900; color: var(--wfp-gold); letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.5rem; }
-        .challenge-label { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.4rem; }
-        .challenge-desc { font-size: 0.83rem; color: rgba(255,255,255,.55); line-height: 1.6; }
-
         /* Timeline */
         .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
         .timeline-item { display: grid; grid-template-columns: 80px 1fr; gap: 1.5rem; padding: 1.75rem 0; border-bottom: 1px solid var(--border); align-items: start; }
@@ -174,22 +141,8 @@ export default async function AboutPage() {
 
         @media (max-width: 900px) {
           .mv-grid { grid-template-columns: 1fr; }
-          .challenge-row { grid-template-columns: 1fr; }
           .objectives-grid { grid-template-columns: 1fr; }
         }
-
-        /* Stats Section */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-        .stats-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1.75rem; display: flex; flex-direction: column; }
-        .stats-val { font-size: 2.25rem; font-weight: 800; color: var(--wfp-blue); margin-bottom: 0.25rem; }
-        .stats-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
-        .stats-meta { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
-        .stats-divider { height: 1px; background: var(--border-light); margin: 1.25rem 0; }
-        .stats-sub { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 0.5rem; }
-        .stats-sub-label { color: var(--text-secondary); }
-        .stats-sub-val { font-weight: 700; color: var(--wfp-blue); }
-        .stats-source { font-size: 0.72rem; color: var(--text-muted); margin-top: 1rem; font-style: italic; }
-        .challenge-source { font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-top: 0.5rem; font-style: italic; }
       `}</style>
 
             {/* ── Full-width hero ── */}
@@ -239,67 +192,27 @@ export default async function AboutPage() {
                 </div>
             </section>
 
-            {/* ── The Challenge ── */}
-            <div className="challenge-panel">
+            {/* ── Nutrition Burden Statistics (shared with homepage) ── */}
+            <section style={{ background: 'linear-gradient(135deg, var(--wfp-green) 0%, #064E3B 100%)', padding: '3rem 0' }}>
                 <div className="container">
-                    <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>{about?.challenge_eyebrow || 'The Scale of the Problem'}</p>
-                    <h2 style={{ color: '#fff' }}>{about?.challenge_heading || 'Nigeria’s Hidden Hunger Crisis'}</h2>
-                    <div className="challenge-row" style={{ marginTop: '2.5rem' }}>
-                        {challengeStats.map((stat) => (
-                            <div className="challenge-item" key={stat.id}>
-                                <div className="challenge-big">{stat.value}</div>
-                                <div className="challenge-label">{stat.label}</div>
-                                {stat.description && <div className="challenge-desc">{stat.description}</div>}
-                                {stat.source && <div className="challenge-source">Source: {stat.source}</div>}
-                            </div>
-                        ))}
+                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                        <p style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--wfp-gold)', marginBottom: '0.75rem' }}>The Challenge</p>
+                        <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)', fontWeight: 800, color: '#fff', marginBottom: '0.75rem' }}>Nigeria&apos;s Hidden Hunger Crisis</h2>
+                        <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.9)', maxWidth: '650px', margin: '0 auto', lineHeight: 1.6 }}>Critical health statistics that demonstrate the urgent need for food fortification</p>
                     </div>
-                </div>
-            </div>
-
-            {/* ── Key Statistics ── */}
-            <section className="section">
-                <div className="container">
-                    <p className="section-eyebrow">NFA by the Numbers</p>
-                    <h2 className="section-title">Key Statistics & Compliance</h2>
-                    <p className="section-lead">Current data on national fortification coverage, compliance levels, and the underlying nutritional challenges being addressed across Nigeria.</p>
-
-                    <div className="stats-grid">
-                        {keyStats.map((stat) => (
-                            <div
-                                className="stats-card"
-                                key={stat.id}
-                                style={stat.accent_color && stat.accent_color !== 'none' ? { borderTop: `4px solid ${ACCENT_COLOR_MAP[stat.accent_color]}` } : undefined}
-                            >
-                                <div className="stats-val">{stat.value}</div>
-                                <div className="stats-title">{stat.title}</div>
-                                {stat.description && <div className="stats-meta">{stat.description}</div>}
-                                {!!stat.sub_stats?.length && (
-                                    <>
-                                        <div className="stats-divider" />
-                                        {stat.sub_stats.map((sub) => (
-                                            <div className="stats-sub" key={sub.id}>
-                                                <span className="stats-sub-label">{sub.label}</span>
-                                                <span className="stats-sub-val">{sub.value}</span>
-                                            </div>
-                                        ))}
-                                    </>
-                                )}
-                                {stat.source && <div className="stats-source">Source: {stat.source}</div>}
-                            </div>
-                        ))}
-                    </div>
+                    <AnimatedStats stats={displayStats} />
+                    <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.65)', textAlign: 'center', maxWidth: '800px', margin: '2rem auto 0', lineHeight: 1.6 }}>{statsSource}</p>
                 </div>
             </section>
 
             {/* ── Background / History ── */}
-            <section className="section" style={{ background: 'var(--bg-off)' }}>
+            <section className="section" style={{ background: 'var(--bg-off)', paddingBottom: '3rem' }}>
                 <div className="container">
                     <p className="section-eyebrow">Our History</p>
                     <h2 className="section-title">Two Decades of Progress</h2>
-                    <p className="section-lead">
-                        {about?.history_intro || 'Mandatory food fortification of selected staple food vehicles—including wheat flour, maize flour, sugar, and vegetable oil—commenced in Nigeria in 2002 as a core national strategy for combating micronutrient deficiencies. In 2004, the NFA was formally established under the chairmanship of the then National Planning Commission to mobilize stakeholders for coordinated implementation.'}
-                    </p>
+                    {about?.history_intro && (
+                        <p className="section-lead">{about.history_intro}</p>
+                    )}
                     <div className="timeline">
                         {timeline.map((t) => (
                             <div key={t.id} className="timeline-item">
@@ -334,7 +247,7 @@ export default async function AboutPage() {
                     <h2 className="section-title">Who Runs the NFA</h2>
                     <div className="governance-cta">
                         <p>The NFA is led by a multi-sectoral alliance of government regulators, industry representatives, and development partners, supported by a dedicated secretariat.</p>
-                        <Link href="/about/governance" className="btn btn-outline-primary">View Full Governance &amp; Compliance Structure</Link>
+                        <Link href="/about/governance" className="btn btn-outline-primary">View Governance Structure</Link>
                     </div>
                 </div>
             </section>

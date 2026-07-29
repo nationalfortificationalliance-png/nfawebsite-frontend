@@ -127,30 +127,6 @@ export interface TeamMember {
     email?: string;
 }
 
-export interface AboutSubStat {
-    id: number;
-    label: string;
-    value: string;
-}
-
-export interface AboutKeyStat {
-    id: number;
-    value: string;
-    title: string;
-    description?: string;
-    accent_color?: 'none' | 'blue' | 'gold' | 'green';
-    source?: string;
-    sub_stats?: AboutSubStat[];
-}
-
-export interface AboutChallengeStat {
-    id: number;
-    value: string;
-    label: string;
-    description?: string;
-    source?: string;
-}
-
 export interface AboutTimelineItem {
     id: number;
     year: string;
@@ -167,10 +143,6 @@ export interface AboutPage {
     objectives?: string;
     background?: string;
     history_intro?: string;
-    challenge_eyebrow?: string;
-    challenge_heading?: string;
-    challenge_stats?: AboutChallengeStat[];
-    key_stats?: AboutKeyStat[];
     timeline_items?: AboutTimelineItem[];
 }
 
@@ -316,9 +288,7 @@ export async function getTeamMembers(category?: string): Promise<TeamMember[]> {
 export async function getAboutPage(): Promise<AboutPage | null> {
     const res = await fetchAPI<{ data: AboutPage }>('/about-page', {
         'populate[hero_image][populate]': '*',
-        'populate[challenge_stats][populate]': '*',
         'populate[timeline_items][populate]': '*',
-        'populate[key_stats][populate][sub_stats][populate]': '*',
     });
     return res?.data || null;
 }
@@ -498,6 +468,27 @@ export async function getMeetingSchedule(): Promise<MeetingSchedule[]> {
     const res = await fetchAPI<{ data: MeetingSchedule[] }>('/meeting-schedules', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
+        'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}
+
+export interface ComplianceReport {
+    id: number;
+    documentId: string;
+    year: string;
+    national_compliance: string;
+    salt_compliance?: string;
+    veg_oil_compliance?: string;
+    flour_compliance?: string;
+    source?: string;
+    order: number;
+}
+
+export async function getComplianceReports(): Promise<ComplianceReport[]> {
+    const res = await fetchAPI<{ data: ComplianceReport[] }>('/compliance-reports', {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:desc',
         'pagination[pageSize]': '50',
     });
     return res?.data || [];
