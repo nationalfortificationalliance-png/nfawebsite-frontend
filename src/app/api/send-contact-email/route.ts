@@ -96,6 +96,42 @@ export async function POST(req: Request) {
         if (error) {
             return NextResponse.json({ error: 'Failed to send email' }, { status: 502 });
         }
+
+        // Confirmation to the visitor — best-effort, doesn't affect the response
+        try {
+            await resend.emails.send({
+                from: `National Fortification Alliance <${fromEmail}>`,
+                to: email,
+                subject: 'We received your message',
+                html: `
+        <div style="font-family:sans-serif;max-width:620px;margin:0 auto;background:#fff;border:1px solid #e5e5e5;border-radius:8px;overflow:hidden">
+          <div style="background:#003366;padding:28px 32px">
+            <h1 style="color:#fff;margin:0;font-size:1.3rem;font-weight:800">National Fortification Alliance</h1>
+            <p style="color:rgba(255,255,255,.6);margin:4px 0 0;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em">Message Received</p>
+          </div>
+
+          <div style="padding:32px">
+            <p style="margin:0 0 16px;color:#111;font-size:1rem;font-weight:700">Hi ${escapeHtml(name)},</p>
+            <p style="margin:0 0 16px;color:#333;line-height:1.75">Thank you for reaching out to the National Fortification Alliance. We've received your message and a member of our team will get back to you shortly.</p>
+
+            <div style="background:#f9f9f9;border-left:3px solid #007DBC;padding:20px 24px;border-radius:0 4px 4px 0">
+              <p style="margin:0 0 8px;font-size:0.8rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:#888">Your Message</p>
+              <p style="margin:0 0 8px;font-weight:600;color:#111">${escapeHtml(subject)}</p>
+              <p style="margin:0;color:#333;line-height:1.75;white-space:pre-wrap">${escapeHtml(message)}</p>
+            </div>
+          </div>
+
+          <div style="background:#f5f5f5;padding:20px 32px;text-align:center;font-size:0.8rem;color:#999;border-top:1px solid #e5e5e5">
+            National Fortification Alliance Nigeria<br/>
+            <span style="font-size:0.75rem">This is an automated confirmation — no need to reply to this email.</span>
+          </div>
+        </div>
+      `,
+            });
+        } catch (confirmError) {
+            console.error('Failed to send visitor confirmation email', confirmError);
+        }
+
         return NextResponse.json({ ok: true });
     } catch {
         return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
