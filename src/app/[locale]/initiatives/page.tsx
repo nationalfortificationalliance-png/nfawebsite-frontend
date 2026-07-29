@@ -84,16 +84,23 @@ const HOW_IT_WORKS = [
     },
 ];
 
+const RECENTLY_UPDATED_DAYS = 30;
+
 export default async function InitiativesPage() {
     const initiatives = await getInitiatives();
+    const now = Date.now();
     const displayInitiatives = initiatives.length > 0
         ? initiatives.map((initiative) => ({
             title: initiative.title,
+            slug: initiative.slug as string | undefined,
             icon: (initiative.icon || 'trending-up') as IconName,
             description: initiative.description,
             bullets: (initiative.highlights || []).map((h) => h.text),
+            isRecentlyUpdated: initiative.updatedAt
+                ? (now - new Date(initiative.updatedAt).getTime()) / 86_400_000 <= RECENTLY_UPDATED_DAYS
+                : false,
         }))
-        : INITIATIVES_FALLBACK;
+        : INITIATIVES_FALLBACK.map((initiative) => ({ ...initiative, slug: undefined, isRecentlyUpdated: false }));
 
     return (
         <main className="initiatives-page">
@@ -115,7 +122,7 @@ export default async function InitiativesPage() {
                     content: '';
                     position: absolute;
                     inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
                     z-index: 1;
                 }
                 .initiatives-hero-content {
@@ -193,6 +200,45 @@ export default async function InitiativesPage() {
                 .work-card:hover {
                     transform: translateY(-6px);
                     box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+                }
+
+                a.project-card {
+                    position: relative;
+                    display: block;
+                    text-decoration: none;
+                }
+
+                .project-updated-badge {
+                    position: absolute;
+                    top: 1.5rem;
+                    right: 1.5rem;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.35rem;
+                    background: rgba(245, 158, 11, 0.12);
+                    color: #b45309;
+                    font-size: 0.7rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    padding: 0.3rem 0.65rem;
+                    border-radius: 999px;
+                }
+                .project-updated-badge::before {
+                    content: '';
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: #f59e0b;
+                }
+
+                .project-card-link {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    margin-top: 1.25rem;
+                    font-weight: 700;
+                    color: var(--wfp-blue);
                 }
 
                 .project-icon,
@@ -348,18 +394,38 @@ export default async function InitiativesPage() {
                     <h2 className="section-title">Major initiatives</h2>
                     <p className="section-lead">These initiatives illustrate how NFA is delivering measurable improvements across production, regulation, quality assurance and consumer protection.</p>
                     <div className="projects-grid" style={{ marginTop: '2rem' }}>
-                        {displayInitiatives.map((initiative) => (
-                            <div key={initiative.title} className="project-card">
-                                <div className="project-icon"><Icon name={initiative.icon} size={28} /></div>
-                                <h3>{initiative.title}</h3>
-                                <p>{initiative.description}</p>
-                                <ul>
-                                    {initiative.bullets.map((bullet) => (
-                                        <li key={bullet}>{bullet}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
+                        {displayInitiatives.map((initiative) => {
+                            const cardContent = (
+                                <>
+                                    {initiative.isRecentlyUpdated && (
+                                        <span className="project-updated-badge">Recently updated</span>
+                                    )}
+                                    <div className="project-icon"><Icon name={initiative.icon} size={28} /></div>
+                                    <h3>{initiative.title}</h3>
+                                    <p>{initiative.description}</p>
+                                    <ul>
+                                        {initiative.bullets.map((bullet) => (
+                                            <li key={bullet}>{bullet}</li>
+                                        ))}
+                                    </ul>
+                                    {initiative.slug && (
+                                        <span className="project-card-link">
+                                            View programme details <Icon name="arrow-right" size={16} />
+                                        </span>
+                                    )}
+                                </>
+                            );
+
+                            return initiative.slug ? (
+                                <Link key={initiative.title} href={`/initiatives/${initiative.slug}`} className="project-card">
+                                    {cardContent}
+                                </Link>
+                            ) : (
+                                <div key={initiative.title} className="project-card">
+                                    {cardContent}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -401,7 +467,7 @@ export default async function InitiativesPage() {
                         <p>Whether you are a processor, regulator, funder or technical partner, NFA offers pathways for joint action that strengthen nutrition outcomes and supply chain integrity.</p>
                         <div className="cta-actions">
                             <Link href="/contact" className="btn btn-primary btn-lg">Contact NFA</Link>
-                            <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Explore Guidelines</a>
+                            <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Browse Resources</a>
                         </div>
                     </div>
                 </div>

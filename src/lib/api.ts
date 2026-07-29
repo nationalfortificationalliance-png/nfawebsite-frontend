@@ -481,20 +481,44 @@ export interface Initiative {
     id: number;
     documentId: string;
     title: string;
+    slug: string;
     icon: string;
     description: string;
+    objectives?: string;
     highlights?: { id: number; text: string }[];
+    image?: { id: number; documentId: string; url: string };
     category: string;
     status: string;
+    start_date?: string | null;
     order: number;
+    updatedAt: string;
 }
 
 export async function getInitiatives(): Promise<Initiative[]> {
     const res = await fetchAPI<{ data: Initiative[] }>('/projects', {
-        'filters[is_active][$eq]': 'true',
+        'filters[$or][0][is_active][$eq]': 'true',
+        'filters[$or][1][is_active][$null]': 'true',
         'sort': 'order:asc',
         'populate[0]': 'highlights',
+        'populate[1]': 'image',
         'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}
+
+export async function getInitiativeBySlug(slug: string): Promise<Initiative | null> {
+    const res = await fetchAPI<{ data: Initiative[] }>('/projects', {
+        'filters[slug][$eq]': slug,
+        'populate[0]': 'highlights',
+        'populate[1]': 'image',
+    });
+    return res?.data?.[0] || null;
+}
+
+export async function getAllInitiatives(): Promise<Initiative[]> {
+    const res = await fetchAPI<{ data: Initiative[] }>('/projects', {
+        'sort': 'order:asc',
+        'pagination[pageSize]': '100',
     });
     return res?.data || [];
 }
