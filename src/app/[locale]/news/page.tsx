@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Icon from '@/components/Icon';
 import NewsFilter from '@/components/NewsFilter';
-import { getAllNews } from '@/lib/api';
+import { getAllNews, getMeetingSchedule, MeetingSchedule } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 
 export const metadata: Metadata = {
@@ -13,6 +13,12 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
+const MEETINGS_FALLBACK: MeetingSchedule[] = [
+    { id: 1, documentId: '1', year: '2026', june_host: 'NAFDAC', december_host: 'Industry', order: 1 },
+    { id: 2, documentId: '2', year: '2027', june_host: 'SON', december_host: 'FCCPC', order: 2 },
+    { id: 3, documentId: '3', year: '2028', june_host: 'FMoHSW', december_host: 'NAFDAC', order: 3 },
+];
+
 export default async function NewsPage() {
     const { data: dbNews, total: dbTotal } = await getAllNews(1, 12);
 
@@ -21,6 +27,9 @@ export default async function NewsPage() {
     const total = isMock ? MOCK_NEWS.length : dbTotal;
 
     const categories = ['news', 'event', 'communique', 'report'];
+
+    const meetingScheduleData = await getMeetingSchedule();
+    const meetings = meetingScheduleData.length ? meetingScheduleData : MEETINGS_FALLBACK;
 
     return (
         <>
@@ -141,6 +150,59 @@ export default async function NewsPage() {
           margin-bottom: 1.5rem;
           text-align: right;
         }
+
+        /* Meeting Schedule Timeline */
+        .meetings-timeline-section {
+          background: var(--bg-off);
+          padding: 4rem 0;
+          border-bottom: 1px solid var(--border-light);
+        }
+        .meetings-timeline {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1.5rem;
+          margin-top: 2.5rem;
+        }
+        .timeline-card {
+          flex: 1;
+          min-width: 220px;
+          background: #fff;
+          border: 1px solid var(--border-light);
+          border-radius: 16px;
+          padding: 1.75rem;
+          position: relative;
+          border-top: 3px solid var(--wfp-gold);
+        }
+        .timeline-year {
+          font-size: 1.4rem;
+          font-weight: 900;
+          color: var(--wfp-navy);
+          margin-bottom: 1rem;
+        }
+        .timeline-host-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.75rem;
+          padding: 0.5rem 0;
+          font-size: 0.85rem;
+        }
+        .timeline-host-row + .timeline-host-row {
+          border-top: 1px solid var(--border-light);
+        }
+        .timeline-host-label {
+          color: var(--text-muted);
+          font-weight: 600;
+        }
+        .timeline-host-pill {
+          display: inline-block;
+          background: var(--wfp-blue-light);
+          color: var(--wfp-blue);
+          font-size: 0.8rem;
+          font-weight: 700;
+          padding: 0.3rem 0.85rem;
+          border-radius: 999px;
+        }
       `}</style>
 
             {/* Hero with Background */}
@@ -171,6 +233,32 @@ export default async function NewsPage() {
                     <Icon name="sparkles" size={16} /> Viewing sample data. Add articles in the Strapi CMS to replace this placeholder content.
                 </div>
             )}
+
+            {/* Meeting Schedule Timeline */}
+            <section className="meetings-timeline-section">
+                <div className="container">
+                    <p className="section-eyebrow">Collaboration</p>
+                    <h2 style={{ marginBottom: '0.5rem' }}>NFA Biannual Meetings</h2>
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '640px' }}>
+                        The Alliance convenes twice yearly to review programme implementation, discuss technical updates, strengthen coordination, review compliance, and agree on strategic actions.
+                    </p>
+                    <div className="meetings-timeline">
+                        {meetings.map((m) => (
+                            <div className="timeline-card" key={m.id}>
+                                <div className="timeline-year">{m.year}</div>
+                                <div className="timeline-host-row">
+                                    <span className="timeline-host-label">June Host</span>
+                                    <span className="timeline-host-pill">{m.june_host}</span>
+                                </div>
+                                <div className="timeline-host-row">
+                                    <span className="timeline-host-label">December Host</span>
+                                    <span className="timeline-host-pill">{m.december_host}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             {/* Filter bar & News Grid */}
             <NewsFilter allNews={news} categories={categories} />

@@ -18,6 +18,7 @@ const NAV_LINKS = [
   },
   { label: 'Initiatives', href: '/initiatives' },
   { label: 'News & Events', href: '/news' },
+  { label: 'Resources', href: '/resources' },
   { label: 'Partners', href: '/partners' },
   { label: 'FAQ', href: '/faq' },
 ];
@@ -141,8 +142,8 @@ export default function Header({ siteName }: { siteName: string }) {
         }
 
         .logo-emblem {
-          width: 96px;
-          height: 96px;
+          width: 112px;
+          height: 112px;
           border-radius: 1rem;
           background: rgba(0, 135, 81, 0.1);
           display: grid;
@@ -160,8 +161,8 @@ export default function Header({ siteName }: { siteName: string }) {
 
         @media (max-width: 800px) {
           .logo-emblem {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
           }
 
           .logo-name {
@@ -225,9 +226,9 @@ export default function Header({ siteName }: { siteName: string }) {
         }
 
         .dropdown-arrow {
-          margin-left: 0.35rem;
-          font-size: 0.72rem;
-          opacity: 0.75;
+          margin-left: 0.4rem;
+          font-size: 0.85rem;
+          opacity: 1;
           transition: transform 0.25s ease;
         }
 
@@ -450,7 +451,7 @@ export default function Header({ siteName }: { siteName: string }) {
             {/* Logo */}
             <Link href="/" className="logo">
               <div className="logo-emblem" style={{ background: 'transparent' }}>
-                <Image src="/logo.png" alt="NFA Logo" width={100} height={100} style={{ objectFit: 'contain' }} priority />
+                <Image src="/logo.png" alt="NFA Logo" width={118} height={118} style={{ objectFit: 'contain' }} priority />
               </div>
               {/* <div className="logo-text">
                 <span className="logo-name">National Fortification Alliance</span>

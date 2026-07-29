@@ -1,50 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import Icon, { IconName } from '@/components/Icon';
-import { getGovernanceRepresentatives, getStrapiMediaUrl, getLaboratories, Laboratory, getMeetingSchedule, MeetingSchedule, getIndustryChallenges, IndustryChallenge, getMemberOrganizations, MemberOrganization } from '@/lib/api';
+import Icon from '@/components/Icon';
+import GovernanceRepAccordion from '@/components/GovernanceRepAccordion';
+import { getGovernanceRepresentatives, getStrapiMediaUrl, getMemberOrganizations, MemberOrganization } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
     description: 'Learn about the roles, responsibilities, regulatory monitoring, and industry compliance structure of the NFA Nigeria.',
-};
-
-const LABS_FALLBACK: Laboratory[] = [
-    { id: 1, documentId: '1', name: 'Saag Chemicals', location: 'Lagos', contact: '08025589200', order: 1 },
-    { id: 2, documentId: '2', name: 'Remaben Scientific Services Ltd', location: 'Ikeja', contact: '08023037743', order: 2 },
-    { id: 3, documentId: '3', name: 'Bato Chemical Labs Ltd', location: 'Ogun State', contact: '08091972222', order: 3 },
-    { id: 4, documentId: '4', name: 'Jawura Environmental Services Ltd', location: 'Lagos', contact: '09058592802', order: 4 },
-    { id: 5, documentId: '5', name: 'LS Scientific Limited', location: 'Ikeja', contact: '08094709004', order: 5 },
-    { id: 6, documentId: '6', name: 'Alfa Laboratories', location: 'Lagos', contact: '08023093103', order: 6 },
-    { id: 7, documentId: '7', name: 'Katchey Laboratory', location: 'Ikeja', contact: '08036209410', order: 7 },
-    { id: 8, documentId: '8', name: 'Bureau Veritas Nigeria Ltd', location: 'Ogun State', contact: '08095559245', order: 8 },
-];
-
-const MEETINGS_FALLBACK: MeetingSchedule[] = [
-    { id: 1, documentId: '1', year: '2026', june_host: 'NAFDAC', december_host: 'Industry', order: 1 },
-    { id: 2, documentId: '2', year: '2027', june_host: 'SON', december_host: 'FCCPC', order: 2 },
-    { id: 3, documentId: '3', year: '2028', june_host: 'FMoHSW', december_host: 'NAFDAC', order: 3 },
-];
-
-const CHALLENGES_FALLBACK: IndustryChallenge[] = [
-    { text: 'Scarcity of Vitamin A Palmitate', category: 'Supply Chain' },
-    { text: 'Foreign exchange constraints affecting premix supply', category: 'Supply Chain' },
-    { text: 'Technical limitations in fortification equipment', category: 'Technical & Equipment' },
-    { text: 'Challenges with shelf-life stability studies', category: 'Technical & Equipment' },
-    { text: 'Technical capacity gaps in micronutrient testing', category: 'Technical & Equipment' },
-    { text: 'Inconsistencies in laboratory analytical results', category: 'Quality & Compliance' },
-    { text: 'Packaging and storage limitations', category: 'Quality & Compliance' },
-    { text: 'Informal retail packaging challenges', category: 'Quality & Compliance' },
-    { text: 'Inconsistent customs tariff implementation', category: 'Regulatory & Customs' },
-    { text: 'Inadequate monitoring of imported products', category: 'Regulatory & Customs' },
-].map((c, i) => ({ id: i + 1, documentId: String(i + 1), text: c.text, category: c.category, order: i + 1 }));
-
-const CHALLENGE_CATEGORY_ORDER = ['Supply Chain', 'Technical & Equipment', 'Quality & Compliance', 'Regulatory & Customs'];
-const CHALLENGE_CATEGORY_ICONS: Record<string, IconName> = {
-    'Supply Chain': 'truck',
-    'Technical & Equipment': 'settings',
-    'Quality & Compliance': 'microscope',
-    'Regulatory & Customs': 'landmark',
 };
 
 const STEERING_COMMITTEE = [
@@ -83,12 +46,6 @@ const MEMBERS_FALLBACK: MemberOrganization[] = [
 
 export default async function GovernancePage() {
     const representatives = await getGovernanceRepresentatives();
-    const laboratoriesData = await getLaboratories();
-    const labs = laboratoriesData.length ? laboratoriesData : LABS_FALLBACK;
-    const meetingScheduleData = await getMeetingSchedule();
-    const meetings = meetingScheduleData.length ? meetingScheduleData : MEETINGS_FALLBACK;
-    const industryChallengesData = await getIndustryChallenges();
-    const challenges = industryChallengesData.length ? industryChallengesData : CHALLENGES_FALLBACK;
     const memberOrganizationsData = await getMemberOrganizations();
     const members = memberOrganizationsData.length ? memberOrganizationsData : MEMBERS_FALLBACK;
     const coreMembers = members.filter((m) => m.category === 'Core Members');
@@ -114,7 +71,7 @@ export default async function GovernancePage() {
                     content: '';
                     position: absolute;
                     inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.84) 0%, rgba(6, 78, 59, 0.80) 100%);
                     z-index: 1;
                 }
                 .gov-hero-content {
@@ -144,20 +101,47 @@ export default async function GovernancePage() {
                     color: #fff;
                 }
 
-                .roles-grid {
+                .overview-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-                    gap: 2.5rem;
-                    margin-top: 4rem;
-                }
-
-                .monitoring-grid {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-columns: repeat(4, 1fr);
                     gap: 2rem;
                     margin-top: 3rem;
                 }
+                .overview-card {
+                    background: #fff;
+                    border: 1px solid var(--border-light);
+                    border-radius: var(--radius-md);
+                    padding: 1.75rem;
+                    text-align: center;
+                }
+                .overview-card-icon {
+                    width: 56px;
+                    height: 56px;
+                    margin: 0 auto 1rem;
+                    border-radius: 16px;
+                    background: var(--wfp-blue-light);
+                    color: var(--wfp-blue);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .overview-card h4 { font-size: 1rem; color: var(--wfp-navy); margin-bottom: 0.5rem; }
+                .overview-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+                .monitoring-flow {
+                    display: flex;
+                    align-items: center;
+                    gap: 1.25rem;
+                    margin-top: 3rem;
+                }
+                .monitor-arrow {
+                    color: var(--wfp-gold);
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                }
                 .monitor-card {
+                    flex: 1;
                     background: #fff;
                     padding: 3rem 2rem;
                     border-radius: 32px;
@@ -179,150 +163,9 @@ export default async function GovernancePage() {
                     justify-content: center;
                     font-size: 2rem;
                 }
-                
+
                 .monitor-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--wfp-navy); }
                 .monitor-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
-
-                .labs-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-                    gap: 1.5rem;
-                    margin-top: 3rem;
-                }
-                .lab-card {
-                    background: #fff;
-                    border: 1px solid var(--border-light);
-                    border-radius: 16px;
-                    padding: 1.75rem;
-                    transition: all 0.3s ease;
-                    display: flex;
-                    gap: 1.25rem;
-                }
-                .lab-card:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-                    border-color: var(--wfp-blue-light);
-                }
-                .lab-icon {
-                    width: 48px;
-                    height: 48px;
-                    background: var(--wfp-blue-light);
-                    border-radius: 12px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--wfp-blue);
-                    flex-shrink: 0;
-                }
-                .lab-info {
-                    flex: 1;
-                }
-                .lab-name {
-                    font-weight: 700;
-                    font-size: 1.05rem;
-                    color: var(--text-primary);
-                    margin-bottom: 0.5rem;
-                }
-                .lab-location {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    font-size: 0.9rem;
-                    color: var(--text-secondary);
-                    margin-bottom: 0.25rem;
-                }
-                .lab-contact {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    font-size: 0.9rem;
-                    color: var(--text-secondary);
-                    font-weight: 500;
-                }
-                
-                .meetings-card {
-                    background: #fff;
-                    border: 1px solid var(--border-light);
-                    border-radius: 16px;
-                    overflow: hidden;
-                    margin-top: 1rem;
-                }
-                .meetings-row {
-                    display: grid;
-                    grid-template-columns: 0.8fr 1fr 1fr;
-                    align-items: center;
-                    gap: 0.75rem;
-                    padding: 1rem 1.5rem;
-                    border-bottom: 1px solid var(--border-light);
-                }
-                .meetings-row:last-child {
-                    border-bottom: none;
-                }
-                .meetings-row:not(.meetings-head):hover {
-                    background: var(--bg-off);
-                }
-                .meetings-head {
-                    background: var(--wfp-navy, #0f2f4c);
-                    color: #fff;
-                    font-size: 0.75rem;
-                    font-weight: 700;
-                    letter-spacing: 0.04em;
-                    text-transform: uppercase;
-                }
-                .meetings-year {
-                    font-weight: 800;
-                    color: var(--wfp-navy, #0f2f4c);
-                    font-size: 1.05rem;
-                }
-                .host-pill {
-                    display: inline-block;
-                    justify-self: start;
-                    background: var(--wfp-blue-light);
-                    color: var(--wfp-blue);
-                    font-size: 0.82rem;
-                    font-weight: 600;
-                    padding: 0.35rem 0.85rem;
-                    border-radius: 999px;
-                }
-
-                .challenges-groups {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1.25rem;
-                    margin-top: 1.5rem;
-                }
-                .challenge-group-title {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    font-size: 0.85rem;
-                    font-weight: 700;
-                    color: var(--wfp-red, #dc2626);
-                    margin: 0 0 0.5rem;
-                }
-                .challenges-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-                    gap: 0.4rem;
-                }
-                .challenge-item {
-                    background: #fff;
-                    display: flex;
-                    align-items: flex-start;
-                    width: 100%;
-                    padding: 0.55rem 0.85rem;
-                    border: 1px solid var(--border-light);
-                    border-radius: 8px;
-                    font-size: 0.85rem;
-                    color: var(--text-secondary);
-                    line-height: 1.4;
-                    transition: all 0.2s ease;
-                }
-                .challenge-item:hover {
-                    transform: translateX(4px);
-                    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-                    border-color: var(--wfp-red, #dc2626);
-                }
 
                 .membership-section {
                     margin-top: 4rem;
@@ -382,59 +225,50 @@ export default async function GovernancePage() {
                 }
 
                 @media (max-width: 900px) {
-                    .monitoring-grid { grid-template-columns: 1fr; }
+                    .overview-grid { grid-template-columns: repeat(2, 1fr); }
+                    .monitoring-flow { flex-direction: column; }
+                    .monitor-arrow { transform: rotate(90deg); }
                 }
-
-                @media (max-width: 480px) {
-                    .meetings-row { grid-template-columns: 1fr; gap: 0.4rem; padding: 0.85rem 1.1rem; }
-                    .meetings-head { display: none; }
-                    .meetings-row:not(.meetings-head) { padding-bottom: 1rem; }
-                    .host-pill { justify-self: start; }
+                @media (max-width: 560px) {
+                    .overview-grid { grid-template-columns: 1fr; }
                 }
 
                 .reps-grid {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 2rem;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: 1.75rem;
                     margin-top: 3.5rem;
+                    align-items: start;
                 }
-                .rep-row {
-                    display: flex;
-                    gap: 2.25rem;
+                .rep-card {
                     background: #fff;
                     border: 1px solid var(--border-light);
-                    border-radius: 28px;
-                    padding: 2rem;
+                    border-radius: 24px;
+                    padding: 1.75rem;
                     box-shadow: 0 10px 40px rgba(0,0,0,0.04);
                     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+                    text-align: center;
                 }
-                .rep-row:hover {
+                .rep-card:hover {
                     box-shadow: 0 20px 60px rgba(0,0,0,0.08);
                     border-color: var(--wfp-blue-light);
                 }
-                .rep-row-media {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 0.9rem;
-                    flex-shrink: 0;
-                    width: 240px;
-                }
                 .rep-org-chip {
-                    display: flex;
+                    display: inline-flex;
                     align-items: center;
-                    gap: 0.6rem;
+                    gap: 0.5rem;
                     background: var(--wfp-blue-light);
                     border-radius: 999px;
-                    padding: 0.4rem 1rem 0.4rem 0.4rem;
+                    padding: 0.3rem 0.9rem 0.3rem 0.3rem;
                     max-width: 100%;
+                    margin-bottom: 1rem;
                 }
                 .rep-org-chip.no-logo {
-                    padding: 0.5rem 1rem;
+                    padding: 0.4rem 0.9rem;
                 }
                 .rep-org-chip-logo {
-                    width: 36px;
-                    height: 36px;
+                    width: 28px;
+                    height: 28px;
                     border-radius: 50%;
                     background: #fff;
                     display: flex;
@@ -443,7 +277,7 @@ export default async function GovernancePage() {
                     flex-shrink: 0;
                 }
                 .rep-org-chip-text {
-                    font-size: 0.78rem;
+                    font-size: 0.72rem;
                     font-weight: 800;
                     color: var(--wfp-navy);
                     letter-spacing: 0.01em;
@@ -453,23 +287,25 @@ export default async function GovernancePage() {
                 }
                 .rep-photo-wrap {
                     position: relative;
-                    width: 240px;
-                    height: 240px;
-                    border-radius: 28px;
+                    width: 112px;
+                    height: 112px;
+                    aspect-ratio: 1 / 1;
+                    border-radius: 50%;
                     overflow: hidden;
                     background: linear-gradient(135deg, rgba(0, 82, 73, 0.95) 0%, rgba(6, 78, 59, 0.9) 100%);
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     flex-shrink: 0;
+                    margin: 0 auto 1rem;
                 }
                 .rep-photo-fallback {
-                    font-size: 4.5rem;
+                    font-size: 2rem;
                     font-weight: 900;
                     color: rgba(255,255,255,0.85);
                     letter-spacing: -0.02em;
                 }
-                .rep-row-unassigned {
+                .rep-card-unassigned {
                     background: var(--bg-off);
                 }
                 .rep-photo-wrap-placeholder {
@@ -482,76 +318,77 @@ export default async function GovernancePage() {
                     font-weight: 700;
                     color: var(--text-muted);
                 }
-                .rep-row-content {
-                    flex: 1;
-                    min-width: 0;
-                }
                 .rep-name {
-                    font-size: 1.3rem;
+                    font-size: 1.1rem;
                     font-weight: 800;
                     color: var(--wfp-navy);
                     line-height: 1.25;
                 }
                 .rep-title {
-                    font-size: 0.9rem;
+                    font-size: 0.85rem;
                     color: var(--wfp-blue);
                     font-weight: 600;
                     margin-top: 0.3rem;
                     line-height: 1.4;
                 }
                 .rep-org {
-                    font-size: 0.85rem;
+                    font-size: 0.8rem;
                     color: var(--text-muted);
                     margin-top: 0.15rem;
-                    margin-bottom: 1.25rem;
+                }
+                .rep-updated {
+                    font-size: 0.72rem;
+                    color: var(--text-muted);
+                    margin-top: 0.4rem;
+                    font-style: italic;
+                }
+                .rep-accordion {
+                    margin-top: 1.25rem;
+                    text-align: left;
                 }
                 .rep-collapsible {
                     border-top: 1px solid var(--border-light);
-                    padding: 1rem 0;
                 }
-                .rep-collapsible summary {
+                .rep-collapsible-summary {
+                    width: 100%;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    gap: 0.75rem;
                     cursor: pointer;
-                    list-style: none;
-                    font-size: 0.78rem;
+                    background: none;
+                    border: none;
+                    padding: 0.85rem 0;
+                    font-size: 0.72rem;
                     font-weight: 800;
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     color: var(--wfp-blue);
                 }
-                .rep-collapsible summary::-webkit-details-marker {
-                    display: none;
-                }
-                .rep-collapsible summary::after {
-                    content: '+';
+                .rep-collapsible-icon {
                     font-size: 1.1rem;
                     font-weight: 700;
                     color: var(--wfp-blue);
-                    transition: transform 0.2s ease;
-                }
-                .rep-collapsible[open] summary::after {
-                    transform: rotate(45deg);
+                    flex-shrink: 0;
                 }
                 .rep-collapsible-body {
-                    font-size: 0.92rem;
+                    font-size: 0.88rem;
                     color: var(--text-secondary);
-                    line-height: 1.7;
-                    margin-top: 0.9rem;
+                    line-height: 1.65;
+                    padding-bottom: 1rem;
                 }
                 .rep-responsibility-list {
                     list-style: none;
                     padding-left: 0;
-                    margin-top: 0.9rem;
+                    margin: 0;
                 }
                 .rep-responsibility-list li {
                     position: relative;
                     padding-left: 1.5rem;
-                    margin-bottom: 0.75rem;
-                    font-size: 0.9rem;
+                    margin-bottom: 0.65rem;
+                    font-size: 0.86rem;
                     color: var(--text-secondary);
-                    line-height: 1.6;
+                    line-height: 1.55;
                 }
                 .rep-responsibility-list li::before {
                     content: "✓";
@@ -560,17 +397,6 @@ export default async function GovernancePage() {
                     position: absolute;
                     left: 0;
                     top: 0;
-                }
-                @media (max-width: 640px) {
-                    .rep-row {
-                        flex-direction: column;
-                        align-items: center;
-                        text-align: center;
-                    }
-                    .rep-collapsible summary {
-                        justify-content: center;
-                        gap: 0.5rem;
-                    }
                 }
             `}</style>
 
@@ -600,9 +426,42 @@ export default async function GovernancePage() {
                 </div>
             </div>
 
+            {/* Governance Overview */}
+            <section className="section">
+                <div className="container">
+                    <p className="section-eyebrow">Overview</p>
+                    <h2 className="section-title">How the Alliance Is Governed</h2>
+                    <p className="section-lead">
+                        The NFA brings together regulators, government ministries, industry, and development partners under a shared governance structure that sets standards, monitors compliance, and drives Nigeria&apos;s food fortification programme forward.
+                    </p>
+                    <div className="overview-grid">
+                        <div className="overview-card">
+                            <div className="overview-card-icon"><Icon name="users" size={26} /></div>
+                            <h4>Leadership</h4>
+                            <p>Representatives from each member organization guide the Alliance&apos;s strategic direction.</p>
+                        </div>
+                        <div className="overview-card">
+                            <div className="overview-card-icon"><Icon name="heart-handshake" size={26} /></div>
+                            <h4>Membership</h4>
+                            <p>Core government bodies and technical partners collaborate across sectors.</p>
+                        </div>
+                        <div className="overview-card">
+                            <div className="overview-card-icon"><Icon name="landmark" size={26} /></div>
+                            <h4>Steering Committee</h4>
+                            <p>Provides high-level strategic oversight and cross-sectoral accountability.</p>
+                        </div>
+                        <div className="overview-card">
+                            <div className="overview-card-icon"><Icon name="shield" size={26} /></div>
+                            <h4>Regulatory Monitoring</h4>
+                            <p>Compliance is tracked from factory production through to household consumption.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Alliance Leadership & Representatives */}
             {representatives.length > 0 && (
-                <section className="section">
+                <section className="section" style={{ background: 'var(--bg-off)' }}>
                     <div className="container">
                         <p className="section-eyebrow">People</p>
                         <h2 className="section-title">Alliance Leadership &amp; Representatives</h2>
@@ -621,69 +480,67 @@ export default async function GovernancePage() {
                                         .join('')
                                         .slice(0, 2)
                                     : '';
+                                const lastUpdated = rep.last_updated
+                                    ? new Date(rep.last_updated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                                    : null;
+
+                                const accordionItems = [
+                                    isAssigned && rep.bio
+                                        ? { key: 'bio', label: `About ${rep.name!.split(' ').slice(-1)[0]}`, content: <p>{rep.bio}</p> }
+                                        : null,
+                                    rep.organization_profile
+                                        ? { key: 'org', label: `About ${orgLabel}`, content: <p>{rep.organization_profile}</p> }
+                                        : null,
+                                    rep.key_contributions?.length > 0
+                                        ? {
+                                            key: 'contributions',
+                                            label: 'Key Responsibilities',
+                                            content: (
+                                                <ul className="rep-responsibility-list">
+                                                    {rep.key_contributions.map((item, i) => <li key={i}>{item}</li>)}
+                                                </ul>
+                                            ),
+                                        }
+                                        : null,
+                                ].filter(Boolean) as { key: string; label: string; content: React.ReactNode }[];
+
                                 return (
-                                    <div key={rep.id} className={`rep-row${isAssigned ? '' : ' rep-row-unassigned'}`}>
-                                        <div className="rep-row-media">
-                                            <div className={`rep-org-chip${orgLogo ? '' : ' no-logo'}`}>
-                                                {orgLogo && (
-                                                    <span className="rep-org-chip-logo">
-                                                        <Image src={orgLogo} alt="" width={28} height={28} style={{ objectFit: 'contain' }} />
-                                                    </span>
-                                                )}
-                                                <span className="rep-org-chip-text">{orgLabel}</span>
-                                            </div>
-                                            <div className={`rep-photo-wrap${isAssigned ? '' : ' rep-photo-wrap-placeholder'}`}>
-                                                {isAssigned && rep.photo ? (
-                                                    <Image
-                                                        src={getStrapiMediaUrl(rep.photo.url)}
-                                                        alt={rep.name!}
-                                                        fill
-                                                        sizes="240px"
-                                                        style={{ objectFit: 'cover' }}
-                                                    />
-                                                ) : isAssigned ? (
-                                                    <span className="rep-photo-fallback">{initials}</span>
-                                                ) : (
-                                                    <Icon name="users" size={56} />
-                                                )}
-                                            </div>
+                                    <div key={rep.id} className={`rep-card${isAssigned ? '' : ' rep-card-unassigned'}`}>
+                                        <div className={`rep-org-chip${orgLogo ? '' : ' no-logo'}`}>
+                                            {orgLogo && (
+                                                <span className="rep-org-chip-logo">
+                                                    <Image src={orgLogo} alt="" width={22} height={22} style={{ objectFit: 'contain' }} />
+                                                </span>
+                                            )}
+                                            <span className="rep-org-chip-text">{orgLabel}</span>
                                         </div>
-                                        <div className="rep-row-content">
-                                            {isAssigned ? (
-                                                <>
-                                                    <div className="rep-name">{rep.name}</div>
-                                                    <div className="rep-title">{rep.title}</div>
-                                                </>
+                                        <div className={`rep-photo-wrap${isAssigned ? '' : ' rep-photo-wrap-placeholder'}`}>
+                                            {isAssigned && rep.photo ? (
+                                                <Image
+                                                    src={getStrapiMediaUrl(rep.photo.url)}
+                                                    alt={rep.name!}
+                                                    fill
+                                                    sizes="112px"
+                                                    style={{ objectFit: 'cover' }}
+                                                />
+                                            ) : isAssigned ? (
+                                                <span className="rep-photo-fallback">{initials}</span>
                                             ) : (
-                                                <div className="rep-name rep-name-placeholder">Representative yet to be assigned</div>
-                                            )}
-                                            <div className="rep-org">{rep.organization_name}</div>
-
-                                            {isAssigned && rep.bio && (
-                                                <details className="rep-collapsible" open>
-                                                    <summary>About {rep.name!.split(' ').slice(-1)[0]}</summary>
-                                                    <p className="rep-collapsible-body">{rep.bio}</p>
-                                                </details>
-                                            )}
-
-                                            {rep.organization_profile && (
-                                                <details className="rep-collapsible">
-                                                    <summary>About {orgLabel}</summary>
-                                                    <p className="rep-collapsible-body">{rep.organization_profile}</p>
-                                                </details>
-                                            )}
-
-                                            {rep.key_contributions?.length > 0 && (
-                                                <details className="rep-collapsible" open={!isAssigned}>
-                                                    <summary>Key Responsibilities</summary>
-                                                    <ul className="rep-responsibility-list">
-                                                        {rep.key_contributions.map((item, i) => (
-                                                            <li key={i}>{item}</li>
-                                                        ))}
-                                                    </ul>
-                                                </details>
+                                                <Icon name="users" size={40} />
                                             )}
                                         </div>
+                                        {isAssigned ? (
+                                            <>
+                                                <div className="rep-name">{rep.name}</div>
+                                                <div className="rep-title">{rep.title}</div>
+                                            </>
+                                        ) : (
+                                            <div className="rep-name rep-name-placeholder">Representative yet to be assigned</div>
+                                        )}
+                                        <div className="rep-org">{rep.organization_name}</div>
+                                        {lastUpdated && <div className="rep-updated">Last updated: {lastUpdated}</div>}
+
+                                        {accordionItems.length > 0 && <GovernanceRepAccordion items={accordionItems} />}
                                     </div>
                                 );
                             })}
@@ -691,6 +548,47 @@ export default async function GovernancePage() {
                     </div>
                 </section>
             )}
+
+            {/* Full Membership Categories */}
+            <section className="section">
+                <div className="container">
+                    <div className="membership-section">
+                        <p className="section-eyebrow" style={{ textAlign: 'center' }}>Broad Participation</p>
+                        <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>Membership of the NFA</h2>
+
+                        <div className="membership-grid">
+                            <div className="member-cat-card">
+                                <h4><Icon name="landmark" size={18} /> Core Government Members</h4>
+                                <ul className="member-list">
+                                    {coreMembers.map((m) => {
+                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
+                                        return (
+                                            <li key={m.id}>
+                                                {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}
+                                                {m.name}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+                            <div className="member-cat-card">
+                                <h4><Icon name="heart-handshake" size={18} /> Development &amp; Technical Partners</h4>
+                                <ul className="member-list">
+                                    {stakeholderMembers.map((m) => {
+                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
+                                        return (
+                                            <li key={m.id}>
+                                                {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}
+                                                {m.name}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* Steering Committee Section */}
             <section className="section" style={{ background: 'var(--bg-off)', borderBottom: '1px solid var(--border-light)' }}>
@@ -718,14 +616,14 @@ export default async function GovernancePage() {
             </section>
 
 
-            {/* Regulatory Monitoring System */}
+            {/* Regulatory Monitoring Framework */}
             <section className="section" style={{ background: 'var(--bg-off)' }}>
                 <div className="container">
                     <p className="section-eyebrow" style={{ color: 'var(--wfp-blue)' }}>Compliance</p>
-                    <h2 className="section-title">Regulatory Monitoring System</h2>
-                    <p className="section-lead">According to the NFA Regulatory Framework, food fortification monitoring in Nigeria operates across three major levels to ensure product quality from production to consumption.</p>
-                    
-                    <div className="monitoring-grid">
+                    <h2 className="section-title">Regulatory Monitoring Framework</h2>
+                    <p className="section-lead">According to the NFA Regulatory Framework, food fortification monitoring in Nigeria progresses across three major levels to ensure product quality from production to consumption.</p>
+
+                    <div className="monitoring-flow">
                         <div className="monitor-card">
                             <div className="monitor-icon-box" style={{ background: '#f0f7ff', color: 'var(--wfp-blue)' }}>
                                 <Icon name="settings" size={32} />
@@ -733,6 +631,7 @@ export default async function GovernancePage() {
                             <h3>Factory Level</h3>
                             <p>Conducted by the <strong>Standards Organisation of Nigeria (SON)</strong> to ensure compliance during the production process.</p>
                         </div>
+                        <div className="monitor-arrow"><Icon name="arrow-right" size={28} /></div>
                         <div className="monitor-card">
                             <div className="monitor-icon-box" style={{ background: '#f5f3ff', color: 'var(--wfp-navy)' }}>
                                 <Icon name="truck" size={32} />
@@ -740,6 +639,7 @@ export default async function GovernancePage() {
                             <h3>Distribution & Retail</h3>
                             <p>Conducted by the <strong>National Agency for Food and Drug Administration and Control (NAFDAC)</strong> at market and port levels.</p>
                         </div>
+                        <div className="monitor-arrow"><Icon name="arrow-right" size={28} /></div>
                         <div className="monitor-card">
                             <div className="monitor-icon-box" style={{ background: '#f0fdf4', color: 'var(--wfp-green)' }}>
                                 <Icon name="home" size={32} />
@@ -751,7 +651,7 @@ export default async function GovernancePage() {
                 </div>
             </section>
 
-            {/* Visual Feature Section */}
+            {/* Visual Feature Section — Collaboration Infrastructure */}
             <section className="section" style={{ background: 'linear-gradient(135deg, var(--wfp-blue-light) 0%, rgba(0, 135, 81, 0.08) 100%)' }}>
                 <div className="container">
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
@@ -782,138 +682,6 @@ export default async function GovernancePage() {
                             />
                         </div>
                     </div>
-                </div>
-            </section>
-
-            {/* Approved Labs */}
-            <section className="section">
-                <div className="container">
-                    <p className="section-eyebrow">Quality Assurance</p>
-                    <h2 className="section-title">Approved Micronutrient Laboratories</h2>
-                    <p className="section-lead">
-                        The NFA, in collaboration with the Institute of Public Analysts of Nigeria (IPAN), recognizes accredited laboratories supporting micronutrient analysis and compliance monitoring.
-                    </p>
-
-                    <div className="labs-grid">
-                        {labs.map((lab) => (
-                            <div key={lab.id} className="lab-card">
-                                <div className="lab-icon">
-                                    <Icon name="microscope" size={24} />
-                                </div>
-                                <div className="lab-info">
-                                    <div className="lab-name">{lab.name}</div>
-                                    <div className="lab-location">
-                                        <Icon name="map-pin" size={14} />
-                                        {lab.location}
-                                    </div>
-                                    <div className="lab-contact">
-                                        <Icon name="phone" size={14} />
-                                        {lab.contact}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Biannual Meetings & Challenges */}
-            <section className="section" style={{ background: 'var(--bg-off)' }}>
-                <div className="container">
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
-
-                        {/* Meetings */}
-                        <div>
-                            <p className="section-eyebrow">Collaboration</p>
-                            <h2 style={{ marginBottom: '1.5rem' }}>NFA Biannual Meetings</h2>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                The Alliance convenes twice yearly to review programme implementation, discuss technical updates, strengthen coordination, review compliance, and agree on strategic actions.
-                            </p>
-
-                            <div className="meetings-card">
-                                <div className="meetings-row meetings-head">
-                                    <span>Year</span>
-                                    <span>June Host</span>
-                                    <span>December Host</span>
-                                </div>
-                                {meetings.map((m) => (
-                                    <div className="meetings-row" key={m.id}>
-                                        <span className="meetings-year">{m.year}</span>
-                                        <span className="host-pill">{m.june_host}</span>
-                                        <span className="host-pill">{m.december_host}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Challenges */}
-                        <div>
-                            <p className="section-eyebrow" style={{ color: 'var(--wfp-red, #dc2626)' }}>Transparency</p>
-                            <h2 style={{ marginBottom: '1.5rem' }}>Industry Challenges</h2>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                Identifying and addressing operational hurdles is critical. The NFA actively works to mitigate the following identified industry challenges:
-                            </p>
-                            <div className="challenges-groups">
-                                {CHALLENGE_CATEGORY_ORDER
-                                    .map((category) => ({ category, items: challenges.filter((c) => c.category === category) }))
-                                    .filter((group) => group.items.length > 0)
-                                    .map((group) => (
-                                        <div key={group.category} className="challenge-group">
-                                            <h4 className="challenge-group-title">
-                                                <Icon name={CHALLENGE_CATEGORY_ICONS[group.category] || 'settings'} size={18} />
-                                                {group.category}
-                                            </h4>
-                                            <div className="challenges-grid">
-                                                {group.items.map((challenge) => (
-                                                    <div key={challenge.id} className="challenge-item">
-                                                        <span>{challenge.text}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {/* Full Membership Categories */}
-                    <div className="membership-section">
-                        <p className="section-eyebrow" style={{ textAlign: 'center' }}>Broad Participation</p>
-                        <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>Membership of the NFA</h2>
-                        
-                        <div className="membership-grid">
-                            <div className="member-cat-card">
-                                <h4><Icon name="landmark" size={18} /> Core Members</h4>
-                                <ul className="member-list">
-                                    {coreMembers.map((m) => {
-                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
-                                        return (
-                                            <li key={m.id}>
-                                                {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}
-                                                {m.name}
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            </div>
-                            <div className="member-cat-card">
-                                <h4><Icon name="heart-handshake" size={18} /> Stakeholders</h4>
-                                <ul className="member-list">
-                                    {stakeholderMembers.map((m) => {
-                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
-                                        return (
-                                            <li key={m.id}>
-                                                {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}
-                                                {m.name}
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </section>
         </main>

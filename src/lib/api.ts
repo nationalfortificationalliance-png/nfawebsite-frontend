@@ -411,6 +411,19 @@ export async function getContactPage(): Promise<ContactPage | null> {
     return res?.data || null;
 }
 
+export interface PrivacyPolicy {
+    id: number;
+    documentId: string;
+    title: string;
+    last_updated?: string;
+    body: string;
+}
+
+export async function getPrivacyPolicy(): Promise<PrivacyPolicy | null> {
+    const res = await fetchAPI<{ data: PrivacyPolicy }>('/privacy-policy', {});
+    return res?.data || null;
+}
+
 export type GovernanceOrgKey = 'NAFDAC' | 'SON' | 'FMOHSW' | 'FCCPC' | 'Industry' | 'Development Partners';
 
 interface RawGovernanceRepresentative {
@@ -428,6 +441,7 @@ interface RawGovernanceRepresentative {
     key_contributions?: { text: string }[];
     order: number;
     is_active: boolean;
+    last_updated?: string;
 }
 
 export interface GovernanceRepresentative extends Omit<RawGovernanceRepresentative, 'key_contributions'> {
@@ -501,6 +515,29 @@ export async function getIndustryChallenges(): Promise<IndustryChallenge[]> {
     const res = await fetchAPI<{ data: IndustryChallenge[] }>('/industry-challenges', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
+        'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}
+
+export type GuidelineDocumentCategory = 'General' | 'Logistics' | 'Nutrition' | 'Reports' | 'Other';
+
+export interface GuidelineDocument {
+    id: number;
+    documentId: string;
+    title: string;
+    description?: string;
+    file?: StrapiImage;
+    category: GuidelineDocumentCategory;
+    published_date?: string;
+    file_size?: string;
+    is_featured: boolean;
+}
+
+export async function getGuidelineDocuments(): Promise<GuidelineDocument[]> {
+    const res = await fetchAPI<{ data: GuidelineDocument[] }>('/guideline-documents', {
+        'sort': 'published_date:desc',
+        'populate[0]': 'file',
         'pagination[pageSize]': '50',
     });
     return res?.data || [];

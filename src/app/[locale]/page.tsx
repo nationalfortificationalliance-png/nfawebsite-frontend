@@ -148,14 +148,14 @@ export default async function HomePage() {
         @keyframes marquee-events { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* ── Latest News Carousel ── */
-        .news-carousel-section { background: #fff; padding: var(--md-sys-spacing-24) 0; }
+        .news-carousel-section { background: #fff; padding: 4.5rem 0; }
         .news-carousel-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: var(--md-sys-spacing-12); flex-wrap: wrap; }
         .news-carousel-heading .section-eyebrow { margin-bottom: 0.25rem; }
         .news-carousel-heading p { max-width: 30rem; color: var(--text-secondary); margin: 0; }
         .news-carousel-block { width: 100%; }
 
         /* ── Programs ── Dark green section */
-        .programs-section { background: var(--wfp-navy); padding: var(--md-sys-spacing-24) 0; }
+        .programs-section { background: var(--wfp-navy); padding: 4.5rem 0; }
         .programs-section .section-eyebrow { color: var(--wfp-gold); }
         .programs-section .section-title { color: #fff; }
         .programs-section .section-lead { color: rgba(255,255,255,0.85); }
@@ -167,7 +167,7 @@ export default async function HomePage() {
         .program-desc { font-size: var(--md-sys-typescale-body-small-size); color: rgba(255,255,255,0.8); line-height: 1.65; }
 
         /* ── Recent Achievements - Modern Cards ── */
-        .how-section { background: var(--md-sys-color-surface-container); padding: var(--md-sys-spacing-24) 0; position: relative; overflow: hidden; }
+        .how-section { background: var(--md-sys-color-surface-container); padding: 4.5rem 0; position: relative; overflow: hidden; }
         .how-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(0, 154, 68, 0.08), transparent 60%); pointer-events: none; }
         .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.75rem; margin-top: var(--md-sys-spacing-16); position: relative; z-index: 2; }
         .how-step {
@@ -228,7 +228,7 @@ export default async function HomePage() {
         }
 
         /* ── About Split ── Dark green section */
-        .about-split { padding: var(--md-sys-spacing-24) 0; background: var(--wfp-navy); position: relative; }
+        .about-split { padding: 4.5rem 0; background: var(--wfp-navy); position: relative; }
         .about-split-inner { display: grid; grid-template-columns: 5fr 6fr; gap: var(--md-sys-spacing-16); align-items: center; max-width: var(--md-sys-container-max-width); margin: 0 auto; padding: 0 var(--md-sys-spacing-6); }
         .about-image-panel { position: relative; border-radius: var(--md-sys-shape-corner-extra-large); overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); aspect-ratio: 4/5; transform: translateY(calc(-1 * var(--md-sys-spacing-8))); }
         .about-content-panel { background: transparent; color: #fff; padding: 0; display: flex; flex-direction: column; justify-content: center; }
@@ -237,7 +237,7 @@ export default async function HomePage() {
         .about-content-panel .line { background: var(--wfp-gold); width: 60px; height: 4px; border-radius: var(--md-sys-shape-corner-extra-small); margin-bottom: var(--md-sys-spacing-8); }
 
         /* ── Quote ── Mature dark green section */
-        .quote-section { background: var(--wfp-navy); padding: var(--md-sys-spacing-20) 0; }
+        .quote-section { background: var(--wfp-navy); padding: 3.5rem 0; }
         .quote-wrap { max-width: 800px; margin: 0 auto; text-align: center; }
         .quote-mark { font-size: var(--md-sys-typescale-display-large-size); line-height: 0.5; color: rgba(255,255,255,.2); font-family: Georgia, serif; display: block; margin-bottom: var(--md-sys-spacing-6); }
         .quote-text { font-size: clamp(var(--md-sys-typescale-title-large-size), 2.5vw, var(--md-sys-typescale-headline-small-size)); color: var(--md-sys-color-on-secondary); font-weight: 400; line-height: 1.65; margin-bottom: var(--md-sys-spacing-8); font-style: italic; }
@@ -278,7 +278,7 @@ export default async function HomePage() {
         /* ── Upcoming Events ── Enhanced Professional Design */
         .upcoming-events-section {
           background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0f9ff 100%);
-          padding: 5rem 0;
+          padding: 4rem 0;
           position: relative;
           overflow: hidden;
         }
@@ -410,7 +410,7 @@ export default async function HomePage() {
         }
 
         /* ── CTA ── Dark green section */
-        .cta-full { position: relative; overflow: hidden; background: var(--wfp-navy); padding: var(--md-sys-spacing-24) 0; border-top: 1px solid rgba(255,255,255,0.1); }
+        .cta-full { position: relative; overflow: hidden; background: var(--wfp-navy); padding: 4.5rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
         .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(245, 158, 11, 0.05); top: -200px; right: -150px; }
         .cta-full-inner { max-width: 600px; }
         .cta-full h2 { color: #fff; margin-bottom: var(--md-sys-spacing-4); }
@@ -502,7 +502,7 @@ export default async function HomePage() {
             <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.9)', maxWidth: '650px', margin: '0 auto', lineHeight: 1.6 }}>Critical health statistics that demonstrate the urgent need for food fortification</p>
           </div>
           <AnimatedStats stats={displayStats} />
-          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', textAlign: 'center', maxWidth: '800px', margin: '2rem auto 0', lineHeight: 1.6 }}>{statsSource}</p>
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.65)', textAlign: 'center', maxWidth: '800px', margin: '2rem auto 0', lineHeight: 1.6 }}>{statsSource}</p>
         </div>
       </section>
 
@@ -682,7 +682,7 @@ export default async function HomePage() {
             <p>Whether you are a food processor seeking NAFDAC certification, a development partner, or a researcher — NFA has resources and pathways for you.</p>
             <div className="cta-full-actions">
               <Link href="/contact" className="btn btn-primary btn-lg">Contact NFA →</Link>
-              <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">📄 View Guidelines</a>
+              <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">📄 Resource Library</a>
             </div>
           </div>
         </div>

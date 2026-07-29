@@ -6,6 +6,10 @@ import { useParams } from 'next/navigation';
 import { getStrapiMediaUrl, NewsEvent } from '@/lib/api';
 import Icon from './Icon';
 
+const CATEGORY_LABELS: Record<string, string> = {
+  news: 'News', event: 'Event', communique: 'Communiqué', report: 'Report',
+};
+
 interface NewsCarouselProps {
   news: NewsEvent[];
   autoScroll?: boolean;
@@ -117,7 +121,7 @@ export default function NewsCarousel({
         .news-card-image-wrapper {
           position: relative;
           width: 100%;
-          height: 260px;
+          aspect-ratio: 16/10;
           background: var(--wfp-navy);
           overflow: hidden;
         }
@@ -326,10 +330,6 @@ export default function NewsCarousel({
             flex: 0 0 100%;
           }
 
-          .news-card-image-wrapper {
-            height: 220px;
-          }
-
           .carousel-nav {
             display: none;
           }
@@ -402,16 +402,16 @@ export default function NewsCarousel({
                     sizes="(max-width: 640px) 100vw, 50vw"
                   />
                   <div className="news-card-badge">
-                    {item.category}
+                    {CATEGORY_LABELS[item.category] || item.category}
                   </div>
                 </div>
 
                 <div className="news-card-content">
                   <div className="news-card-date">
                     <Icon name="calendar" size={14} />
-                    {new Date(item.date || item.publishedAt).toLocaleDateString('en-US', {
-                      month: 'short',
+                    {new Date(item.date || item.publishedAt).toLocaleDateString('en-GB', {
                       day: 'numeric',
+                      month: 'short',
                       year: 'numeric'
                     })}
                   </div>

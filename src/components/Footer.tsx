@@ -103,9 +103,10 @@ export default function Footer({ settings, secretariatPhones, contact }: FooterP
                 <h4>Links</h4>
                 <ul>
                   <li><Link href="/news?category=communique">NFA Meeting Communiques</Link></li>
-                  <li><a href="https://www.nafdac.gov.ng" target="_blank" rel="noopener noreferrer">NAFDAC Website</a></li>
-                  <li><a href="https://fccpc.gov.ng" target="_blank" rel="noopener noreferrer">FCCPC Website</a></li>
-                  <li><a href="https://son.gov.ng" target="_blank" rel="noopener noreferrer">SON Website</a></li>
+                  <li><a href="https://www.nafdac.gov.ng" target="_blank" rel="noopener noreferrer" aria-label="NAFDAC Website (opens in a new tab)">NAFDAC Website</a></li>
+                  <li><a href="https://fccpc.gov.ng" target="_blank" rel="noopener noreferrer" aria-label="FCCPC Website (opens in a new tab)">FCCPC Website</a></li>
+                  <li><a href="https://son.gov.ng" target="_blank" rel="noopener noreferrer" aria-label="SON Website (opens in a new tab)">SON Website</a></li>
+                  <li><a href="https://health.gov.ng/" target="_blank" rel="noopener noreferrer" aria-label="Federal Ministry of Health and Social Welfare Website (opens in a new tab)">FMoH&amp;SW Website</a></li>
                 </ul>
               </div>
 
@@ -142,12 +143,9 @@ export default function Footer({ settings, secretariatPhones, contact }: FooterP
           <div className="footer-bottom">
             <div>
               <span>© {year} National Fortification Alliance. All rights reserved.</span>
-              <div style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)' }}>
-                Privacy Policy and accessibility statements to be developed and approved.
-              </div>
             </div>
             <span>
-              <Link href="/about">About</Link> &nbsp;·&nbsp; <Link href="/contact">Contact</Link>
+              <Link href="/about">About</Link> &nbsp;·&nbsp; <Link href="/contact">Contact</Link> &nbsp;·&nbsp; <Link href="/privacy-policy">Privacy Policy</Link>
             </span>
           </div>
         </div>
