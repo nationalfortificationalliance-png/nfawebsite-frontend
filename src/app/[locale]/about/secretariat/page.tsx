@@ -3,9 +3,37 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Icon from '@/components/Icon';
 import { getTeamMembers, getStrapiMediaUrl, type TeamMember } from '@/lib/api';
+import FunctionsAccordion from '@/components/FunctionsAccordion';
 
 const SECRETARIAT_EMAIL = 'secretariat@nationalfortificationalliance.org.ng';
 const SECRETARIAT_HERO_IMAGE = getStrapiMediaUrl('/uploads/6_B5_A4269_1_2_cbab97361b.jpg');
+
+const CORE_FUNCTIONS = [
+    {
+        title: 'Coordinating Alliance Meetings',
+        body: 'The Secretariat plans, organizes, and coordinates meetings of the National Fortification Alliance, the Steering Committee, technical working groups, and other stakeholder engagements. It prepares meeting agendas, facilitates deliberations, records proceedings, and follows up on agreed action points to ensure timely implementation.',
+    },
+    {
+        title: 'Providing Technical and Administrative Support',
+        body: 'The Secretariat provides continuous technical and administrative support to the Alliance by coordinating programmes, supporting committee activities, managing official correspondence, preparing technical documents, and facilitating collaboration among member institutions and development partners.',
+    },
+    {
+        title: 'Managing Stakeholder Communication',
+        body: 'The Secretariat serves as the primary communication hub for the Alliance, maintaining regular engagement with government ministries, regulatory agencies, industry associations, development partners, academia, civil society organizations, and other stakeholders. It supports information sharing, public awareness initiatives, and dissemination of technical guidance and official communications.',
+    },
+    {
+        title: 'Monitoring Implementation of Alliance Decisions',
+        body: 'The Secretariat tracks the implementation of resolutions, recommendations, and action plans approved by the Alliance and its committees. It monitors progress across member institutions, facilitates follow-up activities, and provides periodic updates to support accountability and continuous programme improvement.',
+    },
+    {
+        title: 'Maintaining Records and Documentation',
+        body: 'The Secretariat is responsible for preserving institutional memory through the maintenance of meeting minutes, communiqués, policy documents, technical reports, guidelines, correspondence, and other official records. It ensures that documentation is organized, accessible, and available to support decision-making and knowledge management.',
+    },
+    {
+        title: 'Supporting Policy Implementation and Reporting',
+        body: 'The Secretariat supports the implementation of national food fortification policies, standards, regulations, and strategic initiatives by coordinating reporting activities, compiling programme data, preparing progress reports, and providing evidence to inform policy review, programme evaluation, and strategic decision-making.',
+    },
+];
 
 export const metadata: Metadata = {
     title: 'NFA Secretariat | National Fortification Alliance Nigeria',
@@ -219,29 +247,55 @@ export default async function SecretariatPage() {
                     padding: 5rem 0;
                 }
 
-                .functions-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                    gap: 2rem;
-                }
-
-                .function-card {
+                .functions-accordion {
+                    max-width: 820px;
+                    margin: 0 auto;
                     background: #fff;
                     border: 1px solid var(--border-light);
                     border-radius: var(--radius-lg);
-                    padding: 2rem;
+                    overflow: hidden;
                 }
 
-                .function-card h3 {
-                    font-size: 1.1rem;
-                    margin-bottom: 0.75rem;
+                .functions-item {
+                    border-bottom: 1px solid var(--border-light);
+                }
+
+                .functions-item:last-child {
+                    border-bottom: none;
+                }
+
+                .functions-summary {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    cursor: pointer;
+                    background: none;
+                    border: none;
+                    padding: 1.5rem 2rem;
+                    text-align: left;
+                    font-size: 1.05rem;
+                    font-weight: 700;
                     color: var(--text-primary);
                 }
 
-                .function-card p {
-                    font-size: 0.9rem;
-                    line-height: 1.7;
+                .functions-item.open .functions-summary {
+                    color: var(--wfp-blue);
+                }
+
+                .functions-icon {
+                    font-size: 1.3rem;
+                    font-weight: 700;
+                    color: var(--wfp-blue);
+                    flex-shrink: 0;
+                }
+
+                .functions-body {
+                    font-size: 0.95rem;
+                    line-height: 1.75;
                     color: var(--text-secondary);
+                    padding: 0 2rem 1.5rem;
                 }
 
                 .cta-section {
@@ -396,60 +450,7 @@ export default async function SecretariatPage() {
                         support required to facilitate collaboration among member institutions, coordinate national food fortification
                         activities, and monitor the implementation of the Alliance&apos;s strategic priorities.
                     </p>
-                    <div className="functions-grid">
-                        <div className="function-card">
-                            <h3>Coordinating Alliance Meetings</h3>
-                            <p>
-                                The Secretariat plans, organizes, and coordinates meetings of the National Fortification Alliance, the
-                                Steering Committee, technical working groups, and other stakeholder engagements. It prepares meeting
-                                agendas, facilitates deliberations, records proceedings, and follows up on agreed action points to ensure
-                                timely implementation.
-                            </p>
-                        </div>
-                        <div className="function-card">
-                            <h3>Providing Technical and Administrative Support</h3>
-                            <p>
-                                The Secretariat provides continuous technical and administrative support to the Alliance by coordinating
-                                programmes, supporting committee activities, managing official correspondence, preparing technical
-                                documents, and facilitating collaboration among member institutions and development partners.
-                            </p>
-                        </div>
-                        <div className="function-card">
-                            <h3>Managing Stakeholder Communication</h3>
-                            <p>
-                                The Secretariat serves as the primary communication hub for the Alliance, maintaining regular engagement
-                                with government ministries, regulatory agencies, industry associations, development partners, academia,
-                                civil society organizations, and other stakeholders. It supports information sharing, public awareness
-                                initiatives, and dissemination of technical guidance and official communications.
-                            </p>
-                        </div>
-                        <div className="function-card">
-                            <h3>Monitoring Implementation of Alliance Decisions</h3>
-                            <p>
-                                The Secretariat tracks the implementation of resolutions, recommendations, and action plans approved by
-                                the Alliance and its committees. It monitors progress across member institutions, facilitates follow-up
-                                activities, and provides periodic updates to support accountability and continuous programme improvement.
-                            </p>
-                        </div>
-                        <div className="function-card">
-                            <h3>Maintaining Records and Documentation</h3>
-                            <p>
-                                The Secretariat is responsible for preserving institutional memory through the maintenance of meeting
-                                minutes, communiqués, policy documents, technical reports, guidelines, correspondence, and other official
-                                records. It ensures that documentation is organized, accessible, and available to support decision-making
-                                and knowledge management.
-                            </p>
-                        </div>
-                        <div className="function-card">
-                            <h3>Supporting Policy Implementation and Reporting</h3>
-                            <p>
-                                The Secretariat supports the implementation of national food fortification policies, standards,
-                                regulations, and strategic initiatives by coordinating reporting activities, compiling programme data,
-                                preparing progress reports, and providing evidence to inform policy review, programme evaluation, and
-                                strategic decision-making.
-                            </p>
-                        </div>
-                    </div>
+                    <FunctionsAccordion items={CORE_FUNCTIONS} />
                 </div>
             </div>
 
