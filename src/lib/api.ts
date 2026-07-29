@@ -329,23 +329,6 @@ export async function getStats(): Promise<Stat[]> {
     return res?.data || [];
 }
 
-export interface PageSetting {
-    id: number;
-    documentId: string;
-    page_key: string;
-    hero_image?: StrapiImage;
-    hero_title?: string;
-    hero_description?: string;
-}
-
-export async function getPageSetting(pageKey: string): Promise<PageSetting | null> {
-    const res = await fetchAPI<{ data: PageSetting[] }>('/page-settings', {
-        'filters[page_key][$eq]': pageKey,
-        'populate': 'hero_image',
-    });
-    return res?.data?.[0] || null;
-}
-
 export interface EmailContact {
     label: string;
     email: string;
@@ -489,6 +472,28 @@ export async function getComplianceReports(): Promise<ComplianceReport[]> {
     const res = await fetchAPI<{ data: ComplianceReport[] }>('/compliance-reports', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:desc',
+        'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}
+
+export interface Initiative {
+    id: number;
+    documentId: string;
+    title: string;
+    icon: string;
+    description: string;
+    highlights?: { id: number; text: string }[];
+    category: string;
+    status: string;
+    order: number;
+}
+
+export async function getInitiatives(): Promise<Initiative[]> {
+    const res = await fetchAPI<{ data: Initiative[] }>('/projects', {
+        'filters[is_active][$eq]': 'true',
+        'sort': 'order:asc',
+        'populate[0]': 'highlights',
         'pagination[pageSize]': '50',
     });
     return res?.data || [];

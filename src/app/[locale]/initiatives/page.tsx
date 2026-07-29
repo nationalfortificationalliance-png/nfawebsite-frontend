@@ -2,13 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Icon, { IconName } from '@/components/Icon';
+import { getInitiatives } from '@/lib/api';
 
 export const metadata: Metadata = {
     title: 'Initiatives & Priority Areas | National Fortification Alliance',
     description: 'Explore the current projects and strategic priority areas of the National Fortification Alliance Nigeria.',
 };
 
-const INITIATIVES: {
+export const revalidate = 60;
+
+const INITIATIVES_FALLBACK: {
     title: string;
     icon: IconName;
     description: string;
@@ -81,7 +84,17 @@ const HOW_IT_WORKS = [
     },
 ];
 
-export default function InitiativesPage() {
+export default async function InitiativesPage() {
+    const initiatives = await getInitiatives();
+    const displayInitiatives = initiatives.length > 0
+        ? initiatives.map((initiative) => ({
+            title: initiative.title,
+            icon: (initiative.icon || 'trending-up') as IconName,
+            description: initiative.description,
+            bullets: (initiative.highlights || []).map((h) => h.text),
+        }))
+        : INITIATIVES_FALLBACK;
+
     return (
         <main className="initiatives-page">
             <style>{`
@@ -335,7 +348,7 @@ export default function InitiativesPage() {
                     <h2 className="section-title">Major initiatives</h2>
                     <p className="section-lead">These initiatives illustrate how NFA is delivering measurable improvements across production, regulation, quality assurance and consumer protection.</p>
                     <div className="projects-grid" style={{ marginTop: '2rem' }}>
-                        {INITIATIVES.map((initiative) => (
+                        {displayInitiatives.map((initiative) => (
                             <div key={initiative.title} className="project-card">
                                 <div className="project-icon"><Icon name={initiative.icon} size={28} /></div>
                                 <h3>{initiative.title}</h3>
