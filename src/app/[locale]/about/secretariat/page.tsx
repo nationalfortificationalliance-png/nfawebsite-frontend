@@ -256,12 +256,12 @@ export default async function SecretariatPage() {
 
                     <div className="members-grid">
                         {(useFallback ? FALLBACK_SECRETARIAT : displayMembers).map((m, index) => {
-                            /* const TEAM_FALLBACK_IMAGES = ['/team-1.png', '/team-2.png', '/team-3.png'];
+                            const TEAM_FALLBACK_IMAGES = ['/team-1.png', '/team-2.png', '/team-3.png'];
                             const fallbackImage = TEAM_FALLBACK_IMAGES[index % TEAM_FALLBACK_IMAGES.length];
-                            const imageUrl = m.image?.url ? getStrapiMediaUrl(m.image.url) : fallbackImage; */
+                            const imageUrl = m.image?.url ? getStrapiMediaUrl(m.image.url) : fallbackImage;
                             return (
                             <div key={m.id} className="member-card">
-                                {/* <div className="member-image-wrap">
+                                <div className="member-image-wrap">
                                     <Image
                                         src={imageUrl}
                                         alt={m.name}
@@ -269,7 +269,7 @@ export default async function SecretariatPage() {
                                         sizes="(max-width: 640px) 50vw, 280px"
                                         style={{ objectFit: 'cover' }}
                                     />
-                                </div> */}
+                                </div>
                                 <div className="member-info">
                                     <div className="member-org">{m.organization || 'National Fortification Alliance'}</div>
                                     <h3 className="member-name">{m.name}</h3>
