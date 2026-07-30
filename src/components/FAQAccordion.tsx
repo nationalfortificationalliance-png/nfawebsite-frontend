@@ -119,6 +119,9 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
     const openFaq = (id: number) => {
         const faq = faqs.find((f) => f.id === id);
         if (faq) incrementFaqView(faq.documentId);
+        // Clear any active search filter first — otherwise the target FAQ
+        // may not be in the filtered list and this would silently no-op.
+        setQuery('');
         setOpenId(id);
     };
 
