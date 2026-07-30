@@ -234,7 +234,7 @@ export default async function ResourcesPage() {
             </div>
 
             {/* Approved Labs */}
-            <section className="section">
+            <section className="section" id="laboratories" style={{ scrollMarginTop: '100px' }}>
                 <div className="container">
                     <p className="section-eyebrow">Quality Assurance</p>
                     <h2 className="section-title">Approved Micronutrient Laboratories</h2>
@@ -297,7 +297,7 @@ export default async function ResourcesPage() {
             </section>
 
             {/* Guideline Documents */}
-            <section className="section">
+            <section className="section" id="guidelines" style={{ scrollMarginTop: '100px' }}>
                 <div className="container">
                     <p className="section-eyebrow">Downloads</p>
                     <h2 className="section-title">Guideline Documents</h2>

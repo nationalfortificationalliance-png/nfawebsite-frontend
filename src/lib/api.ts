@@ -168,6 +168,8 @@ export interface FAQ {
     category?: string;
     order: number;
     is_active: boolean;
+    updatedAt?: string;
+    view_count?: number;
 }
 
 // API functions
@@ -309,6 +311,12 @@ export async function getFAQs(category?: string): Promise<FAQ[]> {
     }
     const res = await fetchAPI<{ data: FAQ[] }>('/faqs', params);
     return res?.data || [];
+}
+
+// Fire-and-forget: increments an FAQ's view counter. Silently ignored if the
+// backend hasn't been redeployed with the /faqs/:id/view route yet.
+export function incrementFaqView(documentId: string): void {
+    fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/faqs/${documentId}/view`, { method: 'POST' }).catch(() => {});
 }
 
 export async function getFeaturedQuote(): Promise<Quote | null> {
