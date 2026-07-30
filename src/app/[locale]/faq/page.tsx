@@ -101,34 +101,32 @@ export default async function FAQPage() {
                 .faq-stat-value { font-size: 1.75rem; font-weight: 800; color: var(--wfp-blue); line-height: 1.2; }
                 .faq-stat-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; }
 
-                .cta-box {
-                    background: var(--wfp-blue-light);
-                    border: 2px solid var(--wfp-blue);
-                    border-radius: var(--radius-lg);
-                    padding: 3rem;
-                    text-align: center;
+                .faq-end-section {
                     margin-top: 4rem;
+                    padding-top: 3rem;
+                    border-top: 1px solid var(--border);
+                    text-align: center;
                 }
-                .cta-box h3 {
-                    color: var(--wfp-navy);
-                    margin-bottom: 1rem;
+                .faq-end-section + .faq-end-section {
+                    margin-top: 3rem;
                 }
-                .cta-box p {
+                .faq-end-section h3 {
+                    color: var(--text-primary);
+                    margin-bottom: 0.5rem;
+                }
+                .faq-end-section > p {
                     color: var(--text-secondary);
-                    margin-bottom: 2rem;
+                    margin-bottom: 2.25rem;
                 }
                 .cta-options {
-                    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-                    gap: 1rem; margin: 0 0 2rem; text-align: left;
+                    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1.75rem; margin: 0 auto 2.5rem; max-width: 760px; text-align: left;
                 }
                 .cta-option {
                     display: flex; align-items: flex-start; gap: 0.65rem;
-                    background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
-                    padding: 1rem; transition: all .2s;
                 }
-                .cta-option:hover { border-color: var(--wfp-blue); box-shadow: var(--shadow-sm); }
                 .cta-option-icon { color: var(--wfp-blue); flex-shrink: 0; margin-top: 0.15rem; }
-                .cta-option-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); }
+                .cta-option-label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
                 .cta-option-value { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); word-break: break-word; }
                 .cta-option-value a { color: inherit; }
                 .cta-option-value a:hover { color: var(--wfp-blue); }
@@ -189,7 +187,7 @@ export default async function FAQPage() {
                     <FAQAccordion faqs={displayFAQs} />
 
                     {/* CTA */}
-                    <div className="cta-box">
+                    <div className="faq-end-section">
                         <h3>Still have questions?</h3>
                         <p>Our team is here to help. Reach out to us for more information.</p>
 
@@ -234,9 +232,9 @@ export default async function FAQPage() {
                     </div>
 
                     {/* Didn't find your answer? */}
-                    <div className="cta-box" style={{ marginTop: '2rem', textAlign: 'left' }}>
-                        <h3 style={{ textAlign: 'center' }}>Didn&apos;t find your answer?</h3>
-                        <p style={{ textAlign: 'center' }}>Send us your question directly and the Secretariat will respond by email.</p>
+                    <div className="faq-end-section">
+                        <h3>Didn&apos;t find your answer?</h3>
+                        <p>Send us your question directly and the Secretariat will respond by email.</p>
                         <FAQAskForm />
                     </div>
                 </div>

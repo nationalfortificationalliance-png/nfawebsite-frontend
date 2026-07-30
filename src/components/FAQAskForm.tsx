@@ -42,7 +42,7 @@ export default function FAQAskForm() {
     return (
         <form className="faq-ask-form" onSubmit={handleSubmit}>
             <style>{`
-                .faq-ask-form { text-align: left; margin-top: 2rem; }
+                .faq-ask-form { text-align: left; max-width: 560px; margin: 0 auto; }
                 .faq-ask-form .form-grid { margin-bottom: 1rem; }
             `}</style>
             {status === 'success' && (

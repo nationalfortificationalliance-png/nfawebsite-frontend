@@ -184,8 +184,8 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                                     {related.map((r) => (
                                         <li key={r.id}>
                                             <button type="button" onClick={() => openFaq(r.id)}>
-                                                {r.question}
-                                                <Icon name="arrow-right" size={13} />
+                                                <span>{r.question}</span>
+                                                <Icon name="arrow-right" size={12} />
                                             </button>
                                         </li>
                                     ))}
@@ -201,10 +201,22 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
     return (
         <>
             <style>{`
-                .faq-search-wrap { position: relative; margin-bottom: 1.5rem; }
-                .faq-search-icon { position: absolute; left: 1.35rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+                .faq-search-wrap { margin-bottom: 1.5rem; }
+                .faq-search-box { position: relative; }
+                .faq-search-icon {
+                    position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%);
+                    display: flex; align-items: center; justify-content: center;
+                    width: 34px; height: 34px; border-radius: 50%;
+                    background: var(--wfp-blue-light); color: var(--wfp-blue);
+                    pointer-events: none; transition: background-color .2s, color .2s;
+                }
+                .faq-search-input:focus-visible ~ .faq-search-icon,
+                .faq-search-input:focus ~ .faq-search-icon {
+                    background: var(--wfp-blue); color: #fff;
+                }
                 .faq-search-input {
-                    width: 100%; padding: 1.05rem 3rem 1.05rem 3.5rem; font-size: 1.05rem;
+                    width: 100%; padding: 1.05rem 3rem 1.05rem 3.6rem; font-size: 1.05rem;
+                    line-height: 1.4;
                     font-family: inherit; color: var(--text-primary);
                     background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-full);
                     box-shadow: var(--shadow-sm);
@@ -221,7 +233,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                     position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
                     width: 26px; height: 26px; border-radius: 50%; border: none;
                     background: var(--bg-off); color: var(--text-secondary);
-                    font-size: 1.2rem; line-height: 1; cursor: pointer;
+                    cursor: pointer;
                     display: flex; align-items: center; justify-content: center;
                     transition: all .2s;
                 }
@@ -249,36 +261,44 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                     font-size: 1.05rem; font-weight: 700; color: var(--wfp-blue); margin-bottom: 0.9rem;
                 }
                 .faq-most-viewed ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
-                .faq-most-viewed button, .faq-related button {
+                .faq-most-viewed button {
                     display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
                     width: 100%; text-align: left; background: none; border: none; cursor: pointer;
                     padding: 0.5rem 0; color: var(--text-primary); font-size: 0.92rem; font-weight: 600;
                 }
-                .faq-most-viewed button:hover, .faq-related button:hover { color: var(--wfp-blue); }
-                .faq-most-viewed button:focus-visible, .faq-related button:focus-visible { outline: 2px solid var(--wfp-blue); outline-offset: 2px; }
+                .faq-most-viewed button:hover { color: var(--wfp-blue); }
+                .faq-most-viewed button:focus-visible, .faq-related button:focus-visible { outline: 2px solid var(--wfp-blue); outline-offset: 2px; border-radius: 4px; }
 
                 .faq-related {
-                    margin-top: 1.25rem; padding-top: 1.1rem; border-top: 1px dashed var(--border);
+                    margin-top: 1rem; padding-top: 0.9rem; border-top: 1px dashed var(--border);
                 }
-                .faq-related-label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-secondary); margin-bottom: 0.4rem; }
-                .faq-related ul { list-style: none; margin: 0; padding: 0; }
-                .faq-related li { border-bottom: 1px solid var(--border); }
-                .faq-related li:last-child { border-bottom: none; }
+                .faq-related-label { display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.55rem; }
+                .faq-related ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+                .faq-related li { border-bottom: none; }
+                .faq-related button {
+                    display: inline-flex; align-items: center; gap: 0.35rem;
+                    background: var(--bg-off); border: 1px solid transparent; border-radius: 100px;
+                    padding: 0.4rem 0.8rem; cursor: pointer;
+                    color: var(--text-secondary); font-size: 0.82rem; font-weight: 600;
+                    transition: all .2s; max-width: 100%;
+                }
+                .faq-related button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+                .faq-related button:hover { background: var(--wfp-blue-light); color: var(--wfp-blue); }
 
                 .faq-cat-nav {
                     position: sticky; top: 0; z-index: 5; background: #fff;
-                    display: flex; flex-wrap: wrap; gap: 0.5rem;
-                    padding: 1rem 0; margin-bottom: 1rem;
+                    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.5rem;
+                    padding: 0.85rem 0; margin-bottom: 1.5rem;
                     border-bottom: 1px solid var(--border);
                 }
                 .faq-cat-nav-link {
-                    display: inline-flex; align-items: center; gap: 0.4rem;
-                    padding: 0.5rem 0.9rem; border-radius: 100px;
-                    background: var(--bg-off); color: var(--text-primary);
-                    font-size: 0.88rem; font-weight: 600; white-space: nowrap;
-                    border: 1px solid transparent; transition: all .2s;
+                    display: inline-flex; align-items: center;
+                    color: var(--text-secondary);
+                    font-size: 0.86rem; font-weight: 600; white-space: nowrap;
+                    padding: 0.2rem 0; border-bottom: 2px solid transparent;
+                    transition: color .2s, border-color .2s;
                 }
-                .faq-cat-nav-link:hover { background: var(--wfp-blue-light); border-color: var(--wfp-blue-light); }
+                .faq-cat-nav-link:hover { color: var(--wfp-blue); }
                 .faq-cat-nav-link:focus-visible { outline: 2px solid var(--wfp-blue); outline-offset: 2px; }
 
                 .faq-category { margin-bottom: 3.5rem; scroll-margin-top: 170px; }
@@ -352,20 +372,22 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
             `}</style>
 
             <div className="faq-search-wrap">
-                <Icon name="search" size={18} className="faq-search-icon" />
-                <input
-                    type="text"
-                    className="faq-search-input"
-                    placeholder="Search FAQs — e.g. fortification, certification, premix, standards, laboratory..."
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    aria-label="Search frequently asked questions"
-                />
-                {isSearching && (
-                    <button type="button" className="faq-search-clear" onClick={() => setQuery('')} aria-label="Clear search">
-                        &times;
-                    </button>
-                )}
+                <div className="faq-search-box">
+                    <input
+                        type="text"
+                        className="faq-search-input"
+                        placeholder="Search FAQs — e.g. fortification, certification, premix, standards, laboratory..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        aria-label="Search frequently asked questions"
+                    />
+                    <Icon name="search" size={16} className="faq-search-icon" />
+                    {isSearching && (
+                        <button type="button" className="faq-search-clear" onClick={() => setQuery('')} aria-label="Clear search">
+                            <Icon name="x" size={14} />
+                        </button>
+                    )}
+                </div>
                 {isSearching && (
                     <p className="faq-search-hint">
                         {filteredFaqs.length} result{filteredFaqs.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
@@ -405,7 +427,6 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                         const meta = CATEGORY_META[category] || { icon: 'help-circle', slug: slugify(category) };
                         return (
                             <a key={category} href={`#faq-${meta.slug}`} className="faq-cat-nav-link">
-                                <Icon name={meta.icon} size={15} />
                                 {category}
                             </a>
                         );
@@ -431,10 +452,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                     const links = CATEGORY_QUICK_LINKS[category] || [];
                     return (
                         <div key={category} id={`faq-${meta.slug}`} className="faq-category">
-                            <h2 className="category-title">
-                                <Icon name={meta.icon} size={22} />
-                                {category}
-                            </h2>
+                            <h2 className="category-title">{category}</h2>
                             {links.length > 0 && (
                                 <div className="faq-quick-links">
                                     {links.map((link) => {
