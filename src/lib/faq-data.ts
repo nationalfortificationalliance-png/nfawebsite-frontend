@@ -28,7 +28,7 @@ export interface QuickLink {
 }
 
 const LINK = {
-    guidelines: { label: 'View Technical Guidelines', href: '/resources#guidelines', icon: 'file-text' as IconName },
+    guidelines: { label: 'View Technical Guidelines', href: 'https://nafdac.gov.ng/regulatory-resources/guidelines/', icon: 'file-text' as IconName },
     labs: { label: 'Find Approved Laboratories', href: '/resources#laboratories', icon: 'microscope' as IconName },
     partner: { label: 'Become a Partner', href: '/partners', icon: 'handshake' as IconName },
     contact: { label: 'Contact the Secretariat', href: '/contact', icon: 'mail' as IconName },

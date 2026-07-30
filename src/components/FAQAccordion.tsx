@@ -201,17 +201,33 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
     return (
         <>
             <style>{`
-                .faq-search-wrap { position: relative; margin-bottom: 2rem; }
-                .faq-search-icon { position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none; }
+                .faq-search-wrap { position: relative; margin-bottom: 1.5rem; }
+                .faq-search-icon { position: absolute; left: 1.35rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
                 .faq-search-input {
-                    width: 100%; padding: 1rem 1.25rem 1rem 3rem; font-size: 1.05rem;
-                    border: 2px solid var(--border); border-radius: var(--radius-lg);
+                    width: 100%; padding: 1.05rem 3rem 1.05rem 3.5rem; font-size: 1.05rem;
+                    font-family: inherit; color: var(--text-primary);
+                    background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-full);
+                    box-shadow: var(--shadow-sm);
                     transition: border-color .2s, box-shadow .2s;
+                    -webkit-appearance: none; appearance: none;
                 }
-                .faq-search-input:focus-visible {
-                    outline: none; border-color: var(--wfp-blue); box-shadow: 0 0 0 4px rgba(0,82,204,0.12);
+                .faq-search-input::placeholder { color: var(--text-muted); }
+                .faq-search-input:hover { border-color: #cbd5e1; }
+                .faq-search-input:focus-visible, .faq-search-input:focus {
+                    outline: none; border-color: var(--wfp-blue);
+                    box-shadow: 0 0 0 4px var(--wfp-blue-light);
                 }
-                .faq-search-hint { margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); }
+                .faq-search-clear {
+                    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+                    width: 26px; height: 26px; border-radius: 50%; border: none;
+                    background: var(--bg-off); color: var(--text-secondary);
+                    font-size: 1.2rem; line-height: 1; cursor: pointer;
+                    display: flex; align-items: center; justify-content: center;
+                    transition: all .2s;
+                }
+                .faq-search-clear:hover { background: var(--wfp-blue-light); color: var(--wfp-blue); }
+                .faq-search-clear:focus-visible { outline: 2px solid var(--wfp-blue); outline-offset: 1px; }
+                .faq-search-hint { margin-top: 0.75rem; font-size: 0.88rem; color: var(--text-secondary); }
                 .faq-popular-terms {
                     display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
                     margin-top: 0.85rem; font-size: 0.85rem; color: var(--text-secondary);
@@ -338,13 +354,18 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
             <div className="faq-search-wrap">
                 <Icon name="search" size={18} className="faq-search-icon" />
                 <input
-                    type="search"
+                    type="text"
                     className="faq-search-input"
                     placeholder="Search FAQs — e.g. fortification, certification, premix, standards, laboratory..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     aria-label="Search frequently asked questions"
                 />
+                {isSearching && (
+                    <button type="button" className="faq-search-clear" onClick={() => setQuery('')} aria-label="Clear search">
+                        &times;
+                    </button>
+                )}
                 {isSearching && (
                     <p className="faq-search-hint">
                         {filteredFaqs.length} result{filteredFaqs.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
@@ -416,13 +437,21 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                             </h2>
                             {links.length > 0 && (
                                 <div className="faq-quick-links">
-                                    {links.map((link) => (
-                                        <Link key={link.href} href={link.href} className="faq-quick-link">
-                                            <Icon name={link.icon} size={14} />
-                                            {link.label}
-                                            <Icon name="arrow-right" size={12} />
-                                        </Link>
-                                    ))}
+                                    {links.map((link) => {
+                                        const isExternal = /^https?:\/\//.test(link.href);
+                                        return (
+                                            <Link
+                                                key={link.href}
+                                                href={link.href}
+                                                className="faq-quick-link"
+                                                {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                            >
+                                                <Icon name={link.icon} size={14} />
+                                                {link.label}
+                                                <Icon name="arrow-right" size={12} />
+                                            </Link>
+                                        );
+                                    })}
                                 </div>
                             )}
                             {categoryFaqs.map((faq) => renderFaqItem(faq))}
