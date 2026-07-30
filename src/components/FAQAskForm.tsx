@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Icon from '@/components/Icon';
 
 export default function FAQAskForm() {
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -42,16 +43,17 @@ export default function FAQAskForm() {
         <form className="faq-ask-form" onSubmit={handleSubmit}>
             <style>{`
                 .faq-ask-form { text-align: left; margin-top: 2rem; }
-                .faq-ask-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-                @media (max-width: 640px) { .faq-ask-form .form-grid { grid-template-columns: 1fr; } }
+                .faq-ask-form .form-grid { margin-bottom: 1rem; }
             `}</style>
             {status === 'success' && (
-                <div style={{ padding: '1rem', background: '#dcfce7', color: '#166534', borderRadius: '4px', marginBottom: '1rem', fontWeight: 600 }}>
+                <div className="form-alert form-alert-success">
+                    <Icon name="check-circle" size={18} />
                     Thanks — your question has been sent to the Secretariat. We&apos;ll get back to you shortly.
                 </div>
             )}
             {status === 'error' && (
-                <div style={{ padding: '1rem', background: '#fee2e2', color: '#991b1b', borderRadius: '4px', marginBottom: '1rem', fontWeight: 600 }}>
+                <div className="form-alert form-alert-error">
+                    <Icon name="zap" size={18} />
                     Failed to send your question. Please try again later.
                 </div>
             )}

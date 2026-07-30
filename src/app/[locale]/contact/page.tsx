@@ -100,15 +100,6 @@ export default async function ContactPage() {
         .form-eyebrow { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--wfp-blue); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
         .form-title { font-weight: 800; margin-bottom: 2rem; color: var(--text-primary); }
         
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        .form-grid.full { grid-template-columns: 1fr; }
-        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-        .form-label { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
-        .form-control { width: 100%; padding: 0.85rem 1rem; font-family: inherit; font-size: 0.95rem; background: var(--bg-off); border: none; border-bottom: 2px solid var(--text-muted); border-radius: 4px 4px 0 0; transition: all 0.2s; color: var(--text-primary); }
-        .form-control::placeholder { color: var(--color-gray-400); }
-        .form-control:focus { outline: none; border-bottom-color: var(--wfp-blue); background: var(--wfp-blue-light); }
-        textarea.form-control { resize: vertical; min-height: 140px; }
-
         /* Info Sidebar */
         .info-sidebar { padding-top: 1rem; }
         .info-group { margin-bottom: 3rem; }

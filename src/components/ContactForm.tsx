@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import Icon from '@/components/Icon';
 
 const MAX_FILES = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -97,8 +98,18 @@ export default function ContactForm() {
 
     return (
         <form className="contact-form" onSubmit={handleSubmit}>
-            {status === 'success' && <div style={{ padding: '1rem', background: '#dcfce7', color: '#166534', borderRadius: '4px', marginBottom: '1rem', fontWeight: 600 }}>Message sent successfully! We will get back to you shortly.</div>}
-            {status === 'error' && <div style={{ padding: '1rem', background: '#fee2e2', color: '#991b1b', borderRadius: '4px', marginBottom: '1rem', fontWeight: 600 }}>Failed to send message. Please try again later.</div>}
+            {status === 'success' && (
+                <div className="form-alert form-alert-success">
+                    <Icon name="check-circle" size={18} />
+                    Message sent successfully! We will get back to you shortly.
+                </div>
+            )}
+            {status === 'error' && (
+                <div className="form-alert form-alert-error">
+                    <Icon name="zap" size={18} />
+                    Failed to send message. Please try again later.
+                </div>
+            )}
 
             <div className="form-grid" style={{ marginBottom: '1.5rem' }}>
                 <div className="form-group">

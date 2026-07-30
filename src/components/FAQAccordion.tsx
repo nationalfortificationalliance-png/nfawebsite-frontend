@@ -137,7 +137,6 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
     const renderFaqItem = (faq: FAQ) => {
         const isOpen = openId === faq.id;
         const lastUpdated = formatDate(faq.updatedAt);
-        const links = CATEGORY_QUICK_LINKS[faq.category || ''] || [];
         const alreadyRated = feedback[faq.id];
         const related = isOpen
             ? faqs.filter((f) => f.id !== faq.id && (f.category || 'General') === (faq.category || 'General')).slice(0, RELATED_COUNT)
@@ -163,18 +162,6 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                         {lastUpdated && (
                             <div className="faq-updated">
                                 <Icon name="clock" size={13} /> Last updated: {lastUpdated}
-                            </div>
-                        )}
-
-                        {links.length > 0 && (
-                            <div className="faq-quick-links">
-                                {links.map((link) => (
-                                    <Link key={link.href} href={link.href} className="faq-quick-link">
-                                        <Icon name={link.icon} size={14} />
-                                        {link.label}
-                                        <Icon name="arrow-right" size={12} />
-                                    </Link>
-                                ))}
                             </div>
                         )}
 
@@ -316,7 +303,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                     margin-top: 1rem; font-size: 0.8rem; color: var(--text-secondary);
                 }
 
-                .faq-quick-links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.25rem; }
+                .faq-quick-links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: -1rem 0 1.75rem; }
                 .faq-quick-link {
                     display: inline-flex; align-items: center; gap: 0.4rem;
                     padding: 0.45rem 0.85rem; border-radius: 100px;
@@ -420,12 +407,24 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                 presentCategories.map((category) => {
                     const meta = CATEGORY_META[category] || { icon: 'help-circle', slug: slugify(category) };
                     const categoryFaqs = faqs.filter((f) => (f.category || 'General') === category);
+                    const links = CATEGORY_QUICK_LINKS[category] || [];
                     return (
                         <div key={category} id={`faq-${meta.slug}`} className="faq-category">
                             <h2 className="category-title">
                                 <Icon name={meta.icon} size={22} />
                                 {category}
                             </h2>
+                            {links.length > 0 && (
+                                <div className="faq-quick-links">
+                                    {links.map((link) => (
+                                        <Link key={link.href} href={link.href} className="faq-quick-link">
+                                            <Icon name={link.icon} size={14} />
+                                            {link.label}
+                                            <Icon name="arrow-right" size={12} />
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
                             {categoryFaqs.map((faq) => renderFaqItem(faq))}
                         </div>
                     );
