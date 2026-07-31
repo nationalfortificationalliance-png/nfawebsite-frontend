@@ -52,8 +52,13 @@ export default function LabsMap({ labs }: LabsMapProps) {
                     gap: 1.5rem;
                     align-items: start;
                 }
-                @media (max-width: 720px) {
-                    .labs-map-wrap { grid-template-columns: 1fr; }
+                @media (max-width: 768px) {
+                    .labs-map-wrap { grid-template-columns: 1fr; padding: 1.25rem; gap: 1.25rem; }
+                    .labs-map-list { max-height: 320px; }
+                }
+                @media (max-width: 400px) {
+                    .labs-map-wrap { padding: 1rem; border-radius: 14px; }
+                    .labs-map-svg-box { padding: 0.5rem; }
                 }
                 .labs-map-svg-box {
                     width: 100%;

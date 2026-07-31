@@ -93,22 +93,44 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
     return (
         <>
             <style>{`
+                .rc-search-wrap { padding: 0 1.5rem; }
                 .rc-search-bar {
                     max-width: 640px;
                     margin: 2rem auto 0;
                     position: relative;
                 }
-                .rc-search-bar svg { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+                .rc-search-bar svg.rc-search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
                 .rc-search-bar input {
                     width: 100%;
-                    padding: 0.85rem 1rem 0.85rem 2.75rem;
+                    padding: 0.85rem 2.75rem 0.85rem 2.75rem;
                     border-radius: 999px;
                     border: 1px solid var(--border-light);
                     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
                     font-size: 0.95rem;
+                    -webkit-appearance: none;
+                    appearance: none;
                 }
                 .rc-search-bar input:focus { outline: none; border-color: var(--wfp-blue); }
+                .rc-search-clear {
+                    position: absolute;
+                    right: 0.6rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--text-muted);
+                    background: transparent;
+                }
+                .rc-search-clear:hover { background: var(--bg-off, #f1f5f9); color: var(--text-primary); }
                 .rc-search-hint { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.6rem; }
+                @media (max-width: 600px) {
+                    .rc-search-wrap { padding: 0 1rem; }
+                    .rc-search-bar input { padding: 0.75rem 2.5rem 0.75rem 2.5rem; font-size: 0.9rem; }
+                }
 
                 .doc-filters-bar {
                     background: var(--bg-off, #f8fafc);
@@ -121,8 +143,16 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    gap: 1rem;
+                    flex-wrap: wrap;
+                    gap: 0.75rem;
                     margin-bottom: 1rem;
+                }
+                @media (max-width: 600px) {
+                    .doc-filters-bar { padding: 1rem; border-radius: 14px; }
+                    .doc-filters { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+                }
+                @media (max-width: 400px) {
+                    .doc-filters { grid-template-columns: 1fr; }
                 }
                 .doc-filters-title {
                     display: flex;
@@ -247,20 +277,34 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                 }
             `}</style>
 
-            <div className="rc-search-bar">
-                <Icon name="search" size={16} />
-                <input
-                    type="text"
-                    placeholder="Search laboratories, guideline documents, and challenges..."
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
+            <div className="rc-search-wrap">
+                <div className="rc-search-bar">
+                    <Icon name="search" size={16} className="rc-search-icon" />
+                    <input
+                        type="text"
+                        inputMode="search"
+                        autoComplete="off"
+                        placeholder="Search laboratories, guideline documents, and challenges..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    {isSearching && (
+                        <button
+                            type="button"
+                            className="rc-search-clear"
+                            aria-label="Clear search"
+                            onClick={() => setQuery('')}
+                        >
+                            <Icon name="x" size={15} />
+                        </button>
+                    )}
+                </div>
+                {isSearching && (
+                    <p className="rc-search-hint">
+                        {filteredLabs.length + filteredChallenges.length + filteredDocuments.length} result(s) for &quot;{query}&quot;
+                    </p>
+                )}
             </div>
-            {isSearching && (
-                <p className="rc-search-hint">
-                    {filteredLabs.length + filteredChallenges.length + filteredDocuments.length} result(s) for &quot;{query}&quot;
-                </p>
-            )}
 
             {/* Approved Labs */}
             <section className="section" id="laboratories" style={{ scrollMarginTop: '100px' }}>
