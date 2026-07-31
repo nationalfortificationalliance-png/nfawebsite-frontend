@@ -110,32 +110,84 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                 .rc-search-bar input:focus { outline: none; border-color: var(--wfp-blue); }
                 .rc-search-hint { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.6rem; }
 
+                .doc-filters-bar {
+                    background: var(--bg-off, #f8fafc);
+                    border: 1px solid var(--border-light);
+                    border-radius: 16px;
+                    padding: 1.25rem 1.5rem 1.5rem;
+                    margin-top: 2rem;
+                }
+                .doc-filters-head {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    margin-bottom: 1rem;
+                }
+                .doc-filters-title {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+                .doc-filters-title svg { color: var(--wfp-blue); }
                 .doc-filters {
                     display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                    gap: 0.75rem;
-                    margin-top: 2rem;
+                    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                    gap: 1rem;
+                }
+                .doc-filter-field {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.35rem;
+                }
+                .doc-filter-field span {
+                    font-size: 0.7rem;
+                    font-weight: 700;
+                    color: var(--text-muted);
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
                 }
                 .doc-filters select {
                     width: 100%;
                     padding: 0.6rem 0.75rem;
-                    border: 1px solid var(--border-light);
+                    border: 1.5px solid var(--border-light);
                     border-radius: 10px;
                     font-size: 0.85rem;
                     color: var(--text-secondary);
                     background: #fff;
+                    transition: border-color 0.15s ease;
                 }
                 .doc-filters select:focus { outline: none; border-color: var(--wfp-blue); }
+                .doc-filters select.doc-filter-active {
+                    border-color: var(--wfp-blue);
+                    color: var(--wfp-blue);
+                    font-weight: 600;
+                    background: var(--wfp-blue-light);
+                }
                 .doc-filters-reset {
                     display: inline-flex;
                     align-items: center;
                     gap: 0.35rem;
-                    font-size: 0.82rem;
-                    font-weight: 600;
+                    font-size: 0.8rem;
+                    font-weight: 700;
                     color: var(--wfp-blue);
-                    margin-top: 0.75rem;
+                    background: #fff;
+                    border: 1px solid var(--wfp-blue-light);
+                    border-radius: 999px;
+                    padding: 0.4rem 0.85rem;
+                    flex-shrink: 0;
                 }
-                .doc-filters-reset:hover { text-decoration: underline; }
+                .doc-filters-reset:hover { background: var(--wfp-blue-light); }
+                .rc-results-count {
+                    font-size: 0.85rem;
+                    color: var(--text-muted);
+                    margin: 1.25rem 0 0;
+                }
                 .doc-status-badge {
                     display: inline-block;
                     font-size: 0.68rem;
@@ -171,16 +223,6 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     color: var(--text-muted);
                     font-size: 0.9rem;
                 }
-                .lab-directions {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.35rem;
-                    font-size: 0.8rem;
-                    font-weight: 700;
-                    color: var(--wfp-blue);
-                    margin-top: 0.5rem;
-                }
-                .lab-directions:hover { text-decoration: underline; }
                 .doc-featured-badge {
                     display: inline-block;
                     background: var(--wfp-gold-light, #fef3c7);
@@ -232,39 +274,7 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     {filteredLabs.length === 0 ? (
                         <p className="rc-section-empty">No laboratories match &quot;{query}&quot;.</p>
                     ) : (
-                        <>
-                            <LabsMap labs={filteredLabs} />
-                            <div className="labs-grid">
-                            {filteredLabs.map((lab) => (
-                                <div key={lab.id} className="lab-card">
-                                    <div className="lab-icon">
-                                        <Icon name="microscope" size={24} />
-                                    </div>
-                                    <div className="lab-info">
-                                        <div className="lab-name">{lab.name}</div>
-                                        <div className="lab-location">
-                                            <Icon name="map-pin" size={14} />
-                                            {lab.location}
-                                        </div>
-                                        <div className="lab-contact">
-                                            <Icon name="phone" size={14} />
-                                            {lab.contact}
-                                        </div>
-                                        {typeof lab.latitude === 'number' && typeof lab.longitude === 'number' && (
-                                            <a
-                                                href={`https://www.google.com/maps/dir/?api=1&destination=${lab.latitude},${lab.longitude}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="lab-directions"
-                                            >
-                                                <Icon name="external-link" size={13} /> Get Directions
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                            </div>
-                        </>
+                        <LabsMap labs={filteredLabs} />
                     )}
                 </div>
             </section>
@@ -314,37 +324,61 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     </p>
 
                     {documents.length > 0 && (
-                        <>
-                            <div className="doc-filters">
-                                <select value={docType} onChange={(e) => setDocType(e.target.value)}>
-                                    <option value="all">All Document Types</option>
-                                    {docTypes.map((t) => <option key={t} value={t}>{t}</option>)}
-                                </select>
-                                <select value={foodVehicle} onChange={(e) => setFoodVehicle(e.target.value)}>
-                                    <option value="all">All Food Vehicles</option>
-                                    {foodVehicles.map((v) => <option key={v} value={v}>{v}</option>)}
-                                </select>
-                                <select value={year} onChange={(e) => setYear(e.target.value)}>
-                                    <option value="all">All Years</option>
-                                    {years.map((y) => <option key={y} value={y}>{y}</option>)}
-                                </select>
-                                <select value={agency} onChange={(e) => setAgency(e.target.value)}>
-                                    <option value="all">All Agencies</option>
-                                    {agencies.map((a) => <option key={a} value={a}>{a}</option>)}
-                                </select>
-                                <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                    <option value="all">All Statuses</option>
-                                    <option value="Current">Current</option>
-                                    <option value="Revised">Revised</option>
-                                    <option value="Archived">Archived</option>
-                                </select>
+                        <div className="doc-filters-bar">
+                            <div className="doc-filters-head">
+                                <span className="doc-filters-title">
+                                    <Icon name="filter" size={15} /> Filter Documents
+                                </span>
+                                {hasDocFilters && (
+                                    <button type="button" className="doc-filters-reset" onClick={resetDocFilters}>
+                                        <Icon name="x" size={14} /> Clear filters
+                                    </button>
+                                )}
                             </div>
-                            {hasDocFilters && (
-                                <button type="button" className="doc-filters-reset" onClick={resetDocFilters}>
-                                    <Icon name="x" size={14} /> Clear filters
-                                </button>
-                            )}
-                        </>
+                            <div className="doc-filters">
+                                <label className="doc-filter-field">
+                                    <span>Document Type</span>
+                                    <select className={docType !== 'all' ? 'doc-filter-active' : ''} value={docType} onChange={(e) => setDocType(e.target.value)}>
+                                        <option value="all">All Document Types</option>
+                                        {docTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                                    </select>
+                                </label>
+                                <label className="doc-filter-field">
+                                    <span>Food Vehicle</span>
+                                    <select className={foodVehicle !== 'all' ? 'doc-filter-active' : ''} value={foodVehicle} onChange={(e) => setFoodVehicle(e.target.value)}>
+                                        <option value="all">All Food Vehicles</option>
+                                        {foodVehicles.map((v) => <option key={v} value={v}>{v}</option>)}
+                                    </select>
+                                </label>
+                                <label className="doc-filter-field">
+                                    <span>Year</span>
+                                    <select className={year !== 'all' ? 'doc-filter-active' : ''} value={year} onChange={(e) => setYear(e.target.value)}>
+                                        <option value="all">All Years</option>
+                                        {years.map((y) => <option key={y} value={y}>{y}</option>)}
+                                    </select>
+                                </label>
+                                <label className="doc-filter-field">
+                                    <span>Agency</span>
+                                    <select className={agency !== 'all' ? 'doc-filter-active' : ''} value={agency} onChange={(e) => setAgency(e.target.value)}>
+                                        <option value="all">All Agencies</option>
+                                        {agencies.map((a) => <option key={a} value={a}>{a}</option>)}
+                                    </select>
+                                </label>
+                                <label className="doc-filter-field">
+                                    <span>Status</span>
+                                    <select className={status !== 'all' ? 'doc-filter-active' : ''} value={status} onChange={(e) => setStatus(e.target.value)}>
+                                        <option value="all">All Statuses</option>
+                                        <option value="Current">Current</option>
+                                        <option value="Revised">Revised</option>
+                                        <option value="Archived">Archived</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    )}
+
+                    {documents.length > 0 && filteredDocuments.length > 0 && (
+                        <p className="rc-results-count">Showing {filteredDocuments.length} of {documents.length} documents</p>
                     )}
 
                     {documents.length === 0 ? (

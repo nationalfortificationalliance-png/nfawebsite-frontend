@@ -15,7 +15,7 @@ interface FAQAccordionProps {
 const POPULAR_SEARCH_TERMS = ['fortification', 'certification', 'premix', 'standards', 'consumer', 'laboratory'];
 
 const MOST_VIEWED_COUNT = 5;
-const RELATED_COUNT = 3;
+// const RELATED_COUNT = 3; // unused while related questions are disabled
 
 function slugify(value: string): string {
     return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -138,9 +138,10 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
         const isOpen = openId === faq.id;
         const lastUpdated = formatDate(faq.updatedAt);
         const alreadyRated = feedback[faq.id];
-        const related = isOpen
-            ? faqs.filter((f) => f.id !== faq.id && (f.category || 'General') === (faq.category || 'General')).slice(0, RELATED_COUNT)
-            : [];
+        // Related questions temporarily disabled — re-enable by restoring this and the faq-related block below.
+        // const related = isOpen
+        //     ? faqs.filter((f) => f.id !== faq.id && (f.category || 'General') === (faq.category || 'General')).slice(0, RELATED_COUNT)
+        //     : [];
 
         return (
             <div key={faq.id} ref={(el) => { itemRefs.current[faq.id] = el; }} className={`faq-item ${isOpen ? 'is-open' : ''}`}>
@@ -177,6 +178,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                             )}
                         </div>
 
+                        {/* Related questions temporarily disabled — re-enable by restoring `related` above and this block.
                         {related.length > 0 && (
                             <div className="faq-related">
                                 <span className="faq-related-label">Related questions</span>
@@ -192,6 +194,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                                 </ul>
                             </div>
                         )}
+                        */}
                     </div>
                 )}
             </div>

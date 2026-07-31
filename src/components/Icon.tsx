@@ -7,7 +7,7 @@ export type IconName =
     | 'megaphone' | 'globe' | 'landmark' | 'hospital' | 'heart-handshake'
     | 'stethoscope' | 'gem' | 'trending-up' | 'wrench' | 'file' | 'search' | 'mail' | 'clock' | 'truck'
     | 'activity' | 'check-circle' | 'shield' | 'monitor' | 'file-text' | 'help-circle' | 'arrow-right' | 'zap'
-    | 'phone' | 'shield-check' | 'heart-pulse' | 'x' | 'external-link' | 'chevron-down' | 'building-2';
+    | 'phone' | 'shield-check' | 'heart-pulse' | 'x' | 'external-link' | 'chevron-down' | 'building-2' | 'filter';
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
     name: IconName;
@@ -126,6 +126,8 @@ export default function Icon({ name, size = 24, className = '', ...props }: Icon
             return <svg {...svgProps}><path d="m6 9 6 6 6-6" /></svg>;
         case 'building-2':
             return <svg {...svgProps}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /><path d="M10 6h4" /><path d="M10 10h4" /><path d="M10 14h4" /><path d="M10 18h4" /></svg>;
+        case 'filter':
+            return <svg {...svgProps}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>;
         default:
             return <svg {...svgProps}><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>; // Error X
     }

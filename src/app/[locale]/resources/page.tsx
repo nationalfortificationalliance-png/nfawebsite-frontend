@@ -98,45 +98,6 @@ export default async function ResourcesPage() {
                 .res-hero-stat-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
                 .res-hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
 
-                .labs-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-                    gap: 1.5rem;
-                    margin-top: 3rem;
-                }
-                .lab-card {
-                    background: #fff;
-                    border: 1px solid var(--border-light);
-                    border-radius: 16px;
-                    padding: 1.75rem;
-                    transition: all 0.3s ease;
-                    display: flex;
-                    gap: 1.25rem;
-                }
-                .lab-card:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-                    border-color: var(--wfp-blue-light);
-                }
-                .lab-icon {
-                    width: 48px;
-                    height: 48px;
-                    background: var(--wfp-blue-light);
-                    border-radius: 12px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--wfp-blue);
-                    flex-shrink: 0;
-                }
-                .lab-info { flex: 1; }
-                .lab-name { font-weight: 700; font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.5rem; }
-                .lab-location, .lab-contact {
-                    display: flex; align-items: center; gap: 0.5rem;
-                    font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.25rem;
-                }
-                .lab-contact { font-weight: 500; margin-bottom: 0; }
-
                 .challenges-groups {
                     display: flex;
                     flex-direction: column;

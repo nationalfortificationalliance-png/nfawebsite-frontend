@@ -38,8 +38,6 @@ export default function LabsMap({ labs }: LabsMapProps) {
 
     if (pinned.length === 0) return null;
 
-    const activeLab = pinned.find((lab) => lab.id === activeId) ?? null;
-
     return (
         <div className="labs-map-wrap">
             <style>{`
@@ -50,25 +48,33 @@ export default function LabsMap({ labs }: LabsMapProps) {
                     border-radius: 16px;
                     padding: 1.5rem;
                     display: grid;
-                    grid-template-columns: minmax(0, 1fr) 260px;
+                    grid-template-columns: minmax(0, 1fr) 300px;
                     gap: 1.5rem;
                     align-items: start;
                 }
                 @media (max-width: 720px) {
                     .labs-map-wrap { grid-template-columns: 1fr; }
                 }
-                .labs-map-svg-box { width: 100%; }
+                .labs-map-svg-box {
+                    width: 100%;
+                    background: var(--bg-off, #f1f5f9);
+                    border-radius: 12px;
+                    padding: 0.75rem;
+                }
                 .labs-map-svg-box svg { width: 100%; height: auto; display: block; }
                 .labs-map-state {
-                    fill: var(--bg-off, #f1f5f9);
+                    fill: #cbd8e6;
                     stroke: #fff;
-                    stroke-width: 0.6;
+                    stroke-width: 1.1;
+                    transition: fill 0.15s ease;
                 }
+                .labs-map-state:hover { fill: #b7c8db; }
                 .labs-map-pin {
                     cursor: pointer;
                     fill: var(--wfp-blue);
                     stroke: #fff;
-                    stroke-width: 1.4;
+                    stroke-width: 1.6;
+                    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
                     transition: r 0.15s ease, fill 0.15s ease;
                 }
                 .labs-map-pin:hover, .labs-map-pin.active {
@@ -81,45 +87,60 @@ export default function LabsMap({ labs }: LabsMapProps) {
                     text-align: right;
                 }
                 .labs-map-attribution a { color: inherit; }
-                .labs-map-side { display: flex; flex-direction: column; gap: 0.5rem; }
-                .labs-map-hint { font-size: 0.8rem; color: var(--text-muted); }
-                .labs-map-detail {
+
+                .labs-map-side { display: flex; flex-direction: column; gap: 0.75rem; }
+                .labs-map-hint {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    font-size: 0.78rem;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+                .labs-map-hint svg { color: var(--wfp-blue); }
+
+                .labs-map-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.6rem;
+                    max-height: 420px;
+                    overflow-y: auto;
+                    padding-right: 0.25rem;
+                }
+                .labs-map-card {
+                    text-align: left;
+                    cursor: pointer;
                     border: 1px solid var(--border-light);
                     border-radius: 12px;
-                    padding: 1rem;
+                    padding: 0.75rem 0.85rem;
                     background: var(--bg-off, #f8fafc);
+                    transition: all 0.15s ease;
                 }
-                .labs-map-detail .lab-name { font-weight: 700; font-size: 0.98rem; color: var(--text-primary); margin-bottom: 0.5rem; }
-                .labs-map-detail .lab-location, .labs-map-detail .lab-contact {
+                .labs-map-card:hover {
+                    border-color: var(--wfp-blue-light);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+                }
+                .labs-map-card.active {
+                    background: var(--wfp-blue-light);
+                    border-color: var(--wfp-blue);
+                }
+                .labs-map-card .lab-name { font-weight: 700; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.35rem; }
+                .labs-map-card .lab-location, .labs-map-card .lab-contact {
                     display: flex; align-items: center; gap: 0.4rem;
-                    font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.35rem;
+                    font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.25rem;
                 }
                 .labs-map-directions {
                     display: inline-flex;
                     align-items: center;
                     gap: 0.35rem;
-                    font-size: 0.8rem;
+                    font-size: 0.78rem;
                     font-weight: 700;
                     color: var(--wfp-blue);
-                    margin-top: 0.4rem;
+                    margin-top: 0.35rem;
                 }
                 .labs-map-directions:hover { text-decoration: underline; }
-                .labs-map-list { display: flex; flex-direction: column; gap: 0.3rem; max-height: 220px; overflow-y: auto; }
-                .labs-map-list-item {
-                    text-align: left;
-                    font-size: 0.82rem;
-                    padding: 0.4rem 0.6rem;
-                    border-radius: 8px;
-                    border: 1px solid transparent;
-                    color: var(--text-secondary);
-                }
-                .labs-map-list-item:hover { background: var(--bg-off, #f1f5f9); }
-                .labs-map-list-item.active {
-                    background: var(--wfp-blue-light);
-                    color: var(--wfp-blue);
-                    border-color: var(--wfp-blue-light);
-                    font-weight: 600;
-                }
             `}</style>
 
             <div>
@@ -154,33 +175,38 @@ export default function LabsMap({ labs }: LabsMapProps) {
             </div>
 
             <div className="labs-map-side">
-                <p className="labs-map-hint">Click a pin to see laboratory details.</p>
-                {activeLab ? (
-                    <div className="labs-map-detail">
-                        <div className="lab-name">{activeLab.name}</div>
-                        <div className="lab-location"><Icon name="map-pin" size={14} />{activeLab.location}</div>
-                        <div className="lab-contact"><Icon name="phone" size={14} />{activeLab.contact}</div>
-                        <a
-                            href={`https://www.google.com/maps/dir/?api=1&destination=${activeLab.latitude},${activeLab.longitude}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="labs-map-directions"
-                        >
-                            <Icon name="external-link" size={14} /> Get Directions
-                        </a>
-                    </div>
-                ) : null}
+                <p className="labs-map-hint">
+                    <Icon name="microscope" size={15} /> {pinned.length} Approved Laboratories
+                </p>
                 <div className="labs-map-list">
-                    {pinned.map((lab) => (
-                        <button
-                            key={lab.id}
-                            type="button"
-                            className={`labs-map-list-item${lab.id === activeId ? ' active' : ''}`}
-                            onClick={() => setActiveId(lab.id === activeId ? null : lab.id)}
-                        >
-                            {lab.name}
-                        </button>
-                    ))}
+                    {pinned.map((lab) => {
+                        const isActive = lab.id === activeId;
+                        return (
+                            <div
+                                key={lab.id}
+                                role="button"
+                                tabIndex={0}
+                                className={`labs-map-card${isActive ? ' active' : ''}`}
+                                onClick={() => setActiveId(isActive ? null : lab.id)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') setActiveId(isActive ? null : lab.id);
+                                }}
+                            >
+                                <div className="lab-name">{lab.name}</div>
+                                <div className="lab-location"><Icon name="map-pin" size={13} />{lab.location}</div>
+                                <div className="lab-contact"><Icon name="phone" size={13} />{lab.contact}</div>
+                                <a
+                                    href={`https://www.google.com/maps/dir/?api=1&destination=${lab.latitude},${lab.longitude}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="labs-map-directions"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <Icon name="external-link" size={13} /> Get Directions
+                                </a>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </div>
