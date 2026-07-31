@@ -94,22 +94,30 @@ export default async function ResourcesPage() {
                     inset: 0;
                     z-index: 0;
                 }
-                .res-hero-overlay {
+                .res-hero-bg::after {
+                    content: '';
                     position: absolute;
                     inset: 0;
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
                     z-index: 1;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.94) 0%, rgba(6, 78, 59, 0.9) 100%);
                 }
                 .res-hero-content {
                     position: relative;
                     z-index: 2;
                     padding: 3.5rem 0 2.75rem;
                 }
-                .res-hero .breadcrumb { justify-content: flex-start; margin-bottom: 1.5rem; }
-                .res-hero .breadcrumb a, .res-hero .breadcrumb span { color: rgba(255,255,255,0.8); }
+                .res-hero .breadcrumb {
+                    margin-bottom: 2rem;
+                    padding: 0.4rem 0.9rem;
+                    background: rgba(0,0,0,0.28);
+                    border-radius: 100px;
+                    display: inline-flex;
+                    backdrop-filter: blur(4px);
+                }
+                .res-hero .breadcrumb a, .res-hero .breadcrumb span { color: rgba(255,255,255,0.85); font-weight: 600; }
                 .res-hero .breadcrumb a:hover { color: #fff; }
-                .res-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
-                .res-hero p { color: rgba(255,255,255,0.95); max-width: 720px; font-size: 1.1rem; line-height: 1.7; }
+                .res-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.35); }
+                .res-hero p { color: rgba(255,255,255,0.97); max-width: 720px; font-size: 1.1rem; line-height: 1.7; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
                 .res-hero-stats {
                     display: flex;
                     flex-wrap: wrap;
@@ -227,7 +235,6 @@ export default async function ResourcesPage() {
                 <div className="res-hero-bg">
                     <Image src={heroImage.src} alt={heroImage.alt} fill style={{ objectFit: 'cover' }} priority />
                 </div>
-                <div className="res-hero-overlay" />
                 <div className="container res-hero-content">
                     <div className="breadcrumb">
                         <Link href="/">Home</Link>

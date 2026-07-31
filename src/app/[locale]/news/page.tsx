@@ -53,7 +53,7 @@ export default async function NewsPage() {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
           z-index: 1;
         }
         .news-hero-content {
@@ -61,10 +61,17 @@ export default async function NewsPage() {
           z-index: 2;
           padding: 3.5rem 0 2.75rem;
         }
-        .news-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
-        .news-hero p { color: rgba(255,255,255,0.95); max-width: 720px; font-size: 1.15rem; line-height: 1.7; }
-        .news-hero .breadcrumb { justify-content: flex-start; margin-bottom: 2rem; }
-        .news-hero .breadcrumb a, .news-hero .breadcrumb span { color: rgba(255,255,255,0.8); }
+        .news-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.35); }
+        .news-hero p { color: rgba(255,255,255,0.97); max-width: 720px; font-size: 1.15rem; line-height: 1.7; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+        .news-hero .breadcrumb {
+          margin-bottom: 2rem;
+          padding: 0.4rem 0.9rem;
+          background: rgba(0,0,0,0.28);
+          border-radius: 100px;
+          display: inline-flex;
+          backdrop-filter: blur(4px);
+        }
+        .news-hero .breadcrumb a, .news-hero .breadcrumb span { color: rgba(255,255,255,0.85); font-weight: 600; }
         .news-hero .breadcrumb a:hover { color: #fff; }
 
         /* Modern Filter Bar */

@@ -682,7 +682,7 @@ export default async function HomePage() {
             <p>Whether you are a food processor seeking NAFDAC certification, a development partner, or a researcher — NFA has resources and pathways for you.</p>
             <div className="cta-full-actions">
               <Link href="/contact" className="btn btn-primary btn-lg">Contact NFA →</Link>
-              <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">📄 Resource Library</a>
+              <Link href="/resources" className="btn btn-outline btn-lg">📄 Resource Library</Link>
             </div>
           </div>
         </div>

@@ -71,7 +71,7 @@ export default async function GovernancePage() {
                     content: '';
                     position: absolute;
                     inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.84) 0%, rgba(6, 78, 59, 0.80) 100%);
+                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
                     z-index: 1;
                 }
                 .gov-hero-content {
@@ -83,19 +83,27 @@ export default async function GovernancePage() {
                     color: #fff;
                     max-width: 720px;
                     margin-bottom: 0.75rem;
+                    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
                 }
                 .gov-hero p {
-                    color: rgba(255,255,255,0.95);
+                    color: rgba(255,255,255,0.97);
                     max-width: 720px;
                     font-size: 1.15rem;
                     line-height: 1.7;
+                    text-shadow: 0 1px 6px rgba(0,0,0,0.3);
                 }
                 .gov-hero .breadcrumb {
                     margin-bottom: 1.25rem;
+                    padding: 0.4rem 0.9rem;
+                    background: rgba(0,0,0,0.28);
+                    border-radius: 100px;
+                    display: inline-flex;
+                    backdrop-filter: blur(4px);
                 }
                 .gov-hero .breadcrumb a,
                 .gov-hero .breadcrumb span {
-                    color: rgba(255,255,255,0.8);
+                    color: rgba(255,255,255,0.85);
+                    font-weight: 600;
                 }
                 .gov-hero .breadcrumb a:hover {
                     color: #fff;

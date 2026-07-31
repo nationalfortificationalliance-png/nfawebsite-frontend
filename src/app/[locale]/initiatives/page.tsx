@@ -131,19 +131,27 @@ export default async function InitiativesPage() {
                     color: #fff;
                     max-width: 720px;
                     margin-bottom: 1rem;
+                    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
                 }
                 .initiatives-hero p {
-                    color: rgba(255,255,255,0.95);
+                    color: rgba(255,255,255,0.97);
                     max-width: 720px;
                     font-size: 1.15rem;
                     line-height: 1.7;
+                    text-shadow: 0 1px 6px rgba(0,0,0,0.3);
                 }
                 .initiatives-hero .breadcrumb {
                     margin-bottom: 2rem;
+                    padding: 0.4rem 0.9rem;
+                    background: rgba(0,0,0,0.28);
+                    border-radius: 100px;
+                    display: inline-flex;
+                    backdrop-filter: blur(4px);
                 }
                 .initiatives-hero .breadcrumb a,
                 .initiatives-hero .breadcrumb span {
-                    color: rgba(255,255,255,0.8);
+                    color: rgba(255,255,255,0.85);
+                    font-weight: 600;
                 }
                 .initiatives-hero .breadcrumb a:hover {
                     color: #fff;
@@ -464,7 +472,7 @@ export default async function InitiativesPage() {
                         <p>Whether you are a processor, regulator, funder or technical partner, NFA offers pathways for joint action that strengthen nutrition outcomes and supply chain integrity.</p>
                         <div className="cta-actions">
                             <Link href="/contact" className="btn btn-primary btn-lg">Contact NFA</Link>
-                            <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Browse Resources</a>
+                            <Link href="/resources" className="btn btn-outline btn-lg">Browse Resources</Link>
                         </div>
                     </div>
                 </div>
