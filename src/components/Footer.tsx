@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { GlobalSetting, ContactPage } from '@/lib/api';
+import NewsletterForm from '@/components/NewsletterForm';
 
 interface FooterProps { settings: GlobalSetting | null; secretariatPhones: string[]; contact: ContactPage | null; }
 
@@ -95,7 +96,7 @@ export default function Footer({ settings, secretariatPhones, contact }: FooterP
                   {settings?.facebook_url && <a href={settings.facebook_url} target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Facebook">f</a>}
                   {settings?.linkedin_url && <a href={settings.linkedin_url} target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="LinkedIn">in</a>}
                 </div>
-                {/* Newsletter signup temporarily disabled — restore by re-adding <NewsletterForm /> */}
+                <NewsletterForm />
               </div>
 
               {/* Simplified Links */}
