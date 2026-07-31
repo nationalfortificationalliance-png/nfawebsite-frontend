@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Icon, { IconName } from '@/components/Icon';
 import { getStrapiMediaUrl } from '@/lib/api';
 import type { Laboratory, IndustryChallenge, GuidelineDocument } from '@/lib/api';
+import LabsMap from '@/components/LabsMap';
 
 interface ResourceCentreProps {
     labs: Laboratory[];
@@ -192,7 +193,9 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     {filteredLabs.length === 0 ? (
                         <p className="rc-section-empty">No laboratories match &quot;{query}&quot;.</p>
                     ) : (
-                        <div className="labs-grid">
+                        <>
+                            <LabsMap labs={filteredLabs} />
+                            <div className="labs-grid">
                             {filteredLabs.map((lab) => (
                                 <div key={lab.id} className="lab-card">
                                     <div className="lab-icon">
@@ -211,7 +214,8 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                                     </div>
                                 </div>
                             ))}
-                        </div>
+                            </div>
+                        </>
                     )}
                 </div>
             </section>

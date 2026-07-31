@@ -474,6 +474,8 @@ export interface Laboratory {
     services?: string;
     accreditation?: string;
     order: number;
+    latitude?: number;
+    longitude?: number;
 }
 
 export async function getLaboratories(): Promise<Laboratory[]> {
