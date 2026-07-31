@@ -233,6 +233,9 @@ export default async function GovernancePage() {
                 }
 
                 @media (max-width: 900px) {
+                    .gov-hero { height: 60vh; min-height: 500px; }
+                    .gov-hero h1 { font-size: 2rem; }
+                    .gov-hero p { font-size: 1rem; }
                     .overview-grid { grid-template-columns: repeat(2, 1fr); }
                     .monitoring-flow { flex-direction: column; }
                     .monitor-arrow { transform: rotate(90deg); }

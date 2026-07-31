@@ -213,6 +213,11 @@ export default async function NewsPage() {
           border-radius: 999px;
         }
 
+        @media (max-width: 900px) {
+          .news-hero { height: 60vh; min-height: 500px; }
+          .news-hero h1 { font-size: 2rem; }
+          .news-hero p { font-size: 1rem; }
+        }
       `}</style>
 
             {/* Hero with Background */}

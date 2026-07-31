@@ -229,6 +229,12 @@ export default async function ResourcesPage() {
                     color: var(--text-muted);
                     font-size: 0.95rem;
                 }
+
+                @media (max-width: 900px) {
+                    .res-hero { height: 60vh; min-height: 500px; }
+                    .res-hero h1 { font-size: 2rem; }
+                    .res-hero p { font-size: 1rem; }
+                }
             `}</style>
 
             <div className="res-hero">

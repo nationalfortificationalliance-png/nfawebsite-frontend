@@ -131,6 +131,11 @@ export default async function FAQPage() {
                 .cta-option-value a { color: inherit; }
                 .cta-option-value a:hover { color: var(--wfp-blue); }
 
+                @media (max-width: 900px) {
+                    .faq-hero { height: 60vh; min-height: 500px; }
+                    .faq-hero h1 { font-size: 2rem; }
+                    .faq-hero p { font-size: 1rem; }
+                }
                 @media (max-width: 640px) {
                     .faq-stats-panel { grid-template-columns: 1fr; margin-top: -1.5rem; }
                     .faq-stat { border-right: none; border-bottom: 1px solid var(--border); }

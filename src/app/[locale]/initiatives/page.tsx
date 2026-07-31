@@ -338,6 +338,11 @@ export default async function InitiativesPage() {
                     gap: 1rem;
                 }
 
+                @media (max-width: 900px) {
+                    .initiatives-hero { height: 60vh; min-height: 500px; }
+                    .initiatives-hero h1 { font-size: 2rem; }
+                    .initiatives-hero p { font-size: 1rem; }
+                }
                 @media (max-width: 760px) {
                     .priority-grid {
                         grid-template-columns: 1fr;

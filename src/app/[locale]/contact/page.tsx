@@ -122,6 +122,9 @@ export default async function ContactPage() {
         .map-wrapper { width: 100%; aspect-ratio: 4/3; background: #e2e8f0; border-radius: var(--radius-md); overflow: hidden; position: relative; margin-top: 1.5rem; }
 
         @media (max-width: 900px) {
+          .contact-hero { height: 60vh; min-height: 500px; }
+          .contact-hero h1 { font-size: 2rem; }
+          .contact-hero p { font-size: 1rem; }
           .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
           .form-panel { transform: none; margin-top: -3rem; }
           .form-grid { grid-template-columns: 1fr; gap: 1rem; }

@@ -56,7 +56,7 @@ export default async function ReportsDataPage() {
             <style>{`
                 .rd-hero {
                     position: relative;
-                    min-height: 300px;
+                    min-height: 340px;
                     display: flex;
                     align-items: center;
                     overflow: hidden;
@@ -91,6 +91,12 @@ export default async function ReportsDataPage() {
                 .rd-hero-stat { color: #fff; }
                 .rd-hero-stat-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
                 .rd-hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
+
+                @media (max-width: 900px) {
+                    .rd-hero { height: 60vh; min-height: 500px; }
+                    .rd-hero h1 { font-size: 2rem; }
+                    .rd-hero p { font-size: 1rem; }
+                }
             `}</style>
 
             <div className="rd-hero">

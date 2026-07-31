@@ -147,6 +147,9 @@ export default async function AboutPage() {
         .governance-cta p { color: var(--text-secondary); margin-bottom: 1.5rem; }
 
         @media (max-width: 900px) {
+          .about-hero { height: 60vh; min-height: 500px; }
+          .about-hero h1 { font-size: 2rem; }
+          .about-hero p { font-size: 1rem; }
           .mv-grid { grid-template-columns: 1fr; }
           .objectives-grid { grid-template-columns: 1fr; }
         }
