@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
-import { getStrapiMediaUrl } from '@/lib/api';
+import { getStrapiMediaUrl, formatFileSize } from '@/lib/api';
 import type { NewsEvent } from '@/lib/api';
 
 interface NewsCardProps { article: NewsEvent; }
@@ -153,7 +153,7 @@ export default function NewsCard({ article }: NewsCardProps) {
               <Link href={newsUrl} className="news-card-link">View →</Link>
               {file?.url && (
                 <a href={getStrapiMediaUrl(file.url)} download className="news-card-link news-card-download">
-                  Download
+                  Download{formatFileSize(file.size) ? ` (${formatFileSize(file.size)})` : ''}
                 </a>
               )}
             </div>

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Icon, { IconName } from '@/components/Icon';
 import GalleryLightbox from '@/components/GalleryLightbox';
-import { getNewsBySlug, getAllNews, getStrapiMediaUrl } from '@/lib/api';
+import { getNewsBySlug, getAllNews, getStrapiMediaUrl, formatFileSize } from '@/lib/api';
 import { generateSEOMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/components/SEO';
 import { locales } from '@/i18n';
 import { MOCK_NEWS } from '@/lib/mockData';
@@ -98,6 +98,7 @@ export default async function NewsDetailPage({ params }: Props) {
     const hasImage = !!image?.url;
     const hasGallery = gallery && gallery.length > 0;
     const fileUrl = file?.url ? getStrapiMediaUrl(file.url) : null;
+    const fileSizeLabel = formatFileSize(file?.size);
     const isCommunique = category === 'communique';
 
     const formattedDate = new Date(date).toLocaleDateString('en-GB', {
@@ -373,7 +374,7 @@ export default async function NewsDetailPage({ params }: Props) {
                             {excerpt && <p className="communique-card-excerpt">{excerpt}</p>}
                             {fileUrl ? (
                                 <a href={fileUrl} download className="article-download">
-                                    <Icon name="file-text" size={16} /> Download Communiqué (PDF)
+                                    <Icon name="file-text" size={16} /> Download Communiqué (PDF{fileSizeLabel ? `, ${fileSizeLabel}` : ''})
                                 </a>
                             ) : (
                                 <p className="communique-card-nofile">No document has been attached to this communiqué yet.</p>
@@ -384,7 +385,7 @@ export default async function NewsDetailPage({ params }: Props) {
                             {excerpt && <p className="article-excerpt">{excerpt}</p>}
                             {fileUrl && (
                                 <a href={fileUrl} download className="article-download">
-                                    <Icon name="file-text" size={16} /> Download Document (PDF)
+                                    <Icon name="file-text" size={16} /> Download Document (PDF{fileSizeLabel ? `, ${fileSizeLabel}` : ''})
                                 </a>
                             )}
                             <div

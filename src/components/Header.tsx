@@ -18,7 +18,14 @@ const NAV_LINKS = [
   },
   { label: 'Initiatives', href: '/initiatives' },
   { label: 'News & Events', href: '/news' },
-  { label: 'Resources', href: '/resources' },
+  {
+    label: 'Resources',
+    href: '/resources',
+    dropdown: [
+      { label: 'Overview', href: '/resources' },
+      { label: 'Reports & Data', href: '/resources/reports' },
+    ]
+  },
   { label: 'Partners', href: '/partners' },
   { label: 'FAQ', href: '/faq' },
 ];

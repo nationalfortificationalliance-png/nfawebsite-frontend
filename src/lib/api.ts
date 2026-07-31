@@ -48,6 +48,15 @@ export interface StrapiImage {
     alternativeText?: string;
     width?: number;
     height?: number;
+    size?: number;
+    mime?: string;
+    ext?: string;
+}
+
+export function formatFileSize(sizeInKb: number | null | undefined): string | null {
+    if (!sizeInKb) return null;
+    if (sizeInKb < 1024) return `${Math.round(sizeInKb)} KB`;
+    return `${(sizeInKb / 1024).toFixed(1)} MB`;
 }
 
 export interface Carousel {
@@ -502,6 +511,9 @@ export interface ComplianceReport {
     salt_compliance?: string;
     veg_oil_compliance?: string;
     flour_compliance?: string;
+    sugar_compliance?: string;
+    rice_compliance?: string;
+    bouillon_compliance?: string;
     source?: string;
     order: number;
 }
@@ -511,6 +523,43 @@ export async function getComplianceReports(): Promise<ComplianceReport[]> {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:desc',
         'pagination[pageSize]': '50',
+    });
+    return res?.data || [];
+}
+
+export type ReportAgency = 'NAFDAC' | 'SON' | 'FCCPC' | 'FMoH&SW' | 'NFA Secretariat' | 'Development Partners';
+export type ReportType =
+    | 'Annual Report'
+    | 'Quarterly Report'
+    | 'Compliance Report'
+    | 'Surveillance Report'
+    | 'Laboratory Report'
+    | 'Evaluation Report'
+    | 'Policy Brief';
+
+export interface Report {
+    id: number;
+    documentId: string;
+    title: string;
+    description?: string;
+    file?: StrapiImage;
+    year: string;
+    agency: ReportAgency;
+    report_type: ReportType;
+    food_vehicles?: string;
+    topics?: string;
+    published_date?: string;
+    file_size?: string;
+    is_featured: boolean;
+    download_count: number;
+    order: number;
+}
+
+export async function getReports(): Promise<Report[]> {
+    const res = await fetchAPI<{ data: Report[] }>('/reports', {
+        'sort': 'published_date:desc',
+        'populate': 'file',
+        'pagination[pageSize]': '200',
     });
     return res?.data || [];
 }
