@@ -11,14 +11,25 @@ import type { Partner } from '@/lib/api';
 // secretariat confirms the restriction can be lifted.
 const WEBSITE_LINKS_ENABLED = false;
 
+export interface DisplayMemberOrganization {
+    id: number;
+    name: string;
+    websiteUrl?: string;
+}
+
 export interface DisplayPartner {
     id: number;
+    slug?: string;
     name: string;
     type: string;
     desc: string;
     role: string;
     logo: string; // resolved image src, or an IconName fallback
     websiteUrl?: string;
+    focusAreas?: string;
+    contactEmail?: string;
+    contactPhone?: string;
+    memberOrganizations?: DisplayMemberOrganization[];
 }
 
 interface CategoryMeta {
@@ -29,7 +40,7 @@ interface CategoryMeta {
     blurb: string;
 }
 
-const CATEGORY_META: Record<string, CategoryMeta> = {
+export const CATEGORY_META: Record<string, CategoryMeta> = {
     government: {
         label: 'Government MDAs',
         slug: 'government-mdas',
@@ -134,14 +145,11 @@ export default function PartnersDirectory({ partners }: PartnersDirectoryProps) 
     const renderCard = (p: DisplayPartner) => {
         const meta = CATEGORY_META[p.type];
         const hasImageLogo = p.logo.startsWith('/') || p.logo.startsWith('http');
-        const clickable = WEBSITE_LINKS_ENABLED && !!p.websiteUrl;
-        const Wrapper = clickable ? 'a' : 'div';
-        const wrapperProps = clickable
-            ? { href: p.websiteUrl, target: '_blank', rel: 'noopener noreferrer' }
-            : {};
+        const memberCount = p.memberOrganizations?.length || 0;
+        const clickable = !!p.slug;
 
-        return (
-            <Wrapper key={p.id} className={`partner-card ${clickable ? 'is-clickable' : ''}`} {...wrapperProps}>
+        const cardContent = (
+            <>
                 <div className="partner-logo">
                     {hasImageLogo ? (
                         <Image src={p.logo} alt={p.name} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'contain' }} />
@@ -156,13 +164,32 @@ export default function PartnersDirectory({ partners }: PartnersDirectoryProps) 
                     <div className="partner-name">{p.name}</div>
                     {p.role && <div className="partner-role">{p.role}</div>}
                     {p.desc && <div className="partner-desc">{p.desc}</div>}
-                    {clickable && (
+                    {memberCount > 0 && (
+                        <span className="partner-visit">
+                            {memberCount} member organization{memberCount !== 1 ? 's' : ''}
+                        </span>
+                    )}
+                    {clickable && WEBSITE_LINKS_ENABLED && p.websiteUrl && (
                         <span className="partner-visit">
                             Visit website <Icon name="external-link" size={12} />
                         </span>
                     )}
                 </div>
-            </Wrapper>
+            </>
+        );
+
+        if (clickable) {
+            return (
+                <Link key={p.id} href={`/partners/${p.slug}`} className="partner-card is-clickable">
+                    {cardContent}
+                </Link>
+            );
+        }
+
+        return (
+            <div key={p.id} className="partner-card">
+                {cardContent}
+            </div>
         );
     };
 

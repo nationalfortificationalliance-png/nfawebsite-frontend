@@ -79,14 +79,25 @@ export interface NewsEvent {
     publishedAt: string;
 }
 
+export interface PartnerMemberOrganization {
+    id: number;
+    name: string;
+    website_url?: string;
+}
+
 export interface Partner {
     id: number;
     documentId: string;
     name: string;
+    slug?: string;
     logo: StrapiImage;
     website_url?: string;
     description?: string;
     role_in_alliance?: string;
+    focus_areas?: string;
+    contact_email?: string;
+    contact_phone?: string;
+    member_organizations?: PartnerMemberOrganization[];
     order: number;
     is_active: boolean;
     partner_type: string;
@@ -270,9 +281,27 @@ export async function getPartners(): Promise<Partner[]> {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
         'populate[0]': 'logo',
+        'populate[1]': 'member_organizations',
         'pagination[pageSize]': '100',
     });
     return res?.data || [];
+}
+
+export async function getPartnerBySlug(slug: string): Promise<Partner | null> {
+    const res = await fetchAPI<{ data: Partner[] }>('/partners', {
+        'filters[slug][$eq]': slug,
+        'populate[0]': 'logo',
+        'populate[1]': 'member_organizations',
+    });
+    return res?.data?.[0] || null;
+}
+
+export async function getAllPartnerSlugs(): Promise<string[]> {
+    const res = await fetchAPI<{ data: Partner[] }>('/partners', {
+        'filters[is_active][$eq]': 'true',
+        'pagination[pageSize]': '100',
+    });
+    return (res?.data || []).map((p) => p.slug).filter((s): s is string => !!s);
 }
 
 export async function getTeamMembers(category?: string): Promise<TeamMember[]> {

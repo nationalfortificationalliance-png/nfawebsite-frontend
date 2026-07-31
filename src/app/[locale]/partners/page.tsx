@@ -69,12 +69,21 @@ export default async function PartnersPage() {
     const displayPartners: DisplayPartner[] = rawPartners.length > 0
         ? rawPartners.map((p) => ({
             id: p.id,
+            slug: p.slug,
             type: p.partner_type || 'partner',
             name: p.name,
             desc: p.description || '',
             role: p.role_in_alliance || '',
             logo: resolvePartnerLogo(p),
             websiteUrl: p.website_url,
+            focusAreas: p.focus_areas,
+            contactEmail: p.contact_email,
+            contactPhone: p.contact_phone,
+            memberOrganizations: (p.member_organizations || []).map((m) => ({
+                id: m.id,
+                name: m.name,
+                websiteUrl: m.website_url,
+            })),
         }))
         : STATIC_PARTNERS;
 
