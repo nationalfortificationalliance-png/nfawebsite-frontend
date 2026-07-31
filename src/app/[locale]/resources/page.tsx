@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import {
     getLaboratories, Laboratory,
@@ -13,6 +14,13 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 60;
+
+// Same rotating hero-image pool used elsewhere on the site (HeroCarousel, About, News).
+const RESOURCES_HERO_IMAGES = [
+    { src: '/about-hero.jpg', alt: 'Laboratory quality assurance' },
+    { src: '/factory.jpg', alt: 'Food fortification production line' },
+    { src: '/news_hero.jpg', alt: 'Fortification stakeholders and partners' },
+];
 
 const LABS_FALLBACK: Laboratory[] = [
     { id: 1, documentId: '1', name: 'Saag Chemicals', location: 'Lagos', contact: '08025589200', order: 1, latitude: 6.5244, longitude: 3.3792 },
@@ -45,6 +53,10 @@ export default async function ResourcesPage() {
     const challenges = industryChallengesData.length ? industryChallengesData : CHALLENGES_FALLBACK;
     const documents = await getGuidelineDocuments();
 
+    // Randomly picked per request/revalidation — this is a Server Component (no re-render), so impurity here is intentional and safe.
+    // eslint-disable-next-line react-hooks/purity
+    const heroImage = RESOURCES_HERO_IMAGES[Math.floor(Math.random() * RESOURCES_HERO_IMAGES.length)];
+
     const lastUpdated = documents
         .map((d) => d.published_date)
         .filter((d): d is string => Boolean(d))
@@ -76,6 +88,16 @@ export default async function ResourcesPage() {
                     display: flex;
                     align-items: center;
                     overflow: hidden;
+                }
+                .res-hero-bg {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                }
+                .res-hero-overlay {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 1;
                     background: linear-gradient(135deg, rgba(0, 82, 73, 0.94) 0%, rgba(6, 78, 59, 0.9) 100%);
                 }
                 .res-hero-content {
@@ -202,6 +224,10 @@ export default async function ResourcesPage() {
             `}</style>
 
             <div className="res-hero">
+                <div className="res-hero-bg">
+                    <Image src={heroImage.src} alt={heroImage.alt} fill style={{ objectFit: 'cover' }} priority />
+                </div>
+                <div className="res-hero-overlay" />
                 <div className="container res-hero-content">
                     <div className="breadcrumb">
                         <Link href="/">Home</Link>
