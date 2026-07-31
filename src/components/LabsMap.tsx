@@ -94,6 +94,16 @@ export default function LabsMap({ labs }: LabsMapProps) {
                     display: flex; align-items: center; gap: 0.4rem;
                     font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.35rem;
                 }
+                .labs-map-directions {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.35rem;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    color: var(--wfp-blue);
+                    margin-top: 0.4rem;
+                }
+                .labs-map-directions:hover { text-decoration: underline; }
                 .labs-map-list { display: flex; flex-direction: column; gap: 0.3rem; max-height: 220px; overflow-y: auto; }
                 .labs-map-list-item {
                     text-align: left;
@@ -150,6 +160,14 @@ export default function LabsMap({ labs }: LabsMapProps) {
                         <div className="lab-name">{activeLab.name}</div>
                         <div className="lab-location"><Icon name="map-pin" size={14} />{activeLab.location}</div>
                         <div className="lab-contact"><Icon name="phone" size={14} />{activeLab.contact}</div>
+                        <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${activeLab.latitude},${activeLab.longitude}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="labs-map-directions"
+                        >
+                            <Icon name="external-link" size={14} /> Get Directions
+                        </a>
                     </div>
                 ) : null}
                 <div className="labs-map-list">

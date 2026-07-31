@@ -45,6 +45,28 @@ export default async function ResourcesPage() {
     const challenges = industryChallengesData.length ? industryChallengesData : CHALLENGES_FALLBACK;
     const documents = await getGuidelineDocuments();
 
+    const lastUpdated = documents
+        .map((d) => d.published_date)
+        .filter((d): d is string => Boolean(d))
+        .sort()
+        .at(-1);
+    const lastUpdatedLabel = lastUpdated
+        ? new Date(lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        : null;
+
+    const structuredData = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Resources | National Fortification Alliance',
+        description: 'Approved micronutrient laboratories, industry challenges, and guideline documents from the National Fortification Alliance Nigeria.',
+        hasPart: documents.map((d) => ({
+            '@type': 'DigitalDocument',
+            name: d.title,
+            description: d.description,
+            datePublished: d.published_date,
+        })),
+    };
+
     return (
         <main className="resources-page">
             <style>{`
@@ -66,6 +88,15 @@ export default async function ResourcesPage() {
                 .res-hero .breadcrumb a:hover { color: #fff; }
                 .res-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; }
                 .res-hero p { color: rgba(255,255,255,0.95); max-width: 720px; font-size: 1.1rem; line-height: 1.7; }
+                .res-hero-stats {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 1.75rem;
+                    margin-top: 1.75rem;
+                }
+                .res-hero-stat { color: #fff; }
+                .res-hero-stat-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
+                .res-hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
 
                 .labs-grid {
                     display: grid;
@@ -220,8 +251,29 @@ export default async function ResourcesPage() {
                     <p>
                         Approved micronutrient laboratories, industry challenges, and technical guideline documents supporting Nigeria&apos;s food fortification programme.
                     </p>
+                    <div className="res-hero-stats">
+                        <div className="res-hero-stat">
+                            <div className="res-hero-stat-num">{labs.length}</div>
+                            <div className="res-hero-stat-label">Laboratories</div>
+                        </div>
+                        <div className="res-hero-stat">
+                            <div className="res-hero-stat-num">{documents.length}</div>
+                            <div className="res-hero-stat-label">Guideline Documents</div>
+                        </div>
+                        {lastUpdatedLabel && (
+                            <div className="res-hero-stat">
+                                <div className="res-hero-stat-num" style={{ fontSize: '1.1rem' }}>{lastUpdatedLabel}</div>
+                                <div className="res-hero-stat-label">Last Updated</div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            />
 
             <ResourceCentre labs={labs} challenges={challenges} documents={documents} />
         </main>

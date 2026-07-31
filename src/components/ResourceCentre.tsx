@@ -41,6 +41,13 @@ function matches(query: string, haystacks: (string | undefined | null)[]): boole
     return haystacks.some((h) => h?.toLowerCase().includes(q));
 }
 
+const RECENT_DAYS = 30;
+function isRecent(dateStr?: string): boolean {
+    if (!dateStr) return false;
+    const days = (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24);
+    return days >= 0 && days <= RECENT_DAYS;
+}
+
 export default function ResourceCentre({ labs, challenges, documents }: ResourceCentreProps) {
     const [query, setQuery] = useState('');
     const [docType, setDocType] = useState('all');
@@ -164,6 +171,38 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     color: var(--text-muted);
                     font-size: 0.9rem;
                 }
+                .lab-directions {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.35rem;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    color: var(--wfp-blue);
+                    margin-top: 0.5rem;
+                }
+                .lab-directions:hover { text-decoration: underline; }
+                .doc-featured-badge {
+                    display: inline-block;
+                    background: var(--wfp-gold-light, #fef3c7);
+                    color: var(--wfp-gold, #b45309);
+                    font-size: 0.68rem;
+                    font-weight: 700;
+                    padding: 0.15rem 0.55rem;
+                    border-radius: 999px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.03em;
+                }
+                .doc-new-badge {
+                    display: inline-block;
+                    background: var(--wfp-green-light, #e6f4ee);
+                    color: var(--wfp-green, #008751);
+                    font-size: 0.68rem;
+                    font-weight: 700;
+                    padding: 0.15rem 0.55rem;
+                    border-radius: 999px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.03em;
+                }
             `}</style>
 
             <div className="rc-search-bar">
@@ -211,6 +250,16 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                                             <Icon name="phone" size={14} />
                                             {lab.contact}
                                         </div>
+                                        {typeof lab.latitude === 'number' && typeof lab.longitude === 'number' && (
+                                            <a
+                                                href={`https://www.google.com/maps/dir/?api=1&destination=${lab.latitude},${lab.longitude}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="lab-directions"
+                                            >
+                                                <Icon name="external-link" size={13} /> Get Directions
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -318,6 +367,8 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                                             <div className="doc-title">{doc.title}</div>
                                             {doc.description && <div className="doc-desc">{doc.description}</div>}
                                             <div className="doc-meta">
+                                                {doc.is_featured && <span className="doc-featured-badge">Featured</span>}
+                                                {isRecent(doc.published_date) && <span className="doc-new-badge">New</span>}
                                                 <span className="doc-badge">{doc.category}</span>
                                                 {doc.document_type && <span className="doc-type-badge">{doc.document_type}</span>}
                                                 {doc.status && (

@@ -18,6 +18,13 @@ function uniqueSorted(values: string[]): string[] {
     return Array.from(new Set(values)).sort();
 }
 
+const RECENT_DAYS = 30;
+function isRecent(dateStr?: string): boolean {
+    if (!dateStr) return false;
+    const days = (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24);
+    return days >= 0 && days <= RECENT_DAYS;
+}
+
 export default function ReportsRepository({ reports }: ReportsRepositoryProps) {
     const [search, setSearch] = useState('');
     const [year, setYear] = useState('all');
@@ -165,6 +172,8 @@ export default function ReportsRepository({ reports }: ReportsRepositoryProps) {
                     border-radius: 999px;
                 }
                 .report-badge.agency { background: var(--wfp-gold-light, #fef3c7); color: var(--wfp-gold, #b45309); }
+                .report-badge.featured { background: var(--wfp-gold-light, #fef3c7); color: var(--wfp-gold, #b45309); text-transform: uppercase; letter-spacing: 0.03em; }
+                .report-badge.new { background: var(--wfp-green-light, #e6f4ee); color: var(--wfp-green, #008751); text-transform: uppercase; letter-spacing: 0.03em; }
                 .report-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.75rem; }
                 .report-tag {
                     font-size: 0.7rem;
@@ -280,6 +289,8 @@ export default function ReportsRepository({ reports }: ReportsRepositoryProps) {
                                     <div className="report-title">{report.title}</div>
                                     {report.description && <div className="report-desc">{report.description}</div>}
                                     <div className="report-meta">
+                                        {report.is_featured && <span className="report-badge featured">Featured</span>}
+                                        {isRecent(report.published_date) && <span className="report-badge new">New</span>}
                                         <span className="report-badge">{report.year}</span>
                                         <span className="report-badge agency">{report.agency}</span>
                                         <span>{report.report_type}</span>
