@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
-import Icon, { IconName } from '@/components/Icon';
 import {
     getLaboratories, Laboratory,
     getIndustryChallenges, IndustryChallenge,
-    getGuidelineDocuments, GuidelineDocument,
-    getStrapiMediaUrl,
+    getGuidelineDocuments,
 } from '@/lib/api';
+import ResourceCentre from '@/components/ResourceCentre';
 
 export const metadata: Metadata = {
     title: 'Resources | National Fortification Alliance',
@@ -39,14 +37,6 @@ const CHALLENGES_FALLBACK: IndustryChallenge[] = [
     { text: 'Inconsistent customs tariff implementation', category: 'Regulatory & Customs' },
     { text: 'Inadequate monitoring of imported products', category: 'Regulatory & Customs' },
 ].map((c, i) => ({ id: i + 1, documentId: String(i + 1), text: c.text, category: c.category, order: i + 1 }));
-
-const CHALLENGE_CATEGORY_ORDER = ['Supply Chain', 'Technical & Equipment', 'Quality & Compliance', 'Regulatory & Customs'];
-const CHALLENGE_CATEGORY_ICONS: Record<string, IconName> = {
-    'Supply Chain': 'truck',
-    'Technical & Equipment': 'settings',
-    'Quality & Compliance': 'microscope',
-    'Regulatory & Customs': 'landmark',
-};
 
 export default async function ResourcesPage() {
     const laboratoriesData = await getLaboratories();
@@ -233,113 +223,7 @@ export default async function ResourcesPage() {
                 </div>
             </div>
 
-            {/* Approved Labs */}
-            <section className="section" id="laboratories" style={{ scrollMarginTop: '100px' }}>
-                <div className="container">
-                    <p className="section-eyebrow">Quality Assurance</p>
-                    <h2 className="section-title">Approved Micronutrient Laboratories</h2>
-                    <p className="section-lead">
-                        The NFA, in collaboration with the Institute of Public Analysts of Nigeria (IPAN), recognizes accredited laboratories supporting micronutrient analysis and compliance monitoring.
-                    </p>
-
-                    <div className="labs-grid">
-                        {labs.map((lab) => (
-                            <div key={lab.id} className="lab-card">
-                                <div className="lab-icon">
-                                    <Icon name="microscope" size={24} />
-                                </div>
-                                <div className="lab-info">
-                                    <div className="lab-name">{lab.name}</div>
-                                    <div className="lab-location">
-                                        <Icon name="map-pin" size={14} />
-                                        {lab.location}
-                                    </div>
-                                    <div className="lab-contact">
-                                        <Icon name="phone" size={14} />
-                                        {lab.contact}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Industry Challenges */}
-            <section className="section" style={{ background: 'var(--bg-off)' }}>
-                <div className="container">
-                    <p className="section-eyebrow" style={{ color: 'var(--wfp-red, #dc2626)' }}>Transparency</p>
-                    <h2 className="section-title">Industry Challenges</h2>
-                    <p className="section-lead">
-                        Identifying and addressing operational hurdles is critical. The NFA actively works to mitigate the following identified industry challenges:
-                    </p>
-                    <div className="challenges-groups">
-                        {CHALLENGE_CATEGORY_ORDER
-                            .map((category) => ({ category, items: challenges.filter((c) => c.category === category) }))
-                            .filter((group) => group.items.length > 0)
-                            .map((group) => (
-                                <div key={group.category} className="challenge-group">
-                                    <h4 className="challenge-group-title">
-                                        <Icon name={CHALLENGE_CATEGORY_ICONS[group.category] || 'settings'} size={18} />
-                                        {group.category}
-                                    </h4>
-                                    <div className="challenges-grid">
-                                        {group.items.map((challenge) => (
-                                            <div key={challenge.id} className="challenge-item">
-                                                <span>{challenge.text}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Guideline Documents */}
-            <section className="section" id="guidelines" style={{ scrollMarginTop: '100px' }}>
-                <div className="container">
-                    <p className="section-eyebrow">Downloads</p>
-                    <h2 className="section-title">Guideline Documents</h2>
-                    <p className="section-lead">
-                        Regulatory guidelines, technical reports, and reference documents for fortification stakeholders.
-                    </p>
-
-                    {documents.length > 0 ? (
-                        <div className="docs-grid">
-                            {documents.map((doc) => {
-                                const publishedDate = doc.published_date
-                                    ? new Date(doc.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                                    : null;
-                                const fileUrl = doc.file ? getStrapiMediaUrl(doc.file.url) : null;
-                                return (
-                                    <div key={doc.id} className="doc-card">
-                                        <div className="doc-icon">
-                                            <Icon name="file-text" size={24} />
-                                        </div>
-                                        <div className="doc-info">
-                                            <div className="doc-title">{doc.title}</div>
-                                            {doc.description && <div className="doc-desc">{doc.description}</div>}
-                                            <div className="doc-meta">
-                                                <span className="doc-badge">{doc.category}</span>
-                                                {publishedDate && <span>{publishedDate}</span>}
-                                                {doc.file_size && <span>{doc.file_size}</span>}
-                                            </div>
-                                            {fileUrl && (
-                                                <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="doc-download">
-                                                    <Icon name="arrow-right" size={14} /> Download
-                                                </a>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    ) : (
-                        <p className="res-empty">Guideline documents will be published here shortly.</p>
-                    )}
-                </div>
-            </section>
+            <ResourceCentre labs={labs} challenges={challenges} documents={documents} />
         </main>
     );
 }

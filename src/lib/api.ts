@@ -633,6 +633,8 @@ export async function getIndustryChallenges(): Promise<IndustryChallenge[]> {
 }
 
 export type GuidelineDocumentCategory = 'General' | 'Logistics' | 'Nutrition' | 'Reports' | 'Other';
+export type GuidelineDocumentType = 'Guideline' | 'Standard' | 'Regulation' | 'Manual' | 'SOP' | 'Technical Note' | 'Policy Document';
+export type GuidelineDocumentStatus = 'Current' | 'Revised' | 'Archived';
 
 export interface GuidelineDocument {
     id: number;
@@ -644,6 +646,10 @@ export interface GuidelineDocument {
     published_date?: string;
     file_size?: string;
     is_featured: boolean;
+    document_type?: GuidelineDocumentType;
+    food_vehicles?: string;
+    agency?: ReportAgency;
+    status?: GuidelineDocumentStatus;
 }
 
 export async function getGuidelineDocuments(): Promise<GuidelineDocument[]> {
