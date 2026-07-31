@@ -283,7 +283,7 @@ export default async function PartnersPage() {
                     <h1>Our Partners</h1>
                     <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
                     <div className="partners-hero-count">
-                        <strong>{totalPartners}</strong> Partner Organizations across Government, Industry, Professional Bodies, Academia, Civil Society, and Development Partners
+                        <strong>{totalPartners}</strong> Partner Organizations
                     </div>
                 </div>
             </div>

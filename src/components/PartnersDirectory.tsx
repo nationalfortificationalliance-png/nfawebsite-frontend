@@ -212,36 +212,6 @@ export default function PartnersDirectory({ partners }: PartnersDirectoryProps) 
                 })}
             </div>
 
-            {/* Become a Partner */}
-            <div className="become-section">
-                <div className="container">
-                    <div className="become-grid">
-                        <div>
-                            <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>Join the Alliance</p>
-                            <h2>Become a Partner</h2>
-                            <p>NFA welcomes new partners who share our commitment to eliminating malnutrition in Nigeria. We work with organizations across sectors to expand reach and deepen impact.</p>
-                            <div style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                                <Link href="/contact" className="btn btn-white btn-lg">Express Interest →</Link>
-                                <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline-white btn-lg">View Partnership Guide</a>
-                            </div>
-                        </div>
-                        <div className="become-items">
-                            {[
-                                { icon: 'factory', text: 'Food processors can receive technical support, premix sourcing guidance, and NAFDAC certification assistance.' },
-                                { icon: 'landmark', text: 'Donors and foundations can co-fund fortification programs with defined impact metrics and reporting.' },
-                                { icon: 'microscope', text: 'Research institutions can partner on coverage surveys, impact evaluations, and knowledge dissemination.' },
-                                { icon: 'handshake', text: 'NGOs and civil society can lead demand creation campaigns and community-level nutrition education.' },
-                            ].map((item, i) => (
-                                <div key={i} className="become-item">
-                                    <span className="become-item-icon" style={{ display: 'flex' }}><Icon name={item.icon as IconName} size={28} /></span>
-                                    <span>{item.text}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* Directory */}
             <section className="section" id="partner-directory">
                 <div className="container">
@@ -308,6 +278,36 @@ export default function PartnersDirectory({ partners }: PartnersDirectoryProps) 
                     )}
                 </div>
             </section>
+
+            {/* Become a Partner */}
+            <div className="become-section">
+                <div className="container">
+                    <div className="become-grid">
+                        <div>
+                            <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>Join the Alliance</p>
+                            <h2>Become a Partner</h2>
+                            <p>NFA welcomes new partners who share our commitment to eliminating malnutrition in Nigeria. We work with organizations across sectors to expand reach and deepen impact.</p>
+                            <div style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                                <Link href="/contact" className="btn btn-white btn-lg">Express Interest →</Link>
+                                <Link href="/contact" className="btn btn-outline-white btn-lg">View Partnership Guide</Link>
+                            </div>
+                        </div>
+                        <div className="become-items">
+                            {[
+                                { icon: 'factory', text: 'Food processors can receive technical support, premix sourcing guidance, and NAFDAC certification assistance.' },
+                                { icon: 'landmark', text: 'Donors and foundations can co-fund fortification programs with defined impact metrics and reporting.' },
+                                { icon: 'microscope', text: 'Research institutions can partner on coverage surveys, impact evaluations, and knowledge dissemination.' },
+                                { icon: 'handshake', text: 'NGOs and civil society can lead demand creation campaigns and community-level nutrition education.' },
+                            ].map((item, i) => (
+                                <div key={i} className="become-item">
+                                    <span className="become-item-icon" style={{ display: 'flex' }}><Icon name={item.icon as IconName} size={28} /></span>
+                                    <span>{item.text}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
