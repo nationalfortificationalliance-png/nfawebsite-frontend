@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import Icon, { IconName } from '@/components/Icon';
 import { getPartners, getStrapiMediaUrl, type Partner } from '@/lib/api';
+import PartnersDirectory, { type DisplayPartner } from '@/components/PartnersDirectory';
 
 export const metadata: Metadata = {
     title: 'Partners',
@@ -10,129 +10,75 @@ export const metadata: Metadata = {
 };
 export const revalidate = 60;
 
-const PARTNER_TYPES: Record<string, { label: string; color: string; bg: string }> = {
-    government: { label: 'Government MDAs', color: '#15803d', bg: '#dcfce7' },
-    'private-sector': { label: 'Industry Stakeholders', color: '#b45309', bg: '#fef3c7' },
-    'professional-body': { label: 'Professional Bodies & Associations', color: '#0891b2', bg: '#cffafe' },
-    'development-partner': { label: 'Development Partners', color: '#0070bc', bg: '#e8f4fb' },
-    'civil-society': { label: 'Academia, Media & Civil Society', color: '#7e22ce', bg: '#f3e8ff' },
-};
-
-const STATIC_PARTNERS = [
-    // Lead Agency
-    { id: 1, type: 'lead', name: 'WFP Nigeria', desc: 'Program lead and technical implementing partner, providing funding, coordination, and capacity building for the National Fortification Alliance.', logo: '/wfp-logo-standard-blue-en.svg' },
-
+const STATIC_PARTNERS: DisplayPartner[] = [
     // Government MDAs
-    { id: 2, type: 'government', name: 'Federal Ministry of Health and Social Welfare', desc: 'Government policy owner of the national nutrition strategy, ensuring fortification aligns with Nigeria\'s public health and SDG commitments.', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
-    { id: 3, type: 'government', name: 'NAFDAC', desc: 'National Authority for Food & Drugs Control — the regulatory body responsible for certifying processors, conducting audits, and enforcing fortification standards.', logo: '/NAFDAC_emblem.png' },
-    { id: 4, type: 'government', name: 'Standards Organisation of Nigeria', desc: 'Sets and enforces product quality benchmarks for fortified foods, ensuring compliance with Nigerian and international standards.', logo: '/son_png.png' },
-    { id: 5, type: 'government', name: 'FCCPC', desc: 'Federal Competition and Consumer Protection Commission — ensuring consumer rights and quality at the household level.', logo: '/fccpc_logo.png' },
-    { id: 6, type: 'government', name: 'Federal Ministry of Education', desc: 'Supports school feeding programs and nutrition education initiatives.', logo: 'building' },
-    { id: 7, type: 'government', name: 'Federal Ministry of Industry, Trade and Investment', desc: 'Oversees industrial compliance and trade policy for fortified foods.', logo: 'factory' },
-    { id: 8, type: 'government', name: 'Federal Ministry of Finance, Budget and National Planning', desc: 'Provides budgetary support and economic planning for nutrition programs.', logo: 'banknote' },
-    { id: 9, type: 'government', name: 'Nigerian Customs Service', desc: 'Monitors import standards for premix and fortified food ingredients.', logo: 'shield' },
-    { id: 10, type: 'government', name: 'National Primary Health Care Development Agency', desc: 'Implements community-level nutrition interventions.', logo: 'heart-pulse' },
-    { id: 11, type: 'government', name: 'Federal Ministry of Agriculture and Food Security', desc: 'Coordinates agricultural value chains for fortified food commodities.', logo: 'leaf' },
-    { id: 12, type: 'government', name: 'Federal Ministry of Information and National Orientation', desc: 'Leads public awareness campaigns on fortified foods.', logo: 'radio' },
+    { id: 2, type: 'government', name: 'Federal Ministry of Health and Social Welfare', desc: 'Government policy owner of the national nutrition strategy, ensuring fortification aligns with Nigeria\'s public health and SDG commitments.', role: '', logo: '/Nigeria_Federal_Ministry_of_Health_Logo.png' },
+    { id: 3, type: 'government', name: 'NAFDAC', desc: 'National Authority for Food & Drugs Control — the regulatory body responsible for certifying processors, conducting audits, and enforcing fortification standards.', role: '', logo: '/NAFDAC_emblem.png' },
+    { id: 4, type: 'government', name: 'Standards Organisation of Nigeria', desc: 'Sets and enforces product quality benchmarks for fortified foods, ensuring compliance with Nigerian and international standards.', role: '', logo: '/son_png.png' },
+    { id: 5, type: 'government', name: 'FCCPC', desc: 'Federal Competition and Consumer Protection Commission — ensuring consumer rights and quality at the household level.', role: '', logo: '/fccpc_logo.png' },
+    { id: 6, type: 'government', name: 'Federal Ministry of Education', desc: 'Supports school feeding programs and nutrition education initiatives.', role: '', logo: 'building-2' },
+    { id: 7, type: 'government', name: 'Federal Ministry of Industry, Trade and Investment', desc: 'Oversees industrial compliance and trade policy for fortified foods.', role: '', logo: 'factory' },
+    { id: 8, type: 'government', name: 'Federal Ministry of Finance, Budget and National Planning', desc: 'Provides budgetary support and economic planning for nutrition programs.', role: '', logo: 'landmark' },
+    { id: 9, type: 'government', name: 'Nigerian Customs Service', desc: 'Monitors import standards for premix and fortified food ingredients.', role: '', logo: 'shield' },
+    { id: 10, type: 'government', name: 'National Primary Health Care Development Agency', desc: 'Implements community-level nutrition interventions.', role: '', logo: 'heart-pulse' },
+    { id: 11, type: 'government', name: 'Federal Ministry of Agriculture and Food Security', desc: 'Coordinates agricultural value chains for fortified food commodities.', role: '', logo: 'globe' },
+    { id: 12, type: 'government', name: 'Federal Ministry of Information and National Orientation', desc: 'Leads public awareness campaigns on fortified foods.', role: '', logo: 'megaphone' },
 
     // UN Agencies & Development Partners
-    { id: 20, type: 'un-agency', name: 'UNICEF Nigeria', desc: 'Supports fortification interventions targeting child nutrition outcomes, providing technical assistance and advocacy aligned with child rights.', logo: '/UNICEF_Logo.png' },
-    { id: 21, type: 'un-agency', name: 'WHO Nigeria', desc: 'Technical collaborator providing global evidence and WHO-aligned premix specifications for all six fortification vehicles.', logo: 'stethoscope' },
-    { id: 22, type: 'donor', name: 'GAIN', desc: 'Global Alliance for Improved Nutrition supports premix supply chain strengthening, market assessments, and private sector engagement in Nigeria.', logo: '/GAIN_logo_RVB.webp' },
-    { id: 23, type: 'donor', name: 'Helen Keller International', desc: 'Provides technical support for micronutrient programs and fortification monitoring.', logo: 'eye' },
-    { id: 24, type: 'donor', name: 'TechnoServe', desc: 'Strengthens value chains and private sector capacity for fortified foods.', logo: 'sprout' },
-    { id: 25, type: 'donor', name: 'Particle for Humanity', desc: 'Supports innovative fortification technologies and delivery systems.', logo: 'globe' },
+    { id: 20, type: 'development-partner', name: 'UNICEF Nigeria', desc: 'Supports fortification interventions targeting child nutrition outcomes, providing technical assistance and advocacy aligned with child rights.', role: '', logo: '/UNICEF_Logo.png' },
+    { id: 21, type: 'development-partner', name: 'WHO Nigeria', desc: 'Technical collaborator providing global evidence and WHO-aligned premix specifications for all six fortification vehicles.', role: '', logo: 'stethoscope' },
+    { id: 22, type: 'development-partner', name: 'GAIN', desc: 'Global Alliance for Improved Nutrition supports premix supply chain strengthening, market assessments, and private sector engagement in Nigeria.', role: '', logo: '/GAIN_logo_RVB.webp' },
+    { id: 23, type: 'development-partner', name: 'Helen Keller International', desc: 'Provides technical support for micronutrient programs and fortification monitoring.', role: '', logo: 'globe' },
+    { id: 24, type: 'development-partner', name: 'TechnoServe', desc: 'Strengthens value chains and private sector capacity for fortified foods.', role: '', logo: 'handshake' },
+    { id: 25, type: 'development-partner', name: 'Particle for Humanity', desc: 'Supports innovative fortification technologies and delivery systems.', role: '', logo: 'globe' },
 
     // Private Sector - Industry Stakeholders
-    { id: 30, type: 'private-sector', name: 'Flour Millers Association', desc: 'Represents wheat flour producers implementing mandatory fortification standards.', logo: 'wheat' },
-    { id: 31, type: 'private-sector', name: 'Vegetable Oil Producers', desc: 'Key stakeholders in edible oil fortification with Vitamin A.', logo: 'droplet' },
-    { id: 32, type: 'private-sector', name: 'Sugar Producers', desc: 'Implements fortification standards for refined sugar products.', logo: 'candy' },
-    { id: 33, type: 'private-sector', name: 'Salt Producers', desc: 'Mandatory iodization of table salt for thyroid health.', logo: 'box' },
-    { id: 35, type: 'private-sector', name: 'Premix Manufacturers', desc: 'Produces vitamin and mineral premixes for food fortification.', logo: 'flask-conical' },
-    { id: 36, type: 'private-sector', name: 'Rice Millers', desc: 'Emerging partners in rice fortification initiatives.', logo: 'wheat' },
+    { id: 30, type: 'private-sector', name: 'Flour Millers', desc: 'Represents wheat flour producers implementing mandatory fortification standards.', role: '', logo: 'wheat' },
+    { id: 31, type: 'private-sector', name: 'Vegetable Oil Producers', desc: 'Key stakeholders in edible oil fortification with Vitamin A.', role: '', logo: 'droplet' },
+    { id: 32, type: 'private-sector', name: 'Sugar Producers', desc: 'Implements fortification standards for refined sugar products.', role: '', logo: 'box' },
+    { id: 33, type: 'private-sector', name: 'Salt Producers', desc: 'Mandatory iodization of table salt for thyroid health.', role: '', logo: 'box' },
+    { id: 35, type: 'private-sector', name: 'Premix Manufacturers, Blenders and Suppliers', desc: 'Produces vitamin and mineral premixes for food fortification.', role: '', logo: 'factory' },
+    { id: 36, type: 'private-sector', name: 'Rice Millers', desc: 'Emerging partners in rice fortification initiatives.', role: '', logo: 'wheat' },
+    { id: 37, type: 'private-sector', name: 'Bouillon Producers', desc: 'Fortification of bouillon cubes and seasoning products.', role: '', logo: 'box' },
 
-    // Professional Bodies & Civil Society
-    { id: 40, type: 'civil-society', name: 'Nutrition Society of Nigeria', desc: 'Professional body advancing nutrition science and fortification research.', logo: 'apple' },
-    { id: 41, type: 'civil-society', name: 'Nigerian Institute of Food Science and Technology', desc: 'Technical expertise in food processing and fortification standards.', logo: 'microscope' },
-    { id: 42, type: 'civil-society', name: 'Association of Food Beverage Tobacco Employees', desc: 'Labor union representing food industry workers.', logo: 'users' },
-    { id: 43, type: 'civil-society', name: 'Universities and Research Institutions', desc: 'Academic partners conducting fortification research and training.', logo: 'graduation-cap' },
-    { id: 44, type: 'civil-society', name: 'Media Organizations', desc: 'Communication partners for fortification awareness campaigns.', logo: 'newspaper' },
-    { id: 45, type: 'civil-society', name: 'Consumer Advocacy Groups', desc: 'Represent consumer interests in fortification policy and standards.', logo: 'shopping-basket' },
+    // Professional Bodies
+    { id: 40, type: 'professional-body', name: 'Nutrition Society of Nigeria', desc: 'Professional body advancing nutrition science and fortification research.', role: '', logo: 'sparkles' },
+    { id: 41, type: 'professional-body', name: 'Nigerian Institute of Food Science and Technology', desc: 'Technical expertise in food processing and fortification standards.', role: '', logo: 'microscope' },
+    { id: 42, type: 'professional-body', name: 'Association of Food Beverage Tobacco Employees', desc: 'Labor union representing food industry workers.', role: '', logo: 'users' },
+
+    // Academia, Media & Civil Society
+    { id: 43, type: 'civil-society', name: 'Universities and Research Institutions', desc: 'Academic partners conducting fortification research and training.', role: '', logo: 'graduation-cap' },
+    { id: 44, type: 'civil-society', name: 'Media Organizations', desc: 'Communication partners for fortification awareness campaigns.', role: '', logo: 'newspaper' },
+    { id: 45, type: 'civil-society', name: 'Consumer Advocacy Groups', desc: 'Represent consumer interests in fortification policy and standards.', role: '', logo: 'users' },
 ];
 
 export default async function PartnersPage() {
     const rawPartners = await getPartners();
 
-    // Calculate dynamic partner counts from actual backend data
-    const partnerCounts = rawPartners.reduce((acc, p) => {
-        const type = p.partner_type || 'un-agency';
-        acc[type] = (acc[type] || 0) + 1;
-        return acc;
-    }, {} as Record<string, number>);
-
-    // Group partner types for display stats - matching client's exact categories
-    const IMPACT_QUICK = [
-        {
-            num: String(partnerCounts['government'] || 0),
-            label: 'Government MDAs'
-        },
-        {
-            num: String(partnerCounts['private-sector'] || 0),
-            label: 'Industry Stakeholders'
-        },
-        {
-            num: String(partnerCounts['professional-body'] || 0),
-            label: 'Professional Bodies & Associations'
-        },
-        {
-            num: String(partnerCounts['development-partner'] || 0),
-            label: 'Development Partners'
-        },
-        {
-            num: String(partnerCounts['civil-society'] || 0),
-            label: 'Academia, Media & Civil Society'
-        },
-    ];
-
-    // Helper to resolve partner logo from API or fallback to static
     const resolvePartnerLogo = (partner: Partner) => {
         const logoUrl = partner.logo?.url?.trim();
         if (logoUrl) {
-            if (logoUrl.startsWith('http')) {
-                return logoUrl;
-            }
-            if (logoUrl.startsWith('/uploads')) {
-                return getStrapiMediaUrl(logoUrl);
-            }
-            if (logoUrl.startsWith('/')) {
-                return logoUrl;
-            }
+            if (logoUrl.startsWith('http')) return logoUrl;
+            if (logoUrl.startsWith('/uploads')) return getStrapiMediaUrl(logoUrl);
+            if (logoUrl.startsWith('/')) return logoUrl;
         }
-
-        // Fallback to static partner logo if name matches
-        const staticMatch = STATIC_PARTNERS.find(
-            sp => sp.name.toLowerCase() === partner.name.toLowerCase()
-        );
-        return staticMatch?.logo || 'building';
+        const staticMatch = STATIC_PARTNERS.find((sp) => sp.name.toLowerCase() === partner.name.toLowerCase());
+        return staticMatch?.logo || 'building-2';
     };
 
-    // If we have API partners, transform them to match the display format
-    const displayPartners = rawPartners.length > 0
-        ? rawPartners.map(p => ({
+    const displayPartners: DisplayPartner[] = rawPartners.length > 0
+        ? rawPartners.map((p) => ({
             id: p.id,
             type: p.partner_type || 'partner',
             name: p.name,
             desc: p.description || '',
+            role: p.role_in_alliance || '',
             logo: resolvePartnerLogo(p),
+            websiteUrl: p.website_url,
         }))
         : STATIC_PARTNERS;
 
-    // Group partners by type
-    const grouped = displayPartners.reduce<Record<string, typeof STATIC_PARTNERS>>((acc, p) => {
-        if (!acc[p.type]) acc[p.type] = [];
-        acc[p.type].push(p);
-        return acc;
-    }, {});
+    const totalPartners = displayPartners.length;
 
     return (
         <>
@@ -154,7 +100,7 @@ export default async function PartnersPage() {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, rgba(0, 82, 73, 0.92) 0%, rgba(6, 78, 59, 0.88) 100%);
+          background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
           z-index: 1;
         }
         .partners-hero-content {
@@ -166,44 +112,124 @@ export default async function PartnersPage() {
           color: #fff;
           max-width: 720px;
           margin-bottom: 1rem;
+          text-shadow: 0 2px 10px rgba(0,0,0,0.35);
         }
         .partners-hero p {
-          color: rgba(255,255,255,0.95);
+          color: rgba(255,255,255,0.97);
           max-width: 720px;
           font-size: 1.15rem;
           line-height: 1.7;
+          text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+        }
+        .partners-hero-count {
+          margin-top: 1rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.55rem 1.1rem;
+          background: rgba(255,255,255,0.14);
+          border: 1px solid rgba(255,255,255,0.3);
+          border-radius: var(--radius-full);
+          backdrop-filter: blur(4px);
+          color: #fff;
+          font-size: 0.92rem;
+          font-weight: 600;
+          max-width: 720px;
+        }
+        .partners-hero-count strong {
+          font-size: 1.05rem;
+          font-weight: 800;
         }
         .partners-hero .breadcrumb {
           margin-bottom: 2rem;
+          padding: 0.4rem 0.9rem;
+          background: rgba(0,0,0,0.28);
+          border-radius: 100px;
+          display: inline-flex;
+          backdrop-filter: blur(4px);
         }
         .partners-hero .breadcrumb a,
         .partners-hero .breadcrumb span {
-          color: rgba(255,255,255,0.7);
+          color: rgba(255,255,255,0.85);
+          font-weight: 600;
         }
         .partners-hero .breadcrumb a:hover {
           color: #fff;
         }
 
         /* Quick stats */
-        .partner-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #fff; }
-        .partner-stat { padding: 1.75rem 1rem; text-align: center; border-right: 1px solid var(--border); }
+        .partner-stats { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #fff; }
+        .partner-stat {
+          padding: 1.75rem 1rem; text-align: center; border-right: 1px solid var(--border);
+          background: none; border-top: none; border-bottom: none; border-left: none; cursor: pointer;
+          transition: background-color .2s;
+        }
+        .partner-stat:hover { background: var(--bg-off); }
+        .partner-stat:focus-visible { outline: 2px solid var(--wfp-blue); outline-offset: -2px; }
         .partner-stat:last-child { border-right: none; }
+        .partner-stat-total { background: var(--wfp-blue-light); }
+        .partner-stat-total:hover { background: var(--wfp-blue-light); filter: brightness(0.97); }
+        .partner-stat-total .partner-stat-num { color: var(--wfp-blue); }
         .partner-stat-num { font-size: 2.25rem; font-weight: 900; color: var(--wfp-blue); letter-spacing: -0.04em; line-height: 1; }
         .partner-stat-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 600; margin-top: 0.3rem; }
 
-        /* Partner type section */
-        .partner-group { margin-bottom: 3rem; }
-        .partner-group-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border); }
+        /* Toolbar */
+        .partner-toolbar { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .partner-search-box { position: relative; flex: 1; min-width: 240px; }
+        .partner-search-icon {
+          position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
+          color: var(--text-muted); pointer-events: none;
+        }
+        .partner-search-input {
+          width: 100%; padding: 0.75rem 1rem 0.75rem 2.6rem; font-size: 0.95rem;
+          font-family: inherit; color: var(--text-primary);
+          background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-full);
+          transition: border-color .2s, box-shadow .2s;
+        }
+        .partner-search-input:focus { outline: none; border-color: var(--wfp-blue); box-shadow: 0 0 0 4px var(--wfp-blue-light); }
+        .partner-type-select {
+          padding: 0.75rem 2.25rem 0.75rem 1.1rem; font-size: 0.92rem; font-weight: 600;
+          font-family: inherit; color: var(--text-primary);
+          background-color: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-full);
+          cursor: pointer; appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          background-repeat: no-repeat; background-position: right 0.85rem center;
+        }
+        .partner-type-select:focus { outline: none; border-color: var(--wfp-blue); box-shadow: 0 0 0 4px var(--wfp-blue-light); }
+        .partner-result-count { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .partner-no-results { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); }
+
+        /* Partner category / accordion */
+        .partner-category { margin-bottom: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+        .partner-category-header {
+          width: 100%; display: flex; align-items: center; gap: 0.75rem;
+          padding: 1.25rem 1.5rem; background: #fff; border: none; cursor: pointer; text-align: left;
+        }
+        .partner-category-header:hover { background: var(--bg-off); }
+        .partner-category-header:focus-visible { outline: 2px solid var(--wfp-blue); outline-offset: -2px; }
         .partner-type-badge { padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; }
         .partner-group-count { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+        .partner-category-chevron { margin-left: auto; color: var(--text-secondary); transition: transform .25s; flex-shrink: 0; }
+        .partner-category-header[aria-expanded="true"] .partner-category-chevron { transform: rotate(180deg); }
+        .partner-category-blurb { padding: 0 1.5rem 1.25rem; margin: 0; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.65; max-width: 720px; }
+        .partner-grid { padding: 0 1.5rem 1.5rem; }
 
         /* Partner cards */
-        .partner-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1.75rem; display: flex; gap: 1.25rem; align-items: flex-start; transition: all .25s var(--ease-out); }
-        .partner-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .partner-card {
+          background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md);
+          padding: 1.75rem; display: flex; gap: 1.25rem; align-items: flex-start;
+          transition: all .25s var(--ease-out); position: relative;
+        }
+        .partner-card.is-clickable { cursor: pointer; }
+        .partner-card.is-clickable:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--wfp-blue-light); }
+        .partner-card:not(.is-clickable):hover { box-shadow: var(--shadow-sm); border-color: var(--border); }
         .partner-logo { width: 64px; height: 64px; border-radius: 8px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0; position: relative; overflow: hidden; }
-        .partner-info { flex: 1; }
-        .partner-name { font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem; }
+        .partner-info { flex: 1; min-width: 0; }
+        .partner-type-tag { display: inline-block; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15rem 0.55rem; border-radius: var(--radius-full); margin-bottom: 0.4rem; }
+        .partner-name { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--text-primary); }
+        .partner-role { font-size: 0.82rem; font-weight: 600; color: var(--wfp-blue); margin-bottom: 0.35rem; }
         .partner-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
+        .partner-visit { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.6rem; font-size: 0.8rem; font-weight: 600; color: var(--wfp-blue); }
 
         /* Become a partner */
         .become-section { background: var(--wfp-blue); padding: 3.5rem 0; }
@@ -225,11 +251,12 @@ export default async function PartnersPage() {
           .partners-hero p {
             font-size: 1rem;
           }
-          .partner-stats { grid-template-columns: repeat(2, 1fr); }
+          .partner-stats { grid-template-columns: repeat(3, 1fr); }
           .become-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 600px) {
-          .partner-stats { grid-template-columns: 1fr 1fr; }
+          .partner-stats { grid-template-columns: repeat(2, 1fr); }
+          .partner-toolbar { flex-direction: column; }
         }
       `}</style>
 
@@ -246,82 +273,13 @@ export default async function PartnersPage() {
                     </div>
                     <h1>Our Partners</h1>
                     <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
-                </div>
-            </div>
-
-            {/* ── Quick stats ── */}
-            <div className="partner-stats">
-                {IMPACT_QUICK.map((s) => (
-                    <div key={s.label} className="partner-stat">
-                        <div className="partner-stat-num">{s.num}</div>
-                        <div className="partner-stat-label">{s.label}</div>
-                    </div>
-                ))}
-            </div>
-
-            {/* ── Partner Groups ── */}
-            <section className="section">
-                <div className="container">
-                    {Object.entries(grouped).map(([type, group]) => {
-                        const meta = PARTNER_TYPES[type] ?? { label: type, color: '#4a5568', bg: '#f1f5f9' };
-                        return (
-                            <div key={type} className="partner-group">
-                                <div className="partner-group-header">
-                                    <span className="partner-type-badge" style={{ background: meta.bg, color: meta.color }}>{meta.label}</span>
-                                    <span className="partner-group-count">{group.length} organization{group.length !== 1 ? 's' : ''}</span>
-                                </div>
-                                <div className="grid-2" style={{ gap: '1rem' }}>
-                                    {group.map((p) => (
-                                        <div key={p.id} className="partner-card">
-                                            <div className="partner-logo">
-                                                {(p.logo.startsWith('/') || p.logo.startsWith('http')) ? (
-                                                    <Image src={p.logo} alt={p.name} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'contain' }} />
-                                                ) : (
-                                                    <Icon name={p.logo as IconName} size={32} />
-                                                )}
-                                            </div>
-                                            <div className="partner-info">
-                                                <div className="partner-name">{p.name}</div>
-                                                <div className="partner-desc">{p.desc}</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </section>
-
-            {/* ── Become a Partner ── */}
-            <div className="become-section">
-                <div className="container">
-                    <div className="become-grid">
-                        <div>
-                            <p className="section-eyebrow" style={{ color: 'var(--wfp-gold)' }}>Join the Alliance</p>
-                            <h2>Become a Partner</h2>
-                            <p>NFA welcomes new partners who share our commitment to eliminating malnutrition in Nigeria. We work with organizations across sectors to expand reach and deepen impact.</p>
-                            <div style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                                <Link href="/contact" className="btn btn-white btn-lg">Express Interest →</Link>
-                                <a href="https://nafdac.gov.ng/regulatory-resources/guidelines/" target="_blank" rel="noopener noreferrer" className="btn btn-outline-white btn-lg">View Partnership Guide</a>
-                            </div>
-                        </div>
-                        <div className="become-items">
-                            {[
-                                { icon: 'factory', text: 'Food processors can receive technical support, premix sourcing guidance, and NAFDAC certification assistance.' },
-                                { icon: 'landmark', text: 'Donors and foundations can co-fund fortification programs with defined impact metrics and reporting.' },
-                                { icon: 'microscope', text: 'Research institutions can partner on coverage surveys, impact evaluations, and knowledge dissemination.' },
-                                { icon: 'handshake', text: 'NGOs and civil society can lead demand creation campaigns and community-level nutrition education.' },
-                            ].map((item, i) => (
-                                <div key={i} className="become-item">
-                                    <span className="become-item-icon" style={{ display: 'flex' }}><Icon name={item.icon as IconName} size={28} /></span>
-                                    <span>{item.text}</span>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="partners-hero-count">
+                        <strong>{totalPartners}</strong> Partner Organizations across Government, Industry, Professional Bodies, Academia, Civil Society, and Development Partners
                     </div>
                 </div>
             </div>
+
+            <PartnersDirectory partners={displayPartners} />
         </>
     );
 }

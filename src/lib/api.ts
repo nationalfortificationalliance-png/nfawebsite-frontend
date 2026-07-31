@@ -86,6 +86,7 @@ export interface Partner {
     logo: StrapiImage;
     website_url?: string;
     description?: string;
+    role_in_alliance?: string;
     order: number;
     is_active: boolean;
     partner_type: string;
