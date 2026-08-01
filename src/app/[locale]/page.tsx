@@ -437,7 +437,7 @@ export default async function HomePage() {
         }
 
         /* ── CTA ── Dark green section */
-        .cta-full { position: relative; overflow: hidden; background: var(--wfp-navy); padding: 4.5rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
+        .cta-full { position: relative; overflow: hidden; background: var(--wfp-blue); padding: 4.5rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
         .cta-full::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(245, 158, 11, 0.05); top: -200px; right: -150px; }
         .cta-full-inner { max-width: 600px; }
         .cta-full h2 { color: #fff; margin-bottom: var(--md-sys-spacing-4); }
@@ -704,8 +704,8 @@ export default async function HomePage() {
             <h2>Ready to be part of Nourishing Nigeria?</h2>
             <p>Whether you are a food processor seeking NAFDAC certification, a development partner, or a researcher — NFA has resources and pathways for you.</p>
             <div className="cta-full-actions">
-              <Link href="/contact" className="btn btn-primary btn-lg">Contact NFA →</Link>
-              <Link href="/resources" className="btn btn-outline btn-lg">📄 Resource Library</Link>
+              <Link href="/contact" className="btn btn-white btn-lg">Contact NFA →</Link>
+              <Link href="/resources" className="btn btn-outline-white btn-lg">📄 Resource Library</Link>
             </div>
           </div>
         </div>
