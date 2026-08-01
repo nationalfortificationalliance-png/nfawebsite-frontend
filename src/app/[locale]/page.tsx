@@ -50,9 +50,9 @@ const ACHIEVEMENTS: { num: string; title: string; desc: string }[] = [
   { num: '04', title: 'Lab Audit', desc: 'Commissioned IPAN to conduct a full audit of all eight approved micronutrient laboratories.' },
 ];
 
-const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string; cta: string }[] = [
-  { icon: 'bar-chart', title: 'Productivity', desc: 'Malnutrition costs Nigeria approximately $1.5 billion annually in lost GDP due to poor health and cognitive development.', link: '/about', cta: 'Find Out More →' },
-  { icon: 'gem', title: 'Efficiency', desc: 'Fortification is one of the most cost-effective health interventions, with an estimated cost of only $0.01–$0.25 per person per year.', link: '/about', cta: 'Find Out More →' },
+const ECONOMIC_CASE: { icon: IconName; variant: 'productivity' | 'efficiency'; title: string; desc: string; link: string; cta: string }[] = [
+  { icon: 'bar-chart', variant: 'productivity', title: 'Productivity', desc: 'Malnutrition costs Nigeria approximately $1.5 billion annually in lost GDP due to poor health and cognitive development.', link: '/about', cta: 'Find Out More →' },
+  { icon: 'gem', variant: 'efficiency', title: 'Efficiency', desc: 'Fortification is one of the most cost-effective health interventions, with an estimated cost of only $0.01–$0.25 per person per year.', link: '/about', cta: 'Find Out More →' },
 ];
 
 export default async function HomePage() {
@@ -143,8 +143,21 @@ export default async function HomePage() {
         .mv-card-vision  .mv-card-eyebrow { color: var(--wfp-green); }
         .mv-card h3 { margin-bottom: 0.75rem; }
         .mv-card p  { color: var(--text-secondary); line-height: 1.75; }
+
+        /* ── Economic Case — same clean card language as Mission/Vision ── */
+        .ec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+        .ec-card { border-radius: var(--radius-md); padding: 2.25rem; border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .ec-card-productivity { background: #f0f7ff; border-color: #bfdbfe; }
+        .ec-card-efficiency  { background: #f0fdf4; border-color: #bbf7d0; }
+        .ec-card-icon { margin-bottom: 1rem; }
+        .ec-card-productivity .ec-card-icon { color: var(--wfp-blue); }
+        .ec-card-efficiency  .ec-card-icon { color: var(--wfp-green); }
+        .ec-card h3 { margin-bottom: 0.75rem; }
+        .ec-card p  { color: var(--text-secondary); line-height: 1.75; flex: 1; }
+        .ec-card .btn { margin-top: 1.5rem; align-self: flex-start; }
+
         @media (max-width: 900px) {
-          .mv-grid { grid-template-columns: 1fr; }
+          .mv-grid, .ec-grid { grid-template-columns: 1fr; }
         }
 
         /* ── Upcoming Events Marquee ── */
@@ -526,13 +539,13 @@ export default async function HomePage() {
           <p className="section-eyebrow">The Economic Case</p>
           <h2 className="section-title">Why Fortification Matters</h2>
           <p className="section-lead">Strategic investment in human capital through nutrition directly impacts Nigeria&apos;s macroeconomic growth.</p>
-          <div className="involved-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
+          <div className="ec-grid">
             {ECONOMIC_CASE.map((c) => (
-              <div key={c.title} className="involved-card">
-                <div className="involved-icon"><Icon name={c.icon} size={40} /></div>
+              <div key={c.title} className={`ec-card ec-card-${c.variant}`}>
+                <div className="ec-card-icon"><Icon name={c.icon} size={32} /></div>
                 <h3>{c.title}</h3>
                 <p>{c.desc}</p>
-                <Link href={c.link} className="btn btn-outline btn-sm" style={{ alignSelf: 'flex-start' }}>{c.cta}</Link>
+                <Link href={c.link} className="btn btn-outline btn-sm">{c.cta}</Link>
               </div>
             ))}
           </div>
