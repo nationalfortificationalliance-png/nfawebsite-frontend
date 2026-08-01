@@ -4,7 +4,7 @@ import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getAllNews, getGlobalSettings, type NewsEvent } from '@/lib/api';
+import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getAllNews, getGlobalSettings, getAboutPage, type NewsEvent } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 import {
   AnimatedStats,
@@ -56,8 +56,8 @@ const ECONOMIC_CASE: { icon: IconName; title: string; desc: string; link: string
 ];
 
 export default async function HomePage() {
-  const [carousels, featuredNews, quoteData, statsData, allEvents, globalSettings] = await Promise.all([
-    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getAllNews(1, 50), getGlobalSettings(),
+  const [carousels, featuredNews, quoteData, statsData, allEvents, globalSettings, about] = await Promise.all([
+    getCarousels(), getFeaturedNews(), getFeaturedQuote(), getStats(), getAllNews(1, 50), getGlobalSettings(), getAboutPage(),
   ]);
 
   const statsSource = globalSettings?.stats_source
@@ -132,6 +132,20 @@ export default async function HomePage() {
         .stat-icon { font-size: var(--md-sys-typescale-title-large-size); margin-bottom: var(--md-sys-spacing-2); }
         .stat-number { font-size: clamp(var(--md-sys-typescale-headline-large-size), 4vw, var(--md-sys-typescale-display-small-size)); font-weight: 800; color: var(--md-sys-color-secondary); letter-spacing: -0.04em; line-height: 1; margin-bottom: var(--md-sys-spacing-1); }
         .stat-label { font-size: var(--md-sys-typescale-label-small-size); text-transform: uppercase; letter-spacing: 0.08em; color: var(--md-sys-color-on-surface-variant); font-weight: 600; }
+
+        /* ── Mission/Vision — matches About page styling ── */
+        .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .mv-card { border-radius: var(--radius-md); padding: 2.25rem; border: 1px solid var(--border); }
+        .mv-card-mission { background: #f0f7ff; border-color: #bfdbfe; }
+        .mv-card-vision  { background: #f0fdf4; border-color: #bbf7d0; }
+        .mv-card-eyebrow { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+        .mv-card-mission .mv-card-eyebrow { color: var(--wfp-blue); }
+        .mv-card-vision  .mv-card-eyebrow { color: var(--wfp-green); }
+        .mv-card h3 { margin-bottom: 0.75rem; }
+        .mv-card p  { color: var(--text-secondary); line-height: 1.75; }
+        @media (max-width: 900px) {
+          .mv-grid { grid-template-columns: 1fr; }
+        }
 
         /* ── Upcoming Events Marquee ── */
         .events-marquee-strip { background: linear-gradient(135deg, var(--wfp-blue) 0%, #0369a1 100%); padding: 1.25rem 0; overflow: hidden; border-bottom: 3px solid var(--wfp-gold); }
@@ -553,31 +567,27 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* ── Mission & Vision ── */}
+      {/* ── Mission & Vision — matches About page styling ── */}
       <section className="section bg-off relative">
         <div className="container relative z-10">
-          <div className="grid-2">
+          <div className="mv-grid">
             <AnimatedSectionWrapper animation="fade-up-scale" delay={0}>
-              <div className="card glass-panel" style={{ padding: '3.5rem 3rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem', color: 'var(--wfp-blue)' }}>
-                <Icon name="globe" size={32} />
-                <h3 style={{ margin: 0, fontSize: '1.75rem' }}>Mission</h3>
+              <div className="mv-card mv-card-mission">
+                <div className="mv-card-eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Icon name="globe" size={16} /> OUR MISSION
+                </div>
+                <h3>Eliminate Hidden Hunger</h3>
+                <p>{about?.mission || 'To coordinate and champion the fortification of staple foods with essential vitamins and minerals in Nigeria, ensuring every citizen has access to nutritious food — regardless of their income or location.'}</p>
               </div>
-              <p style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '1.05rem', lineHeight: '1.8' }}>
-                To coordinate a multi-sectoral approach that ensures every Nigerian has access to essential micronutrients through the mandatory fortification of staple foods.
-              </p>
-            </div>
             </AnimatedSectionWrapper>
             <AnimatedSectionWrapper animation="fade-up-scale" delay={150}>
-              <div className="card glass-panel" style={{ padding: '3.5rem 3rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem', color: 'var(--wfp-gold)' }}>
-                <Icon name="sun" size={32} />
-                <h3 style={{ margin: 0, fontSize: '1.75rem' }}>Vision</h3>
+              <div className="mv-card mv-card-vision">
+                <div className="mv-card-eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Icon name="sun" size={16} /> OUR VISION
+                </div>
+                <h3>A Nourished Nigeria</h3>
+                <p>{about?.vision || 'A Nigeria where micronutrient malnutrition is eliminated through sustainable, large-scale food fortification — where nutritious food is not a privilege but a standard.'}</p>
               </div>
-              <p style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '1.05rem', lineHeight: '1.8' }}>
-                A Nigeria free from the burden of &quot;hidden hunger&quot; and micronutrient deficiencies, achieved through sustainable public-private partnerships.
-              </p>
-            </div>
             </AnimatedSectionWrapper>
           </div>
         </div>
