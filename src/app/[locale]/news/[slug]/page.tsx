@@ -23,12 +23,7 @@ interface ArticleWithSeo {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug, locale } = await params;
-    let article = await getNewsBySlug(slug);
-
-    // Fallback to mock data if not found in Strapi
-    if (!article) {
-        article = MOCK_NEWS.find((a) => a.slug === slug) || null;
-    }
+    const article = await getNewsBySlug(slug);
 
     if (!article) return { title: 'Article Not Found' };
 
@@ -84,12 +79,7 @@ const CATEGORY_ICONS: Record<string, IconName> = {
 
 export default async function NewsDetailPage({ params }: Props) {
     const { slug, locale } = await params;
-    let article = await getNewsBySlug(slug);
-
-    // Fallback to mock data if not found in Strapi
-    if (!article) {
-        article = MOCK_NEWS.find((a) => a.slug === slug) || null;
-    }
+    const article = await getNewsBySlug(slug);
 
     if (!article) notFound();
 

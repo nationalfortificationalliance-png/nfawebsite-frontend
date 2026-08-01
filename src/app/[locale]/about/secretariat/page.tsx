@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon from '@/components/Icon';
-import { getTeamMembers, getStrapiMediaUrl, type TeamMember } from '@/lib/api';
+import { getTeamMembers, getStrapiMediaUrl, SECRETARIAT_FALLBACK } from '@/lib/api';
 import FunctionsAccordion from '@/components/FunctionsAccordion';
+import PageHero from '@/components/PageHero';
 
 const SECRETARIAT_EMAIL = 'secretariat@nationalfortificationalliance.org.ng';
 const SECRETARIAT_HERO_IMAGE = getStrapiMediaUrl('/uploads/6_B5_A4269_1_2_cbab97361b.jpg');
@@ -42,105 +43,13 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-// Local fallback data with the generated images
-const FALLBACK_SECRETARIAT: TeamMember[] = [
-    {
-        id: 1,
-        documentId: 'fallback-1',
-        name: 'Mr. Abayomi Akinyemi',
-        role: 'Deputy Director ICT',
-        organization: 'NAFDAC',
-        category: 'Secretariat',
-        image: { id: 0, documentId: '', url: '/team-1.png' },
-        phone: '08099837920',
-        email: 'akinyemi.ta@nafdac.gov.ng',
-        order: 1
-    },
-    {
-        id: 2,
-        documentId: 'fallback-2',
-        name: 'Mr. Abubakar Tanimu Umar',
-        role: 'Assistant Chief Regulatory Officer/Program Officer',
-        organization: 'NAFDAC',
-        category: 'Secretariat',
-        image: { id: 0, documentId: '', url: '/team-2.png' },
-        phone: '08035171719',
-        email: 'umar.tanimu@nafdac.gov.ng',
-        order: 2
-    },
-    {
-        id: 3,
-        documentId: 'fallback-3',
-        name: 'Mrs. Joy Haanya',
-        role: 'Assistant Chief Regulatory Officer/Program Officer',
-        organization: 'NAFDAC',
-        category: 'Secretariat',
-        image: { id: 0, documentId: '', url: '/team-3.png' },
-        phone: '08065217543',
-        email: 'wandoo.haanya@nafdac.gov.ng',
-        order: 3
-    }
-];
-
 export default async function SecretariatPage() {
-    // Fetch members specifically from the Secretariat category
-    const backendMembers = await getTeamMembers('Secretariat');
-
-    // Use backend data if available, otherwise fall back to hardcoded data
-    const hasBackendData = backendMembers && backendMembers.length > 0;
-    const displayMembers = hasBackendData ? backendMembers : FALLBACK_SECRETARIAT;
-    const useFallback = !hasBackendData;
+    const displayMembers = await getTeamMembers('Secretariat');
+    const useFallback = displayMembers === SECRETARIAT_FALLBACK;
 
     return (
         <main className="secretariat-page">
             <style>{`
-                /* Hero with Image */
-                .secretariat-hero {
-                    position: relative;
-                    min-height: 340px;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                }
-                .secretariat-hero-bg {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 0;
-                }
-                .secretariat-hero-bg::after {
-                    content: '';
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.84) 0%, rgba(6, 78, 59, 0.80) 100%);
-                    z-index: 1;
-                }
-                .secretariat-hero-content {
-                    position: relative;
-                    z-index: 2;
-                    padding: 3.5rem 0 2.75rem;
-                }
-                .secretariat-hero h1 {
-                    color: #fff;
-                    max-width: 720px;
-                    margin-bottom: 1rem;
-                }
-                .secretariat-hero p {
-                    color: rgba(255,255,255,0.95);
-                    max-width: 720px;
-                    font-size: 1.15rem;
-                    line-height: 1.7;
-                }
-                .secretariat-hero .breadcrumb {
-                    margin-bottom: 2rem;
-                }
-                .secretariat-hero .breadcrumb a,
-                .secretariat-hero .breadcrumb span {
-                    color: rgba(255,255,255,0.8);
-                }
-                .secretariat-hero .breadcrumb a:hover {
-                    color: #fff;
-                }
-
                 .members-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -334,32 +243,12 @@ export default async function SecretariatPage() {
                 }
             `}</style>
 
-            <div className="secretariat-hero">
-                <div className="secretariat-hero-bg">
-                    <Image
-                        src={SECRETARIAT_HERO_IMAGE}
-                        alt="NFA Secretariat Team"
-                        fill
-                        sizes="100vw"
-                        style={{ objectFit: 'cover' }}
-                        priority
-                    />
-                </div>
-                <div className="container secretariat-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <Link href="/about">About</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>Secretariat</span>
-                    </div>
-                    <h1>NFA Secretariat</h1>
-                    <p>
-                        A dedicated multidisciplinary team coordinating the National Fortification Alliance,
-                        bridging the gap between policy, industry, and impact across all 36 states of Nigeria.
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                image={{ src: SECRETARIAT_HERO_IMAGE, alt: 'NFA Secretariat Team' }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'About', href: '/about' }, { label: 'Secretariat' }]}
+                title="NFA Secretariat"
+                description="A dedicated multidisciplinary team coordinating the National Fortification Alliance, bridging the gap between policy, industry, and impact across all 36 states of Nigeria."
+            />
 
             <section className="section">
                 <div className="container">
@@ -396,7 +285,7 @@ export default async function SecretariatPage() {
                     )}
 
                     <div className="members-grid">
-                        {(useFallback ? FALLBACK_SECRETARIAT : displayMembers).map((m, index) => {
+                        {displayMembers.map((m, index) => {
                             const TEAM_FALLBACK_IMAGES = ['/team-1.png', '/team-2.png', '/team-3.png'];
                             const fallbackImage = TEAM_FALLBACK_IMAGES[index % TEAM_FALLBACK_IMAGES.length];
                             const imageUrl = m.image?.url ? getStrapiMediaUrl(m.image.url) : fallbackImage;

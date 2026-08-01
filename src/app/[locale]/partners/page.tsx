@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
 import { getPartners, getStrapiMediaUrl, type Partner } from '@/lib/api';
 import PartnersDirectory, { type DisplayPartner } from '@/components/PartnersDirectory';
+import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
     title: 'Partners',
@@ -92,44 +91,6 @@ export default async function PartnersPage() {
     return (
         <>
             <style>{`
-        /* Hero with Image - consistent with other pages */
-        .partners-hero {
-          position: relative;
-          min-height: 340px;
-          display: flex;
-          align-items: center;
-          overflow: hidden;
-        }
-        .partners-hero-bg {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-        }
-        .partners-hero-bg::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-          z-index: 1;
-        }
-        .partners-hero-content {
-          position: relative;
-          z-index: 2;
-          padding: 3.5rem 0 2.75rem;
-        }
-        .partners-hero h1 {
-          color: #fff;
-          max-width: 720px;
-          margin-bottom: 1rem;
-          text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-        }
-        .partners-hero p {
-          color: rgba(255,255,255,0.97);
-          max-width: 720px;
-          font-size: 1.15rem;
-          line-height: 1.7;
-          text-shadow: 0 1px 6px rgba(0,0,0,0.3);
-        }
         .partners-hero-count {
           margin-top: 1rem;
           display: inline-flex;
@@ -148,22 +109,6 @@ export default async function PartnersPage() {
         .partners-hero-count strong {
           font-size: 1.05rem;
           font-weight: 800;
-        }
-        .partners-hero .breadcrumb {
-          margin-bottom: 2rem;
-          padding: 0.4rem 0.9rem;
-          background: rgba(0,0,0,0.28);
-          border-radius: 100px;
-          display: inline-flex;
-          backdrop-filter: blur(4px);
-        }
-        .partners-hero .breadcrumb a,
-        .partners-hero .breadcrumb span {
-          color: rgba(255,255,255,0.85);
-          font-weight: 600;
-        }
-        .partners-hero .breadcrumb a:hover {
-          color: #fff;
         }
 
         /* Quick stats */
@@ -250,16 +195,6 @@ export default async function PartnersPage() {
         .become-item-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 0.1rem; }
 
         @media (max-width: 900px) {
-          .partners-hero {
-            height: 60vh;
-            min-height: 500px;
-          }
-          .partners-hero h1 {
-            font-size: 2rem;
-          }
-          .partners-hero p {
-            font-size: 1rem;
-          }
           .partner-stats { grid-template-columns: repeat(3, 1fr); }
           .become-grid { grid-template-columns: 1fr; }
         }
@@ -269,24 +204,16 @@ export default async function PartnersPage() {
         }
       `}</style>
 
-            {/* ── Hero ── */}
-            <div className="partners-hero">
-                <div className="partners-hero-bg">
-                    <Image src="/about-hero.jpg" alt="Partnership meeting" fill sizes="100vw" style={{ objectFit: 'cover' }} priority />
+            <PageHero
+                image={{ src: '/about-hero.jpg', alt: 'Partnership meeting' }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Partners' }]}
+                title="Our Partners"
+                description="Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria."
+            >
+                <div className="partners-hero-count">
+                    <strong>{totalPartners}</strong> Partner Organizations
                 </div>
-                <div className="container partners-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>Partners</span>
-                    </div>
-                    <h1>Our Partners</h1>
-                    <p>Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria.</p>
-                    <div className="partners-hero-count">
-                        <strong>{totalPartners}</strong> Partner Organizations
-                    </div>
-                </div>
-            </div>
+            </PageHero>
 
             <PartnersDirectory partners={displayPartners} />
         </>

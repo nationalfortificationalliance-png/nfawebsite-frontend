@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
 import { getReports, getComplianceReports } from '@/lib/api';
 import ReportsRepository from '@/components/ReportsRepository';
 import ComplianceDashboard from '@/components/ComplianceDashboard';
+import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
     title: 'Reports & Data | National Fortification Alliance',
@@ -54,34 +53,6 @@ export default async function ReportsDataPage() {
     return (
         <main className="reports-data-page">
             <style>{`
-                .rd-hero {
-                    position: relative;
-                    min-height: 340px;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                }
-                .rd-hero-bg { position: absolute; inset: 0; z-index: 0; }
-                .rd-hero-bg::after {
-                    content: '';
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-                    z-index: 1;
-                }
-                .rd-hero-content { position: relative; z-index: 2; padding: 3.5rem 0 2.75rem; }
-                .rd-hero .breadcrumb {
-                    margin-bottom: 2rem;
-                    padding: 0.4rem 0.9rem;
-                    background: rgba(0,0,0,0.28);
-                    border-radius: 100px;
-                    display: inline-flex;
-                    backdrop-filter: blur(4px);
-                }
-                .rd-hero .breadcrumb a, .rd-hero .breadcrumb span { color: rgba(255,255,255,0.85); font-weight: 600; }
-                .rd-hero .breadcrumb a:hover { color: #fff; }
-                .rd-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.35); }
-                .rd-hero p { color: rgba(255,255,255,0.97); max-width: 720px; font-size: 1.1rem; line-height: 1.7; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
                 .rd-hero-stats {
                     display: flex;
                     flex-wrap: wrap;
@@ -91,44 +62,27 @@ export default async function ReportsDataPage() {
                 .rd-hero-stat { color: #fff; }
                 .rd-hero-stat-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
                 .rd-hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
-
-                @media (max-width: 900px) {
-                    .rd-hero { height: 60vh; min-height: 500px; }
-                    .rd-hero h1 { font-size: 2rem; }
-                    .rd-hero p { font-size: 1rem; }
-                }
             `}</style>
 
-            <div className="rd-hero">
-                <div className="rd-hero-bg">
-                    <Image src={heroImage.src} alt={heroImage.alt} fill style={{ objectFit: 'cover' }} priority />
-                </div>
-                <div className="container rd-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <Link href="/resources">Resources</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>Reports &amp; Data</span>
+            <PageHero
+                image={{ src: heroImage.src, alt: heroImage.alt }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Resources', href: '/resources' }, { label: 'Reports & Data' }]}
+                title="Reports & Data"
+                description="National fortification compliance figures and a searchable repository of compliance, surveillance, and evaluation reports from NAFDAC, SON, FCCPC, and partners."
+            >
+                <div className="rd-hero-stats">
+                    <div className="rd-hero-stat">
+                        <div className="rd-hero-stat-num">{reports.length}</div>
+                        <div className="rd-hero-stat-label">Reports</div>
                     </div>
-                    <h1>Reports &amp; Data</h1>
-                    <p>
-                        National fortification compliance figures and a searchable repository of compliance, surveillance, and evaluation reports from NAFDAC, SON, FCCPC, and partners.
-                    </p>
-                    <div className="rd-hero-stats">
+                    {lastUpdatedLabel && (
                         <div className="rd-hero-stat">
-                            <div className="rd-hero-stat-num">{reports.length}</div>
-                            <div className="rd-hero-stat-label">Reports</div>
+                            <div className="rd-hero-stat-num" style={{ fontSize: '1.1rem' }}>{lastUpdatedLabel}</div>
+                            <div className="rd-hero-stat-label">Last Updated</div>
                         </div>
-                        {lastUpdatedLabel && (
-                            <div className="rd-hero-stat">
-                                <div className="rd-hero-stat-num" style={{ fontSize: '1.1rem' }}>{lastUpdatedLabel}</div>
-                                <div className="rd-hero-stat-label">Last Updated</div>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </div>
-            </div>
+            </PageHero>
 
             <script
                 type="application/ld+json"

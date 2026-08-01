@@ -1,23 +1,15 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import Icon, { IconName } from '@/components/Icon';
-import { getAboutPage, getStats, getStrapiMediaUrl, getGlobalSettings, AboutTimelineItem } from '@/lib/api';
+import { getAboutPage, getStats, getGlobalSettings } from '@/lib/api';
 import { AnimatedStats } from '@/components/HomePageClient';
+import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
     title: 'About the National Fortification Alliance',
     description: 'Learn about NFA Nigeria — our mission, vision, history, and objectives for eliminating micronutrient malnutrition.',
 };
 export const revalidate = 60;
-
-const TIMELINE_FALLBACK: AboutTimelineItem[] = [
-    { id: 1, year: '2004', event: 'Nigeria enacts the Food, Drugs and Related Products (Fortification) Regulation, making fortification mandatory for key staple foods.' },
-    { id: 2, year: '2011', event: 'WFP Nigeria launches the National Fortification Alliance with NAFDAC to strengthen enforcement and processor capacity across 6 key food vehicles.' },
-    { id: 3, year: '2016', event: 'Coverage of Vitamin A-fortified vegetable oil reaches 70% of households. NFA introduces the national quality mark seal for certified products.' },
-    { id: 4, year: '2020', event: 'NFA expands to include Maize Flour and Wheat Flour in NAFDAC\'s mass fortification mandate. Premix fund established for small processors.' },
-    { id: 5, year: '2024', event: 'Over 200 processors certified across 36 states, reaching 12M+ consumers. NFA achieves 68% household coverage of fortified staple foods.' },
-];
 
 const STATS_FALLBACK: { number: string; label: string; icon: IconName }[] = [
     { number: '37%', label: 'Child Stunting Rate', icon: 'shield' },
@@ -53,7 +45,7 @@ export default async function AboutPage() {
         getGlobalSettings(),
     ]);
 
-    const timeline = about?.timeline_items?.length ? about.timeline_items : TIMELINE_FALLBACK;
+    const timeline = about?.timeline_items || [];
     const displayStats = statsData.length > 0
         ? statsData.map((s) => ({ number: s.value?.trim() || '—', label: s.label, icon: STAT_CATEGORY_ICONS[s.category] || 'bar-chart' }))
         : STATS_FALLBACK;
@@ -63,60 +55,6 @@ export default async function AboutPage() {
     return (
         <>
             <style>{`
-        /* Image Hero - matches News & Events hero style */
-        .about-hero {
-          position: relative;
-          min-height: 340px;
-          display: flex;
-          align-items: center;
-          overflow: hidden;
-        }
-        .about-hero-bg {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-        }
-        .about-hero-overlay {
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-        }
-        .about-hero-content {
-          position: relative;
-          z-index: 2;
-          padding: 3.5rem 0 2.75rem;
-        }
-        .about-hero h1 {
-          color: #fff;
-          max-width: 720px;
-          margin-bottom: 1rem;
-          text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-        }
-        .about-hero p {
-          color: rgba(255,255,255,0.97);
-          max-width: 720px;
-          font-size: 1.15rem;
-          line-height: 1.7;
-          text-shadow: 0 1px 6px rgba(0,0,0,0.3);
-        }
-        .about-hero .breadcrumb {
-          margin-bottom: 2rem;
-          padding: 0.4rem 0.9rem;
-          background: rgba(0,0,0,0.28);
-          border-radius: 100px;
-          display: inline-flex;
-          backdrop-filter: blur(4px);
-        }
-        .about-hero .breadcrumb a,
-        .about-hero .breadcrumb span {
-          color: rgba(255,255,255,0.85);
-          font-weight: 600;
-        }
-        .about-hero .breadcrumb a:hover {
-          color: #fff;
-        }
-
         /* Mission/Vision */
         .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
         .mv-card { border-radius: var(--radius-md); padding: 2.25rem; border: 1px solid var(--border); }
@@ -147,30 +85,17 @@ export default async function AboutPage() {
         .governance-cta p { color: var(--text-secondary); margin-bottom: 1.5rem; }
 
         @media (max-width: 900px) {
-          .about-hero { height: 60vh; min-height: 500px; }
-          .about-hero h1 { font-size: 2rem; }
-          .about-hero p { font-size: 1rem; }
           .mv-grid { grid-template-columns: 1fr; }
           .objectives-grid { grid-template-columns: 1fr; }
         }
       `}</style>
 
-            {/* ── Full-width hero ── */}
-            <div className="about-hero">
-                <div className="about-hero-bg">
-                    <Image src="/about-hero.jpg" alt="NFA meeting" fill style={{ objectFit: 'cover' }} priority />
-                </div>
-                <div className="about-hero-overlay" />
-                <div className="container about-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>About</span>
-                    </div>
-                    <h1>About the National Fortification Alliance</h1>
-                    <p>{about?.hero_tagline || 'A coordinated national effort to eliminate micronutrient malnutrition through food fortification — for every Nigerian, in every community.'}</p>
-                </div>
-            </div>
+            <PageHero
+                image={{ src: '/about-hero.jpg', alt: 'NFA meeting' }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
+                title="About the National Fortification Alliance"
+                description={about?.hero_tagline || 'A coordinated national effort to eliminate micronutrient malnutrition through food fortification — for every Nigerian, in every community.'}
+            />
 
             {/* ── Mission & Vision ── */}
             <section className="section">

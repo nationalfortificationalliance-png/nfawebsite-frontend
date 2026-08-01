@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
 import Icon from '@/components/Icon';
 import NewsFilter from '@/components/NewsFilter';
-import { getAllNews, getMeetingSchedule, MeetingSchedule } from '@/lib/api';
+import PageHero from '@/components/PageHero';
+import { getAllNews, getMeetingSchedule } from '@/lib/api';
 import { MOCK_NEWS } from '@/lib/mockData';
 
 export const metadata: Metadata = {
@@ -12,12 +11,6 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 60;
-
-const MEETINGS_FALLBACK: MeetingSchedule[] = [
-    { id: 1, documentId: '1', year: '2026', june_host: 'NAFDAC', december_host: 'Industry', order: 1 },
-    { id: 2, documentId: '2', year: '2027', june_host: 'SON', december_host: 'FCCPC', order: 2 },
-    { id: 3, documentId: '3', year: '2028', june_host: 'FMoHSW', december_host: 'NAFDAC', order: 3 },
-];
 
 export default async function NewsPage() {
     const { data: dbNews, total: dbTotal } = await getAllNews(1, 12);
@@ -30,50 +23,11 @@ export default async function NewsPage() {
     const hasReportItems = news.some((item) => item.category === 'report');
     const categories = hasReportItems ? [...baseCategories, 'report'] : baseCategories;
 
-    const meetingScheduleData = await getMeetingSchedule();
-    const meetings = meetingScheduleData.length ? meetingScheduleData : MEETINGS_FALLBACK;
+    const meetings = await getMeetingSchedule();
 
     return (
         <>
             <style>{`
-        /* Hero with Image */
-        .news-hero {
-          position: relative;
-          min-height: 340px;
-          display: flex;
-          align-items: center;
-          overflow: hidden;
-        }
-        .news-hero-bg {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-        }
-        .news-hero-bg::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-          z-index: 1;
-        }
-        .news-hero-content {
-          position: relative;
-          z-index: 2;
-          padding: 3.5rem 0 2.75rem;
-        }
-        .news-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.35); }
-        .news-hero p { color: rgba(255,255,255,0.97); max-width: 720px; font-size: 1.15rem; line-height: 1.7; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
-        .news-hero .breadcrumb {
-          margin-bottom: 2rem;
-          padding: 0.4rem 0.9rem;
-          background: rgba(0,0,0,0.28);
-          border-radius: 100px;
-          display: inline-flex;
-          backdrop-filter: blur(4px);
-        }
-        .news-hero .breadcrumb a, .news-hero .breadcrumb span { color: rgba(255,255,255,0.85); font-weight: 600; }
-        .news-hero .breadcrumb a:hover { color: #fff; }
-
         /* Modern Filter Bar */
         .news-filter-bar {
           background: #fff;
@@ -213,35 +167,14 @@ export default async function NewsPage() {
           border-radius: 999px;
         }
 
-        @media (max-width: 900px) {
-          .news-hero { height: 60vh; min-height: 500px; }
-          .news-hero h1 { font-size: 2rem; }
-          .news-hero p { font-size: 1rem; }
-        }
       `}</style>
 
-            {/* Hero with Background */}
-            <div className="news-hero">
-                <div className="news-hero-bg">
-                    <Image
-                        src="/news_hero.jpg"
-                        alt="News and Events"
-                        fill
-                        sizes="100vw"
-                        style={{ objectFit: 'cover' }}
-                        priority
-                    />
-                </div>
-                <div className="container news-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>News & Events</span>
-                    </div>
-                    <h1>News & Events</h1>
-                    <p>Stay updated on the National Fortification Alliance — news, events, reports, and communiqués.</p>
-                </div>
-            </div>
+            <PageHero
+                image={{ src: '/news_hero.jpg', alt: 'News and Events' }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'News & Events' }]}
+                title="News & Events"
+                description="Stay updated on the National Fortification Alliance — news, events, reports, and communiqués."
+            />
 
             {isMock && (
                 <div style={{ background: '#fff3e0', color: '#e65100', padding: '0.75rem 1rem', borderRadius: '8px', margin: '2rem auto', fontSize: '0.85rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem', maxWidth: '1200px' }}>

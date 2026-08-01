@@ -1,3 +1,6 @@
+import { MOCK_NEWS } from './mockData';
+import { FALLBACK_FAQS } from './faq-data';
+
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
 async function fetchAPI<T>(
@@ -238,7 +241,7 @@ export async function getFeaturedNews(): Promise<NewsEvent[]> {
         'pagination[pageSize]': '6',
     });
 
-    return latest?.data || [];
+    return latest?.data?.length ? latest.data : MOCK_NEWS;
 }
 
 export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
@@ -248,7 +251,7 @@ export async function getNewsBySlug(slug: string): Promise<NewsEvent | null> {
         'populate[1]': 'gallery',
         'populate[2]': 'file',
     });
-    return res?.data?.[0] || null;
+    return res?.data?.[0] || MOCK_NEWS.find((a) => a.slug === slug) || null;
 }
 
 export async function getUpcomingEvents(pageSize = 6): Promise<NewsEvent[]> {
@@ -313,6 +316,47 @@ export async function getAllPartnerSlugs(): Promise<string[]> {
     return (res?.data || []).map((p) => p.slug).filter((s): s is string => !!s);
 }
 
+// Fallback data with the generated images — used only when the Secretariat
+// category is requested and the CMS has no team members configured yet.
+export const SECRETARIAT_FALLBACK: TeamMember[] = [
+    {
+        id: 1,
+        documentId: 'fallback-1',
+        name: 'Mr. Abayomi Akinyemi',
+        role: 'Deputy Director ICT',
+        organization: 'NAFDAC',
+        category: 'Secretariat',
+        image: { id: 0, documentId: '', url: '/team-1.png' },
+        phone: '08099837920',
+        email: 'akinyemi.ta@nafdac.gov.ng',
+        order: 1
+    },
+    {
+        id: 2,
+        documentId: 'fallback-2',
+        name: 'Mr. Abubakar Tanimu Umar',
+        role: 'Assistant Chief Regulatory Officer/Program Officer',
+        organization: 'NAFDAC',
+        category: 'Secretariat',
+        image: { id: 0, documentId: '', url: '/team-2.png' },
+        phone: '08035171719',
+        email: 'umar.tanimu@nafdac.gov.ng',
+        order: 2
+    },
+    {
+        id: 3,
+        documentId: 'fallback-3',
+        name: 'Mrs. Joy Haanya',
+        role: 'Assistant Chief Regulatory Officer/Program Officer',
+        organization: 'NAFDAC',
+        category: 'Secretariat',
+        image: { id: 0, documentId: '', url: '/team-3.png' },
+        phone: '08065217543',
+        email: 'wandoo.haanya@nafdac.gov.ng',
+        order: 3
+    }
+];
+
 export async function getTeamMembers(category?: string): Promise<TeamMember[]> {
     const params: Record<string, string> = {
         'sort': 'order:asc',
@@ -323,15 +367,28 @@ export async function getTeamMembers(category?: string): Promise<TeamMember[]> {
         params['filters[category][$eq]'] = category;
     }
     const res = await fetchAPI<{ data: TeamMember[] }>('/team-members', params);
-    return res?.data || [];
+    if (res?.data?.length) return res.data;
+    return category === 'Secretariat' ? SECRETARIAT_FALLBACK : [];
 }
+
+const TIMELINE_FALLBACK: AboutTimelineItem[] = [
+    { id: 1, year: '2004', event: 'Nigeria enacts the Food, Drugs and Related Products (Fortification) Regulation, making fortification mandatory for key staple foods.' },
+    { id: 2, year: '2011', event: 'WFP Nigeria launches the National Fortification Alliance with NAFDAC to strengthen enforcement and processor capacity across 6 key food vehicles.' },
+    { id: 3, year: '2016', event: 'Coverage of Vitamin A-fortified vegetable oil reaches 70% of households. NFA introduces the national quality mark seal for certified products.' },
+    { id: 4, year: '2020', event: 'NFA expands to include Maize Flour and Wheat Flour in NAFDAC\'s mass fortification mandate. Premix fund established for small processors.' },
+    { id: 5, year: '2024', event: 'Over 200 processors certified across 36 states, reaching 12M+ consumers. NFA achieves 68% household coverage of fortified staple foods.' },
+];
 
 export async function getAboutPage(): Promise<AboutPage | null> {
     const res = await fetchAPI<{ data: AboutPage }>('/about-page', {
         'populate[hero_image][populate]': '*',
         'populate[timeline_items][populate]': '*',
     });
-    return res?.data || null;
+    const about = res?.data || null;
+    if (about && !about.timeline_items?.length) {
+        about.timeline_items = TIMELINE_FALLBACK;
+    }
+    return about;
 }
 
 export async function getGlobalSettings(): Promise<GlobalSetting | null> {
@@ -349,7 +406,8 @@ export async function getFAQs(category?: string): Promise<FAQ[]> {
         params['filters[category][$eq]'] = category;
     }
     const res = await fetchAPI<{ data: FAQ[] }>('/faqs', params);
-    return res?.data || [];
+    if (res?.data?.length) return res.data;
+    return category ? [] : FALLBACK_FAQS;
 }
 
 // Fire-and-forget: increments an FAQ's view counter. Silently ignored if the
@@ -478,13 +536,24 @@ export interface Laboratory {
     longitude?: number;
 }
 
+const LABS_FALLBACK: Laboratory[] = [
+    { id: 1, documentId: '1', name: 'Saag Chemicals', location: 'Lagos', contact: '08025589200', order: 1, latitude: 6.5244, longitude: 3.3792 },
+    { id: 2, documentId: '2', name: 'Remaben Scientific Services Ltd', location: 'Ikeja', contact: '08023037743', order: 2, latitude: 6.6018, longitude: 3.3515 },
+    { id: 3, documentId: '3', name: 'Bato Chemical Labs Ltd', location: 'Ogun State', contact: '08091972222', order: 3, latitude: 7.1475, longitude: 3.3619 },
+    { id: 4, documentId: '4', name: 'Jawura Environmental Services Ltd', location: 'Lagos', contact: '09058592802', order: 4, latitude: 6.5300, longitude: 3.3850 },
+    { id: 5, documentId: '5', name: 'LS Scientific Limited', location: 'Ikeja', contact: '08094709004', order: 5, latitude: 6.6080, longitude: 3.3570 },
+    { id: 6, documentId: '6', name: 'Alfa Laboratories', location: 'Lagos', contact: '08023093103', order: 6, latitude: 6.5180, longitude: 3.3700 },
+    { id: 7, documentId: '7', name: 'Katchey Laboratory', location: 'Ikeja', contact: '08036209410', order: 7, latitude: 6.5960, longitude: 3.3460 },
+    { id: 8, documentId: '8', name: 'Bureau Veritas Nigeria Ltd', location: 'Ogun State', contact: '08095559245', order: 8, latitude: 7.1530, longitude: 3.3700 },
+];
+
 export async function getLaboratories(): Promise<Laboratory[]> {
     const res = await fetchAPI<{ data: Laboratory[] }>('/laboratories', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
         'pagination[pageSize]': '50',
     });
-    return res?.data || [];
+    return res?.data?.length ? res.data : LABS_FALLBACK;
 }
 
 export interface MeetingSchedule {
@@ -496,13 +565,19 @@ export interface MeetingSchedule {
     order: number;
 }
 
+const MEETINGS_FALLBACK: MeetingSchedule[] = [
+    { id: 1, documentId: '1', year: '2026', june_host: 'NAFDAC', december_host: 'Industry', order: 1 },
+    { id: 2, documentId: '2', year: '2027', june_host: 'SON', december_host: 'FCCPC', order: 2 },
+    { id: 3, documentId: '3', year: '2028', june_host: 'FMoHSW', december_host: 'NAFDAC', order: 3 },
+];
+
 export async function getMeetingSchedule(): Promise<MeetingSchedule[]> {
     const res = await fetchAPI<{ data: MeetingSchedule[] }>('/meeting-schedules', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
         'pagination[pageSize]': '50',
     });
-    return res?.data || [];
+    return res?.data?.length ? res.data : MEETINGS_FALLBACK;
 }
 
 export interface ComplianceReport {
@@ -570,7 +645,7 @@ export interface Initiative {
     id: number;
     documentId: string;
     title: string;
-    slug: string;
+    slug?: string;
     icon: string;
     description: string;
     objectives?: string;
@@ -583,6 +658,45 @@ export interface Initiative {
     updatedAt: string;
 }
 
+const INITIATIVES_FALLBACK: Initiative[] = [
+    {
+        id: 1, documentId: 'fallback-1', title: 'Rice Fortification', icon: 'trending-up',
+        description: 'Partnering with millers, regulators and distributors to make fortified rice more available, affordable and trusted across Nigeria.',
+        highlights: [
+            { id: 1, text: 'Scale fortified rice production and distribution' },
+            { id: 2, text: 'Strengthen regulatory compliance and lab checks' },
+            { id: 3, text: 'Support premix market development' },
+            { id: 4, text: 'Build industry and laboratory capacity' },
+            { id: 5, text: 'Raise consumer awareness and demand' },
+        ],
+        category: 'General', status: 'Active', order: 1, updatedAt: '',
+    },
+    {
+        id: 2, documentId: 'fallback-2', title: 'Bouillon Fortification', icon: 'search',
+        description: 'Evaluating bouillon cubes as a strategic fortification vehicle while balancing nutrition benefit and sodium reduction priorities.',
+        highlights: [
+            { id: 1, text: 'Conduct nutrient profiling and taste studies' },
+            { id: 2, text: 'Assess iodine and sodium impacts' },
+            { id: 3, text: 'Analyze consumer behavior' },
+            { id: 4, text: 'Develop draft standards and codes of practice' },
+            { id: 5, text: 'Coordinate industry engagement' },
+        ],
+        category: 'General', status: 'Active', order: 2, updatedAt: '',
+    },
+    {
+        id: 3, documentId: 'fallback-3', title: 'DFQT+ Digital Monitoring', icon: 'activity',
+        description: 'Deploying digital traceability and quality monitoring systems that help regulators and producers track fortified products in near real time.',
+        highlights: [
+            { id: 1, text: 'Support digital compliance workflows' },
+            { id: 2, text: 'Chart premix and product traceability' },
+            { id: 3, text: 'Improve audit efficiency' },
+            { id: 4, text: 'Drive informed enforcement' },
+            { id: 5, text: 'Strengthen governance and transparency' },
+        ],
+        category: 'General', status: 'Active', order: 3, updatedAt: '',
+    },
+];
+
 export async function getInitiatives(): Promise<Initiative[]> {
     const res = await fetchAPI<{ data: Initiative[] }>('/projects', {
         'filters[$or][0][is_active][$eq]': 'true',
@@ -592,7 +706,7 @@ export async function getInitiatives(): Promise<Initiative[]> {
         'populate[1]': 'image',
         'pagination[pageSize]': '50',
     });
-    return res?.data || [];
+    return res?.data?.length ? res.data : INITIATIVES_FALLBACK;
 }
 
 export async function getInitiativeBySlug(slug: string): Promise<Initiative | null> {
@@ -625,13 +739,26 @@ export interface IndustryChallenge {
     order: number;
 }
 
+const CHALLENGES_FALLBACK: IndustryChallenge[] = [
+    { text: 'Scarcity of Vitamin A Palmitate', category: 'Supply Chain' },
+    { text: 'Foreign exchange constraints affecting premix supply', category: 'Supply Chain' },
+    { text: 'Technical limitations in fortification equipment', category: 'Technical & Equipment' },
+    { text: 'Challenges with shelf-life stability studies', category: 'Technical & Equipment' },
+    { text: 'Technical capacity gaps in micronutrient testing', category: 'Technical & Equipment' },
+    { text: 'Inconsistencies in laboratory analytical results', category: 'Quality & Compliance' },
+    { text: 'Packaging and storage limitations', category: 'Quality & Compliance' },
+    { text: 'Informal retail packaging challenges', category: 'Quality & Compliance' },
+    { text: 'Inconsistent customs tariff implementation', category: 'Regulatory & Customs' },
+    { text: 'Inadequate monitoring of imported products', category: 'Regulatory & Customs' },
+].map((c, i) => ({ id: i + 1, documentId: String(i + 1), text: c.text, category: c.category, order: i + 1 }));
+
 export async function getIndustryChallenges(): Promise<IndustryChallenge[]> {
     const res = await fetchAPI<{ data: IndustryChallenge[] }>('/industry-challenges', {
         'filters[is_active][$eq]': 'true',
         'sort': 'order:asc',
         'pagination[pageSize]': '50',
     });
-    return res?.data || [];
+    return res?.data?.length ? res.data : CHALLENGES_FALLBACK;
 }
 
 export type GuidelineDocumentCategory = 'General' | 'Logistics' | 'Nutrition' | 'Reports' | 'Other';
@@ -672,6 +799,37 @@ export interface MemberOrganization {
     order: number;
 }
 
+const MEMBER_LOGO_FALLBACK: Record<string, string> = {
+    'Standards Organisation of Nigeria (SON)': '/son_png.png',
+    'National Agency for Food and Drug Administration and Control (NAFDAC)': '/NAFDAC_emblem.png',
+    'Federal Competition and Consumer Protection Commission (FCCPC)': '/fccpc_logo.png',
+    'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department': '/Nigeria_Federal_Ministry_of_Health_Logo.png',
+};
+
+const MEMBERS_FALLBACK: MemberOrganization[] = [
+    { name: 'Standards Organisation of Nigeria (SON)', category: 'Core Members' },
+    { name: 'National Agency for Food and Drug Administration and Control (NAFDAC)', category: 'Core Members' },
+    { name: 'Federal Ministry of Education (FME)', category: 'Core Members' },
+    { name: 'Federal Competition and Consumer Protection Commission (FCCPC)', category: 'Core Members' },
+    { name: 'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department', category: 'Core Members' },
+    { name: 'Federal Ministry of Agriculture and Food Security (FMAFS)', category: 'Core Members' },
+    { name: 'Federal Ministry of Budget and Economic Planning (FMBEP)', category: 'Core Members' },
+    { name: 'Institute of Public Analysts of Nigeria (IPAN)', category: 'Core Members' },
+    { name: 'Federal Ministry of Information and National Orientation (FMINO)', category: 'Core Members' },
+    { name: 'Industry', category: 'Core Members' },
+    { name: 'Development Partners (GAIN, HKI, TechnoServe, WFP, UNICEF, etc.)', category: 'Stakeholders' },
+    { name: 'Academia', category: 'Stakeholders' },
+    { name: 'Professional Associations (e.g., NIFST, NSN)', category: 'Stakeholders' },
+    { name: 'Civil Society Organisations (CSOs) / Non-Governmental Organisations (NGOs)', category: 'Stakeholders' },
+    { name: 'Media', category: 'Stakeholders' },
+].map((m, i) => ({
+    id: i + 1,
+    documentId: String(i + 1),
+    order: i + 1,
+    ...m,
+    ...(MEMBER_LOGO_FALLBACK[m.name] ? { logo: { id: 0, documentId: '', url: MEMBER_LOGO_FALLBACK[m.name] } } : {}),
+}));
+
 export async function getMemberOrganizations(): Promise<MemberOrganization[]> {
     const res = await fetchAPI<{ data: MemberOrganization[] }>('/member-organizations', {
         'filters[is_active][$eq]': 'true',
@@ -679,5 +837,5 @@ export async function getMemberOrganizations(): Promise<MemberOrganization[]> {
         'populate': 'logo',
         'pagination[pageSize]': '50',
     });
-    return res?.data || [];
+    return res?.data?.length ? res.data : MEMBERS_FALLBACK;
 }

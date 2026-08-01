@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getFAQs, getContactPage } from '@/lib/api';
-import { FALLBACK_FAQS } from '@/lib/faq-data';
 import Icon from '@/components/Icon';
 import FAQAccordion from '@/components/FAQAccordion';
 import FAQAskForm from '@/components/FAQAskForm';
+import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
     title: 'Frequently Asked Questions (FAQ) | National Fortification Alliance',
@@ -15,8 +14,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function FAQPage() {
-    const [faqs, contact] = await Promise.all([getFAQs(), getContactPage()]);
-    const displayFAQs = faqs.length > 0 ? faqs : FALLBACK_FAQS;
+    const [displayFAQs, contact] = await Promise.all([getFAQs(), getContactPage()]);
 
     const categoryCount = new Set(displayFAQs.map((f) => f.category || 'General')).size;
 
@@ -29,61 +27,6 @@ export default async function FAQPage() {
     return (
         <>
             <style>{`
-                /* Hero with Image */
-                .faq-hero {
-                    position: relative;
-                    min-height: 340px;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                }
-                .faq-hero-bg {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 0;
-                }
-                .faq-hero-bg::after {
-                    content: '';
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-                    z-index: 1;
-                }
-                .faq-hero-content {
-                    position: relative;
-                    z-index: 2;
-                    padding: 3.5rem 0 2.75rem;
-                }
-                .faq-hero h1 {
-                    color: #fff;
-                    max-width: 720px;
-                    margin-bottom: 1rem;
-                    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-                }
-                .faq-hero p {
-                    color: rgba(255,255,255,0.97);
-                    max-width: 720px;
-                    font-size: 1.15rem;
-                    line-height: 1.7;
-                    text-shadow: 0 1px 6px rgba(0,0,0,0.3);
-                }
-                .faq-hero .breadcrumb {
-                    margin-bottom: 2rem;
-                    padding: 0.4rem 0.9rem;
-                    background: rgba(0,0,0,0.28);
-                    border-radius: 100px;
-                    display: inline-flex;
-                    backdrop-filter: blur(4px);
-                }
-                .faq-hero .breadcrumb a,
-                .faq-hero .breadcrumb span {
-                    color: rgba(255,255,255,0.85);
-                    font-weight: 600;
-                }
-                .faq-hero .breadcrumb a:hover {
-                    color: #fff;
-                }
-
                 /* Stats panel */
                 .faq-stats-panel {
                     position: relative; z-index: 3;
@@ -131,11 +74,6 @@ export default async function FAQPage() {
                 .cta-option-value a { color: inherit; }
                 .cta-option-value a:hover { color: var(--wfp-blue); }
 
-                @media (max-width: 900px) {
-                    .faq-hero { height: 60vh; min-height: 500px; }
-                    .faq-hero h1 { font-size: 2rem; }
-                    .faq-hero p { font-size: 1rem; }
-                }
                 @media (max-width: 640px) {
                     .faq-stats-panel { grid-template-columns: 1fr; margin-top: -1.5rem; }
                     .faq-stat { border-right: none; border-bottom: 1px solid var(--border); }
@@ -143,28 +81,12 @@ export default async function FAQPage() {
                 }
             `}</style>
 
-            {/* Hero */}
-            <div className="faq-hero">
-                <div className="faq-hero-bg">
-                    <Image
-                        src="/about-hero.jpg"
-                        alt="FAQ"
-                        fill
-                        sizes="100vw"
-                        style={{ objectFit: 'cover' }}
-                        priority
-                    />
-                </div>
-                <div className="container faq-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>FAQ</span>
-                    </div>
-                    <h1>Frequently Asked Questions</h1>
-                    <p>Find answers to common questions about food fortification and the National Fortification Alliance</p>
-                </div>
-            </div>
+            <PageHero
+                image={{ src: '/about-hero.jpg', alt: 'FAQ' }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'FAQ' }]}
+                title="Frequently Asked Questions"
+                description="Find answers to common questions about food fortification and the National Fortification Alliance"
+            />
 
             {/* Stats panel */}
             <div className="container">

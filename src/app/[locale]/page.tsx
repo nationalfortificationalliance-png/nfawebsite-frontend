@@ -5,7 +5,6 @@ import HeroCarousel from '@/components/HeroCarousel';
 import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
 import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getAllNews, getGlobalSettings, getAboutPage, type NewsEvent } from '@/lib/api';
-import { MOCK_NEWS } from '@/lib/mockData';
 import {
   AnimatedStats,
   AnimatedCoreFunctions,
@@ -72,26 +71,10 @@ export default async function HomePage() {
     .sort((a: NewsEvent, b: NewsEvent) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 3);
 
-  // Debug logging
-  console.log('=== NEWS DEBUG ===');
-  console.log('Featured news count:', featuredNews.length);
-  console.log('Featured news data:', JSON.stringify(featuredNews.map(n => ({
-    title: n.title,
-    hasImage: !!n.image,
-    category: n.category,
-    is_featured: n.is_featured
-  })), null, 2));
-  console.log('Using backend data:', featuredNews.length > 0);
-
-  // Fallback images for news items
+  // Fallback images for news items with missing images
   const NEWS_FALLBACK_IMAGES = ['/about-hero.jpg', '/news_hero.jpg', '/factory.jpg'];
 
-  // ALWAYS try to use backend data first, even if images are missing
-  // Fallback to mock data only if API returns nothing
-  const rawDisplayNews = featuredNews.length > 0 ? featuredNews : MOCK_NEWS;
-  console.log('Raw display news count:', rawDisplayNews.length);
-  console.log('Using MOCK_NEWS:', featuredNews.length === 0);
-  const displayNews = rawDisplayNews.map((item, index) => {
+  const displayNews = featuredNews.map((item, index) => {
     // If news item has no image or empty image URL, add fallback
     if (!item.image || !item.image.url || item.image.url.trim().length === 0) {
       return {

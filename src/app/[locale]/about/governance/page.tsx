@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import Image from 'next/image';
 import Icon from '@/components/Icon';
 import GovernanceRepAccordion from '@/components/GovernanceRepAccordion';
-import { getGovernanceRepresentatives, getStrapiMediaUrl, getMemberOrganizations, MemberOrganization } from '@/lib/api';
+import { getGovernanceRepresentatives, getStrapiMediaUrl, getMemberOrganizations } from '@/lib/api';
+import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
     title: 'Governance & Compliance | National Fortification Alliance',
@@ -19,96 +19,15 @@ const STEERING_COMMITTEE = [
     'Federal Competition and Consumer Protection Commission'
 ];
 
-const MEMBER_LOGO_FALLBACK: Record<string, string> = {
-    'Standards Organisation of Nigeria (SON)': '/son_png.png',
-    'National Agency for Food and Drug Administration and Control (NAFDAC)': '/NAFDAC_emblem.png',
-    'Federal Competition and Consumer Protection Commission (FCCPC)': '/fccpc_logo.png',
-    'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department': '/Nigeria_Federal_Ministry_of_Health_Logo.png',
-};
-
-const MEMBERS_FALLBACK: MemberOrganization[] = [
-    { name: 'Standards Organisation of Nigeria (SON)', category: 'Core Members' },
-    { name: 'National Agency for Food and Drug Administration and Control (NAFDAC)', category: 'Core Members' },
-    { name: 'Federal Ministry of Education (FME)', category: 'Core Members' },
-    { name: 'Federal Competition and Consumer Protection Commission (FCCPC)', category: 'Core Members' },
-    { name: 'Federal Ministry of Health and Social Welfare (FMoHSW) — Nutrition Department', category: 'Core Members' },
-    { name: 'Federal Ministry of Agriculture and Food Security (FMAFS)', category: 'Core Members' },
-    { name: 'Federal Ministry of Budget and Economic Planning (FMBEP)', category: 'Core Members' },
-    { name: 'Institute of Public Analysts of Nigeria (IPAN)', category: 'Core Members' },
-    { name: 'Federal Ministry of Information and National Orientation (FMINO)', category: 'Core Members' },
-    { name: 'Industry', category: 'Core Members' },
-    { name: 'Development Partners (GAIN, HKI, TechnoServe, WFP, UNICEF, etc.)', category: 'Stakeholders' },
-    { name: 'Academia', category: 'Stakeholders' },
-    { name: 'Professional Associations (e.g., NIFST, NSN)', category: 'Stakeholders' },
-    { name: 'Civil Society Organisations (CSOs) / Non-Governmental Organisations (NGOs)', category: 'Stakeholders' },
-    { name: 'Media', category: 'Stakeholders' },
-].map((m, i) => ({ id: i + 1, documentId: String(i + 1), order: i + 1, ...m }));
-
 export default async function GovernancePage() {
     const representatives = await getGovernanceRepresentatives();
-    const memberOrganizationsData = await getMemberOrganizations();
-    const members = memberOrganizationsData.length ? memberOrganizationsData : MEMBERS_FALLBACK;
+    const members = await getMemberOrganizations();
     const coreMembers = members.filter((m) => m.category === 'Core Members');
     const stakeholderMembers = members.filter((m) => m.category === 'Stakeholders');
 
     return (
         <main className="governance-page">
             <style>{`
-                /* Hero with Image */
-                .gov-hero {
-                    position: relative;
-                    min-height: 340px;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                }
-                .gov-hero-bg {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 0;
-                }
-                .gov-hero-bg::after {
-                    content: '';
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-                    z-index: 1;
-                }
-                .gov-hero-content {
-                    position: relative;
-                    z-index: 2;
-                    padding: 3.5rem 0 2.75rem;
-                }
-                .gov-hero h1 {
-                    color: #fff;
-                    max-width: 720px;
-                    margin-bottom: 0.75rem;
-                    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-                }
-                .gov-hero p {
-                    color: rgba(255,255,255,0.97);
-                    max-width: 720px;
-                    font-size: 1.15rem;
-                    line-height: 1.7;
-                    text-shadow: 0 1px 6px rgba(0,0,0,0.3);
-                }
-                .gov-hero .breadcrumb {
-                    margin-bottom: 1.25rem;
-                    padding: 0.4rem 0.9rem;
-                    background: rgba(0,0,0,0.28);
-                    border-radius: 100px;
-                    display: inline-flex;
-                    backdrop-filter: blur(4px);
-                }
-                .gov-hero .breadcrumb a,
-                .gov-hero .breadcrumb span {
-                    color: rgba(255,255,255,0.85);
-                    font-weight: 600;
-                }
-                .gov-hero .breadcrumb a:hover {
-                    color: #fff;
-                }
-
                 .overview-grid {
                     display: grid;
                     grid-template-columns: repeat(4, 1fr);
@@ -233,9 +152,6 @@ export default async function GovernancePage() {
                 }
 
                 @media (max-width: 900px) {
-                    .gov-hero { height: 60vh; min-height: 500px; }
-                    .gov-hero h1 { font-size: 2rem; }
-                    .gov-hero p { font-size: 1rem; }
                     .overview-grid { grid-template-columns: repeat(2, 1fr); }
                     .monitoring-flow { flex-direction: column; }
                     .monitor-arrow { transform: rotate(90deg); }
@@ -415,31 +331,12 @@ export default async function GovernancePage() {
                 }
             `}</style>
 
-            <div className="gov-hero">
-                <div className="gov-hero-bg">
-                    <Image
-                        src="/about-hero.jpg"
-                        alt="Governance and Compliance"
-                        fill
-                        sizes="100vw"
-                        style={{ objectFit: 'cover' }}
-                        priority
-                    />
-                </div>
-                <div className="container gov-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <Link href="/about">About</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>Governance & Compliance</span>
-                    </div>
-                    <h1>Governance & Compliance</h1>
-                    <p>
-                        The NFA operates through a collaborative governance framework involving regulators, policymakers, industry representatives, development partners, academia, and civil society.
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                image={{ src: '/about-hero.jpg', alt: 'Governance and Compliance' }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'About', href: '/about' }, { label: 'Governance & Compliance' }]}
+                title="Governance & Compliance"
+                description="The NFA operates through a collaborative governance framework involving regulators, policymakers, industry representatives, development partners, academia, and civil society."
+            />
 
             {/* Governance Overview */}
             <section className="section">
@@ -576,7 +473,7 @@ export default async function GovernancePage() {
                                 <h4><Icon name="landmark" size={18} /> Core Government Members</h4>
                                 <ul className="member-list">
                                     {coreMembers.map((m) => {
-                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
+                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : undefined;
                                         return (
                                             <li key={m.id}>
                                                 {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}
@@ -590,7 +487,7 @@ export default async function GovernancePage() {
                                 <h4><Icon name="heart-handshake" size={18} /> Development &amp; Technical Partners</h4>
                                 <ul className="member-list">
                                     {stakeholderMembers.map((m) => {
-                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : MEMBER_LOGO_FALLBACK[m.name];
+                                        const logoSrc = m.logo ? getStrapiMediaUrl(m.logo.url) : undefined;
                                         return (
                                             <li key={m.id}>
                                                 {logoSrc && <Image src={logoSrc} alt="" width={24} height={24} className="member-logo-mini" />}

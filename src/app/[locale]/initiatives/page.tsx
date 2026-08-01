@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import Icon, { IconName } from '@/components/Icon';
 import { getInitiatives, isRecentlyUpdated } from '@/lib/api';
+import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
     title: 'Initiatives & Priority Areas | National Fortification Alliance',
@@ -10,50 +10,6 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 60;
-
-const INITIATIVES_FALLBACK: {
-    title: string;
-    icon: IconName;
-    description: string;
-    bullets: string[];
-}[] = [
-    {
-        title: 'Rice Fortification',
-        icon: 'trending-up',
-        description: 'Partnering with millers, regulators and distributors to make fortified rice more available, affordable and trusted across Nigeria.',
-        bullets: [
-            'Scale fortified rice production and distribution',
-            'Strengthen regulatory compliance and lab checks',
-            'Support premix market development',
-            'Build industry and laboratory capacity',
-            'Raise consumer awareness and demand',
-        ],
-    },
-    {
-        title: 'Bouillon Fortification',
-        icon: 'search',
-        description: 'Evaluating bouillon cubes as a strategic fortification vehicle while balancing nutrition benefit and sodium reduction priorities.',
-        bullets: [
-            'Conduct nutrient profiling and taste studies',
-            'Assess iodine and sodium impacts',
-            'Analyze consumer behavior',
-            'Develop draft standards and codes of practice',
-            'Coordinate industry engagement',
-        ],
-    },
-    {
-        title: 'DFQT+ Digital Monitoring',
-        icon: 'activity',
-        description: 'Deploying digital traceability and quality monitoring systems that help regulators and producers track fortified products in near real time.',
-        bullets: [
-            'Support digital compliance workflows',
-            'Chart premix and product traceability',
-            'Improve audit efficiency',
-            'Drive informed enforcement',
-            'Strengthen governance and transparency',
-        ],
-    },
-];
 
 const PRIORITY_AREAS = [
     'Strengthening Vitamin A fortification compliance',
@@ -88,75 +44,18 @@ const RECENTLY_UPDATED_DAYS = 30;
 
 export default async function InitiativesPage() {
     const initiatives = await getInitiatives();
-    const displayInitiatives = initiatives.length > 0
-        ? initiatives.map((initiative) => ({
-            title: initiative.title,
-            slug: initiative.slug as string | undefined,
-            icon: (initiative.icon || 'trending-up') as IconName,
-            description: initiative.description,
-            bullets: (initiative.highlights || []).map((h) => h.text),
-            isRecentlyUpdated: isRecentlyUpdated(initiative.updatedAt, RECENTLY_UPDATED_DAYS),
-        }))
-        : INITIATIVES_FALLBACK.map((initiative) => ({ ...initiative, slug: undefined, isRecentlyUpdated: false }));
+    const displayInitiatives = initiatives.map((initiative) => ({
+        title: initiative.title,
+        slug: initiative.slug,
+        icon: (initiative.icon || 'trending-up') as IconName,
+        description: initiative.description,
+        bullets: (initiative.highlights || []).map((h) => h.text),
+        isRecentlyUpdated: isRecentlyUpdated(initiative.updatedAt, RECENTLY_UPDATED_DAYS),
+    }));
 
     return (
         <main className="initiatives-page">
             <style>{`
-                /* Hero with Image - consistent with other pages */
-                .initiatives-hero {
-                    position: relative;
-                    min-height: 340px;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                }
-                .initiatives-hero-bg {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 0;
-                }
-                .initiatives-hero-bg::after {
-                    content: '';
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-                    z-index: 1;
-                }
-                .initiatives-hero-content {
-                    position: relative;
-                    z-index: 2;
-                    padding: 3.5rem 0 2.75rem;
-                }
-                .initiatives-hero h1 {
-                    color: #fff;
-                    max-width: 720px;
-                    margin-bottom: 1rem;
-                    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-                }
-                .initiatives-hero p {
-                    color: rgba(255,255,255,0.97);
-                    max-width: 720px;
-                    font-size: 1.15rem;
-                    line-height: 1.7;
-                    text-shadow: 0 1px 6px rgba(0,0,0,0.3);
-                }
-                .initiatives-hero .breadcrumb {
-                    margin-bottom: 2rem;
-                    padding: 0.4rem 0.9rem;
-                    background: rgba(0,0,0,0.28);
-                    border-radius: 100px;
-                    display: inline-flex;
-                    backdrop-filter: blur(4px);
-                }
-                .initiatives-hero .breadcrumb a,
-                .initiatives-hero .breadcrumb span {
-                    color: rgba(255,255,255,0.85);
-                    font-weight: 600;
-                }
-                .initiatives-hero .breadcrumb a:hover {
-                    color: #fff;
-                }
-
                 .focus-grid,
                 .projects-grid,
                 .work-grid,
@@ -338,11 +237,6 @@ export default async function InitiativesPage() {
                     gap: 1rem;
                 }
 
-                @media (max-width: 900px) {
-                    .initiatives-hero { height: 60vh; min-height: 500px; }
-                    .initiatives-hero h1 { font-size: 2rem; }
-                    .initiatives-hero p { font-size: 1rem; }
-                }
                 @media (max-width: 760px) {
                     .priority-grid {
                         grid-template-columns: 1fr;
@@ -350,29 +244,12 @@ export default async function InitiativesPage() {
                 }
             `}</style>
 
-            <div className="initiatives-hero">
-                <div className="initiatives-hero-bg">
-                    <Image
-                        src="/factory.jpg"
-                        alt="Food fortification facility"
-                        fill
-                        sizes="100vw"
-                        style={{ objectFit: "cover" }}
-                        priority
-                    />
-                </div>
-                <div className="container initiatives-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>Initiatives</span>
-                    </div>
-                    <h1>NFA Projects & Initiatives</h1>
-                    <p>
-                        Driving national impact through targeted programs, technological innovation, and strategic priority areas designed to eliminate hidden hunger.
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                image={{ src: '/factory.jpg', alt: 'Food fortification facility' }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Initiatives' }]}
+                title="NFA Projects & Initiatives"
+                description="Driving national impact through targeted programs, technological innovation, and strategic priority areas designed to eliminate hidden hunger."
+            />
 
             <section className="section">
                 <div className="container">

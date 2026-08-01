@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
 import {
-    getLaboratories, Laboratory,
-    getIndustryChallenges, IndustryChallenge,
+    getLaboratories,
+    getIndustryChallenges,
     getGuidelineDocuments,
 } from '@/lib/api';
 import ResourceCentre from '@/components/ResourceCentre';
+import PageHero from '@/components/PageHero';
 
 export const metadata: Metadata = {
     title: 'Resources | National Fortification Alliance',
@@ -22,35 +21,9 @@ const RESOURCES_HERO_IMAGES = [
     { src: '/news_hero.jpg', alt: 'Fortification stakeholders and partners' },
 ];
 
-const LABS_FALLBACK: Laboratory[] = [
-    { id: 1, documentId: '1', name: 'Saag Chemicals', location: 'Lagos', contact: '08025589200', order: 1, latitude: 6.5244, longitude: 3.3792 },
-    { id: 2, documentId: '2', name: 'Remaben Scientific Services Ltd', location: 'Ikeja', contact: '08023037743', order: 2, latitude: 6.6018, longitude: 3.3515 },
-    { id: 3, documentId: '3', name: 'Bato Chemical Labs Ltd', location: 'Ogun State', contact: '08091972222', order: 3, latitude: 7.1475, longitude: 3.3619 },
-    { id: 4, documentId: '4', name: 'Jawura Environmental Services Ltd', location: 'Lagos', contact: '09058592802', order: 4, latitude: 6.5300, longitude: 3.3850 },
-    { id: 5, documentId: '5', name: 'LS Scientific Limited', location: 'Ikeja', contact: '08094709004', order: 5, latitude: 6.6080, longitude: 3.3570 },
-    { id: 6, documentId: '6', name: 'Alfa Laboratories', location: 'Lagos', contact: '08023093103', order: 6, latitude: 6.5180, longitude: 3.3700 },
-    { id: 7, documentId: '7', name: 'Katchey Laboratory', location: 'Ikeja', contact: '08036209410', order: 7, latitude: 6.5960, longitude: 3.3460 },
-    { id: 8, documentId: '8', name: 'Bureau Veritas Nigeria Ltd', location: 'Ogun State', contact: '08095559245', order: 8, latitude: 7.1530, longitude: 3.3700 },
-];
-
-const CHALLENGES_FALLBACK: IndustryChallenge[] = [
-    { text: 'Scarcity of Vitamin A Palmitate', category: 'Supply Chain' },
-    { text: 'Foreign exchange constraints affecting premix supply', category: 'Supply Chain' },
-    { text: 'Technical limitations in fortification equipment', category: 'Technical & Equipment' },
-    { text: 'Challenges with shelf-life stability studies', category: 'Technical & Equipment' },
-    { text: 'Technical capacity gaps in micronutrient testing', category: 'Technical & Equipment' },
-    { text: 'Inconsistencies in laboratory analytical results', category: 'Quality & Compliance' },
-    { text: 'Packaging and storage limitations', category: 'Quality & Compliance' },
-    { text: 'Informal retail packaging challenges', category: 'Quality & Compliance' },
-    { text: 'Inconsistent customs tariff implementation', category: 'Regulatory & Customs' },
-    { text: 'Inadequate monitoring of imported products', category: 'Regulatory & Customs' },
-].map((c, i) => ({ id: i + 1, documentId: String(i + 1), text: c.text, category: c.category, order: i + 1 }));
-
 export default async function ResourcesPage() {
-    const laboratoriesData = await getLaboratories();
-    const labs = laboratoriesData.length ? laboratoriesData : LABS_FALLBACK;
-    const industryChallengesData = await getIndustryChallenges();
-    const challenges = industryChallengesData.length ? industryChallengesData : CHALLENGES_FALLBACK;
+    const labs = await getLaboratories();
+    const challenges = await getIndustryChallenges();
     const documents = await getGuidelineDocuments();
 
     // Randomly picked per request/revalidation — this is a Server Component (no re-render), so impurity here is intentional and safe.
@@ -82,42 +55,6 @@ export default async function ResourcesPage() {
     return (
         <main className="resources-page">
             <style>{`
-                .res-hero {
-                    position: relative;
-                    min-height: 340px;
-                    display: flex;
-                    align-items: center;
-                    overflow: hidden;
-                }
-                .res-hero-bg {
-                    position: absolute;
-                    inset: 0;
-                    z-index: 0;
-                }
-                .res-hero-bg::after {
-                    content: '';
-                    position: absolute;
-                    inset: 0;
-                    background: linear-gradient(135deg, rgba(0, 82, 73, 0.72) 0%, rgba(6, 78, 59, 0.65) 100%);
-                    z-index: 1;
-                }
-                .res-hero-content {
-                    position: relative;
-                    z-index: 2;
-                    padding: 3.5rem 0 2.75rem;
-                }
-                .res-hero .breadcrumb {
-                    margin-bottom: 2rem;
-                    padding: 0.4rem 0.9rem;
-                    background: rgba(0,0,0,0.28);
-                    border-radius: 100px;
-                    display: inline-flex;
-                    backdrop-filter: blur(4px);
-                }
-                .res-hero .breadcrumb a, .res-hero .breadcrumb span { color: rgba(255,255,255,0.85); font-weight: 600; }
-                .res-hero .breadcrumb a:hover { color: #fff; }
-                .res-hero h1 { color: #fff; max-width: 720px; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.35); }
-                .res-hero p { color: rgba(255,255,255,0.97); max-width: 720px; font-size: 1.1rem; line-height: 1.7; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
                 .res-hero-stats {
                     display: flex;
                     flex-wrap: wrap;
@@ -230,45 +167,31 @@ export default async function ResourcesPage() {
                     font-size: 0.95rem;
                 }
 
-                @media (max-width: 900px) {
-                    .res-hero { height: 60vh; min-height: 500px; }
-                    .res-hero h1 { font-size: 2rem; }
-                    .res-hero p { font-size: 1rem; }
-                }
             `}</style>
 
-            <div className="res-hero">
-                <div className="res-hero-bg">
-                    <Image src={heroImage.src} alt={heroImage.alt} fill style={{ objectFit: 'cover' }} priority />
-                </div>
-                <div className="container res-hero-content">
-                    <div className="breadcrumb">
-                        <Link href="/">Home</Link>
-                        <span className="breadcrumb-sep">›</span>
-                        <span>Resources</span>
+            <PageHero
+                image={{ src: heroImage.src, alt: heroImage.alt }}
+                breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Resources' }]}
+                title="Resources"
+                description="Approved micronutrient laboratories, industry challenges, and technical guideline documents supporting Nigeria's food fortification programme."
+            >
+                <div className="res-hero-stats">
+                    <div className="res-hero-stat">
+                        <div className="res-hero-stat-num">{labs.length}</div>
+                        <div className="res-hero-stat-label">Laboratories</div>
                     </div>
-                    <h1>Resources</h1>
-                    <p>
-                        Approved micronutrient laboratories, industry challenges, and technical guideline documents supporting Nigeria&apos;s food fortification programme.
-                    </p>
-                    <div className="res-hero-stats">
-                        <div className="res-hero-stat">
-                            <div className="res-hero-stat-num">{labs.length}</div>
-                            <div className="res-hero-stat-label">Laboratories</div>
-                        </div>
-                        <div className="res-hero-stat">
-                            <div className="res-hero-stat-num">{documents.length}</div>
-                            <div className="res-hero-stat-label">Guideline Documents</div>
-                        </div>
-                        {lastUpdatedLabel && (
-                            <div className="res-hero-stat">
-                                <div className="res-hero-stat-num" style={{ fontSize: '1.1rem' }}>{lastUpdatedLabel}</div>
-                                <div className="res-hero-stat-label">Last Updated</div>
-                            </div>
-                        )}
+                    <div className="res-hero-stat">
+                        <div className="res-hero-stat-num">{documents.length}</div>
+                        <div className="res-hero-stat-label">Guideline Documents</div>
                     </div>
+                    {lastUpdatedLabel && (
+                        <div className="res-hero-stat">
+                            <div className="res-hero-stat-num" style={{ fontSize: '1.1rem' }}>{lastUpdatedLabel}</div>
+                            <div className="res-hero-stat-label">Last Updated</div>
+                        </div>
+                    )}
                 </div>
-            </div>
+            </PageHero>
 
             <script
                 type="application/ld+json"
