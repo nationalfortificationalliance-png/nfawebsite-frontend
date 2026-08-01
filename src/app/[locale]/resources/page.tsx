@@ -6,6 +6,8 @@ import {
 } from '@/lib/api';
 import ResourceCentre from '@/components/ResourceCentre';
 import PageHero from '@/components/PageHero';
+import HeroStats from '@/components/HeroStats';
+import { getLatestDateLabel } from '@/lib/utils';
 
 export const metadata: Metadata = {
     title: 'Resources | National Fortification Alliance',
@@ -30,14 +32,7 @@ export default async function ResourcesPage() {
     // eslint-disable-next-line react-hooks/purity
     const heroImage = RESOURCES_HERO_IMAGES[Math.floor(Math.random() * RESOURCES_HERO_IMAGES.length)];
 
-    const lastUpdated = documents
-        .map((d) => d.published_date)
-        .filter((d): d is string => Boolean(d))
-        .sort()
-        .at(-1);
-    const lastUpdatedLabel = lastUpdated
-        ? new Date(lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-        : null;
+    const lastUpdatedLabel = getLatestDateLabel(documents.map((d) => d.published_date));
 
     const structuredData = {
         '@context': 'https://schema.org',
@@ -55,16 +50,6 @@ export default async function ResourcesPage() {
     return (
         <main className="resources-page">
             <style>{`
-                .res-hero-stats {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 1.75rem;
-                    margin-top: 1.75rem;
-                }
-                .res-hero-stat { color: #fff; }
-                .res-hero-stat-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
-                .res-hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
-
                 .challenges-groups {
                     display: flex;
                     flex-direction: column;
@@ -175,22 +160,13 @@ export default async function ResourcesPage() {
                 title="Resources"
                 description="Approved micronutrient laboratories, industry challenges, and technical guideline documents supporting Nigeria's food fortification programme."
             >
-                <div className="res-hero-stats">
-                    <div className="res-hero-stat">
-                        <div className="res-hero-stat-num">{labs.length}</div>
-                        <div className="res-hero-stat-label">Laboratories</div>
-                    </div>
-                    <div className="res-hero-stat">
-                        <div className="res-hero-stat-num">{documents.length}</div>
-                        <div className="res-hero-stat-label">Guideline Documents</div>
-                    </div>
-                    {lastUpdatedLabel && (
-                        <div className="res-hero-stat">
-                            <div className="res-hero-stat-num" style={{ fontSize: '1.1rem' }}>{lastUpdatedLabel}</div>
-                            <div className="res-hero-stat-label">Last Updated</div>
-                        </div>
-                    )}
-                </div>
+                <HeroStats
+                    items={[
+                        { value: labs.length, label: 'Laboratories' },
+                        { value: documents.length, label: 'Guideline Documents' },
+                        ...(lastUpdatedLabel ? [{ value: lastUpdatedLabel, label: 'Last Updated', small: true }] : []),
+                    ]}
+                />
             </PageHero>
 
             <script

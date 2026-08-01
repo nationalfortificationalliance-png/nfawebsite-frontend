@@ -72,8 +72,6 @@ export default async function PartnerProfilePage({ params }: Props) {
                 }
                 .partner-profile-hero h1 { color: white; max-width: 780px; margin-top: 1rem; }
                 .partner-profile-badge {
-                    display: inline-flex; align-items: center; gap: 0.35rem;
-                    padding: 0.3rem 0.9rem; border-radius: 100px;
                     font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
                 }
                 .partner-profile-card {
@@ -135,7 +133,7 @@ export default async function PartnerProfilePage({ params }: Props) {
                         <span style={{ color: 'rgba(255,255,255,0.6)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>{partner.name}</span>
                     </div>
                     {meta && (
-                        <span className="partner-profile-badge" style={{ background: meta.bg, color: meta.color }}>{meta.label}</span>
+                        <span className="hero-pill partner-profile-badge" style={{ background: meta.bg, color: meta.color }}>{meta.label}</span>
                     )}
                     <h1>{partner.name}</h1>
                 </div>

@@ -70,11 +70,9 @@ export default async function InitiativeDetailPage({ params }: Props) {
                     flex-wrap: wrap; margin-bottom: 1.25rem; margin-top: 1rem;
                 }
                 .initiative-badge {
-                    display: inline-flex; align-items: center; gap: 0.35rem;
                     background: rgba(255,255,255,0.15);
                     border: 1px solid rgba(255,255,255,0.3);
-                    color: white; padding: 0.3rem 0.9rem;
-                    border-radius: 100px; font-size: 0.8rem; font-weight: 600;
+                    color: white; font-size: 0.8rem; font-weight: 600;
                     text-transform: capitalize;
                 }
                 .initiative-badge.updated {
@@ -131,11 +129,11 @@ export default async function InitiativeDetailPage({ params }: Props) {
                     </div>
                     <div className="initiative-meta">
                         {category && (
-                            <span className="initiative-badge"><Icon name={'trending-up' as IconName} size={14} /> {category}</span>
+                            <span className="hero-pill initiative-badge"><Icon name={'trending-up' as IconName} size={14} /> {category}</span>
                         )}
-                        {status && <span className="initiative-badge">{status}</span>}
+                        {status && <span className="hero-pill initiative-badge">{status}</span>}
                         {recentlyUpdated && (
-                            <span className="initiative-badge updated">Recently updated</span>
+                            <span className="hero-pill initiative-badge updated">Recently updated</span>
                         )}
                     </div>
                     <h1>{title}</h1>

@@ -237,11 +237,9 @@ export default async function NewsDetailPage({ params }: Props) {
           font-style: italic;
         }
         .article-category-badge {
-          display: inline-flex; align-items: center; gap: 0.35rem;
           background: rgba(255,255,255,0.2);
           border: 1px solid rgba(255,255,255,0.3);
-          color: white; padding: 0.3rem 0.9rem;
-          border-radius: 100px; font-size: 0.8rem; font-weight: 600;
+          color: white; font-size: 0.8rem; font-weight: 600;
         }
         .article-gallery {
           margin-top: 3rem;
@@ -332,7 +330,7 @@ export default async function NewsDetailPage({ params }: Props) {
                         <span style={{ color: 'rgba(255,255,255,0.6)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>{title}</span>
                     </div>
                     <div className="article-meta">
-                        <span className="article-category-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <span className="hero-pill article-category-badge">
                             <Icon name={CATEGORY_ICONS[category] || 'newspaper'} size={14} /> {category}
                         </span>
                         <span className="article-date" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(255,255,255,0.75)' }}>

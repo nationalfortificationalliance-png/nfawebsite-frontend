@@ -2,15 +2,13 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeroCarousel from '@/components/HeroCarousel';
-import NewsCard from '@/components/NewsCard';
 import NewsCarousel from '@/components/NewsCarousel';
 import { getCarousels, getFeaturedNews, getFeaturedQuote, getStats, getStrapiMediaUrl, getAllNews, getGlobalSettings, getAboutPage, type NewsEvent } from '@/lib/api';
 import {
   AnimatedStats,
   AnimatedCoreFunctions,
   AnimatedAchievements,
-  AnimatedSectionWrapper,
-  AnimatedNewsGrid
+  AnimatedSectionWrapper
 } from '@/components/HomePageClient';
 
 export const metadata: Metadata = {

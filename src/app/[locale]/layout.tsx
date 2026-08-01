@@ -109,7 +109,7 @@ export default async function LocaleLayout({
       <body>
         <PageTransition />
         <NextIntlClientProvider messages={messages}>
-          <Header siteName={settings?.site_name || "National Fortification Alliance"} />
+          <Header />
           <main>{children}</main>
           <Footer settings={settings} secretariatPhones={secretariatPhones} contact={contact} />
         </NextIntlClientProvider>

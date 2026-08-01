@@ -13,11 +13,10 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function NewsPage() {
-    const { data: dbNews, total: dbTotal } = await getAllNews(1, 12);
+    const { data: dbNews } = await getAllNews(1, 12);
 
     const isMock = dbNews.length === 0;
     const news = isMock ? MOCK_NEWS : dbNews;
-    const total = isMock ? MOCK_NEWS.length : dbTotal;
 
     const baseCategories = ['news', 'event', 'communique'];
     const hasReportItems = news.some((item) => item.category === 'report');

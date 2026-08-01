@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-// import LanguageSwitcher from './LanguageSwitcher';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
@@ -30,8 +29,6 @@ const NAV_LINKS = [
   { label: 'FAQ', href: '/faq' },
 ];
 
-const HOME_LOCALES = new Set(['en', 'ha', 'ig', 'yo']);
-
 function isActivePath(pathname: string, href: string) {
   if (href === '/') {
     return pathname === '/' || pathname === '';
@@ -39,7 +36,7 @@ function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export default function Header({ siteName }: { siteName: string }) {
+export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname() || '/';
@@ -58,8 +55,6 @@ export default function Header({ siteName }: { siteName: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  const pathSegments = pathname.split('/').filter(Boolean);
-  const isHome = pathSegments.length === 0 || (pathSegments.length === 1 && HOME_LOCALES.has(pathSegments[0]));
 
   return (
     <>
@@ -496,7 +491,6 @@ export default function Header({ siteName }: { siteName: string }) {
 
             {/* CTA - Asedo Style */}
             <div className="header-cta">
-              {/* <LanguageSwitcher /> */}
               <Link
                 href="/contact"
                 className="btn btn-primary btn-sm btn-cta"
@@ -544,9 +538,6 @@ export default function Header({ siteName }: { siteName: string }) {
                 </div>
               ))}
               <div className="mobile-cta">
-                <div style={{ padding: '0 1.5rem' }}>
-                  {/* <LanguageSwitcher /> */}
-                </div>
                 <Link
                   href="/contact"
                   className="btn btn-cta"

@@ -452,6 +452,15 @@ p {
   color: var(--wfp-blue);
 }
 
+/* Shared layout for pill-shaped badges sitting on a hero image (colors/weight are page-specific) */
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+}
+
 /* ─── Grid ────────────────────────────────────────────────────── */
 .grid-3 {
   display: grid;

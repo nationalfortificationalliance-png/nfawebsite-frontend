@@ -91,7 +91,7 @@ export default function ContactForm() {
             setFormData({ firstName: '', lastName: '', email: '', orgType: 'Food Processor / Manufacturer', topic: 'NAFDAC Certification', message: '' });
             setAttachments([]);
             setFileError('');
-        } catch (err) {
+        } catch {
             setStatus('error');
         }
     };

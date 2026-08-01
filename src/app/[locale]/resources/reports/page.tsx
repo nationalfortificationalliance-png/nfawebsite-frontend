@@ -3,6 +3,8 @@ import { getReports, getComplianceReports } from '@/lib/api';
 import ReportsRepository from '@/components/ReportsRepository';
 import ComplianceDashboard from '@/components/ComplianceDashboard';
 import PageHero from '@/components/PageHero';
+import HeroStats from '@/components/HeroStats';
+import { getLatestDateLabel } from '@/lib/utils';
 
 export const metadata: Metadata = {
     title: 'Reports & Data | National Fortification Alliance',
@@ -28,14 +30,7 @@ export default async function ReportsDataPage() {
     // eslint-disable-next-line react-hooks/purity
     const heroImage = REPORTS_HERO_IMAGES[Math.floor(Math.random() * REPORTS_HERO_IMAGES.length)];
 
-    const lastUpdated = reports
-        .map((r) => r.published_date)
-        .filter((d): d is string => Boolean(d))
-        .sort()
-        .at(-1);
-    const lastUpdatedLabel = lastUpdated
-        ? new Date(lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-        : null;
+    const lastUpdatedLabel = getLatestDateLabel(reports.map((r) => r.published_date));
 
     const structuredData = {
         '@context': 'https://schema.org',
@@ -52,36 +47,18 @@ export default async function ReportsDataPage() {
 
     return (
         <main className="reports-data-page">
-            <style>{`
-                .rd-hero-stats {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 1.75rem;
-                    margin-top: 1.75rem;
-                }
-                .rd-hero-stat { color: #fff; }
-                .rd-hero-stat-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
-                .rd-hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
-            `}</style>
-
             <PageHero
                 image={{ src: heroImage.src, alt: heroImage.alt }}
                 breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Resources', href: '/resources' }, { label: 'Reports & Data' }]}
                 title="Reports & Data"
                 description="National fortification compliance figures and a searchable repository of compliance, surveillance, and evaluation reports from NAFDAC, SON, FCCPC, and partners."
             >
-                <div className="rd-hero-stats">
-                    <div className="rd-hero-stat">
-                        <div className="rd-hero-stat-num">{reports.length}</div>
-                        <div className="rd-hero-stat-label">Reports</div>
-                    </div>
-                    {lastUpdatedLabel && (
-                        <div className="rd-hero-stat">
-                            <div className="rd-hero-stat-num" style={{ fontSize: '1.1rem' }}>{lastUpdatedLabel}</div>
-                            <div className="rd-hero-stat-label">Last Updated</div>
-                        </div>
-                    )}
-                </div>
+                <HeroStats
+                    items={[
+                        { value: reports.length, label: 'Reports' },
+                        ...(lastUpdatedLabel ? [{ value: lastUpdatedLabel, label: 'Last Updated', small: true }] : []),
+                    ]}
+                />
             </PageHero>
 
             <script

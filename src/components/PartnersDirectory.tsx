@@ -4,7 +4,6 @@ import { useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon, { IconName } from '@/components/Icon';
-import type { Partner } from '@/lib/api';
 
 // The NFA secretariat asked for partner website links to be hidden site-wide
 // (July 2026). Link markup below is fully built — flip this to true once the
