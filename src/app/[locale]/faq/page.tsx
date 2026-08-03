@@ -82,7 +82,7 @@ export default async function FAQPage() {
             `}</style>
 
             <PageHero
-                image={{ src: '/about-hero.jpg', alt: 'FAQ' }}
+                image={{ src: '/faq-hero.jpeg', alt: 'National Fortification Alliance stakeholders' }}
                 breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'FAQ' }]}
                 title="Frequently Asked Questions"
                 description="Find answers to common questions about food fortification and the National Fortification Alliance"

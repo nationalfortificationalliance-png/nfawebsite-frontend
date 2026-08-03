@@ -205,7 +205,7 @@ export default async function PartnersPage() {
       `}</style>
 
             <PageHero
-                image={{ src: '/about-hero.jpg', alt: 'Partnership meeting' }}
+                image={{ src: '/partners-hero.jpeg', alt: 'National Fortification Alliance partners' }}
                 breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Partners' }]}
                 title="Our Partners"
                 description="Government agencies, UN bodies, private sector, and donors — united by a single mission to eliminate micronutrient malnutrition in Nigeria."
