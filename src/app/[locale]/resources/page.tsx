@@ -3,6 +3,7 @@ import {
     getLaboratories,
     getIndustryChallenges,
     getGuidelineDocuments,
+    getMemberOrganizations,
 } from '@/lib/api';
 import ResourceCentre from '@/components/ResourceCentre';
 import PageHero from '@/components/PageHero';
@@ -24,9 +25,12 @@ const RESOURCES_HERO_IMAGES = [
 ];
 
 export default async function ResourcesPage() {
-    const labs = await getLaboratories();
-    const challenges = await getIndustryChallenges();
-    const documents = await getGuidelineDocuments();
+    const [labs, challenges, documents, organizations] = await Promise.all([
+        getLaboratories(),
+        getIndustryChallenges(),
+        getGuidelineDocuments(),
+        getMemberOrganizations(),
+    ]);
 
     // Randomly picked per request/revalidation — this is a Server Component (no re-render), so impurity here is intentional and safe.
     // eslint-disable-next-line react-hooks/purity
@@ -174,7 +178,7 @@ export default async function ResourcesPage() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
 
-            <ResourceCentre labs={labs} challenges={challenges} documents={documents} />
+            <ResourceCentre labs={labs} challenges={challenges} documents={documents} organizations={organizations} />
         </main>
     );
 }

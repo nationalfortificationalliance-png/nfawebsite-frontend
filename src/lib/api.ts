@@ -728,8 +728,9 @@ export async function getIndustryChallenges(): Promise<IndustryChallenge[]> {
 }
 
 export type GuidelineDocumentCategory = 'General' | 'Logistics' | 'Nutrition' | 'Reports' | 'Other';
-export type GuidelineDocumentType = 'Guideline' | 'Standard' | 'Regulation' | 'Manual' | 'SOP' | 'Technical Note' | 'Policy Document';
+export type GuidelineDocumentType = 'Guideline' | 'Standard' | 'Regulation' | 'Manual' | 'SOP' | 'Technical Note' | 'Policy Document' | 'Code of Practice';
 export type GuidelineDocumentStatus = 'Current' | 'Revised' | 'Archived';
+export type GuidelineDocumentAccessType = 'Download' | 'Preview' | 'External Link';
 
 export interface GuidelineDocument {
     id: number;
@@ -737,6 +738,12 @@ export interface GuidelineDocument {
     title: string;
     description?: string;
     file?: StrapiImage;
+    issuing_organization?: MemberOrganization;
+    access_type?: GuidelineDocumentAccessType;
+    external_url?: string;
+    reference_number?: string;
+    resource_group?: string;
+    publication_year?: number;
     category: GuidelineDocumentCategory;
     published_date?: string;
     file_size?: string;
@@ -751,6 +758,7 @@ export async function getGuidelineDocuments(): Promise<GuidelineDocument[]> {
     const res = await fetchAPI<{ data: GuidelineDocument[] }>('/guideline-documents', {
         'sort': 'published_date:desc',
         'populate[0]': 'file',
+        'populate[1]': 'issuing_organization.logo',
         'pagination[pageSize]': '50',
     });
     return res?.data || [];

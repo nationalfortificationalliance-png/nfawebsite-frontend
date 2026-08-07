@@ -2,14 +2,15 @@
 
 import { useMemo, useState } from 'react';
 import Icon, { IconName } from '@/components/Icon';
-import { getStrapiMediaUrl } from '@/lib/api';
-import type { Laboratory, IndustryChallenge, GuidelineDocument } from '@/lib/api';
+import type { Laboratory, IndustryChallenge, GuidelineDocument, MemberOrganization } from '@/lib/api';
 import LabsMap from '@/components/LabsMap';
+import OrganizationResourceCards from '@/components/OrganizationResourceCards';
 
 interface ResourceCentreProps {
     labs: Laboratory[];
     challenges: IndustryChallenge[];
     documents: GuidelineDocument[];
+    organizations: MemberOrganization[];
 }
 
 const CHALLENGE_CATEGORY_ORDER = ['Supply Chain', 'Technical & Equipment', 'Quality & Compliance', 'Regulatory & Customs'];
@@ -18,12 +19,6 @@ const CHALLENGE_CATEGORY_ICONS: Record<string, IconName> = {
     'Technical & Equipment': 'settings',
     'Quality & Compliance': 'microscope',
     'Regulatory & Customs': 'landmark',
-};
-
-const STATUS_BADGE: Record<string, string> = {
-    Current: 'doc-status-current',
-    Revised: 'doc-status-revised',
-    Archived: 'doc-status-archived',
 };
 
 function splitTags(value?: string): string[] {
@@ -41,14 +36,7 @@ function matches(query: string, haystacks: (string | undefined | null)[]): boole
     return haystacks.some((h) => h?.toLowerCase().includes(q));
 }
 
-const RECENT_DAYS = 30;
-function isRecent(dateStr?: string): boolean {
-    if (!dateStr) return false;
-    const days = (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24);
-    return days >= 0 && days <= RECENT_DAYS;
-}
-
-export default function ResourceCentre({ labs, challenges, documents }: ResourceCentreProps) {
+export default function ResourceCentre({ labs, challenges, documents, organizations }: ResourceCentreProps) {
     const [query, setQuery] = useState('');
     const [docType, setDocType] = useState('all');
     const [foodVehicle, setFoodVehicle] = useState('all');
@@ -136,7 +124,7 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     background: var(--bg-off, #f8fafc);
                     border: 1px solid var(--border-light);
                     border-radius: 16px;
-                    padding: 1.25rem 1.5rem 1.5rem;
+                    padding: 1.5rem;
                     margin-top: 2rem;
                 }
                 .doc-filters-head {
@@ -144,12 +132,12 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     align-items: center;
                     justify-content: space-between;
                     flex-wrap: wrap;
-                    gap: 0.75rem;
-                    margin-bottom: 1rem;
+                    gap: 1rem;
+                    margin-bottom: 1.25rem;
                 }
                 @media (max-width: 600px) {
-                    .doc-filters-bar { padding: 1rem; border-radius: 14px; }
-                    .doc-filters { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+                    .doc-filters-bar { padding: 1.25rem; border-radius: 14px; }
+                    .doc-filters { grid-template-columns: 1fr 1fr; gap: 1rem; }
                 }
                 @media (max-width: 400px) {
                     .doc-filters { grid-template-columns: 1fr; }
@@ -168,12 +156,12 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                 .doc-filters {
                     display: grid;
                     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                    gap: 1rem;
+                    gap: 1.25rem;
                 }
                 .doc-filter-field {
                     display: flex;
                     flex-direction: column;
-                    gap: 0.35rem;
+                    gap: 0.5rem;
                 }
                 .doc-filter-field span {
                     font-size: 0.7rem;
@@ -184,7 +172,8 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                 }
                 .doc-filters select {
                     width: 100%;
-                    padding: 0.6rem 0.75rem;
+                    min-height: 44px;
+                    padding: 0.7rem 2.25rem 0.7rem 0.9rem;
                     border: 1.5px solid var(--border-light);
                     border-radius: 10px;
                     font-size: 0.85rem;
@@ -361,7 +350,7 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
             {/* Guideline Documents */}
             <section className="section" id="guidelines" style={{ scrollMarginTop: '100px' }}>
                 <div className="container">
-                    <p className="section-eyebrow">Downloads</p>
+                    <p className="section-eyebrow">Resource Library</p>
                     <h2 className="section-title">Guideline Documents</h2>
                     <p className="section-lead">
                         Regulatory guidelines, technical reports, and reference documents for fortification stakeholders.
@@ -430,46 +419,7 @@ export default function ResourceCentre({ labs, challenges, documents }: Resource
                     ) : filteredDocuments.length === 0 ? (
                         <p className="rc-section-empty">No documents match your search and filters.</p>
                     ) : (
-                        <div className="docs-grid">
-                            {filteredDocuments.map((doc) => {
-                                const publishedDate = doc.published_date
-                                    ? new Date(doc.published_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                                    : null;
-                                const fileUrl = doc.file ? getStrapiMediaUrl(doc.file.url) : null;
-                                return (
-                                    <div key={doc.id} className="doc-card">
-                                        <div className="doc-icon">
-                                            <Icon name="file-text" size={24} />
-                                        </div>
-                                        <div className="doc-info">
-                                            <div className="doc-title">{doc.title}</div>
-                                            {doc.description && <div className="doc-desc">{doc.description}</div>}
-                                            <div className="doc-meta">
-                                                {doc.is_featured && <span className="doc-featured-badge">Featured</span>}
-                                                {isRecent(doc.published_date) && <span className="doc-new-badge">New</span>}
-                                                <span className="doc-badge">{doc.category}</span>
-                                                {doc.document_type && <span className="doc-type-badge">{doc.document_type}</span>}
-                                                {doc.status && (
-                                                    <span className={`doc-status-badge ${STATUS_BADGE[doc.status] || ''}`}>{doc.status}</span>
-                                                )}
-                                                {publishedDate && <span>{publishedDate}</span>}
-                                                {doc.file_size && <span>{doc.file_size}</span>}
-                                            </div>
-                                            {doc.food_vehicles && (
-                                                <div className="doc-vehicle-tags">
-                                                    {splitTags(doc.food_vehicles).map((v) => <span key={v} className="doc-vehicle-tag">{v}</span>)}
-                                                </div>
-                                            )}
-                                            {fileUrl && (
-                                                <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="doc-download">
-                                                    <Icon name="arrow-right" size={14} /> Download
-                                                </a>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                        <OrganizationResourceCards documents={filteredDocuments} organizations={organizations} />
                     )}
                 </div>
             </section>
