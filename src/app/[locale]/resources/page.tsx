@@ -36,14 +36,17 @@ export default async function ResourcesPage() {
     // eslint-disable-next-line react-hooks/purity
     const heroImage = RESOURCES_HERO_IMAGES[Math.floor(Math.random() * RESOURCES_HERO_IMAGES.length)];
 
-    const lastUpdatedLabel = getLatestDateLabel(documents.map((d) => d.published_date));
+    const publicDocuments = documents.filter((document) => document.access_type === 'External Link'
+        ? Boolean(document.external_url)
+        : Boolean(document.file));
+    const lastUpdatedLabel = getLatestDateLabel(publicDocuments.map((d) => d.published_date));
 
     const structuredData = {
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
         name: 'Resources | National Fortification Alliance',
         description: 'Approved micronutrient laboratories, industry challenges, and guideline documents from the National Fortification Alliance Nigeria.',
-        hasPart: documents.map((d) => ({
+        hasPart: publicDocuments.map((d) => ({
             '@type': 'DigitalDocument',
             name: d.title,
             description: d.description,
@@ -167,7 +170,7 @@ export default async function ResourcesPage() {
                 <HeroStats
                     items={[
                         { value: labs.length, label: 'Laboratories' },
-                        { value: documents.length, label: 'Guideline Documents' },
+                        { value: publicDocuments.length, label: 'Guideline Documents' },
                         ...(lastUpdatedLabel ? [{ value: lastUpdatedLabel, label: 'Last Updated', small: true }] : []),
                     ]}
                 />

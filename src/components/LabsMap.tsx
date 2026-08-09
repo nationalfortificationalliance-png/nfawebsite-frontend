@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import nigeriaMapData from '@svg-maps/nigeria';
 import Icon from '@/components/Icon';
 import type { Laboratory } from '@/lib/api';
@@ -33,13 +33,29 @@ function project(lat: number, lng: number): { x: number; y: number } {
 
 export default function LabsMap({ labs }: LabsMapProps) {
     const [activeId, setActiveId] = useState<number | null>(null);
+    const [mapCanvasHeight, setMapCanvasHeight] = useState<number>();
+    const mapCanvasRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const canvas = mapCanvasRef.current;
+        if (!canvas) return;
+
+        const updateHeight = () => setMapCanvasHeight(Math.round(canvas.getBoundingClientRect().height));
+        updateHeight();
+        const observer = new ResizeObserver(updateHeight);
+        observer.observe(canvas);
+        return () => observer.disconnect();
+    }, []);
 
     const pinned = labs.filter((lab) => typeof lab.latitude === 'number' && typeof lab.longitude === 'number');
 
     if (pinned.length === 0) return null;
 
     return (
-        <div className="labs-map-wrap">
+        <div
+            className="labs-map-wrap"
+            style={{ '--labs-map-canvas-height': mapCanvasHeight ? `${mapCanvasHeight}px` : undefined } as CSSProperties}
+        >
             <style>{`
                 .labs-map-wrap {
                     margin-top: 2.5rem;
@@ -54,6 +70,7 @@ export default function LabsMap({ labs }: LabsMapProps) {
                 }
                 @media (max-width: 768px) {
                     .labs-map-wrap { grid-template-columns: 1fr; padding: 1.25rem; gap: 1.25rem; }
+                    .labs-map-side { height: auto; }
                     .labs-map-list { max-height: 320px; }
                 }
                 @media (max-width: 400px) {
@@ -93,7 +110,7 @@ export default function LabsMap({ labs }: LabsMapProps) {
                 }
                 .labs-map-attribution a { color: inherit; }
 
-                .labs-map-side { display: flex; flex-direction: column; gap: 0.75rem; min-height: 0; }
+                .labs-map-side { display: flex; flex-direction: column; gap: 0.75rem; height: var(--labs-map-canvas-height, auto); min-height: 0; }
                 .labs-map-hint {
                     display: flex;
                     align-items: center;
@@ -154,7 +171,7 @@ export default function LabsMap({ labs }: LabsMapProps) {
             `}</style>
 
             <div>
-                <div className="labs-map-svg-box">
+                <div className="labs-map-svg-box" ref={mapCanvasRef}>
                     <svg viewBox={nigeriaMap.viewBox} aria-label={nigeriaMap.label}>
                         {nigeriaMap.locations.map((state) => (
                             <path key={state.id} d={state.path} className="labs-map-state" />
@@ -162,6 +179,8 @@ export default function LabsMap({ labs }: LabsMapProps) {
                         {pinned.map((lab) => {
                             const { x, y } = project(lab.latitude!, lab.longitude!);
                             const isActive = lab.id === activeId;
+                            const tooltipX = Math.min(Math.max(x - 100, 8), VIEW_W - 208);
+                            const tooltipY = Math.max(y - 64, 8);
                             return (
                                 <g key={lab.id} onMouseEnter={() => setActiveId(lab.id)} onFocus={() => setActiveId(lab.id)}>
                                     <circle
@@ -175,7 +194,7 @@ export default function LabsMap({ labs }: LabsMapProps) {
                                         <title>{lab.name} — {lab.location} — {lab.contact}</title>
                                     </circle>
                                     {isActive && (
-                                        <g className="labs-map-tooltip" transform={`translate(${x - 100} ${y - 64})`}>
+                                        <g className="labs-map-tooltip" transform={`translate(${tooltipX} ${tooltipY})`}>
                                             <rect width="200" height="52" rx="6" />
                                             <text x="10" y="20">{lab.name}</text>
                                             <text x="10" y="38">{lab.location} · {lab.contact}</text>

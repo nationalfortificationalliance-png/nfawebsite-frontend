@@ -36,6 +36,12 @@ function matches(query: string, haystacks: (string | undefined | null)[]): boole
     return haystacks.some((h) => h?.toLowerCase().includes(q));
 }
 
+function isAccessibleResource(document: GuidelineDocument): boolean {
+    return document.access_type === 'External Link'
+        ? Boolean(document.external_url)
+        : Boolean(document.file);
+}
+
 export default function ResourceCentre({ labs, challenges, documents, organizations }: ResourceCentreProps) {
     const [query, setQuery] = useState('');
     const [docType, setDocType] = useState('all');
@@ -44,19 +50,20 @@ export default function ResourceCentre({ labs, challenges, documents, organizati
     const [agency, setAgency] = useState('all');
     const [status, setStatus] = useState('all');
 
-    const docTypes = useMemo(() => uniqueSorted(documents.map((d) => d.document_type).filter(Boolean) as string[]), [documents]);
-    const foodVehicles = useMemo(() => uniqueSorted(documents.flatMap((d) => splitTags(d.food_vehicles))), [documents]);
+    const accessibleDocuments = useMemo(() => documents.filter(isAccessibleResource), [documents]);
+    const docTypes = useMemo(() => uniqueSorted(accessibleDocuments.map((d) => d.document_type).filter(Boolean) as string[]), [accessibleDocuments]);
+    const foodVehicles = useMemo(() => uniqueSorted(accessibleDocuments.flatMap((d) => splitTags(d.food_vehicles))), [accessibleDocuments]);
     const years = useMemo(
-        () => uniqueSorted(documents.filter((d) => d.published_date).map((d) => d.published_date!.slice(0, 4))).reverse(),
-        [documents]
+        () => uniqueSorted(accessibleDocuments.filter((d) => d.published_date).map((d) => d.published_date!.slice(0, 4))).reverse(),
+        [accessibleDocuments]
     );
-    const agencies = useMemo(() => uniqueSorted(documents.map((d) => d.agency).filter(Boolean) as string[]), [documents]);
+    const agencies = useMemo(() => uniqueSorted(accessibleDocuments.map((d) => d.agency).filter(Boolean) as string[]), [accessibleDocuments]);
 
     const filteredLabs = labs.filter((lab) => matches(query, [lab.name, lab.location]));
 
     const filteredChallenges = challenges.filter((c) => matches(query, [c.text, c.category]));
 
-    const filteredDocuments = documents.filter((d) => {
+    const filteredDocuments = accessibleDocuments.filter((d) => {
         if (docType !== 'all' && d.document_type !== docType) return false;
         if (foodVehicle !== 'all' && !splitTags(d.food_vehicles).includes(foodVehicle)) return false;
         if (year !== 'all' && d.published_date?.slice(0, 4) !== year) return false;
@@ -357,7 +364,7 @@ export default function ResourceCentre({ labs, challenges, documents, organizati
                         Regulatory guidelines, technical reports, and reference documents for fortification stakeholders.
                     </p>
 
-                    {documents.length > 0 && (
+                    {accessibleDocuments.length > 0 && (
                         <div className="doc-filters-bar">
                             <div className="doc-filters-head">
                                 <span className="doc-filters-title">
@@ -411,11 +418,11 @@ export default function ResourceCentre({ labs, challenges, documents, organizati
                         </div>
                     )}
 
-                    {documents.length > 0 && filteredDocuments.length > 0 && (
-                        <p className="rc-results-count">Showing {filteredDocuments.length} of {documents.length} documents</p>
+                    {accessibleDocuments.length > 0 && filteredDocuments.length > 0 && (
+                        <p className="rc-results-count">Showing {filteredDocuments.length} of {accessibleDocuments.length} documents</p>
                     )}
 
-                    {documents.length === 0 ? (
+                    {accessibleDocuments.length === 0 ? (
                         <p className="res-empty">Guideline documents will be published here shortly.</p>
                     ) : filteredDocuments.length === 0 ? (
                         <p className="rc-section-empty">No documents match your search and filters.</p>
