@@ -50,7 +50,7 @@ export default function LabsMap({ labs }: LabsMapProps) {
                     display: grid;
                     grid-template-columns: minmax(0, 1fr) 300px;
                     gap: 1.5rem;
-                    align-items: start;
+                    align-items: stretch;
                 }
                 @media (max-width: 768px) {
                     .labs-map-wrap { grid-template-columns: 1fr; padding: 1.25rem; gap: 1.25rem; }
@@ -93,7 +93,7 @@ export default function LabsMap({ labs }: LabsMapProps) {
                 }
                 .labs-map-attribution a { color: inherit; }
 
-                .labs-map-side { display: flex; flex-direction: column; gap: 0.75rem; }
+                .labs-map-side { display: flex; flex-direction: column; gap: 0.75rem; min-height: 0; }
                 .labs-map-hint {
                     display: flex;
                     align-items: center;
@@ -110,7 +110,9 @@ export default function LabsMap({ labs }: LabsMapProps) {
                     display: flex;
                     flex-direction: column;
                     gap: 0.6rem;
-                    max-height: 420px;
+                    flex: 1;
+                    min-height: 0;
+                    max-height: none;
                     overflow-y: auto;
                     padding-right: 0.25rem;
                 }
@@ -146,6 +148,9 @@ export default function LabsMap({ labs }: LabsMapProps) {
                     margin-top: 0.35rem;
                 }
                 .labs-map-directions:hover { text-decoration: underline; }
+                .labs-map-tooltip { pointer-events: none; }
+                .labs-map-tooltip rect { fill: #102a43; stroke: #fff; stroke-width: 1; }
+                .labs-map-tooltip text { fill: #fff; font-size: 11px; font-weight: 600; }
             `}</style>
 
             <div>
@@ -158,16 +163,25 @@ export default function LabsMap({ labs }: LabsMapProps) {
                             const { x, y } = project(lab.latitude!, lab.longitude!);
                             const isActive = lab.id === activeId;
                             return (
-                                <circle
-                                    key={lab.id}
-                                    cx={x}
-                                    cy={y}
-                                    r={isActive ? 8 : 6}
-                                    className={`labs-map-pin${isActive ? ' active' : ''}`}
-                                    onClick={() => setActiveId(isActive ? null : lab.id)}
-                                >
-                                    <title>{lab.name} — {lab.location}</title>
-                                </circle>
+                                <g key={lab.id} onMouseEnter={() => setActiveId(lab.id)} onFocus={() => setActiveId(lab.id)}>
+                                    <circle
+                                        cx={x}
+                                        cy={y}
+                                        r={isActive ? 8 : 6}
+                                        tabIndex={0}
+                                        className={`labs-map-pin${isActive ? ' active' : ''}`}
+                                        onClick={() => setActiveId(isActive ? null : lab.id)}
+                                    >
+                                        <title>{lab.name} — {lab.location} — {lab.contact}</title>
+                                    </circle>
+                                    {isActive && (
+                                        <g className="labs-map-tooltip" transform={`translate(${x - 100} ${y - 64})`}>
+                                            <rect width="200" height="52" rx="6" />
+                                            <text x="10" y="20">{lab.name}</text>
+                                            <text x="10" y="38">{lab.location} · {lab.contact}</text>
+                                        </g>
+                                    )}
+                                </g>
                             );
                         })}
                     </svg>

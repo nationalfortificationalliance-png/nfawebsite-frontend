@@ -173,12 +173,13 @@ export default function ResourceCentre({ labs, challenges, documents, organizati
                 .doc-filters select {
                     width: 100%;
                     min-height: 44px;
-                    padding: 0.7rem 2.25rem 0.7rem 0.9rem;
+                    padding: 0.7rem 3rem 0.7rem 0.9rem;
                     border: 1.5px solid var(--border-light);
                     border-radius: 10px;
                     font-size: 0.85rem;
                     color: var(--text-secondary);
-                    background: #fff;
+                    appearance: none;
+                    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 0.9rem center;
                     transition: border-color 0.15s ease;
                 }
                 .doc-filters select:focus { outline: none; border-color: var(--wfp-blue); }

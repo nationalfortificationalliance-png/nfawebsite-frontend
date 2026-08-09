@@ -54,7 +54,7 @@ function getOrganization(document: GuidelineDocument, organizations: MemberOrgan
         return { key: `agency-${document.agency}`, name: document.agency };
     }
 
-    return { key: 'other-resources', name: 'Other resources' };
+    return { key: 'nfa-resources', name: 'NFA resources' };
 }
 
 function groupDocuments(documents: GuidelineDocument[]): Array<{ name: string; documents: GuidelineDocument[] }> {
@@ -97,7 +97,7 @@ function ResourceRow({ document }: { document: GuidelineDocument }) {
                     {document.status && <span>{document.status}</span>}
                 </div>
             </div>
-            {action && (
+            {action ? (
                 <a
                     href={action.href}
                     target="_blank"
@@ -106,6 +106,8 @@ function ResourceRow({ document }: { document: GuidelineDocument }) {
                 >
                     {action.label} <Icon name={action.external ? 'external-link' : 'arrow-right'} size={14} />
                 </a>
+            ) : (
+                <span className="org-resource-unavailable">Access coming soon</span>
             )}
         </article>
     );
@@ -171,7 +173,7 @@ export default function OrganizationResourceCards({ documents, organizations }: 
             <style jsx>{`
                 .organization-resource-cards { display: grid; gap: 1rem; margin-top: 1.5rem; }
                 .organization-resource-card { border: 1px solid var(--border-light); border-radius: 16px; background: #fff; overflow: hidden; }
-                .organization-resource-trigger { width: 100%; display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: #fff; text-align: left; color: var(--text-primary); }
+                .organization-resource-trigger { width: 100%; display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; background: #fff; text-align: left; color: var(--text-primary); }
                 .organization-resource-trigger:hover { background: var(--bg-off, #f8fafc); }
                 .organization-resource-trigger:focus-visible { outline: 3px solid var(--wfp-blue); outline-offset: -3px; }
                 .organization-resource-logo { position: relative; width: 64px; height: 48px; display: flex; align-items: center; justify-content: center; flex: 0 0 64px; color: var(--wfp-blue); }
@@ -180,7 +182,7 @@ export default function OrganizationResourceCards({ documents, organizations }: 
                 .organization-resource-summary span { color: var(--text-muted); font-size: 0.82rem; }
                 .organization-resource-chevron { flex: 0 0 auto; transition: transform 0.2s ease; }
                 .organization-resource-chevron.expanded { transform: rotate(180deg); }
-                .organization-resource-panel { border-top: 1px solid var(--border-light); padding: 1.25rem; background: var(--bg-off, #f8fafc); }
+                .organization-resource-panel { border-top: 1px solid var(--border-light); padding: 1.5rem; background: var(--bg-off, #f8fafc); }
                 .organization-resource-group + .organization-resource-group { margin-top: 1.5rem; }
                 .organization-resource-group h3 { font-size: 0.86rem; margin: 0 0 0.65rem; color: var(--wfp-blue); text-transform: uppercase; letter-spacing: 0.05em; }
                 .organization-resource-list { display: grid; gap: 0.65rem; }
@@ -193,10 +195,11 @@ export default function OrganizationResourceCards({ documents, organizations }: 
                 .org-resource-row-meta span { border-radius: 999px; background: var(--wfp-blue-light, #e6f1fb); color: var(--wfp-blue); padding: 0.15rem 0.5rem; font-size: 0.68rem; font-weight: 700; }
                 .org-resource-action { align-self: center; display: inline-flex; align-items: center; gap: 0.35rem; color: var(--wfp-blue); font-weight: 700; font-size: 0.82rem; white-space: nowrap; }
                 .org-resource-action:hover { text-decoration: underline; }
+                .org-resource-unavailable { align-self: center; color: var(--text-muted); font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
                 @media (max-width: 640px) {
-                    .organization-resource-trigger, .organization-resource-panel { padding: 1rem; }
+                    .organization-resource-trigger, .organization-resource-panel { padding: 1.1rem; }
                     .org-resource-row { flex-wrap: wrap; }
-                    .org-resource-action { width: 100%; margin-left: 2.1rem; }
+                    .org-resource-action, .org-resource-unavailable { width: 100%; margin-left: 2.1rem; }
                 }
             `}</style>
         </div>
